@@ -1,0 +1,93 @@
+{
+    "author": "Curiouser <rationalmonster@163.com>",
+    "title": "Devops Roadmap",
+    "root": ".",
+    "output": "docs",
+	"plugins": [
+		"-search",
+		"-lunr",
+		"-sharing",
+                "-highlight",
+		"search-pro",
+		"splitter",
+                "github",
+		"popup",
+                "sectionx",
+                "expandable-chapters",
+		"sharing-plus",
+		"code",
+                "auto-scroll-table",
+		"theme-fexa",
+                "tbfed-pagefooter",
+                "back-to-top-button",
+        	"emphasize",
+        	"edit-link",
+        	"prism",
+        	"donate",
+        	"theme-comscore",
+        	"github-buttons",
+        	"github-issue-feedback"
+	],
+	"pluginsConfig": {
+        "theme-default": {
+            "showLevel": true
+        },
+        "github-issue-feedback": {
+          "repo": "RationalMonster/rationalmonster.github.io"
+        },
+        "github": {
+            "url": "https://github.com/RationalMonster"
+        },
+        "github-buttons": {
+      		"buttons": [{
+        		"user": "RationalMonster",
+        		"repo": "gitbooks-devops-roadmap",
+        		"type": "star",
+        		"size": "small",
+        		"count": "true"
+      			}]
+    	},
+        "sharing": {
+        	"weibo": true,
+        	"qq": "true",
+        	"google": true,
+        	"all": [
+           		"facebook", "twitter"
+           	]
+        },
+        "code": {
+        	"copybuttons": "true"
+        },
+        "theme-fexa":{
+            "search-placeholder":"搜索文章",
+            "logo": "./assets/logo.png"
+        },
+        "tbfed-pagefooter": {
+            "copyright":"Copyright Curiouser",
+            "modify_label": "该文件最后修改时间：",
+            "modify_format": "YYYY-MM-DD HH:mm:ss"
+        },
+        "edit-link": {
+          "base": "https://raw.githubusercontent.com/RationalMonster/gitbooks-devops-roadmap/master/",
+          "label": "查看源MD文件"
+        },
+        "prism": {
+            "css": [
+                "prismjs/themes/prism-tomorrow.css"
+            ],
+            "lang": {
+                "flow": "typescript"
+            },
+            "ignore": [
+                "mermaid",
+                "eval-js"
+            ]
+        },
+        "donate": {
+            "wechat": "/assets/wechat-donate.jpg",
+            "title": "",
+            "button": "赏",
+            "wechatText": "微信打赏"
+        }
+    }
+}
