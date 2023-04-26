@@ -492,7 +492,10 @@
 
 
 - JavaScript学习笔记
+  
+  - [JS、JQuery、Vue学习](origin/js-jquery-vue-learn.md)
   - [JavaScript常用工具函数](origin/js-kits.md)
+  
 
 
 ## Part X：Hackintosh

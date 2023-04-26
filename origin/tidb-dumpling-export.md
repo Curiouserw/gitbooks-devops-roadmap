@@ -347,3 +347,13 @@ dumpling-mysql-db-tables-to-file() {
 }
 ```
 
+# 四、实战注意
+
+如果后续使用TiDB lightning恢复备份数据到新集群的话，
+- Dumpling备份时不要进行压缩。TiDB lightning无法从压缩备份文件中直接导入到 TIDB。（TiDB lightning v5.1.0是不行，后续版本不知道会不会支持）
+
+  ```bash
+  for i in `find /data/dumpling-data/2022042507/sql -name "*sql.gz"` ;do gunzip $i ;done
+  ```
+
+- TiDB lightning 开起监控 Web，可以方便查看导入进度

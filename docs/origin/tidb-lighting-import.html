@@ -7706,12 +7706,27 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="10.1.1" data-path="js-kits.html">
+        <li class="chapter " data-level="10.1.1" data-path="js-jquery-vue-learn.html">
+            
+                <a href="js-jquery-vue-learn.html">
+            
+                    
+                        <b>10.1.1.</b>
+                    
+                    JS、JQuery、Vue学习
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="10.1.2" data-path="js-kits.html">
             
                 <a href="js-kits.html">
             
                     
-                        <b>10.1.1.</b>
+                        <b>10.1.2.</b>
                     
                     JavaScript常用工具函数
             
@@ -8490,7 +8505,7 @@ switch-mode = &quot;5m&quot;
 # &#x5728;&#x65E5;&#x5FD7;&#x4E2D;&#x6253;&#x5370;&#x5BFC;&#x5165;&#x8FDB;&#x5EA6;&#x7684;&#x6301;&#x7EED;&#x65F6;&#x95F4;&#x3002;
 log-progress = &quot;5m&quot;
 </code></pre>
-<h1 id="&#x4E94;&#x3001;web-&#x754C;&#x9762;">&#x4E94;&#x3001;Web &#x754C;&#x9762;</h1>
+<h1 id="&#x4E94;&#x3001;web-&#x754C;&#x9762;&#x67E5;&#x770B;&#x5BFC;&#x5165;&#x8FDB;&#x5EA6;">&#x4E94;&#x3001;Web &#x754C;&#x9762;&#x67E5;&#x770B;&#x5BFC;&#x5165;&#x8FDB;&#x5EA6;</h1>
 <p>TiDB Lightning &#x652F;&#x6301;&#x5728;&#x7F51;&#x9875;&#x4E0A;&#x67E5;&#x770B;&#x5BFC;&#x5165;&#x8FDB;&#x5EA6;&#x6216;&#x6267;&#x884C;&#x4E00;&#x4E9B;&#x7B80;&#x5355;&#x4EFB;&#x52A1;&#x7BA1;&#x7406;&#x3002;&#x542F;&#x7528;&#x670D;&#x52A1;&#x5668;&#x6A21;&#x5F0F;&#x7684;&#x65B9;&#x5F0F;&#x6709;&#x5982;&#x4E0B;&#x51E0;&#x79CD;&#xFF1A;</p>
 <ol>
 <li><p>&#x5728;&#x542F;&#x52A8; <code>tidb-lightning</code> &#x65F6;&#x52A0;&#x4E0A;&#x547D;&#x4EE4;&#x884C;&#x53C2;&#x6570; <code>--server-mode</code>&#x3002;</p>
@@ -8499,8 +8514,7 @@ log-progress = &quot;5m&quot;
 </li>
 <li><p>&#x5728;&#x914D;&#x7F6E;&#x6587;&#x4EF6;&#x4E2D;&#x8BBE;&#x7F6E; <code>lightning.server-mode</code>&#x3002;</p>
 <pre class="language-"><code class="toml">[lightning]
-server-mode = true
-status-addr = &apos;:8289&apos;
+pprof-port = 8289
 </code></pre>
 </li>
 </ol>
@@ -8574,6 +8588,15 @@ tidb-lightning-ctl --checkpoint-remove=all
 # &#x6570;&#x636E;&#x6E90;&#x76EE;&#x5F55;
 data-source-dir = &quot;/data/tidb-dumpling-export&quot;
 
+[lightning]
+max-error = 100
+pprof-port = 8289
+
+[checkpoint]
+enable = true
+driver = &quot;mysql&quot;
+keep-after-success = true
+
 [tikv-importer]
 backend = &quot;tidb&quot;
 
@@ -8598,7 +8621,7 @@ password = &quot;*****&quot;
 </ul>
 <p>&#x5BFC;&#x5165;&#x5B8C;&#x6BD5;&#x540E;&#xFF0C;TiDB Lightning &#x4F1A;&#x81EA;&#x52A8;&#x9000;&#x51FA;&#x3002;&#x82E5;&#x5BFC;&#x5165;&#x6210;&#x529F;&#xFF0C;&#x65E5;&#x5FD7;&#x7684;&#x6700;&#x540E;&#x4E00;&#x884C;&#x4F1A;&#x663E;&#x793A; <code>tidb lightning exit</code> </p>
 <footer class="page-footer"><span class="copyright">Copyright Curiouser all right reserved&#xFF0C;powered by Gitbook</span><span class="footer-modification">&#x8BE5;&#x6587;&#x4EF6;&#x6700;&#x540E;&#x4FEE;&#x6539;&#x65F6;&#x95F4;&#xFF1A;
-2022-05-16 17:26:46
+2023-04-26 16:37:16
 </span></footer>
 <script>console.log("plugin-popup....");document.onclick = function(e){ e.target.tagName === "IMG" && window.open(e.target.src,e.target.src)}</script><style>img{cursor:pointer}</style>
 						
@@ -8642,7 +8665,7 @@ password = &quot;*****&quot;
 	<script>
 		var gitbook = gitbook || [];
 		gitbook.push(function() {
-			gitbook.page.hasChanged({"page":{"title":"Lightning：导入数据到TIDB","level":"8.2.2.3","depth":3,"next":{"title":"BR：分布式冷备份与恢复","level":"8.2.2.4","depth":3,"path":"origin/tidb-br-backup-restore.md","ref":"origin/tidb-br-backup-restore.md","articles":[]},"previous":{"title":"Dumpling从TiDB/MySQL导出数据","level":"8.2.2.2","depth":3,"path":"origin/tidb-dumpling-export.md","ref":"origin/tidb-dumpling-export.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-lunr","-sharing","-highlight","search-pro","splitter","github","popup","sectionx","expandable-chapters","sharing-plus","code","auto-scroll-table","theme-fexa","tbfed-pagefooter","back-to-top-button","emphasize","edit-link","prism","donate","theme-comscore","github-buttons","github-issue-feedback"],"root":".","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"tbfed-pagefooter":{"copyright":"Copyright Curiouser","modify_label":"该文件最后修改时间：","modify_format":"YYYY-MM-DD HH:mm:ss"},"prism":{"css":["prismjs/themes/prism-tomorrow.css"],"lang":{"flow":"typescript"},"ignore":["mermaid","eval-js"]},"emphasize":{},"github-issue-feedback":{"repo":"RationalMonster/rationalmonster.github.io"},"github":{"url":"https://github.com/RationalMonster"},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"auto-scroll-table":{},"popup":{},"theme-fexa":{"search-placeholder":"搜索文章","logo":"./assets/logo.png"},"code":{"copybuttons":"true","copyButtons":true},"donate":{"wechat":"/assets/wechat-donate.jpg","title":"","button":"赏","wechatText":"微信打赏","alipay":"","alipayText":"支付宝打赏"},"fontsettings":{"theme":"white","family":"sans","size":2},"sectionx":{},"theme-comscore":{},"back-to-top-button":{},"github-buttons":{"buttons":[{"user":"RationalMonster","repo":"gitbooks-devops-roadmap","type":"star","size":"small","count":"true"}]},"sharing":{"weibo":true,"qq":"true","google":true,"all":["facebook","twitter"]},"edit-link":{"base":"https://raw.githubusercontent.com/RationalMonster/gitbooks-devops-roadmap/master/","label":"查看源MD文件"},"theme-default":{"showLevel":true,"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"expandable-chapters":{}},"theme":"default","author":"Curiouser <rationalmonster@163.com>","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Devops Roadmap","gitbook":"*"},"file":{"path":"origin/tidb-lighting-import.md","mtime":"2022-05-16T09:26:46.000Z","type":"markdown"},"gitbook":{"version":"3.0.0","time":"2023-04-17T11:44:35.792Z"},"basePath":"..","book":{"language":""}});
+			gitbook.page.hasChanged({"page":{"title":"Lightning：导入数据到TIDB","level":"8.2.2.3","depth":3,"next":{"title":"BR：分布式冷备份与恢复","level":"8.2.2.4","depth":3,"path":"origin/tidb-br-backup-restore.md","ref":"origin/tidb-br-backup-restore.md","articles":[]},"previous":{"title":"Dumpling从TiDB/MySQL导出数据","level":"8.2.2.2","depth":3,"path":"origin/tidb-dumpling-export.md","ref":"origin/tidb-dumpling-export.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-lunr","-sharing","-highlight","search-pro","splitter","github","popup","sectionx","expandable-chapters","sharing-plus","code","auto-scroll-table","theme-fexa","tbfed-pagefooter","back-to-top-button","emphasize","edit-link","prism","donate","theme-comscore","github-buttons","github-issue-feedback"],"root":".","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"tbfed-pagefooter":{"copyright":"Copyright Curiouser","modify_label":"该文件最后修改时间：","modify_format":"YYYY-MM-DD HH:mm:ss"},"prism":{"css":["prismjs/themes/prism-tomorrow.css"],"lang":{"flow":"typescript"},"ignore":["mermaid","eval-js"]},"emphasize":{},"github-issue-feedback":{"repo":"RationalMonster/rationalmonster.github.io"},"github":{"url":"https://github.com/RationalMonster"},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"auto-scroll-table":{},"popup":{},"theme-fexa":{"search-placeholder":"搜索文章","logo":"./assets/logo.png"},"code":{"copybuttons":"true","copyButtons":true},"donate":{"wechat":"/assets/wechat-donate.jpg","title":"","button":"赏","wechatText":"微信打赏","alipay":"","alipayText":"支付宝打赏"},"fontsettings":{"theme":"white","family":"sans","size":2},"sectionx":{},"theme-comscore":{},"back-to-top-button":{},"github-buttons":{"buttons":[{"user":"RationalMonster","repo":"gitbooks-devops-roadmap","type":"star","size":"small","count":"true"}]},"sharing":{"weibo":true,"qq":"true","google":true,"all":["facebook","twitter"]},"edit-link":{"base":"https://raw.githubusercontent.com/RationalMonster/gitbooks-devops-roadmap/master/","label":"查看源MD文件"},"theme-default":{"showLevel":true,"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"expandable-chapters":{}},"theme":"default","author":"Curiouser <rationalmonster@163.com>","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Devops Roadmap","gitbook":"*"},"file":{"path":"origin/tidb-lighting-import.md","mtime":"2023-04-26T08:37:16.026Z","type":"markdown"},"gitbook":{"version":"3.0.0","time":"2023-04-26T08:37:51.376Z"},"basePath":"..","book":{"language":""}});
 		});
 	</script>
 </div>

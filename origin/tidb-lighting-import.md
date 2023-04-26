@@ -387,7 +387,7 @@ switch-mode = "5m"
 log-progress = "5m"
 ```
 
-# 五、Web 界面
+# 五、Web 界面查看导入进度
 
 TiDB Lightning 支持在网页上查看导入进度或执行一些简单任务管理。启用服务器模式的方式有如下几种：
 
@@ -401,8 +401,7 @@ TiDB Lightning 支持在网页上查看导入进度或执行一些简单任务�
 
    ```toml
    [lightning]
-   server-mode = true
-   status-addr = ':8289'
+   pprof-port = 8289
    ```
 
 TiDB Lightning 启动后，可以访问 `http://127.0.0.1:8289` 来管理程序
@@ -497,6 +496,15 @@ tidb-lightning-ctl --checkpoint-dump=output/directory
 [mydumper]
 # 数据源目录
 data-source-dir = "/data/tidb-dumpling-export"
+
+[lightning]
+max-error = 100
+pprof-port = 8289
+
+[checkpoint]
+enable = true
+driver = "mysql"
+keep-after-success = true
 
 [tikv-importer]
 backend = "tidb"

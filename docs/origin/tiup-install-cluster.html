@@ -7706,12 +7706,27 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="10.1.1" data-path="js-kits.html">
+        <li class="chapter " data-level="10.1.1" data-path="js-jquery-vue-learn.html">
+            
+                <a href="js-jquery-vue-learn.html">
+            
+                    
+                        <b>10.1.1.</b>
+                    
+                    JS、JQuery、Vue学习
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="10.1.2" data-path="js-kits.html">
             
                 <a href="js-kits.html">
             
                     
-                        <b>10.1.1.</b>
+                        <b>10.1.2.</b>
                     
                     JavaScript常用工具函数
             
@@ -8195,6 +8210,7 @@ tiup mirror clone /opt/tidb-community-server-v$tidb_version-linux-amd64.tar.gz $
 <pre class="language-"><code class="bash">tiup list tidb
 </code></pre>
 <h2 id="4&#x3001;&#x521B;&#x5EFA;&#x96C6;&#x7FA4;&#x7EC4;&#x4EF6;&#x7684;&#x62D3;&#x6251;&#x914D;&#x7F6E;&#x6587;&#x4EF6;">4&#x3001;&#x521B;&#x5EFA;&#x96C6;&#x7FA4;&#x7EC4;&#x4EF6;&#x7684;&#x62D3;&#x6251;&#x914D;&#x7F6E;&#x6587;&#x4EF6;</h2>
+<p>&#x9488;&#x5BF9;&#x4E0D;&#x540C;&#x7684;&#x90E8;&#x7F72;&#x67B6;&#x6784;&#x914D;&#x7F6E;&#x80AF;&#x53EF;&#x80FD;&#x4F1A;&#x6709;&#x6240;&#x4E0D;&#x540C;&#xFF0C;&#x53EF;&#x53C2;&#x8003;&#x7B2C;&#x516B;&#x7AE0;</p>
 <pre class="language-"><code class="yaml"># # Global variables are applied to all deployments and used as the default value of
 # # the deployments if a specific deployment value is missing.
 global:
@@ -8804,8 +8820,78 @@ tiup status
 curl --proto &apos;=https&apos; --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh | sh
 tiup cluster display &#x96C6;&#x7FA4;&#x540D;&#x79F0;
 </code></pre>
+<h1 id="&#x516B;&#x3001;&#x6DF7;&#x5408;&#x90E8;&#x7F72;&#x62D3;&#x6251;&#x7684;&#x914D;&#x7F6E;&#x4F18;&#x5316;">&#x516B;&#x3001;&#x6DF7;&#x5408;&#x90E8;&#x7F72;&#x62D3;&#x6251;&#x7684;&#x914D;&#x7F6E;&#x4F18;&#x5316;</h1>
+<p>&#x5E38;&#x89C1;&#x7684;&#x573A;&#x666F;&#x4E3A;&#xFF0C;&#x90E8;&#x7F72;&#x673A;&#x4E3A;&#x591A;&#x8DEF; CPU &#x5904;&#x7406;&#x5668;&#xFF0C;&#x5185;&#x5B58;&#x4E5F;&#x5145;&#x8DB3;&#xFF0C;&#x4E3A;&#x63D0;&#x9AD8;&#x7269;&#x7406;&#x673A;&#x8D44;&#x6E90;&#x5229;&#x7528;&#x7387;&#xFF0C;&#x53EF;&#x5355;&#x673A;&#x591A;&#x5B9E;&#x4F8B;&#x90E8;&#x7F72;&#xFF0C;&#x5373; TiDB&#x3001;TiKV &#x901A;&#x8FC7; numa &#x7ED1;&#x6838;&#xFF0C;&#x9694;&#x79BB; CPU &#x8D44;&#x6E90;&#x3002;</p>
+<ul>
+<li><p>TiKV &#x8FDB;&#x884C;&#x914D;&#x7F6E;&#x4F18;&#x5316;</p>
+<ul>
+<li><p>readpool &#x7EBF;&#x7A0B;&#x6C60;&#x81EA;&#x9002;&#x5E94;&#xFF0C;&#x914D;&#x7F6E; <code>readpool.unified.max-thread-count</code> &#x53C2;&#x6570;&#x53EF;&#x4EE5;&#x4F7F; <code>readpool.storage</code> &#x548C; <code>readpool.coprocessor</code> &#x5171;&#x7528;&#x7EDF;&#x4E00;&#x7EBF;&#x7A0B;&#x6C60;&#xFF0C;&#x540C;&#x65F6;&#x8981;&#x5206;&#x522B;&#x8BBE;&#x7F6E;&#x81EA;&#x9002;&#x5E94;&#x5F00;&#x5173;&#x3002;</p>
+<ul>
+<li><p>&#x5F00;&#x542F; <code>readpool.storage</code> &#x548C; <code>readpool.coprocessor</code>&#xFF1A;</p>
+<pre class="language-"><code class="yaml">readpool.storage.use-unified-pool: true
+readpool.coprocessor.use-unified-pool: true
+</code></pre>
+</li>
+<li><p>&#x8BA1;&#x7B97;&#x516C;&#x5F0F;&#x5982;&#x4E0B;&#xFF1A;</p>
+<pre class="language-"><code class="apache">readpool.unified.max-thread-count = cores * 0.8 / TiKV &#x6570;&#x91CF;
+</code></pre>
+</li>
+</ul>
+</li>
+<li><p>storage CF (all RocksDB column families) &#x5185;&#x5B58;&#x81EA;&#x9002;&#x5E94;&#xFF0C;&#x914D;&#x7F6E; <code>storage.block-cache.capacity</code> &#x53C2;&#x6570;&#x5373;&#x53EF;&#x5B9E;&#x73B0; CF &#x4E4B;&#x95F4;&#x81EA;&#x52A8;&#x5E73;&#x8861;&#x5185;&#x5B58;&#x4F7F;&#x7528;&#x3002;</p>
+<ul>
+<li><p><code>storage.block-cache</code> &#x9ED8;&#x8BA4;&#x5F00;&#x542F; CF &#x81EA;&#x9002;&#x5E94;&#xFF0C;&#x65E0;&#x9700;&#x4FEE;&#x6539;&#x3002;</p>
+<pre class="language-"><code class="yaml">storage.block-cache.shared: true
+</code></pre>
+</li>
+<li><p>&#x8BA1;&#x7B97;&#x516C;&#x5F0F;&#x5982;&#x4E0B;&#xFF1A;</p>
+<pre class="language-"><code class="apache">storage.block-cache.capacity = (MEM_TOTAL * 0.5 / TiKV &#x5B9E;&#x4F8B;&#x6570;&#x91CF;)
+</code></pre>
+</li>
+</ul>
+</li>
+<li><p>&#x5982;&#x679C;&#x591A;&#x4E2A; TiKV &#x5B9E;&#x4F8B;&#x90E8;&#x7F72;&#x5728;&#x540C;&#x4E00;&#x5757;&#x7269;&#x7406;&#x78C1;&#x76D8;&#x4E0A;&#xFF0C;&#x9700;&#x8981;&#x5728; tikv &#x914D;&#x7F6E;&#x4E2D;&#x6DFB;&#x52A0; capacity &#x53C2;&#x6570;&#xFF1A;</p>
+<pre class="language-"><code class="ini">raftstore.capacity = &#x78C1;&#x76D8;&#x603B;&#x5BB9;&#x91CF; / TiKV &#x5B9E;&#x4F8B;&#x6570;&#x91CF;
+</code></pre>
+</li>
+</ul>
+</li>
+<li><p>label &#x8C03;&#x5EA6;&#x914D;&#x7F6E;</p>
+<p>&#x7531;&#x4E8E;&#x91C7;&#x7528;&#x5355;&#x673A;&#x591A;&#x5B9E;&#x4F8B;&#x90E8;&#x7F72; TiKV&#xFF0C;&#x4E3A;&#x4E86;&#x907F;&#x514D;&#x7269;&#x7406;&#x673A;&#x5B95;&#x673A;&#x5BFC;&#x81F4; Region Group &#x9ED8;&#x8BA4; 3 &#x526F;&#x672C;&#x7684; 2 &#x526F;&#x672C;&#x4E22;&#x5931;&#xFF0C;&#x5BFC;&#x81F4;&#x96C6;&#x7FA4;&#x4E0D;&#x53EF;&#x7528;&#x7684;&#x95EE;&#x9898;&#xFF0C;&#x53EF;&#x4EE5;&#x901A;&#x8FC7; label &#x6765;&#x5B9E;&#x73B0; PD &#x667A;&#x80FD;&#x8C03;&#x5EA6;&#xFF0C;&#x4FDD;&#x8BC1;&#x540C;&#x53F0;&#x673A;&#x5668;&#x7684;&#x591A; TiKV &#x5B9E;&#x4F8B;&#x4E0D;&#x4F1A;&#x51FA;&#x73B0; Region Group &#x53EA;&#x6709; 2 &#x526F;&#x672C;&#x7684;&#x60C5;&#x51B5;&#x3002;</p>
+<ul>
+<li><p>TiKV &#x914D;&#x7F6E;</p>
+<p>&#x76F8;&#x540C;&#x7269;&#x7406;&#x673A;&#x914D;&#x7F6E;&#x76F8;&#x540C;&#x7684; host &#x7EA7;&#x522B; label &#x4FE1;&#x606F;&#xFF1A;</p>
+<pre class="language-"><code class="yml">config:
+  server.labels:
+    host: tikv1
+</code></pre>
+</li>
+<li><p>PD &#x914D;&#x7F6E;</p>
+<p>PD &#x9700;&#x8981;&#x914D;&#x7F6E; labels &#x7C7B;&#x578B;&#x6765;&#x8BC6;&#x522B;&#x5E76;&#x8C03;&#x5EA6; Region&#xFF1A;</p>
+<pre class="language-"><code class="yml">pd:
+  replication.location-labels: [&quot;host&quot;]
+</code></pre>
+</li>
+</ul>
+</li>
+<li><p><code>numa_node</code> &#x7ED1;&#x6838;</p>
+<ul>
+<li>&#x5728;&#x5B9E;&#x4F8B;&#x53C2;&#x6570;&#x6A21;&#x5757;&#x914D;&#x7F6E;&#x5BF9;&#x5E94;&#x7684; <code>numa_node</code> &#x53C2;&#x6570;&#xFF0C;&#x5E76;&#x6DFB;&#x52A0;&#x5BF9;&#x5E94;&#x7684;&#x7269;&#x7406; CPU &#x7684;&#x6838;&#x6570;&#xFF1B;</li>
+<li>numa &#x7ED1;&#x6838;&#x4F7F;&#x7528;&#x524D;&#xFF0C;&#x786E;&#x8BA4;&#x5DF2;&#x7ECF;&#x5B89;&#x88C5; numactl &#x5DE5;&#x5177;&#xFF0C;&#x4EE5;&#x53CA;&#x7269;&#x7406;&#x673A;&#x5BF9;&#x5E94;&#x7684;&#x7269;&#x7406;&#x673A; CPU &#x7684;&#x4FE1;&#x606F;&#x540E;&#xFF0C;&#x518D;&#x8FDB;&#x884C;&#x53C2;&#x6570;&#x914D;&#x7F6E;&#xFF1B;</li>
+<li><code>numa_node</code> &#x8FD9;&#x4E2A;&#x914D;&#x7F6E;&#x53C2;&#x6570;&#x4E0E; <code>numactl --membind</code> &#x914D;&#x7F6E;&#x5BF9;&#x5E94;&#x3002;</li>
+</ul>
+</li>
+</ul>
+<p>&#x6CE8;&#x610F;</p>
+<ul>
+<li>&#x7F16;&#x8F91;&#x914D;&#x7F6E;&#x6587;&#x4EF6;&#x6A21;&#x7248;&#x65F6;&#xFF0C;&#x6CE8;&#x610F;&#x4FEE;&#x6539;&#x5FC5;&#x8981;&#x53C2;&#x6570;&#x3001;IP&#x3001;&#x7AEF;&#x53E3;&#x53CA;&#x76EE;&#x5F55;&#x3002;</li>
+<li>&#x5404;&#x4E2A;&#x7EC4;&#x4EF6;&#x7684; deploy_dir&#xFF0C;&#x9ED8;&#x8BA4;&#x4F1A;&#x4F7F;&#x7528; global &#x4E2D;&#x7684; <code><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>deploy_dir</span><span class="token punctuation">&gt;</span></span>/<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>components_name</span><span class="token punctuation">&gt;</span></span>-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>port</span><span class="token punctuation">&gt;</span></span></code>&#x3002;&#x4F8B;&#x5982; tidb &#x7AEF;&#x53E3;&#x6307;&#x5B9A; 4001&#xFF0C;&#x5219; deploy_dir &#x9ED8;&#x8BA4;&#x4E3A; &apos;/tidb-deploy/tidb-4001&apos;&#x3002;&#x56E0;&#x6B64;&#xFF0C;&#x5728;&#x591A;&#x5B9E;&#x4F8B;&#x573A;&#x666F;&#x4E0B;&#x6307;&#x5B9A;&#x975E;&#x9ED8;&#x8BA4;&#x7AEF;&#x53E3;&#x65F6;&#xFF0C;&#x65E0;&#x9700;&#x518D;&#x6B21;&#x6307;&#x5B9A;&#x76EE;&#x5F55;&#x3002;</li>
+<li>&#x65E0;&#x9700;&#x624B;&#x52A8;&#x521B;&#x5EFA;&#x914D;&#x7F6E;&#x6587;&#x4EF6;&#x4E2D;&#x7684; <code>tidb</code> &#x7528;&#x6237;&#xFF0C;TiUP cluster &#x7EC4;&#x4EF6;&#x4F1A;&#x5728;&#x90E8;&#x7F72;&#x4E3B;&#x673A;&#x4E0A;&#x81EA;&#x52A8;&#x521B;&#x5EFA;&#x8BE5;&#x7528;&#x6237;&#x3002;&#x53EF;&#x4EE5;&#x81EA;&#x5B9A;&#x4E49;&#x7528;&#x6237;&#xFF0C;&#x4E5F;&#x53EF;&#x4EE5;&#x548C;&#x4E2D;&#x63A7;&#x673A;&#x7684;&#x7528;&#x6237;&#x4FDD;&#x6301;&#x4E00;&#x81F4;&#x3002;</li>
+<li>&#x5982;&#x679C;&#x90E8;&#x7F72;&#x76EE;&#x5F55;&#x914D;&#x7F6E;&#x4E3A;&#x76F8;&#x5BF9;&#x8DEF;&#x5F84;&#xFF0C;&#x4F1A;&#x90E8;&#x7F72;&#x5728;&#x7528;&#x6237;&#x7684; Home &#x76EE;&#x5F55;&#x4E0B;&#x3002;</li>
+</ul>
+<p>&#x53C2;&#x8003;&#xFF1A;<a href="https://docs.pingcap.com/zh/tidb/stable/hybrid-deployment-topology#%E6%B7%B7%E5%90%88%E9%83%A8%E7%BD%B2%E7%9A%84%E5%85%B3%E9%94%AE%E5%8F%82%E6%95%B0%E4%BB%8B%E7%BB%8D" _target="blank">https://docs.pingcap.com/zh/tidb/stable/hybrid-deployment-topology#%E6%B7%B7%E5%90%88%E9%83%A8%E7%BD%B2%E7%9A%84%E5%85%B3%E9%94%AE%E5%8F%82%E6%95%B0%E4%BB%8B%E7%BB%8D</a></p>
 <footer class="page-footer"><span class="copyright">Copyright Curiouser all right reserved&#xFF0C;powered by Gitbook</span><span class="footer-modification">&#x8BE5;&#x6587;&#x4EF6;&#x6700;&#x540E;&#x4FEE;&#x6539;&#x65F6;&#x95F4;&#xFF1A;
-2023-01-09 17:40:15
+2023-04-25 22:06:56
 </span></footer>
 <script>console.log("plugin-popup....");document.onclick = function(e){ e.target.tagName === "IMG" && window.open(e.target.src,e.target.src)}</script><style>img{cursor:pointer}</style>
 						
@@ -8849,7 +8935,7 @@ tiup cluster display &#x96C6;&#x7FA4;&#x540D;&#x79F0;
 	<script>
 		var gitbook = gitbook || [];
 		gitbook.push(function() {
-			gitbook.page.hasChanged({"page":{"title":"使用TIUP部署TiDB集群","level":"8.2.1.2","depth":3,"next":{"title":"TiUP升级集群","level":"8.2.1.3","depth":3,"path":"origin/tiup-upgrade-cluster.md","ref":"origin/tiup-upgrade-cluster.md","articles":[]},"previous":{"title":"Ansible二进制部署管理","level":"8.2.1.1","depth":3,"path":"origin/tidb-ansible.md","ref":"origin/tidb-ansible.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-lunr","-sharing","-highlight","search-pro","splitter","github","popup","sectionx","expandable-chapters","sharing-plus","code","auto-scroll-table","theme-fexa","tbfed-pagefooter","back-to-top-button","emphasize","edit-link","prism","donate","theme-comscore","github-buttons","github-issue-feedback"],"root":".","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"tbfed-pagefooter":{"copyright":"Copyright Curiouser","modify_label":"该文件最后修改时间：","modify_format":"YYYY-MM-DD HH:mm:ss"},"prism":{"css":["prismjs/themes/prism-tomorrow.css"],"lang":{"flow":"typescript"},"ignore":["mermaid","eval-js"]},"emphasize":{},"github-issue-feedback":{"repo":"RationalMonster/rationalmonster.github.io"},"github":{"url":"https://github.com/RationalMonster"},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"auto-scroll-table":{},"popup":{},"theme-fexa":{"search-placeholder":"搜索文章","logo":"./assets/logo.png"},"code":{"copybuttons":"true","copyButtons":true},"donate":{"wechat":"/assets/wechat-donate.jpg","title":"","button":"赏","wechatText":"微信打赏","alipay":"","alipayText":"支付宝打赏"},"fontsettings":{"theme":"white","family":"sans","size":2},"sectionx":{},"theme-comscore":{},"back-to-top-button":{},"github-buttons":{"buttons":[{"user":"RationalMonster","repo":"gitbooks-devops-roadmap","type":"star","size":"small","count":"true"}]},"sharing":{"weibo":true,"qq":"true","google":true,"all":["facebook","twitter"]},"edit-link":{"base":"https://raw.githubusercontent.com/RationalMonster/gitbooks-devops-roadmap/master/","label":"查看源MD文件"},"theme-default":{"showLevel":true,"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"expandable-chapters":{}},"theme":"default","author":"Curiouser <rationalmonster@163.com>","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Devops Roadmap","gitbook":"*"},"file":{"path":"origin/tiup-install-cluster.md","mtime":"2023-01-09T09:40:15.339Z","type":"markdown"},"gitbook":{"version":"3.0.0","time":"2023-04-17T11:44:35.792Z"},"basePath":"..","book":{"language":""}});
+			gitbook.page.hasChanged({"page":{"title":"使用TIUP部署TiDB集群","level":"8.2.1.2","depth":3,"next":{"title":"TiUP升级集群","level":"8.2.1.3","depth":3,"path":"origin/tiup-upgrade-cluster.md","ref":"origin/tiup-upgrade-cluster.md","articles":[]},"previous":{"title":"Ansible二进制部署管理","level":"8.2.1.1","depth":3,"path":"origin/tidb-ansible.md","ref":"origin/tidb-ansible.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-lunr","-sharing","-highlight","search-pro","splitter","github","popup","sectionx","expandable-chapters","sharing-plus","code","auto-scroll-table","theme-fexa","tbfed-pagefooter","back-to-top-button","emphasize","edit-link","prism","donate","theme-comscore","github-buttons","github-issue-feedback"],"root":".","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"tbfed-pagefooter":{"copyright":"Copyright Curiouser","modify_label":"该文件最后修改时间：","modify_format":"YYYY-MM-DD HH:mm:ss"},"prism":{"css":["prismjs/themes/prism-tomorrow.css"],"lang":{"flow":"typescript"},"ignore":["mermaid","eval-js"]},"emphasize":{},"github-issue-feedback":{"repo":"RationalMonster/rationalmonster.github.io"},"github":{"url":"https://github.com/RationalMonster"},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"auto-scroll-table":{},"popup":{},"theme-fexa":{"search-placeholder":"搜索文章","logo":"./assets/logo.png"},"code":{"copybuttons":"true","copyButtons":true},"donate":{"wechat":"/assets/wechat-donate.jpg","title":"","button":"赏","wechatText":"微信打赏","alipay":"","alipayText":"支付宝打赏"},"fontsettings":{"theme":"white","family":"sans","size":2},"sectionx":{},"theme-comscore":{},"back-to-top-button":{},"github-buttons":{"buttons":[{"user":"RationalMonster","repo":"gitbooks-devops-roadmap","type":"star","size":"small","count":"true"}]},"sharing":{"weibo":true,"qq":"true","google":true,"all":["facebook","twitter"]},"edit-link":{"base":"https://raw.githubusercontent.com/RationalMonster/gitbooks-devops-roadmap/master/","label":"查看源MD文件"},"theme-default":{"showLevel":true,"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"expandable-chapters":{}},"theme":"default","author":"Curiouser <rationalmonster@163.com>","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Devops Roadmap","gitbook":"*"},"file":{"path":"origin/tiup-install-cluster.md","mtime":"2023-04-25T14:06:56.786Z","type":"markdown"},"gitbook":{"version":"3.0.0","time":"2023-04-26T08:37:51.376Z"},"basePath":"..","book":{"language":""}});
 		});
 	</script>
 </div>

@@ -162,6 +162,8 @@ tiup list tidb
 
 ## 4、创建集群组件的拓扑配置文件
 
+针对不同的部署架构配置肯可能会有所不同，可参考第八章
+
 ```yaml
 # # Global variables are applied to all deployments and used as the default value of
 # # the deployments if a specific deployment value is missing.
@@ -871,3 +873,83 @@ cp -r ~/.tiup ~/.tiup-bak
 curl --proto '=https' --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh | sh
 tiup cluster display 集群名称
 ```
+
+# 八、混合部署拓扑的配置优化
+
+常见的场景为，部署机为多路 CPU 处理器，内存也充足，为提高物理机资源利用率，可单机多实例部署，即 TiDB、TiKV 通过 numa 绑核，隔离 CPU 资源。
+
+- TiKV 进行配置优化
+
+  - readpool 线程池自适应，配置 `readpool.unified.max-thread-count` 参数可以使 `readpool.storage` 和 `readpool.coprocessor` 共用统一线程池，同时要分别设置自适应开关。
+
+    - 开启 `readpool.storage` 和 `readpool.coprocessor`：
+
+      ```yaml
+      readpool.storage.use-unified-pool: true
+      readpool.coprocessor.use-unified-pool: true
+      ```
+
+    - 计算公式如下：
+
+      ```apache
+      readpool.unified.max-thread-count = cores * 0.8 / TiKV 数量
+      ```
+
+  - storage CF (all RocksDB column families) 内存自适应，配置 `storage.block-cache.capacity` 参数即可实现 CF 之间自动平衡内存使用。
+
+    - `storage.block-cache` 默认开启 CF 自适应，无需修改。
+
+      ```yaml
+      storage.block-cache.shared: true
+      ```
+
+    - 计算公式如下：
+
+      ```apache
+      storage.block-cache.capacity = (MEM_TOTAL * 0.5 / TiKV 实例数量)
+      ```
+
+  - 如果多个 TiKV 实例部署在同一块物理磁盘上，需要在 tikv 配置中添加 capacity 参数：
+
+    ```ini
+    raftstore.capacity = 磁盘总容量 / TiKV 实例数量
+    ```
+
+- label 调度配置
+
+  由于采用单机多实例部署 TiKV，为了避免物理机宕机导致 Region Group 默认 3 副本的 2 副本丢失，导致集群不可用的问题，可以通过 label 来实现 PD 智能调度，保证同台机器的多 TiKV 实例不会出现 Region Group 只有 2 副本的情况。
+
+  - TiKV 配置
+
+    相同物理机配置相同的 host 级别 label 信息：
+
+    ```yml
+    config:
+      server.labels:
+        host: tikv1
+    ```
+
+  - PD 配置
+
+    PD 需要配置 labels 类型来识别并调度 Region：
+
+    ```yml
+    pd:
+      replication.location-labels: ["host"]
+    ```
+
+- `numa_node` 绑核
+
+  - 在实例参数模块配置对应的 `numa_node` 参数，并添加对应的物理 CPU 的核数；
+  - numa 绑核使用前，确认已经安装 numactl 工具，以及物理机对应的物理机 CPU 的信息后，再进行参数配置；
+  - `numa_node` 这个配置参数与 `numactl --membind` 配置对应。
+
+注意
+
+- 编辑配置文件模版时，注意修改必要参数、IP、端口及目录。
+- 各个组件的 deploy_dir，默认会使用 global 中的 `<deploy_dir>/<components_name>-<port>`。例如 tidb 端口指定 4001，则 deploy_dir 默认为 '/tidb-deploy/tidb-4001'。因此，在多实例场景下指定非默认端口时，无需再次指定目录。
+- 无需手动创建配置文件中的 `tidb` 用户，TiUP cluster 组件会在部署主机上自动创建该用户。可以自定义用户，也可以和中控机的用户保持一致。
+- 如果部署目录配置为相对路径，会部署在用户的 Home 目录下。
+
+参考：https://docs.pingcap.com/zh/tidb/stable/hybrid-deployment-topology#%E6%B7%B7%E5%90%88%E9%83%A8%E7%BD%B2%E7%9A%84%E5%85%B3%E9%94%AE%E5%8F%82%E6%95%B0%E4%BB%8B%E7%BB%8D
+

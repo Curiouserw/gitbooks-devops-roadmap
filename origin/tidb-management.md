@@ -112,6 +112,13 @@ Dashboard访问用户所需权限
   GRANT SYSTEM_VARIABLES_ADMIN ON *.* TO 'dashboardAdmin'@'%';
   ```
 
+## 3、用户管理
+
+- application使用：`app-*`，限制用户连接 IP地址 为数据库管理工具所在服务器 IP 地址
+- 数据库管理工具使用: `yearning-*` ，限制用户连接 IP地址 为数据库管理工具所在服务器 IP 地址
+- 个人直连使用：`姓名简拼-*`，限制用户连接 IP地址 为用户出口 IP 地址
+- 报表程序使用：`report-*`，限制用户连接 IP地址 为报表程序所在服务器 IP 地址
+
 # 三、慢SQL
 
 TiDB 会将执行时间超过 [slow-threshold](https://docs.pingcap.com/zh/tidb/v5.1/tidb-configuration-file#slow-threshold)（默认值为 300 毫秒）的语句输出到 [slow-query-file](https://docs.pingcap.com/zh/tidb/v5.1/tidb-configuration-file#slow-query-file)（默认值："tidb-slow.log"）日志文件中，用于帮助用户定位慢查询语句，分析和解决 SQL 执行的性能问题。
