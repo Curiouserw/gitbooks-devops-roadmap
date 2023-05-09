@@ -327,3 +327,43 @@ TiDB 从 v6.1.0 起新增 Global Kill 功能（由 [`enable-global-kill`](https:
 - `KILL TIDB` 语句是 TiDB 的扩展语法，其功能与 MySQL 命令 `KILL [CONNECTION|QUERY]` 和 MySQL 命令行 ctrl+c 相同。在同一个 TiDB 节点上，你可以安全地使用 `KILL TIDB` 语句。
 
 https://docs.pingcap.com/zh/tidb/stable/sql-statement-kill#kill
+
+# 七、忘记 `root` 密码
+
+1. 修改 TiDB 配置文件：
+
+   - 登录其中一台 tidb-server 实例所在的机器。
+
+   - 进入 TiDB 节点的部署目录下的 `conf` 目录，找到 `tidb.toml` 配置文件。在配置文件的 `security` 部分添加配置项 `skip-grant-table`。如无 `security` 部分，则将以下两行内容添加至 tidb.toml 配置文件尾部：
+
+   ```ini
+   [security]
+   skip-grant-table = true
+   ```
+   
+2. 终止该 tidb-server 的进程：
+
+   - 找到 tidb-server 对应的进程 ID (PID) 并使用 `kill` 命令停掉该进程：
+
+   ```bash
+   ps aux | grep tidb-server
+   kill -9 <pid>
+   ```
+   
+3. 使用修改之后的配置启动 TiDB：
+
+   注意：设置 `skip-grant-table` 之后，启动 TiDB 进程会增加操作系统用户检查，只有操作系统的 `root` 用户才能启动 TiDB 进程。
+   
+   - 进入 TiDB 节点部署目录下的 `scripts` 目录。
+   
+   - 切换到操作系统 `root` 账号。
+   
+   - 在前台执行目录中的 `run_tidb.sh` 脚本。
+   
+   - 在新的终端窗口中使用 `root` 登录后修改密码：
+   
+     ```bash
+     mysql -h 127.0.0.1 -P 4000 -u root
+     ```
+
+    - 停止运行 `run_tidb.sh` 脚本，并去掉第 1 步中在 TiDB 配置文件中添加的内容，等待 tidb-server **自启动**。

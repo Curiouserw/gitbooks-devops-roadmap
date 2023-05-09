@@ -387,7 +387,7 @@ switch-mode = "5m"
 log-progress = "5m"
 ```
 
-# 五、Web 界面查看导入进度
+# 五、开起Web界面查看导入进度
 
 TiDB Lightning 支持在网页上查看导入进度或执行一些简单任务管理。启用服务器模式的方式有如下几种：
 
@@ -407,6 +407,8 @@ TiDB Lightning 支持在网页上查看导入进度或执行一些简单任务�
 TiDB Lightning 启动后，可以访问 `http://127.0.0.1:8289` 来管理程序
 
 服务器模式下，TiDB Lightning 不会立即开始运行，而是通过用户在 web 页面提交（多个） TOML 格式的**任务**文件来导入数据。
+
+![](../assets/tidb-lightning-web-1.png)
 
 # 六、断点续传
 
@@ -531,3 +533,4 @@ password = "*****"
   ```
 
 导入完毕后，TiDB Lightning 会自动退出。若导入成功，日志的最后一行会显示 `tidb lightning exit`
+

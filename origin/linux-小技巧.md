@@ -2363,3 +2363,20 @@ find /log/app \( -name "nginx*.log" -o -name "laralog*.log" \) -type f -size +10
 > `-size `表示文件大小大于或小于指定单位的文件。`+` 表示查找大于指定大小的文件，`M` 表示单位为兆字节。
 >
 > `-o` 表示逻辑 OR，即匹配两个条件之一的文件
+
+# 75、TCP端口状态
+
+```bash
+LISTEN：      侦听来自远方的TCP端口的连接请求
+SYN-SENT：    再发送连接请求后等待匹配的连接请求
+SYN-RECEIVED：再收到和发送一个连接请求后等待对方对连接请求的确认
+ESTABLISHED： 代表一个打开的连接
+FIN-WAIT-1：  等待远程TCP连接中断请求，或先前的连接中断请求的确认
+FIN-WAIT-2：  从远程TCP等待连接中断请求
+CLOSE-WAIT：  等待从本地用户发来的连接中断请求
+CLOSING：     等待远程TCP对连接中断的确认
+LAST-ACK：    等待原来的发向远程TCP的连接中断请求的确认
+TIME-WAIT：   等待足够的时间以确保远程TCP接收到连接中断请求的确认
+CLOSED：      没有任何连接状态
+```
+

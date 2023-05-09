@@ -357,3 +357,5 @@ dumpling-mysql-db-tables-to-file() {
   ```
 
 - TiDB lightning 开起监控 Web，可以方便查看导入进度
+
+- TiDB lightning 一定要开起断点续传功能，建议使用“file”模式

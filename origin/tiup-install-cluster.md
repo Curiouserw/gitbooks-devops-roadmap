@@ -141,17 +141,25 @@ source .bash_profile
 tiup cluster
 tiup --binary cluster
 
-# 添加tiup命令自动补全功能
+# zsh添加tiup命令自动补全功能
 tiup completion zsh > "${fpath[1]}/_tiup"
+
+# bash添加tiup命令自动补全功能
+tiup completion bash > ~/.tiup.completion.bash
+printf "
+# tiup shell completion
+source '$HOME/.tiup.completion.bash'
+" >> $HOME/.bash_profile
+source $HOME/.bash_profile
 ```
 
 ## 2、下载离线安装包
 
 ```bash
-tidb_version=5.1.0
+tidb_version=6.5.2
 wget https://download.pingcap.org/tidb-community-server-v$tidb_version-linux-amd64.tar.gz
-wget https://download.pingcap.org/tidb-community-server-v6.1.1-linux-amd64.tar.gz
-tiup mirror clone /opt/tidb-community-server-v$tidb_version-linux-amd64.tar.gz ${tidb_version} --os=linux --arch=amd64
+wget https://download.pingcap.org/tidb-community-server-v$tidb_version-linux-amd64.tar.gz
+tiup mirror clone /opt/tidb-community-server-v$tidb_version-linux-amd64 ${tidb_version} --os=linux --arch=amd64
 ```
 
 ## 3、查看目前tiup命令支持安装的tidb版本
