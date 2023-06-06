@@ -7123,6 +7123,21 @@
             
         </li>
     
+        <li class="chapter " data-level="8.2.2.7" data-path="tidb-cdc.html">
+            
+                <a href="tidb-cdc.html">
+            
+                    
+                        <b>8.2.2.7.</b>
+                    
+                    TiCDC: 增量数据同步
+            
+                </a>
+            
+
+            
+        </li>
+    
 
             </ul>
             
@@ -8012,6 +8027,23 @@ cmus
 alsamixer # &#x6307;&#x4EE4;&#x4F1A;&#x51FA;&#x73B0;&#x4E00;&#x4E2A;&#x8C03;&#x8282;&#x97F3;&#x91CF;&#x7684;&#x754C;&#x9762;&#x3002;&#x8C03;&#x8282;&#x5B8C;&#x6210;&#x540E;&#x6309;&#x201C;ESC&#x201D;&#x9000;&#x51FA;
 amixer set PCM 116%
 </code></pre>
+<h2 id="6&#x3001;vcgencmd&#x547D;&#x4EE4;&#x67E5;&#x770B;&#x786C;&#x4EF6;&#x72B6;&#x6001;">6&#x3001;vcgencmd&#x547D;&#x4EE4;&#x67E5;&#x770B;&#x786C;&#x4EF6;&#x72B6;&#x6001;</h2>
+<h3 id="&#x2460;&#x67E5;&#x770B;&#x65F6;&#x949F;&#x9891;&#x7387;">&#x2460;&#x67E5;&#x770B;&#x65F6;&#x949F;&#x9891;&#x7387;</h3>
+<blockquote>
+<p>vcgencmd measure_clock [arm|core|h264|isp|v3d|uart|pwm|emmc|pixel|vec|hdmi|dpi]</p>
+</blockquote>
+<h3 id="&#x2461;&#x67E5;&#x770B;&#x786C;&#x4EF6;&#x7535;&#x538B;">&#x2461;&#x67E5;&#x770B;&#x786C;&#x4EF6;&#x7535;&#x538B;</h3>
+<blockquote>
+<p>vcgencmd measure_volts [core|sdram_c|sdram_p]</p>
+</blockquote>
+<h3 id="&#x2462;&#x67E5;&#x770B;-bcm2835-soc-&#x6E29;&#x5EA6;">&#x2462;&#x67E5;&#x770B; BCM2835 Soc &#x6E29;&#x5EA6;</h3>
+<blockquote>
+<p>vcgencmd measure_temp</p>
+</blockquote>
+<h3 id="&#x2463;&#x67E5;&#x770B;&#x89E3;&#x7801;&#x5668;&#x662F;&#x5426;&#x5F00;&#x542F;">&#x2463;&#x67E5;&#x770B;&#x89E3;&#x7801;&#x5668;&#x662F;&#x5426;&#x5F00;&#x542F;</h3>
+<blockquote>
+<p>vcgencmd codec_enabled [H264|MPG2|WVC1|MPG4|WMV9]</p>
+</blockquote>
 <h1 id="&#x4E09;&#x3001;&#x5B89;&#x88C5;&#x7279;&#x6B8A;&#x8F6F;&#x4EF6;">&#x4E09;&#x3001;&#x5B89;&#x88C5;&#x7279;&#x6B8A;&#x8F6F;&#x4EF6;</h1>
 <h2 id="1&#x3001;&#x5B89;&#x88C5;rstudio-server">1&#x3001;&#x5B89;&#x88C5;RStudio Server</h2>
 <pre class="language-"><code class="bash">apt-get install -y git r-recommended python-dev
@@ -8049,7 +8081,7 @@ cmake .. -DRSTUDIO_TARGET=Server -DCMAKE_BUILD_TYPE=Release
 make install
 </code></pre>
 <footer class="page-footer"><span class="copyright">Copyright Curiouser all right reserved&#xFF0C;powered by Gitbook</span><span class="footer-modification">&#x8BE5;&#x6587;&#x4EF6;&#x6700;&#x540E;&#x4FEE;&#x6539;&#x65F6;&#x95F4;&#xFF1A;
-2022-05-16 17:26:46
+2023-05-30 09:28:12
 </span></footer>
 <script>console.log("plugin-popup....");document.onclick = function(e){ e.target.tagName === "IMG" && window.open(e.target.src,e.target.src)}</script><style>img{cursor:pointer}</style>
 						
@@ -8093,7 +8125,7 @@ make install
 	<script>
 		var gitbook = gitbook || [];
 		gitbook.push(function() {
-			gitbook.page.hasChanged({"page":{"title":"Raspberry Pi树莓派","level":"7.27","depth":1,"next":{"title":"钉钉机器人","level":"7.28","depth":1,"path":"origin/dingding-customrobot.md","ref":"origin/dingding-customrobot.md","articles":[]},"previous":{"title":"Go语言CLI: govc","level":"7.26.6.1","depth":3,"path":"origin/vsphere-govc.md","ref":"origin/vsphere-govc.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-lunr","-sharing","-highlight","search-pro","splitter","github","popup","sectionx","expandable-chapters","sharing-plus","code","auto-scroll-table","theme-fexa","tbfed-pagefooter","back-to-top-button","emphasize","edit-link","prism","donate","theme-comscore","github-buttons","github-issue-feedback"],"root":".","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"tbfed-pagefooter":{"copyright":"Copyright Curiouser","modify_label":"该文件最后修改时间：","modify_format":"YYYY-MM-DD HH:mm:ss"},"prism":{"css":["prismjs/themes/prism-tomorrow.css"],"lang":{"flow":"typescript"},"ignore":["mermaid","eval-js"]},"emphasize":{},"github-issue-feedback":{"repo":"RationalMonster/rationalmonster.github.io"},"github":{"url":"https://github.com/RationalMonster"},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"auto-scroll-table":{},"popup":{},"theme-fexa":{"search-placeholder":"搜索文章","logo":"./assets/logo.png"},"code":{"copybuttons":"true","copyButtons":true},"donate":{"wechat":"/assets/wechat-donate.jpg","title":"","button":"赏","wechatText":"微信打赏","alipay":"","alipayText":"支付宝打赏"},"fontsettings":{"theme":"white","family":"sans","size":2},"sectionx":{},"theme-comscore":{},"back-to-top-button":{},"github-buttons":{"buttons":[{"user":"RationalMonster","repo":"gitbooks-devops-roadmap","type":"star","size":"small","count":"true"}]},"sharing":{"weibo":true,"qq":"true","google":true,"all":["facebook","twitter"]},"edit-link":{"base":"https://raw.githubusercontent.com/RationalMonster/gitbooks-devops-roadmap/master/","label":"查看源MD文件"},"theme-default":{"showLevel":true,"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"expandable-chapters":{}},"theme":"default","author":"Curiouser <rationalmonster@163.com>","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Devops Roadmap","gitbook":"*"},"file":{"path":"origin/raspberry-pi.md","mtime":"2022-05-16T09:26:46.000Z","type":"markdown"},"gitbook":{"version":"3.0.0","time":"2023-05-09T01:32:29.577Z"},"basePath":"..","book":{"language":""}});
+			gitbook.page.hasChanged({"page":{"title":"Raspberry Pi树莓派","level":"7.27","depth":1,"next":{"title":"钉钉机器人","level":"7.28","depth":1,"path":"origin/dingding-customrobot.md","ref":"origin/dingding-customrobot.md","articles":[]},"previous":{"title":"Go语言CLI: govc","level":"7.26.6.1","depth":3,"path":"origin/vsphere-govc.md","ref":"origin/vsphere-govc.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-lunr","-sharing","-highlight","search-pro","splitter","github","popup","sectionx","expandable-chapters","sharing-plus","code","auto-scroll-table","theme-fexa","tbfed-pagefooter","back-to-top-button","emphasize","edit-link","prism","donate","theme-comscore","github-buttons","github-issue-feedback"],"root":".","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"tbfed-pagefooter":{"copyright":"Copyright Curiouser","modify_label":"该文件最后修改时间：","modify_format":"YYYY-MM-DD HH:mm:ss"},"prism":{"css":["prismjs/themes/prism-tomorrow.css"],"lang":{"flow":"typescript"},"ignore":["mermaid","eval-js"]},"emphasize":{},"github-issue-feedback":{"repo":"RationalMonster/rationalmonster.github.io"},"github":{"url":"https://github.com/RationalMonster"},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"auto-scroll-table":{},"popup":{},"theme-fexa":{"search-placeholder":"搜索文章","logo":"./assets/logo.png"},"code":{"copybuttons":"true","copyButtons":true},"donate":{"wechat":"/assets/wechat-donate.jpg","title":"","button":"赏","wechatText":"微信打赏","alipay":"","alipayText":"支付宝打赏"},"fontsettings":{"theme":"white","family":"sans","size":2},"sectionx":{},"theme-comscore":{},"back-to-top-button":{},"github-buttons":{"buttons":[{"user":"RationalMonster","repo":"gitbooks-devops-roadmap","type":"star","size":"small","count":"true"}]},"sharing":{"weibo":true,"qq":"true","google":true,"all":["facebook","twitter"]},"edit-link":{"base":"https://raw.githubusercontent.com/RationalMonster/gitbooks-devops-roadmap/master/","label":"查看源MD文件"},"theme-default":{"showLevel":true,"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"expandable-chapters":{}},"theme":"default","author":"Curiouser <rationalmonster@163.com>","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Devops Roadmap","gitbook":"*"},"file":{"path":"origin/raspberry-pi.md","mtime":"2023-05-30T01:28:12.533Z","type":"markdown"},"gitbook":{"version":"3.0.0","time":"2023-06-06T13:37:27.897Z"},"basePath":"..","book":{"language":""}});
 		});
 	</script>
 </div>

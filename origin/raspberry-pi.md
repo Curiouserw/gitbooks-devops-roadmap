@@ -162,7 +162,23 @@ alsamixer # 指令会出现一个调节音量的界面。调节完成后按“ES
 amixer set PCM 116%
 ```
 
+## 6、vcgencmd命令查看硬件状态
 
+### ①查看时钟频率
+
+> vcgencmd measure_clock [arm|core|h264|isp|v3d|uart|pwm|emmc|pixel|vec|hdmi|dpi]
+
+### ②查看硬件电压
+
+> vcgencmd measure_volts [core|sdram_c|sdram_p]
+
+### ③查看 BCM2835 Soc 温度
+
+> vcgencmd measure_temp
+
+### ④查看解码器是否开启
+
+> vcgencmd codec_enabled [H264|MPG2|WVC1|MPG4|WMV9]
 
 # 三、安装特殊软件
 

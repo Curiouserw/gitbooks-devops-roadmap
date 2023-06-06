@@ -1084,12 +1084,12 @@ handle-error sync-rds-mysql-to-tidb -b mysql-bin.004795:157971328 skip 无法跳
 #### 解决方案
 
 ```bash
-operate-schema get -s 上游数据源名 任务名 -d database -t 表名
+# 1. 显示表的创建语句与下游表的字段个数不一致
+operate-schema get -s 上游数据源名 任务名 -d 库名 -t 表名
 
-# 1. 显示表创建语句与下游表的字段个数不一致
-
-# 2. 创建sql文件，填写报错表的创建语句。执行下面命令
-operate-schema set -s 上游数据源名 任务名 -d database -t 表名 sql文件 （SQL文件路径相对于tiup安装目录路径）
+# 2. 创建sql文件，填写报错表的创建语句（正确字段个数表的创建语句）。执行下面命令
+operate-schema set -s 上游数据源名 任务名 -d 库名 -t 表名 sql文件 
+# SQL文件路径相对于tiup安装目录路径，例如放在~/.tiup下
 
 # 3. 暂停任务后重启任务即可跳过position
 pause-task 任务名

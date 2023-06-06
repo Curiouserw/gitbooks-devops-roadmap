@@ -444,6 +444,7 @@
     - [BR：分布式冷备份与恢复](origin/tidb-br-backup-restore.md)
     - [Sync-diff-inspector：数据对比](origin/tidb-sync-diff-inspector.md)
     - [统计邮件通知慢SQL](origin/tidb-slow-sql-statistics.md)
+    - [TiCDC: 增量数据同步](origin/tidb-cdc.md)
   - [大数据量的迁移方案对比](origin/bigdata-migrate-operation.md)
   - [TiDB管理](origin/tidb-management.md)
   - [TiDB性能调优](origin/tidb-performance.md)

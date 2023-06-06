@@ -1532,7 +1532,7 @@ nmcli connection show --order -type
 
 ```bash
 # 列出当前活动的连接
-nmcli connection
+nmcli connection show
 # 固定IP地址
 nmcli con mod <WIFI连接名> ipv4.addresses 192.168.1.4/24
 # 设置网关
@@ -2380,3 +2380,52 @@ TIME-WAIT：   等待足够的时间以确保远程TCP接收到连接中断请
 CLOSED：      没有任何连接状态
 ```
 
+# 76、使用 openssl命令行批量查询网站域名证书的有效期
+
+```bash
+# 子域名列表，以空格分割
+sub_domain="www mail test gitbok"
+# 主域名
+main_domain="curiouser.com"
+for i in $sub_domain ;do
+		echo "=========================:"$i.$main_domain
+    echo | openssl s_client -connect "$i".$main_domain:443 2>/dev/null | openssl x509 -noout -enddate | awk -F= '{print "过期日期："$2}';
+done
+
+# 如果在zsh执行的话，for i in $sub_domain 换成 for i in $=sub_domain 
+```
+
+# 77、使用wpa_supplicant设置wifi 
+
+- 创建配置文件
+
+  ```bash
+  ctrl_interface=/run/wpa_supplicant
+  update_config=1
+  network={
+    ssid="YOUR_SSID"
+    psk="YOUR_PASSWORD"
+  }
+  ```
+
+- 指定配置文件和无线接口（例如wlan0）
+
+  ```bash
+  wpa_supplicant -B -c /etc/wpa_supplicant/wpa.conf -i wlan0
+  ```
+
+- 使用dhclient命令为无线接口分配IP地址，并将其设置为静态IP地址
+
+  ```bash
+  sudo dhclient -r wlan0
+  sudo ifconfig wlan0 192.168.0.100 netmask 255.255.255.0 up
+  ```
+
+- 验证
+
+  ```bash
+  ip a 
+  ifconfig wlan0
+  ```
+
+  
