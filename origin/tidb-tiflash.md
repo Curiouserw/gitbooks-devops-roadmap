@@ -114,6 +114,8 @@ alter table <库名>.<表名> set tiflash replica 0;
 
 ```bash
 tiup cluster scale-in <cluster-name> --node 10.0.1.4:9000
+# 在缩容集群时，对于某些组件，并不会立即停止服务并删除数据，而是需要等数据调度完成之后，用户手动执行 tiup cluster prune 命令清理。
+tiup cluster prune <cluster-name>
 ```
 
 ### ③手动缩容 TiFlash 节点

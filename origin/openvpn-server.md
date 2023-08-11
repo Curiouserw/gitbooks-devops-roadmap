@@ -773,6 +773,5 @@ tapinstall.exe update <something.inf> <id>
 3. https://www.aikaiyuan.com/11839.html
 4. https://www.hotbak.net/key/32f744eec5330289d21a981ecf2d595a_29.html
 5. https://lesca.me/archives/iptables-examples.html
-
-
-
+5. https://blog.51cto.com/90xpy/5745957
+5. https://blog.csdn.net/weixin_43690636/article/details/125635215

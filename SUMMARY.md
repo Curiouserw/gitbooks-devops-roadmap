@@ -289,8 +289,6 @@
     * 接口测试
         * [Jmeter](origin/jmeter.md)
         * [Apache Benchmark](origin/apache-benchmark.md)
-    * UI自动化测试
-    * 服务器性能测试
     * 中间件性能测试
         * MySQL
             * [MySQL性能测试之sysbench](origin/sysbench-mysql.md)
@@ -298,7 +296,6 @@
             * [Redis性能测试之redis-benchmark](origin/redis-benchmark.md)
         * Kafka
             * [Kafka性能测试](origin/kafka-perf.md)
-
 * PXE+Kickstart
     * [PXE-Kickstart无人值守部署OS](origin/pxe-kickstart无人值守部署OS.md)
     * [Kickstart文件参数详解](origin/pxe-kickstart文件参数详解.md)
@@ -314,6 +311,7 @@
     * [Windows进程守护工具NSSM](origin/windows-nssm.md)
     * [Windows 无人值守部署服务](origin/windows-deployment-service-aik.md)
     * [主机的网络唤醒WOL服务](origin/windows-wakeuponlan.md)
+    * [如何将 Java代码打包成 EXE 可执行安装软件](origin/windows-java-exe-install.md)
 * MacOS
     * [MacOS小技巧](origin/macos-tips.md)
 * Linux
@@ -382,6 +380,7 @@
     * [Keepalived](origin/keepalived.md)
     * [LVS](origin/lvs.md)
 * [代理服务器](origin/正反向代理服务的区别.md)
+    * [透明代理的应用](origin/transparent_proxy.md)
     * [正向代理](origin/常见正向代理服务软件之间的区别.md)
         * Squid
             * [简介安装日志](origin/squid-简介安装.md)
@@ -391,12 +390,12 @@
     * [Nginx常用配置及功能](origin/nginx-config.md)
     * [Nginx日志写入kafka](origin/nginx-log-kafka.md)
 * iSCSI
-  
+
     * [群晖Synology的iSCSI](origin/iSCSI-简介配置使用.md)
 * [GitBook](origin/gitbook-简介安装配置.md)
 * [Telegram机器人](origin/telegram-Bot机器.md)
 * OpenVPN
-  
+
     * [OpenVPN Server](origin/openvpn-server.md)
 * iDRAC
     * [iDRAC](origin/idrac.md)
@@ -423,6 +422,10 @@
 * [阿里云产品使用总结](origin/cloud-product-summary.md)
 * [RustDesk：可自建远程控制软件](origin/rustdesk.md)
 * [Poste：自建邮件服务器](origin/poste-mailserver.md)
+* [使用 Jlink构建最小化依赖的 JRE 环境](origin/jlink-jre.md)
+* [Aria2](origin/aria2.md)
+* [Asuswrt-Merlin](origin/asuswrt-merlin.md)
+* [Trap：Shell脚本信号跟踪](origin/linux-trap.md)
 
 ## Part Ⅶ：数据存储、处理
 
@@ -474,7 +477,7 @@
   - [环境搭建：安装配置](origin/python-basic.md)
   - [JupyterHub/RStuido](origin/python-workerbench-jupyterhub.md)
   - [Python总结](origin/python-summary.md)
-
+  - [Flask](origin/flask.md)
 - Golang学习笔记
 
   - [基础语法](origin/golang-basic.md)

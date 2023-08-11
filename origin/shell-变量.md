@@ -47,10 +47,42 @@ ${var:defaultvalue}
 ## 2、用变量的值作为新的变量名
 
 ```bash
-name=test
-test_p=123
-echo `eval echo '$'"$name""_p"`
+$ name=test
+$ test_p=123
+$ echo `eval echo '$'"$name""_p"`
+123
 ```
+
+或者
+
+```bash
+$ var="world"
+$ declare "hello_$var=value"
+$ echo $hello_world
+value
+```
+
+或者（ `bash` 4.3+）
+
+```bash
+$ hello_world="value"
+$ var="world"
+$ declare -n ref=hello_$var
+$ echo $ref
+value
+```
+
+或者
+
+```bash
+$ hello_world="value"
+$ var="world"
+$ ref="hello_$var"
+$ echo ${!ref}
+value
+```
+
+参考：https://github.com/dylanaraps/pure-bash-bible#variables
 
 # 三、变量是否换行输出显示
 

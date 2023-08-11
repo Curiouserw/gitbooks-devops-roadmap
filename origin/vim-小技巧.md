@@ -137,5 +137,20 @@ line
 
 参考：https://stackoverflow.com/questions/2514445/turning-off-auto-indent-when-pasting-text-into-vim/2514520
 
+## 5、空格与 tab的替换
 
+**TAB替换为空格：**
 
+```bash
+:set ts=4
+:set expandtab
+:%retab! 
+```
+
+**空格替换为TAB：**
+
+```bash
+:set ts=4
+:set noexpandtab
+:%retab!
+```

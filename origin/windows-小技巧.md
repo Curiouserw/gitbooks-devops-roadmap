@@ -377,3 +377,12 @@ choco install --pre --force --ignore-detected-reboot --ignorechecksum --proxy=12
   prometheus-windows-exporter.install sonarqube-scanner.portable kafkaexplorer shellcheck vmrc ssh-copy-id winlogbeat
 ```
 
+# 20、路由管理
+
+添加路由
+
+```bash
+route add 192.168.1.10 MASK 255.255.255.255 15.16.1.9
+# 添加永久路由
+route -p add 192.168.1.10 MASK 255.255.255.255 15.16.1.9
+```

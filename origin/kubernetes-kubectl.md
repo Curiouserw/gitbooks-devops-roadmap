@@ -259,7 +259,23 @@ kubectl create deployment nginx --image=nginx --port=80 --replicas=1
 kubectl expose deployment nginx --port=80 --target-port=80
 ```
 
+## 5、等待验证k8s资源pod部署状态
+
+```bash
+kubectl apply -f k8s-job-application.yaml
+kubectl -n $NAMESPACE wait --for=condition=complete --timeout=50s job/$CI_PROJECT_NAME || exit_code=$? | \
+if [ $exit_code -ne 0 ];then
+      ROLLBACK_ID=$(kubectl -n $NAMESPACE rollout undo deployment/$CI_PROJECT_NAME -ojson | jq -r '.status.observedGeneration') ;
+      curl -s https://oapi.dingtalk.com/robot/send?access_token="$PIPELINE_DINGDING_ROBOT_TOKEN" -H 'Content-Type: application/json' -d '{"msgtype": "markdown","markdown": {"title": "Gitlab流水线部署失败","text": "['$CI_PROJECT_NAME-cronjob']('$CI_PROJECT_URL'/-/tree/'$CI_BUILD_REF_NAME')的'$APPENV'环境第['$CI_PIPELINE_ID']('$CI_PIPELINE_URL')号流水线'$CI_JOB_STAGE'阶段失败，已回滚至最近一个稳定版本'$ROLLBACK_ID'，请检查相关错误！"},"at": {"isAtAll": true}}' > /dev/null;
+      kubectl -n $NAMESPACE logs -l job=$CI_PROJECT_NAME ;
+      kubectl -n $NAMESPACE delete job $CI_PROJECT_NAME ;
+  exit 1;
+fi
+```
+
+
 # 参考连接
 
 1. https://blog.csdn.net/u013360850/article/details/83315188
 2. https://www.awaimai.com/2445.html
+2. https://stackoverflow.com/questions/44686568/tell-when-job-is-complete

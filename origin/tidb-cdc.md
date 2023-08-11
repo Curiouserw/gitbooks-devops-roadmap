@@ -163,6 +163,8 @@ cdc cli capture list
 - `address`：该服务进程对外提供接口的地址。
 - `cluster-id`：该 TiCDC 的集群 ID，默认值为 `default`。
 
+> 如果TiCDC 是用 TiUP 部署的，需要将以下命令中的 `cdc cli` 替换为 `tiup ctl:<cluster-version> cdc`，例如：`tiup ctl:v6.1.1 cdc capture list --pd=http://192.168.1.1:2379`。
+
 # 三、任务操作
 
 ## 1、创建同步任务
@@ -275,9 +277,9 @@ cdc cli changefeed remove --server=http://10.0.10.25:8300 --changefeed-id simple
 TiCDC 从 4.0.4 开始支持非动态修改同步任务配置，修改 changefeed 配置需要按照 `暂停任务 -> 修改配置 -> 恢复任务` 的流程。
 
 ```sh
-cdc cli changefeed pause -c test-cf --server=http://10.0.10.25:8300
-cdc cli changefeed update -c test-cf --server=http://10.0.10.25:8300 --sink-uri="mysql://127.0.0.1:3306/?max-txn-row=20&worker-number=8" --config=changefeed.toml
-cdc cli changefeed resume -c test-cf --server=http://10.0.10.25:8300
+cdc cli changefeed pause --pd=http://10.0.10.22:2379 --changefeed-id test-tidb-to-pulsar
+cdc cli changefeed update --pd=http://10.0.10.22:2379 --changefeed-id test-tidb-to-pulsar --config ~/ticdc-changefeed.toml
+cdc cli changefeed resume --pd=http://10.0.10.22:2379 --changefeed-id test-tidb-to-pulsar
 ```
 
 当前支持修改的配置包括：
@@ -460,6 +462,18 @@ MTIzNDU2
 
 - 注意当 Sink URI 中包含特殊字符时，如 `! * ' ( ) ; : @ & = + $ , / ? % # [ ]`，需要对 URI 特殊字符进行转义处理。你可以使用 [URI Encoder](https://meyerweb.com/eric/tools/dencoder/) 工具对 URI 进行转义。
 
+## 2、复制增量数据到 Kafka
+
+## 3、复制增量数据到 Pulsar
+
+```bash
+cdc cli changefeed create \
+    --pd=http://192.168.1.9:2379 \
+    --sink-uri="pulsar://192.168.1.9:6050/testticdc?protocol=canal-json&compressionType=LZ4" \
+    --changefeed-id="tidb-cdc-pulsar" \
+    --config /home/tidb/ticdc-changefeed.toml
+    
+```
 
 
 # 五、监控
@@ -556,3 +570,7 @@ CST 可能是以下四个不同时区的缩写：
 - 古巴标准时间：Cuba Standard Time UT-4:00
 
 在中国，CST 通常表示中国标准时间，使用时请注意甄别。
+
+# 参考：
+
+- https://docs.pingcap.com/zh/tidb/v6.1/manage-ticdc#%E8%87%AA%E5%AE%9A%E4%B9%89-kafka-sink-%E7%9A%84-topic-%E5%92%8C-partition-%E7%9A%84%E5%88%86%E5%8F%91%E8%A7%84%E5%88%99
