@@ -298,7 +298,7 @@ go tool pprof --http=0.0.0.0:1234 cpu_xxx.proto
 语法：**`KILL TIDB? ( 'CONNECTION' | 'QUERY' )? CONNECTION_ID`**
 
 ```sql
-SELECT ID, USER, INSTANCE, INFO FROM INFORMATION_SCHEMA.CLUSTER_PROCESSLIST;
+SELECT ID, USER, INSTANCE, MEM, TIME, INFO FROM INFORMATION_SCHEMA.CLUSTER_PROCESSLIST order by TIME desc;
 
 +---------------------+------+-----------------+-----------------------------------------------------------------------------+
 | ID                  | USER | INSTANCE        | INFO                                                                        |

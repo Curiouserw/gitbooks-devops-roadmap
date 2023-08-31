@@ -153,6 +153,7 @@
 * [Vault](origin/vault.md)
 * Alfred
     * [Alfred Workflow](origin/alfred.md)
+* [Web IDE: VSCode](origin/vscode-on-k8s.md)
 
 
 ## Part Ⅳ：微服务
@@ -241,22 +242,9 @@
       * [Alpine镜像](origin/docker-alpine.md)
       * [语法扫描工具Hadolint](origin/dockerfile-hadolint.md)
       * [Dockerfile优化](origin/dockerfile-optimization.md)
-* Shell
-    * [变量](origin/shell-变量.md)
-    * 运算判断
-        * [文件路径及变量的判断](origin/shell-文件目录的判断.md)
-        * [数值型的判断](origin/shell-数值型的判断.md)
-    * 语句控制
-        * [if判断](origin/shell-if判断.md)
-        * [for循环语句](origin/shell-for循环语句.md)
-        * [while循环语句](origin/shell-while循环语句.md)
-        * [until循环语句](origin/shell-until循环语句.md)
-    * 字符串操作
-        * [字符的输出](origin/shell-print-string.md)
-        * [字符串的截取拼接](origin/shell-字符串的截取拼接.md)
-        * [字符串的包含判断关系](origin/shell-字符串的包含判断关系.md)
-    * [自定义函数](origin/shell-自定义函数.md)
-    * [常用bash脚本功能](origin/bash-scirpts.md)
+* Shell脚本
+    * [Shell脚本综合](origin/shell-scripts-summary.md)
+    * [常用bash脚本功能](origin/bash-scirpts.md)  
 * Maven
     * Maven POM项目对象模型
     * [Mave Settings文件详解](origin/maven-Settings配置文件详解.md)
