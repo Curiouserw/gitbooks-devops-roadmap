@@ -52,11 +52,12 @@
 * 系统应用
   * 网络CNI
     * Traefik
-      * [常用操作](origin/k8s-cni-traefik-common-operation.md)
+      * [部署及操作](origin/k8s-cni-traefik-common-operation.md)
       * [todo-多版本Traefix替换更新方案]()
 * 安装
   * [Kubeadm安装单机版Kubernetes](origin/kubernetes-使用Kubeadm安装单机版Kubernetes.md)
   * [Kubeasz二进制安装Kubernetes集群](origin/kubernetes-Kubeasz二进制安装集群.md)
+  * [新版Kubeasz二进制安装Kubernetes集群](origin/new-kubeasz-install-bin-k8s.md)
   * [Sealos安装](origin/k8s-install-sealos.md)
 * 集群管理
   * [kubernetes集群性能监控](origin/prometheus-Kubernetes或Openshift的Prometheus监控体系.md)
@@ -64,8 +65,8 @@
   * [kubectl](origin/kubernetes-kubectl.md)
   * [Network Policy容器流量管理](origin/kubernetes-NetworkPolicy.md)
   * [k8s集群的压力测试](origin/k8s-pressure-test.md)
-  * [k8s集群节点自动伸缩容](origin/k8s-cluster-node-autoscaler.md)
-  * [k8s集群POD自动伸缩容](origin/k8s-pod-autoscaler.md)
+  * [TODO：k8s集群节点自动伸缩容](origin/k8s-cluster-node-autoscaler.md)
+  * [HPA：POD自动伸缩容](origin/k8s-pod-autoscaler.md)
 * [用户认证ServiceAccount与授权策略RBAC](origin/kubernetes-serviceaccount-rbac.md)
 * [K8S应用管理工具Helm](origin/kubernetes-helm.md)
   * [helm charts编写规则](origin/Kubernetes-helm-charts编写规则.md)
@@ -73,6 +74,8 @@
   * [Service与SpringBoot应用启动参数冲突的问题排查及解决方案](origin/Service与SpringBoot应用启动参数冲突的问题排查及解决方案.md)
   * [K8S上redis主从哨兵模式问题的解决方案](origin/k8s-redis-sentinel.md)
 * [辅助工具](origin/kubernetes-tools.md)
+* [Doing：K8S 多集群管理与网络互联](origin/k8s-multi-clusters.md)
+* [VM On K8S](origin/vm-on-k8s.md)
 
 ## Part Ⅲ：持续集成与持续部署
 
@@ -154,6 +157,7 @@
 * Alfred
     * [Alfred Workflow](origin/alfred.md)
 * [Web IDE: VSCode](origin/vscode-on-k8s.md)
+* [DolphinScheduler](origin/dolphinscheduler.md)
 
 
 ## Part Ⅳ：微服务
@@ -288,6 +292,7 @@
     * [PXE-Kickstart无人值守部署OS](origin/pxe-kickstart无人值守部署OS.md)
     * [Kickstart文件参数详解](origin/pxe-kickstart文件参数详解.md)
     * [PXE引导配置文件参数详解](origin/pxe-引导配置文件参数详解.md)
+* [netboot.xyz](origin/netboot.xyz.md)
 * Tool
 
     * [Sublime Text 3](origin/tool-SublimeText.md)
@@ -318,7 +323,7 @@
     * [rsync命令详解](origin/linux-rsync.md)
     * [LVM原理及使用](origin/linux-lvm.md)
     * [Linux交换分区](origin/linux-交换分区.md)
-    * [Linux硬盘读写性能测试](origin/linux-硬盘读写性能测试.md)
+    * [硬盘工具命令：dd](origin/linux-硬盘读写性能测试.md)
     * [Vim小技巧](origin/vim-小技巧.md)
     * [Yum-RPM包管理](origin/linux-yum.md)
     * [ZSH](origin/linux-zsh.md)
@@ -335,6 +340,7 @@
     - [ip/ifconfig](origin/linux-ip-ifconfig.md)
     - [ps](origin/linux-ps.md)
   - 网络
+    - [iperf](origin/iperf.md)
     - [tcpdump网络抓包](origin/network-tcpdump.md)
     - [nc](origin/nc.md)
     - [mtr](origin/network-mtr.md)
@@ -377,9 +383,6 @@
     * [Nginx安装配置](origin/nginx-install-setup.md)
     * [Nginx常用配置及功能](origin/nginx-config.md)
     * [Nginx日志写入kafka](origin/nginx-log-kafka.md)
-* iSCSI
-
-    * [群晖Synology的iSCSI](origin/iSCSI-简介配置使用.md)
 * [GitBook](origin/gitbook-简介安装配置.md)
 * [Telegram机器人](origin/telegram-Bot机器.md)
 * OpenVPN
@@ -391,7 +394,7 @@
     * [ESXI 管理常用命令](origin/vsphere-esxi.md)
     * [vCenter](origin/vSphere-vCenter.md)
     * [ESXI使用Synology的ISCSI存储](origin/esxi-synology-iscsi.md)
-    * [Synology Active Backup for Business备份管理vSphere ESXI VMs](origin/synology-abb-vsphere.md)
+    * 
     * OVF模板
       * [OVF模板详解](origin/vsphere-ovf.md)
       * [VMWare OVF Tools](origin/vmware-ovf-tool.md)
@@ -401,7 +404,6 @@
 * [钉钉机器人](origin/dingding-customrobot.md)
 * [经典面试题](origin/经典面试题.md)
 * [Aliyun CLI](origin/aliyun-cli.md)
-* [零散知识汇总](origin/others.md)
 * [音、视频处理工具：fffmpeg](origin/audio-video-fffmpeg.md)
 * [图片处理工具：Imagemagick](origin/images-tool-imagemagick.md)
 * [PDF处理工具：Ghostscript](origin/ghostscript.md)
@@ -414,6 +416,13 @@
 * [Aria2](origin/aria2.md)
 * [Asuswrt-Merlin](origin/asuswrt-merlin.md)
 * [Trap：Shell脚本信号跟踪](origin/linux-trap.md)
+* [零散知识汇总](origin/others.md)
+* [notify-bark](origin/notify-bard.md)
+* Synology
+    * [Synology管理](origin/synology-management.md)
+    * [Synology Active Backup for Business备份管理vSphere ESXI VMs](origin/synology-abb-vsphere.md)
+    * [群晖Synology的iSCSI](origin/iSCSI-简介配置使用.md)
+
 
 ## Part Ⅶ：数据存储、处理
 
@@ -488,7 +497,6 @@
   - [JS、JQuery、Vue学习](origin/js-jquery-vue-learn.md)
   - [JavaScript常用工具函数](origin/js-kits.md)
   
-
 
 ## Part X：Hackintosh
 

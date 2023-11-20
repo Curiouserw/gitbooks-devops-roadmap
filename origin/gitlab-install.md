@@ -12,7 +12,7 @@ Deb安装包下载地址：https://packages.gitlab.com/gitlab/
 
 GitHub：https://github.com/ulm0/gitlab   
 
-DockerHub：https://hub.docker.com/r/ulm0/gitlab
+DockerHub：https://hub.docker.com/r/yrzr/gitlab-ce-arm64v8
 
 ```bash
 mkdir -p /data/gitlab/data /data/gitlab/logs /data/gitlab/config && \
@@ -46,4 +46,35 @@ make build
 ```
 
 针对raspberry的deb包下载地址：https://packages.gitlab.com/gitlab/raspberry-pi2
+
+
+
+# 二、包管理器
+
+ARM架构(ubuntu)
+
+https://packages.gitlab.com/app/gitlab/gitlab-ce/search?q=&filter=debs&filter=debs&dist=ubuntu%2Fjammy
+
+```bash
+apt-get install curl gnupg apt-transport-https
+curl -fsSL https://packages.gitlab.com/gitlab/gitlab-ce/gpgkey | gpg --dearmor > /usr/share/keyrings/gitlab_gitlab-ce-archive-keyring.gpg
+
+echo "deb [signed-by=/usr/share/keyrings/gitlab_gitlab-ce-archive-keyring.gpg] https://packages.gitlab.com/gitlab/gitlab-ce/ubuntu jammy main" >> /etc/apt/sources.list.d/gitlab_gitlab-ce.list
+echo "deb-src [signed-by=/usr/share/keyrings/gitlab_gitlab-ce-archive-keyring.gpg] https://packages.gitlab.com/gitlab/gitlab-ce/ubuntu jammy main" >> /etc/apt/sources.list.d/gitlab_gitlab-ce.list
+
+apt update
+apt install gitlab-ce
+```
+
+
+
+安装路径：`/opt/gitlab`
+
+配置文件：`/etc/gitlab/gitlab.rb`
+
+启动命令：`gitlab-ctl reconfigure`
+
+
+
+
 

@@ -2428,4 +2428,23 @@ done
   ifconfig wlan0
   ```
 
-  
+
+# 78、查看磁盘vid、pid
+
+如何查看设备的Vendor ID (制造商ID：vid) 和 Product ID (型号ID: pid)
+
+- **Windows**
+
+  > 设备管理器 -->  展开磁盘驱动器选项，右键选择属性，在详细信息选项卡中找到硬件ID。
+
+- **Linux**
+
+  ```bash
+  lspci -v
+  ```
+
+- **MacOS**
+
+  ```bash
+  ioreg -c IOBlockStorageDriver -r -w 0
+  ```

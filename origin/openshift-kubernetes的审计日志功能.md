@@ -456,8 +456,6 @@ $ cat /data/logs/logstash/ocp-audit-logs/ocp-audit-admin/audit-2019-07-23.log
 {"event":{"metadata":{"creationTimestamp":"2019-07-23T14:45:19Z"},"stageTimestamp":"2019-07-23T14:45:19.813911Z","level":"Metadata","timestamp":"2019-07-23T14:45:19Z","sourceIPs":["192.168.1.96"],"objectRef":{"apiGroup":"project.openshift.io","resource":"projects","namespace":"test","name":"test","apiVersion":"v1"},"responseStatus":{"metadata":{},"status":"Success","code":200},"user":{"extra":{"scopes.authorization.openshift.io":["user:full"]},"uid":"7775eba0-426e-11e9-b1bd-000c2976c04e","groups":["system:authenticated:oauth","system:authenticated"],"username":"admin"},"stage":"ResponseComplete","requestReceivedTimestamp":"2019-07-23T14:45:19.805940Z","auditID":"9d3260ca-3bff-49da-9fe9-346043a29991","verb":"delete","annotations":{"authorization.k8s.io/reason":"RBAC: allowed by ClusterRoleBinding \"cluster-admin-0\" of ClusterRole \"cluster-admin\" to User \"admin\"","authorization.k8s.io/decision":"allow"},"requestURI":"/apis/project.openshift.io/v1/projects/test"}}
 ```
 
-
-
 # 五、审计策略配置详解
 
 ```bash
@@ -476,20 +474,21 @@ rules: 											  # rule按顺序匹配
       - pods
 ```
 
-
-
-
-
 # 参考链接
 
-[https://austindewey.com/2018/10/17/integrating-advanced-audit-with-aggregated-logging-in-openshift-3-11/\#test-it-out](https://austindewey.com/2018/10/17/integrating-advanced-audit-with-aggregated-logging-in-openshift-3-11/#test-it-out)  
-[https://www.outcoldsolutions.com/docs/monitoring-openshift/v4/audit/](https://www.outcoldsolutions.com/docs/monitoring-openshift/v4/audit/)  
-[https://docs.openshift.com/container-platform/3.11/install\_config/master\_node\_configuration.html\#master-node-config-advanced-audit](https://docs.openshift.com/container-platform/3.11/install_config/master_node_configuration.html#master-node-config-advanced-audit)  
-[https://docs.openshift.com/container-platform/3.11/security/monitoring.html](https://docs.openshift.com/container-platform/3.11/security/monitoring.html)  
-[https://kubernetes.io/docs/tasks/debug-application-cluster/audit/](https://kubernetes.io/docs/tasks/debug-application-cluster/audit/)  
-[https://medium.com/@noqcks/kubernetes-audit-logging-introduction-464a34a53f6c](https://medium.com/@noqcks/kubernetes-audit-logging-introduction-464a34a53f6c)  
-[https://www.jianshu.com/p/8117bc2fb966](https://www.jianshu.com/p/8117bc2fb966)  
-[https://cloud.google.com/kubernetes-engine/docs/concepts/audit-policy?hl=zh-cn](https://cloud.google.com/kubernetes-engine/docs/concepts/audit-policy?hl=zh-cn)  
-[https://github.com/rbo/openshift-examples/tree/master/efk-auditlog](https://github.com/rbo/openshift-examples/tree/master/efk-auditlog)  
-[https://github.com/openshift/origin-aggregated-logging/issues/1226](https://github.com/openshift/origin-aggregated-logging/issues/1226)
+- https://github.com/kubernetes/kubernetes/blob/master/cluster/gce/gci/configure-helper.sh#L1101
+- https://www.kubernetes.org.cn/2611.html?spm=a2c6h.12873639.article-detail.11.616c3b5fDgcMZv
+- https://developer.aliyun.com/article/686982
+- https://zhuanlan.zhihu.com/p/112864670
+- http://blog.itpub.net/31555606/viewspace-2636723/
+- [https://austindewey.com/2018/10/17/integrating-advanced-audit-with-aggregated-logging-in-openshift-3-11/\#test-it-out](https://austindewey.com/2018/10/17/integrating-advanced-audit-with-aggregated-logging-in-openshift-3-11/#test-it-out)  
+- [https://www.outcoldsolutions.com/docs/monitoring-openshift/v4/audit/](https://www.outcoldsolutions.com/docs/monitoring-openshift/v4/audit/)  
+- [https://docs.openshift.com/container-platform/3.11/install\_config/master\_node\_configuration.html\#master-node-config-advanced-audit](https://docs.openshift.com/container-platform/3.11/install_config/master_node_configuration.html#master-node-config-advanced-audit)  
+- [https://docs.openshift.com/container-platform/3.11/security/monitoring.html](https://docs.openshift.com/container-platform/3.11/security/monitoring.html)  
+- [https://kubernetes.io/docs/tasks/debug-application-cluster/audit/](https://kubernetes.io/docs/tasks/debug-application-cluster/audit/)  
+- [https://medium.com/@noqcks/kubernetes-audit-logging-introduction-464a34a53f6c](https://medium.com/@noqcks/kubernetes-audit-logging-introduction-464a34a53f6c)  
+- [https://www.jianshu.com/p/8117bc2fb966](https://www.jianshu.com/p/8117bc2fb966)  
+- [https://cloud.google.com/kubernetes-engine/docs/concepts/audit-policy?hl=zh-cn](https://cloud.google.com/kubernetes-engine/docs/concepts/audit-policy?hl=zh-cn)  
+- [https://github.com/rbo/openshift-examples/tree/master/efk-auditlog](https://github.com/rbo/openshift-examples/tree/master/efk-auditlog)  
+- [https://github.com/openshift/origin-aggregated-logging/issues/1226](https://github.com/openshift/origin-aggregated-logging/issues/1226)
 

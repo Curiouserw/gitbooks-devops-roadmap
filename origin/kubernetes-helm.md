@@ -286,3 +286,132 @@ helm del/uninstall/del/delete/un charts的部署名 参数项
 # 支持全局通用参数
 ```
 
+# 六、其他操作
+
+## 1、value文件中的List数组配置映射到命令行 set中
+
+```bash
+# values.yaml中参数
+globalArguments:
+  - "--api.disabledashboardad=false"
+  - "--global.checknewversion=false"
+  - "--global.sendanonymoususage=false"
+  - "--api.insecure=false"
+  - "--accesslog=true"
+  - "--accesslog.fields.names.accesslog"
+  - "--accesslog.fields.headers.defaultmode=keep"
+  - "--accesslog.filepath=/data/400-599-reponse-json.log"
+  - "--accesslog.format=json"
+  - "--accesslog.filters.statuscodes=400-599"
+  
+# 映射为 set参数值
+helm upgrade --install traefik-ingress-controller \
+      --version 24.0.0 \
+      --namespace kube-system \
+      --set ports.traefik.hostPort=9000 \
+      --set deployment.replicas=2 \
+      --set globalArguments="{"--api.disabledashboardad=false","--global.sendanonymoususage=false","--global.checknewversion=false","--accesslog=true","--accesslog.fields.names.accesslog","--accesslog.fields.headers.defaultmode=keep","--accesslog.filepath=/data/400-599-reponse-json.log","--accesslog.format=json","--accesslog.filters.statuscodes=400-599"}" \
+      --set service.type=ClusterIP \
+      --set hostNetwork=true \
+      traefik/traefik
+```
+
+## 2、value文件中的对象数组配置映射到命令行 set中
+
+```bash
+# values.yaml中参数
+server:
+  ingress:
+    hosts:
+      - host: chart-example.local
+        paths: []
+  
+# 映射为 set参数值
+helm upgrade --install vault 
+    --namespace tools hashicorp/vault \
+    --set "server.ingress.enabled=true" \
+    --set "server.ingress.hosts[0].host=vault.test.com"
+```
+
+## 3、value文件中的完整对象数组配置映射到命令行 set中
+
+```yaml
+extraObjects:
+  - apiVersion: v1
+    kind: Service
+    metadata:
+      name: traefik-api
+    spec:
+      type: ClusterIP
+      selector:
+        app.kubernetes.io/name: traefik
+        app.kubernetes.io/instance: traefik-default
+      ports:
+      - port: 8080
+        name: traefik
+        targetPort: 9000
+        protocol: TCP
+  - apiVersion: v1
+    kind: Secret
+    metadata:
+      name: traefik-dashboard-auth-secret
+    type: kubernetes.io/basic-auth
+    stringData:
+      username: admin
+      password: changeme
+
+  - apiVersion: traefik.io/v1alpha1
+    kind: Middleware
+    metadata:
+      name: traefik-dashboard-auth
+    spec:
+      basicAuth:
+        secret: traefik-dashboard-auth-secret
+  - apiVersion: networking.k8s.io/v1
+    kind: Ingress
+    metadata:
+      name: traefik-dashboard
+      annotations:
+        traefik.ingress.kubernetes.io/router.entrypoints: websecure
+        traefik.ingress.kubernetes.io/router.middlewares: default-traefik-dashboard-auth@kubernetescrd
+   
+   
+   
+   
+ helm upgrade --install --atomic traefik-ingress-controller \
+      --version 24.0.0 \
+      --namespace kube-system \
+      --set extraObjects[0].apiVersion=v1 \
+      --set extraObjects[0].kind=Service \
+      --set extraObjects[0].metadata.name=traefik-api \
+      --set extraObjects[0].spec.type=ClusterIP \
+      --set extraObjects[0].spec.ports[0].port=8080 \
+      --set extraObjects[0].spec.ports[0].name=traefik \
+      --set extraObjects[0].spec.ports[0].targetPort=9000 \
+      --set extraObjects[0].spec.ports[0].protocol=TCP \
+      --set extraObjects[0].spec.selector."app\.kubernetes\.io\/name"="traefik" \
+      --set extraObjects[0].spec.selector."app\.kubernetes\.io\/instance"="traefik-default" \
+      --set extraObjects[1].apiVersion=v1 \
+      --set extraObjects[1].kind=Secret \
+      --set extraObjects[1].metadata.name=traefik-dashboard-auth-secret \
+      --set extraObjects[1].type=kubernetes.io/basic-auth \
+      --set extraObjects[1].stringData.username=admin \
+      --set extraObjects[1].stringData.password=changeme \
+      --set extraObjects[2].apiVersion=traefik.io/v1alpha1 \
+      --set extraObjects[2].kind=Middleware \
+      --set extraObjects[2].metadata.name=traefik-dashboard-auth \
+      --set extraObjects[2].spec.basicAuth.secret=traefik-dashboard-auth-secret \
+      --set extraObjects[3].apiVersion=networking.k8s.io/v1 \
+      --set extraObjects[3].kind=Ingress \
+      --set extraObjects[3].metadata.name=traefik-dashboard \
+      --set extraObjects[3].spec.rules[0].host=traefik-dashboard.test.com \
+      --set extraObjects[3].spec.rules[0].http.paths[0].path=/ \
+      --set extraObjects[3].spec.rules[0].http.paths[0].pathType=Prefix \
+      --set extraObjects[3].spec.rules[0].http.paths[0].backend.service.name=traefik-api \
+      --set extraObjects[3].spec.rules[0].http.paths[0].backend.service.port.name=traefik \
+      --set extraObjects[3].metadata.annotations."traefik\.ingress\.kubernetes\.io\/router\.entrypoints"="websecure" \
+      --set extraObjects[3].metadata.annotations."traefik\.ingress\.kubernetes\.io\/router\.middlewares"="default-traefik-dashboard-auth@kubernetescrd" \
+      traefik/traefik  
+```
+
+参考：https://stackoverflow.com/questions/59632924/how-to-set-annotations-for-a-helm-install

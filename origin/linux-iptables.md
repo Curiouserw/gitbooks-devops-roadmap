@@ -20,7 +20,7 @@ iptables其实是一个命令行工具，位于用户空间，我们用这个工
 
 ## 2、iptables传输数据包的过程
 
-① 当一个数据包进入网卡时，它首先进入PREROUTING链，内核根据数据包目的IP判断是否是发往本机的。
+① 当一个数据包进入网卡时，它首先进入PREROUTING链，内核根据数据包目的IP判断是否是发往本机的<font color=red>（本机的任何一个接口IP地址）</font>，那么这个网络包将被认为是流向本机的。
 
 ② 如果数据包就是进入本机的，它就会沿着图向下移动，到达INPUT链。数据包到了INPUT链后，任何进程都会收到它。本机上运行的程序可以发送数据包，这些数据包会经过OUTPUT链，然后到达POSTROUTING链输出。
 
@@ -262,6 +262,14 @@ IPTABLES_MODULES="模块1 模块2"
 
 ```bash
 systemctl restart iptables
+```
+
+例如手动加载注释模块
+
+```bash
+OS=$(uname -r)
+insmod /lib/modules/${OS}/kernel/net/netfilter/xt_comment.ko
+iptables -D INPUT -p tcp -m multiport --dports 26721:26729,22313 -m comment --comment "bt_port" -j ACCEPT
 ```
 
 ## 2、模块语法

@@ -163,3 +163,17 @@ source /etc/profile
 >  command
 > ```
 
+# 四、Fail2Ban
+
+Fail2Ban 是一款入侵防御软件，可以保护服务器免受暴力攻击。 它是用 Python 编程语言编写的。
+
+Fail2Ban 基于auth 日志文件工作，默认情况下它会扫描所有 auth 日志文件，如 /var/log/auth.log、
+/var/log/apache/access.log 等，并禁止带有恶意标志的IP，比如密码失败太多，寻找漏洞等等标志。
+
+通常，Fail2Ban 用于更新防火墙规则，用于在指定的时间内拒绝 IP 地址。 它也会发送邮件通知。
+
+Fail2Ban 为各种服务提供了许多过滤器，如 ssh、apache、nginx、squid、named、mysql、nagios 等。
+
+Fail2Ban 能够降低错误认证尝试的速度，但是它不能消除弱认证带来的风险。
+
+这只是服务器防止暴力攻击的安全手段之一。

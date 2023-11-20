@@ -180,9 +180,48 @@ amixer set PCM 116%
 
 > vcgencmd codec_enabled [H264|MPG2|WVC1|MPG4|WMV9]
 
+## 7、配置网络
+
+### Ubuntu
+
+设置开机启动网卡
+
+> /etc/netplan/50-cloud-init.yaml
+
+```bash
+network:
+    version: 2
+    renderer: NetworkManager
+    ethernets:
+     eth0:
+       dhcp4: true
+       optional: true
+    wifis:
+       renderer: networkd
+       wlan0:
+         access-points:
+           "WIFI SSID 名称":
+              password: "WIFI 密码"
+         dhcp4: true
+         optional: true
+```
+
+> 上述文件中的WIFI密码可用wpa_passphrase命令进行加密： `wpa_passphrase "WIFI SSID 名称" "WIFI 密码"`   。输出的 PSK 值既可填入上述文件 password 字段。运行 ` netplan apply` 以使更改生效。
+
+手动启动网卡
+
+```bash
+ifconfig wlan0 down 
+ifconfig wlan0 up
+```
+
 # 三、安装特殊软件
 
-## 1、安装RStudio Server
+## 1、安装 Docker
+
+参考：[linux-小技巧：第 26 章节安装 Docker](./linux-小技巧.md)
+
+## 2、安装RStudio Server
 
 ```bash
 apt-get install -y git r-recommended python-dev

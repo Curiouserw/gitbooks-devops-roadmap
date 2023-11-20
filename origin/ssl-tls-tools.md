@@ -242,7 +242,9 @@ Let's Encrypt由互联网安全研究小组（缩写ISRG）提供服务。主要
 
 Let's Encrypt宣称这一过程将十分简单、自动化并且免费
 
-# 四、ACME.sh
+# 四、证书生成申请工具
+
+## 1、ACME.sh
 
 简单来说acme.sh 实现了 acme 协议, 可以从 let‘s encrypt 生成免费的证书。
 acme.sh 有以下特点：
@@ -257,13 +259,28 @@ acme.sh 有以下特点：
 
 Github：https://github.com/acmesh-official/acme.sh
 
+安装：`curl https://get.acme.sh | sh -s email=可用的邮箱地址`
 
+申请：
 
 ```bash
-curl  https://get.acme.sh | sh
+Ali_Key="阿里云 AccessKey" \
+Ali_Secret="阿里云 AccessSecret" \
+~/.acme.sh/.acme.sh
+  --server letsencrypt \
+  --dns dns_ali \
+  --issue \
+  -d '*.test.top' \
+  --nginx \
+  --key-file /usr/local/etc/nginx/ssl/test.top.key \
+  --fullchain-file /usr/local/etc/nginx/ssl/test.top.crt \
+  --reloadcmd "nginx -s reload"
+# --server letsencrypt : 指定CA为letsencrypt。默认为ZeroSSL，需要邮箱，还经常超时或504
+# --dns dns_ali : 指定域名托管运营商。dns_ali调取dnsapi/dns_ali.sh。其他cloudflare = dns.cf.sh
+# 注意：泛域名*这里一定要加''保证正常解析
 ```
 
-# 五、Certbot
+## 2、Certbot
 
 https://certbot.eff.org/
 
@@ -273,7 +290,7 @@ chmod a+x ./certbot-auto
 ./certbot-auto --help
 ```
 
-# 六、CFSSL
+## 3、CFSSL
 
 CFSSL是CloudFlare开源的一款PKI/TLS工具。 CFSSL 包含一个命令行工具 和一个用于 签名，验证并且捆绑TLS证书的 HTTP API 服务。 使用Go语言编写。
 
@@ -306,9 +323,9 @@ wget "${CFSSL_URL}/cfssljson_linux-amd64" -O /usr/local/bin/cfssljson
 chmod +x /usr/local/bin/cfssl /usr/local/bin/cfssljson
 ```
 
-# 七、easy-rsa
+## 4、easy-rsa
 
-## 1. 安装
+### 1. 安装
 
 ```bash
 yum install easy-rsa
@@ -318,13 +335,13 @@ brew install easy-rsa
 docker run -it --rm cmd.cat/easyrsa easyrsa --help
 ```
 
-## 2、命令
+### 2、命令
 
 - **初始化pki：**`easyrsa init-pki`
 - **创建CA：**`easyrsa build-ca`
 - **生成服务器证书请求：**`easyrsa gen-req server nopass`
 
-# 八、使用操作
+# 五、证书部署
 
 ## 1. Nginx
 
@@ -521,11 +538,13 @@ openssl pkcs12 -export -out server.pfx -inkey server.key -in server.crt
 ## 1. openssl命令行获取服务器SSL证书
 
 ```bash
-openssl s_client -showcerts -connect {HOSTNAME}:{PORT} </dev/null 2>/dev/null|openssl x509 -outform PEM > www.test.com.ssl.pem
+DOMAIN=192.168.1.1
+SSL_PORT=8443
+openssl s_client -showcerts -connect $DOMAIN:$SSL_PORT </dev/null 2>/dev/null|openssl x509 -outform PEM > $DOMAIN.ssl.pem
 ```
 
 ```bash
-openssl s_client -connect {HOSTNAME}:{PORT} -showcerts
+openssl s_client -connect $DOMAIN:$SSL_PORT -showcerts
 ```
 
 参考：

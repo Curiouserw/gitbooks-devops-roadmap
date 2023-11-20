@@ -75,6 +75,25 @@ max-upload-limit=0
 disable-ipv6=true
 # 连接超时时间、设置建立 HTTP/FTP/代理服务器 连接的超时时间(秒). 当连接建立后, 此选项不再生效, 请使用 --timeout 选项.
 connect-timeout=300
+
+## ============================================== 下载执行额外命令 ============================================== ##
+# 下载停止后执行的命令，从 正在下载 到 删除、错误、完成 时触发。暂停被标记为未开始下载，故与此项无关。
+# on-download-stop=/root/.aria2/delete.sh
+
+# 下载完成后执行的命令，此项未定义则执行 下载停止后执行的命令 (on-download-stop)
+on-download-complete=/data/aria2/Scripts/download-complete.sh
+
+# 下载错误后执行的命令，此项未定义则执行 下载停止后执行的命令 (on-download-stop)
+# on-download-error=
+
+# 下载暂停后执行的命令
+# on-download-pause=
+
+# 下载开始后执行的命令
+on-download-start=/data/aria2/Scripts/start-download.sh
+
+# BT下载完成后执行的命令
+on-bt-download-complete=/data/aria2/Scripts/download-complete.sh
 ## ============================================== RPC相关设置 ================================================ ##
 # 启用RPC, 默认:false
 enable-rpc=true
@@ -131,9 +150,10 @@ bt-save-metadata=false
 # 继续之前的BT任务时, 无需再次校验, 默认:false
 bt-seed-unverified=false
 dht-file-path=/data/aria2/dht.dat
-## BT 服务器地址 ##
-bt-tracker=udp://tracker.coppersurfer.tk:6969/announce,udp://exodus.desync.com:6969/announce,udp://tracker.opentrackr.org:1337/announce,udp://tracker.internetwarriors.net:1337/announce,udp://9.rarbg.to:2710/announce,udp://public.popcorn-tracker.org:6969/announce,udp://tracker.vanitycore.co:6969/announce,udp://explodie.org:6969/announce,udp://tracker.mg64.net:6969/announce,udp://mgtracker.org:6969/announce,udp://ipv4.tracker.harry.lu:80/announce,udp://tracker.tiny-vps.com:6969/announce,udp://tracker.torrent.eu.org:451/announce,udp://thetracker.org:80/announce,udp://bt.xxx-tracker.com:2710/announce,udp://tracker4.itzmx.com:2710/announce,udp://tracker1.itzmx.com:8080/announce,udp://tracker.port443.xyz:6969/announce,udp://tracker.cypherpunks.ru:6969/announce,udp://retracker.lanta-net.ru:2710/announce,http://1337.abcvg.info:80/announce,http://bt.okmp3.ru:2710/announce,http://nyaa.tracker.wf:7777/announce,http://open.acgnxtracker.com:80/announce,http://open.tracker.ink:6969/announce,http://p2p.0g.cx:6969/announce,http://share.camoe.cn:8080/announce,http://torrentsmd.com:8080/announce,http://tr.cili001.com:8070/announce,http://tracker.bt4g.com:2095/announce,http://tracker.files.fm:6969/announce,http://tracker.gbitt.info:80/announce,http://tracker.ipv6tracker.ru:80/announce,http://tracker.mywaifu.best:6969/announce,http://tracker.skyts.net:6969/announce,http://tracker.tfile.co:80/announce,http://trackme.theom.nz:80/announce,http://v6-tracker.0g.cx:6969/announce,http://web.open-tracker.cf:6969/announce,http://www.all4nothin.net:80/announce.php,http://www.wareztorrent.com:80/announce,https://1337.abcvg.info:443/announce,https://opentracker.i2p.rocks:443/announce,https://tr.abiir.top:443/announce,https://tr.burnabyhighstar.com:443/announce,https://tracker.foreverpirates.co:443/announce,https://tracker.gbitt.info:443/announce,https://tracker.imgoingto.icu:443/announce,https://tracker.kuroy.me:443/announce,https://tracker.lelux.fi:443/announce,https://tracker.lilithraws.cf:443/announce,https://tracker.loligirl.cn:443/announce,https://tracker.tamersunion.org:443/announce,https://tracker1.520.jp:443/announce,https://trackme.theom.nz:443/announce,udp://9.rarbg.com:2810/announce,udp://aarsen.me:6969/announce,udp://acxx.de:6969/announce,udp://aegir.sexy:6969/announce,udp://astrr.ru:6969/announce,udp://bedro.cloud:6969/announce,udp://bt.ktrackers.com:6666/announce,udp://bt1.archive.org:6969/announce,udp://epider.me:6969/announce,udp://exodus.desync.com:6969/announce,udp://htz3.noho.st:6969/announce,udp://ipv4.tracker.harry.lu:80/announce,udp://ipv6.tracker.monitorit4.me:6969/announce,udp://laze.cc:6969/announce,udp://mail.artixlinux.org:6969/announce,udp://mirror.aptus.co.tz:6969/announce,udp://moonburrow.club:6969/announce,udp://movies.zsw.ca:6969/announce,udp://open.demonii.com:1337/announce,udp://open.dstud.io:6969/announce,udp://open.publictracker.xyz:6969/announce,udp://open.stealth.si:80/announce,udp://open.tracker.ink:6969/announce,udp://opentor.org:2710/announce,udp://opentracker.i2p.rocks:6969/announce,udp://p4p.arenabg.com:1337/announce,udp://private.anonseed.com:6969/announce,udp://public.publictracker.xyz:6969/announce,udp://retracker01-msk-virt.corbina.net:80/announce,udp://run.publictracker.xyz:6969/announce,udp://sanincode.com:6969/announce,udp://slicie.icon256.com:8000/announce,udp://static.54.161.216.95.clients.your-server.de:6969/announce,udp://t.133335.xyz:6969/announce,udp://thagoat.rocks:6969/announce,udp://thetracker.org:80/announce,udp://torrents.artixlinux.org:6969/announce,udp://tracker.4.babico.name.tr:3131/announce,udp://tracker.altrosky.nl:6969/announce,udp://tracker.arcbox.cc:6969/announce,udp://tracker.artixlinux.org:6969/announce,udp://tracker.auctor.tv:6969/announce,udp://tracker.beeimg.com:6969/announce,udp://tracker.birkenwald.de:6969/announce,udp://tracker.ccp.ovh:6969/announce,udp://tracker.cyberia.is:6969/announce,udp://tracker.dler.com:6969/announce,udp://tracker.doko.moe:6969/announce,udp://tracker.joybomb.tw:6969/announce,udp://tracker.leech.ie:1337/announce,udp://tracker.lelux.fi:6969/announce,udp://tracker.moeking.me:6969/announce,udp://tracker.monitorit4.me:6969/announce,udp://tracker.openbittorrent.com:6969/announce,udp://tracker.opentrackr.org:1337/announce,udp://tracker.renfei.net:8080/announce,udp://tracker.skynetcloud.site:6969/announce,udp://tracker.skyts.net:6969/announce,udp://tracker.srv00.com:6969/announce,udp://tracker.torrent.eu.org:451/announce,udp://tracker1.bt.moack.co.kr:80/announce,udp://tracker6.lelux.fi:6969/announce,udp://uploads.gamecoast.net:6969/announce,udp://v1046920.hosted-by-vdsina.ru:6969/announce,udp://www.peckservers.com:9000/announce,ws://hub.bugout.link:80/announce,wss://tracker.openwebtorrent.com:443/announce
+
 ca-certificate=/etc/ssl/certs/ca-certificates.crt
+## BT 服务器地址 ##
+bt-tracker=BT 服务器
 ```
 
 网友整理的Tracker 列表：https://github.com/XIU2/TrackersListCollection/blob/master/README-ZH.md
@@ -152,15 +172,27 @@ netstat -lanp |grep 6800
 
 # 杀掉进程
 ps -ef |grep aria2c |grep -v grep |awk '{print $2}' | xargs kill -9 ;ps -ef |grep aria2c 
-
 ```
 
 ## 4、iptables放行DHT端口
 
 ```bash
-iptables -I INPUT  -p udp --dport 10513 -j ACCEPT 
-iptables -I INPUT  -p tcp --dport 10513 -j ACCEPT 
-iptables -I INPUT  -p tcp -m multiport --dports 6881:6999,10523 -j ACCEPT
+aria2_dht_listen_port=`cat /data/aria2/aria2.conf | grep -w "dht-listen-port" |awk -F "=" '{print $2}'`
+aria2_bt_listen_port=`cat /data/aria2/aria2.conf | grep -Eo '^listen-port=.*' | awk -F"=" '{print $2}' | sed 's/-/:/g'`
+
+# 打开 DHT 监听端口
+iptables -I INPUT -p udp --dport $aria2_dht_listen_port -j ACCEPT -m comment --comment "aria2_dht_udp_port"
+iptables -I INPUT -p tcp --dport $aria2_dht_listen_port -j ACCEPT -m comment --comment "aria2_dht_tcp_port"
+# 打开 BT 监听端口
+iptables -I INPUT -p tcp -m multiport --dports $aria2_bt_listen_port -j ACCEPT -m comment --comment "aria2_bt_port"
+
+# 查看开放的端口
+iptables -L INPUT 
+
+# 关闭打开的端口
+iptables -D INPUT -p udp --dport $aria2_dht_listen_port -j ACCEPT -m comment --comment "aria2_dht_udp_port"
+iptables -D INPUT -p tcp --dport $aria2_dht_listen_port -j ACCEPT -m comment --comment "aria2_dht_tcp_port"
+iptables -D INPUT -p tcp -m multiport --dports $aria2_bt_listen_port -j ACCEPT -m comment --comment "aria2_bt_port"
 ```
 
 ## 5、验证测试
@@ -176,6 +208,22 @@ iptables -I INPUT  -p tcp -m multiport --dports 6881:6999,10523 -j ACCEPT
 ## 1、AriaNG
 
 Github：https://github.com/mayswind/AriaNg
+
+> git clone -b 1.3.6 https://github.com/mayswind/AriaNg.git  /data/aria2
+
+```bash
+server {
+  listen 8089;
+  error_log  /data/nginx/logs/nginx-ariang-error.log;
+  access_log /data/nginx/logs/nginx-ariang-access.log  main;
+  server_name localhost ;
+  location / {
+    root  /data/aria2/AriaNg;
+    index index.html index.htm;
+    autoindex on;
+  }
+}
+```
 
 # 四、RPC 接口
 

@@ -37,7 +37,7 @@ tcpdump [-aAbdDefhHIJKlLnNOpqStuUvxX#] [ -B size ] [ -c count ]
 
 ## 2、命令选项
 
-### ①抓包选项：
+### ①抓包选项
 
 **`-A`**:   以ASCII码方式显示每一个数据包(不会显示数据包中链路层头部信息). 在抓取包含网页数据的数据包时, 可方便查看数据(nt: 即Handy for capturing web pages).
 
@@ -75,7 +75,7 @@ tcpdump [-aAbdDefhHIJKlLnNOpqStuUvxX#] [ -B size ] [ -c count ]
 
 **`-y datalinktype`**：设置tcpdump 只捕获数据链路层协议类型是datalinktype的数据包
 
-### ②输出选项：
+### ②输出选项
 
 **`-e`**：输出的每行中都将包括数据链路层头部信息，例如源MAC和目标MAC。
 
@@ -99,7 +99,7 @@ tcpdump [-aAbdDefhHIJKlLnNOpqStuUvxX#] [ -B size ] [ -c count ]
 
 **`-vvv`**：产生比-vv更详细的输出。
 
-### ③其他功能性选项：
+### ③其他功能性选项
 
 **`-D`**：列出可用于抓包的接口。将会列出接口的数值编号和接口名，它们都可以用于`"-i"`后。
 
@@ -143,13 +143,14 @@ tcpdump [-aAbdDefhHIJKlLnNOpqStuUvxX#] [ -B size ] [ -c count ]
 -  **`type（关键词类型的过滤器）`**：
 
   - host： 
-- net： 
+- **net**： 
+  
   - port： 
   - portrange： 
   - ether： 
   - gateway： 
   
-  例如：host 192.168.201.128  ,  net 128.3, port 20, portrange 6000-6008’
+  > 例如：host 192.168.201.128  ,  net 128.3, port 20, portrange 6000-6008’
 
 ## 4、**过滤规则的组合**
 
@@ -211,7 +212,17 @@ $ tcpdump -S -e -nn -i eth0 dst 192.168.1.7 and port 5000
 
 # 四、示例
 
-## 1、**找出一段时间内发包数最多的 IP**
+## 1、监听多个端口、多个网卡
+
+```bash
+# 监听多个端口
+tcpdump port 22 or port 23 or port 24 
+
+# 监听所有网卡
+tcpdump -i any port 22 or port 23 
+```
+
+## 2、**找出一段时间内发包数最多的 IP**
 
 ```bash
 $ tcpdump -nnn -t -c 200 | cut -f 1,2,3,4 -d '.' | sort | uniq -c | sort -nr | head -n 20
@@ -224,7 +235,7 @@ $ tcpdump -nnn -t -c 200 | cut -f 1,2,3,4 -d '.' | sort | uniq -c | sort -nr | h
      25 IP 192.168.1.7
 ```
 
-## 2、抓取 HTTP GET 请求
+## 3、抓取 HTTP GET 请求
 
 ```bash
 $ tcpdump -s 0 -A -vv 'tcp[((tcp[12:1] & 0xf0) >> 2):4] = 0x47455420'
@@ -232,7 +243,7 @@ $ tcpdump -s 0 -A -vv 'tcp[((tcp[12:1] & 0xf0) >> 2):4] = 0x47455420'
 $ tcpdump -vv -A -l -i6 | grep 'GET'
 ```
 
-## 3、抓取 HTTP POST请求
+## 4、抓取 HTTP POST请求
 
 ```bash
 $ tcpdump -s 0 -A -vv 'tcp[((tcp[12:1] & 0xf0) >> 2):4] = 0x504f5354'
@@ -240,13 +251,13 @@ $ tcpdump -s 0 -A -vv 'tcp[((tcp[12:1] & 0xf0) >> 2):4] = 0x504f5354'
 $ tcpdump -vv -A -l -i6 | grep 'POST'
 ```
 
-## 4、抓取 HTTP请求中的 User-Agent和Host
+## 5、抓取 HTTP请求中的 User-Agent和Host
 
 ```bash
 $ tcpdump -nn -A -i6 -l | egrep -i 'User-Agent:|Host:'
 ```
 
-## 5、抓取 HTTP请求中的主机名和路径
+## 6、抓取 HTTP请求中的主机名和路径
 
 ```bash
 $ tcpdump -i6 -v -n -l | egrep -i "POST /|GET /|Host:"
@@ -255,13 +266,17 @@ $ tcpdump -i6 -v -n -l | egrep -i "POST /|GET /|Host:"
 Host: 192.168.1.7:5000
 ```
 
-## 5、**抓取 HTTP 有效数据包**
+## 7、**抓取 HTTP 有效数据包**
 
 抓取 80 端口的 HTTP 有效数据包，排除 TCP 连接建立过程的数据包（SYN / FIN / ACK）
 
 ```bash
 $ tcpdump 'tcp port 80 and (((ip[2:2] - ((ip[0]&0xf)<<2)) - ((tcp[12]&0xf0)>>2)) != 0)'
 ```
+
+
+
+
 
 # 参考
 

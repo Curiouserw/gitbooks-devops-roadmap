@@ -170,7 +170,7 @@ alias k2p='kubectl config use-context k8s-pro'
     source /etc/profile
 
 
-# 六. Kubectl Config命令详解
+# 六、Kubectl Config命令详解
 
    ```bash
   1. If the --kubeconfig flag is set, then only that file is loaded.  The flag may only be set once and no merging takes
@@ -273,6 +273,53 @@ if [ $exit_code -ne 0 ];then
 fi
 ```
 
+## 6、kubectl apply从标准输入中读取资源文件
+
+```yaml
+cat <<EOF | kubectl apply -f -
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx
+  namespace: kube-public
+spec:
+  rules:
+  - host: "nginx.test.com"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: nginx
+            port:
+              name: web
+EOF
+```
+
+## 7、kubectl patch更新k8s资源
+
+Kubectl patch 支持以下 3 种 patch 类型：
+
+- **strategic patch(默认)**：根据不同字段 patchStrategy 决定具体的合并 patch 策略。 Strategic merge patch 并非通用的 RFC 标准，而是 Kubernetes 特有的一种更新 Kubernetes 资源对象的方式。与 JSON merge patch 和 JSON patch 相比，strategic merge patch 更为强大。
+
+  例如：给deployment添加configmap类型的 Volume 声明与挂载
+
+  ```bash
+  kubectl patch deployment nginx \
+    -p '{"spec":{"template":{"spec":{"volumes":[{"name":"nginx-stubstatus-config","configMap":{"name":"nginx-stubstatus-config"}}],"containers":[{"name":"nginx","volumeMounts":[{"name":"nginx-stubstatus-config","mountPath":"/etc/nginx/conf.d"}]}]}}}}'
+  ```
+
+- **json merge patch**：遵循 JSON Merge Patch, RFC 7386[1] 规范，根据 patch 中提供的期望更改的字段及其对应的值，更新到目标中。
+- **json patch**：遵循 JSON Patch, RFC 6902[2] 规范，通过明确的指令表示具体的操作。
+  
+  例如：给Service暴露的端口添加名字
+  
+   ```bash
+   kubectl patch service nginx-exporter -n kube-public \
+     --type='json' \
+     -p='[{"op": "add", "path": "/spec/ports/0/name", "value": "application-metrics-exporter"}]'
+   ```
 
 # 参考连接
 

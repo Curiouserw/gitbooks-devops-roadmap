@@ -65,7 +65,7 @@ apt-get install python3-pip
 ```bash
 pip3 install -U pip
 # 或者
-pthon3 -m pip install -U pip
+python3 -m pip install -U pip
 ```
 
 ## 3、安装依赖

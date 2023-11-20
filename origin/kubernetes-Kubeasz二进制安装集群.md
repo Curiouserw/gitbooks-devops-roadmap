@@ -2,11 +2,11 @@
 
 # 一、集群规划
 
-- **k8s版本**：1.18
-- **CNI**：Caclio
+- **k8s版本**：1.28.1
+- **CNI**：Cilium
 - **kubeproxy模式**：IPVS
 - **证书有效期**：100年
-- **IngressContoller**：Traefik 2.0
+- **IngressContoller**：Traefik 2.0+
 - **Registry**：Habor
 - **CSI**：NFS Provisioner、Ceph RBD Provisioner、Ceph Filesystem Provisioner、LocalVolume Provisioner
 
@@ -107,7 +107,7 @@ ansible-playbook 90.setup.yml
 - 4.重复步骤 1/2 可以创建多个集群
 - 5.切换到某个集群 `easzctl checkout xxxx`，然后执行增加/删除节点操作
 
-# 三、安装k8s 1.18集群
+# 三、安装k8s 1.28.1集群
 
 ## 0、参考
 
@@ -174,10 +174,21 @@ ssh-copy-id node3
 ## 4、Node1节点下载kubeasz中的安装准备工具脚本easzup
 
 ```bash
-export release=2.2.0
-curl -C- -fLO --retry 3 https://github.com/easzlab/kubeasz/releases/download/$release/easzup
-chmod +x ./easzup
-./easzup -D
+export release=3.6.2
+wget https://github.com/easzlab/kubeasz/releases/download/${release}/ezdown
+chmod +x ./ezdown
+mv ezdown /usr/local/bin
+# 下载kubeasz代码、二进制、默认容器镜像（更多关于ezdown的参数，运行./ezdown 查看）
+ezdown -D
+# 海外环境
+ezdown -D -m standard
+
+# 按需下载额外容器镜像（cilium,flannel,prometheus等）
+ezdown -X flannel
+ezdown -X prometheus
+
+# 下载离线系统包 (适用于无法使用yum/apt仓库情形)
+ezdown -P
 ```
 
 执行成功后，所有文件均已整理好放入目录`/etc/ansible`，只要把该目录整体复制到任何离线的机器上，即可开始安装集群
@@ -186,6 +197,17 @@ chmod +x ./easzup
 
 - 管理端 ansible 安装，但可以使用 kubeasz 容器运行 ansible 脚本
 - 其他更多 kubernetes 插件镜像
+
+```bash
+ezdown -S
+docker exec -it kubeasz ezctl new new-k8s
+
+# 2023-09-15 14:05:15 DEBUG generate custom cluster files in /etc/kubeasz/clusters/new-k8s
+# 2023-09-15 14:05:15 DEBUG set versions
+# 2023-09-15 14:05:15 DEBUG cluster new-k8s: files successfully created.
+# 2023-09-15 14:05:15 INFO next steps 1: to config '/etc/kubeasz/clusters/new-k8s/hosts'
+# 2023-09-15 14:05:15 INFO next steps 2: to config '/etc/kubeasz/clusters/new-k8s/config.yml'
+```
 
 ## 5、配置k8s集群参数的主机清单
 

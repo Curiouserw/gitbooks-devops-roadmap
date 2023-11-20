@@ -56,3 +56,56 @@
 - arm64：64位的arm默认就是hf的，因此不需要hf的后缀。
 
 - armel和armhf的区别体现在浮点运算上，它们在进行浮点运算时都会使用fpu，但是armel传参数用普通寄存器，而armhf传参数用的是fpu的寄存器，因此armhf的浮点运算性能更高。
+
+# 三、VBS获取出口 IP 并发送邮件
+
+```vbscript
+Private Function getRouterIP()
+	Dim http
+	Set http = CreateObject("Msxml2.ServerXMLHTTP")
+	http.open "GET", "http://myip.ipip.net/", False
+	http.send
+	responseStatus = http.status
+	responseBody = http.responseBody
+	Set http = nothing
+	If responseStatus= 200 Then
+	    dim objstream 
+	    set objstream = CreateObject("adodb.stream")
+	    objstream.Type = 2 
+	    objstream.Open 
+	    objstream.WriteText responseBody , 1 
+	    objstream.Position = 0 
+	    objstream.Charset = "UTF-8" 
+	    objstream.Position = 2 
+	    ip =objstream.ReadText 
+	    objstream.close 
+	    Set objstream = Nothing
+	    getRouterIP = ip
+	Else
+		MsgBox responseStatus
+	End If
+End Function
+
+Sub sendMail()
+	Const schema = "http://schemas.microsoft.com/cdo/configuration/"  
+	Set CDO = CreateObject("CDO.Message")
+	With CDO.Configuration.Fields
+		.Item(schema & "sendusing") = 2									'发送端口		
+    .Item(schema & "smtpserver") = "smtp.163.com"		'smtp服务器
+		.Item(schema & "smtpauthenticate") = 1					'是否需要提供用户名和密码，0是不提供 
+		.Item(schema & "sendusername") = "*****"				'发送者邮箱帐号'
+		.Item(schema & "sendpassword") = "*****"				'发送者邮箱密码
+		.Item(schema & "smtpserverport") = 25						'SMTP服务器端口
+		.Item(schema & "smtpusessl") = True
+		.Item(schema & "smtpconnectiontimeout") = 60
+		.Update
+	End With
+	CDO.From = "************@163.com"									'发送者邮件地址'
+	CDO.To = "************@163.com"										'接收者邮件地址'
+	CDO.Subject = now() & "-" & "You Know That"				'邮件主题'
+	CDO.TextBody = getRouterIP 												'邮件内容'
+	CDO.Send																					'发送邮件执行'
+End Sub
+
+sendMail()
+```
