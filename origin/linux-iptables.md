@@ -614,10 +614,11 @@ route add 0.0.0.0 gw 192.168.1.2
 **DNAT(Destination Network Address Translation)**是又称为“端口转发”，适用于由广域网上的主机发起连接的情况。当广域网的主机访问NAT路由器的广域网端口时，可以将NAT路由器的广域网的端口映射到局域网内的某个IP地址的某个端口，这样就可以实现广域网主机访问局域网内的资源。
 
 ```bash
-iptables -t nat -I PREROUTING  -d 公网IP -p tcp  -m tcp  --dport 公网port  -j DNAT  --to-destination  10.10.223.12-10.10.223.20:8080（内网）
+iptables -t nat -I PREROUTING -d 公网IP -p tcp -m tcp --dport 公网port -j DNAT --to-destination 10.10.223.12-10.10.223.20:8080（内网）
 
 # 对于在云上绑定公网IP地址的ECS主机做DNAT，公网IP地址要写成ECS的内网地址。因为云厂商的公网IP也是使用SNAT实现的，通过公网IP访问ECS的所有流量请求，已经将目标地址改成ECS的内网地址啦。
 # 例如阿里云上一台ECS绑定弹性公网IP地址123.11.12.13，内网地址为192.168.1.8，还有一台ECS，内网地址为192.168.1.9，上面部署了MYSQL。想通过弹性公网IP地址访问MySQL。则在192.168.1.8这台ECS中做DNAT的时候，可以这样配置
+
 # iptables -t nat -I PREROUTING  -d 192.168.1.8 -p tcp --dport 33306  -j DNAT  --to-destination 192.168.1.9:3306
 ```
 

@@ -247,7 +247,7 @@
       * [语法扫描工具Hadolint](origin/dockerfile-hadolint.md)
       * [Dockerfile优化](origin/dockerfile-optimization.md)
 * Shell脚本
-    * [Shell脚本综合](origin/shell-scripts-summary.md)
+    * [Shell脚本](origin/shell-scripts-summary.md)
     * [常用bash脚本功能](origin/bash-scirpts.md)  
 * Maven
     * Maven POM项目对象模型
@@ -305,6 +305,7 @@
     * [Windows 无人值守部署服务](origin/windows-deployment-service-aik.md)
     * [主机的网络唤醒WOL服务](origin/windows-wakeuponlan.md)
     * [如何将 Java代码打包成 EXE 可执行安装软件](origin/windows-java-exe-install.md)
+    * [PowerShell](origin/windows-powershell.md)
 * MacOS
     * [MacOS小技巧](origin/macos-tips.md)
 * Linux
@@ -394,7 +395,6 @@
     * [ESXI 管理常用命令](origin/vsphere-esxi.md)
     * [vCenter](origin/vSphere-vCenter.md)
     * [ESXI使用Synology的ISCSI存储](origin/esxi-synology-iscsi.md)
-    * 
     * OVF模板
       * [OVF模板详解](origin/vsphere-ovf.md)
       * [VMWare OVF Tools](origin/vmware-ovf-tool.md)
@@ -417,7 +417,7 @@
 * [Asuswrt-Merlin](origin/asuswrt-merlin.md)
 * [Trap：Shell脚本信号跟踪](origin/linux-trap.md)
 * [零散知识汇总](origin/others.md)
-* [notify-bark](origin/notify-bard.md)
+* [BarkServer通知](origin/notify-bard.md)
 * Synology
     * [Synology管理](origin/synology-management.md)
     * [Synology Active Backup for Business备份管理vSphere ESXI VMs](origin/synology-abb-vsphere.md)
@@ -449,6 +449,7 @@
   - [TiDB管理](origin/tidb-management.md)
   - [TiDB性能调优](origin/tidb-performance.md)
   - [TiDB TiFlash](origin/tidb-tiflash.md)
+  - [TiDB资源限制隔离](origin/tidb-resource-limit.md)
 - [Minio](origin/minio.md)
 - [JuiceFS](origin/juicefs.md)
 - Apache Pulsar
@@ -491,9 +492,9 @@
   - 第三方工具
     - [statik-将静态资源文件打包到二进制文件中](origin/golang-statik.md)
 
+- [HTML/CSS学习笔记](origin/html-css-learn.md)
 
 - JavaScript学习笔记
-  
   - [JS、JQuery、Vue学习](origin/js-jquery-vue-learn.md)
   - [JavaScript常用工具函数](origin/js-kits.md)
   

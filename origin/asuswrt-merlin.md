@@ -68,7 +68,46 @@ https://github.com/RMerl/asuswrt-merlin.ng/wiki/AMTM
 └── vpn-watchdog1.sh
 ```
 
-参考：
+# 六 、KoolCenter
 
-- 
+```bash
+#!/bin/sh
+
+# Check if the comm command is installed
+if ! command -v comm &> /dev/null; then
+  echo "The comm command is not installed.  Install Now"
+  opkg install coreutils-comm
+fi
+
+# Get the current time
+now=$(date +"%Y-%m-%d %H:%M:%S")
+
+# Get the list of connected devices
+devices=$(brctl showmacs br0 | awk '{print $2}')
+
+# Check if the list of devices has changed
+if [ ! -f /tmp/connected_devices ]; then
+  # This is the first time the script is running, so save the list of devices to a file
+  echo "$devices" > /tmp/connected_devices
+else
+  # Get the list of devices that were connected previously
+  previous_devices=$(cat /tmp/connected_devices)
+
+  # Compare the list of devices that are connected now to the list of devices that were connected previously
+  new_devices=$(comm -23 <(echo "$devices") <(echo "$previous_devices"))
+
+  # Send a notification to DingTalk for each new device
+  for device in $new_devices; do
+    curl -X POST https://oapi.dingtalk.com/robot/send \
+      -H "Content-Type: application/json" \
+      -d "{\"msgtype\": \"text\", \"text\": {\"content\": \"New device connected to bridge br0: $device ($now)\"}}"
+  done
+
+  # Update the list of connected devices
+  echo "$devices" > /tmp/connected_devices
+fi
+```
+
+# 参考：
+
 - https://github.com/decoderman/amtm/tree/master

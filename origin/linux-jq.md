@@ -344,7 +344,62 @@ $ jq -r ' .snapshots[]
 | "\(.id)= \(.iid)" '
 ```
 
+# 五、操作示例
 
+## 1、处理 Nginx的 JSON 格式日志
+
+```json
+{
+  "@timestamp": "2023-12-07T00:00:18+08:00",
+  "app": "official",
+  "remote_addr": "100.94.24.207",
+  "referer": "",
+  "request": "GET /health HTTP/1.1",
+  "status": 200,
+  "bytes": 13172,
+  "agent": "Go-http-client/1.1",
+  "x_forwarded": "12.4.18.6, 10.17.8.12",
+  "up_addr": "127.0.0.1:9000",
+  "up_host": "",
+  "up_resp_time": 0.124,
+  "request_time": 0.123,
+  "server_name": ""
+}
+{
+  "@timestamp": "2023-12-07T00:01:10+08:00",
+  "app": "official",
+  "remote_addr": "100.94.24.24",
+  "referer": "https://www.baidu.com/info",
+  "request": "POST https://www.baidu.com/info",
+  "status": 200,
+  "bytes": 618,
+  "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36 Edg/119.0.0.0",
+  "x_forwarded": "10.24.7.21, 192.168.1.2",
+  "up_addr": "",
+  "up_host": "",
+  "up_resp_time": 0,
+  "request_time": 0,
+  "server_name": ""
+}
+```
+
+排除“/health”请求，只显示 app、referer、request、agent、x_forwarded字段，同时以逗号分割x_forwarded字段值，只显示第一个 IP 地址。
+
+```bash
+jq -r ' select(.request != "GET /health HTTP/1.1")| {app: .app ,referer: .referer ,request: .request, agent: .agent ,x_forwarded: (.x_forwarded | split(",") | .[0]) }'
+```
+
+输出
+
+```json
+{
+  "app": "official",
+  "referer": "https://www.baidu.com/info",
+  "request": "POST https://www.baidu.com/info",
+  "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36 Edg/119.0.0.0",
+  "x_forwarded": "10.24.7.21"
+}
+```
 
 # 参考链接
 

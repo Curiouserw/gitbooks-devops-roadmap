@@ -87,7 +87,7 @@
 拉取(pull) ：`rsync [参数] 用户@主机:源文件 [目标文件]`
 
 ```bash
-rsync -av root@192.168.1.1::www /databack
+rsync -av --progress -e 'ssh -p 1022' root@192.168.1.1::www /databack
 ```
 
 推送(push) ：`rsync [参数] [源文件] 用户@主机:源文件`

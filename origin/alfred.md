@@ -19,6 +19,21 @@
 - **引用Workflow设置的变量：**`{var:变量名}`
 - **脚本中引用：** `og.getenv("变量名")`
 
+```bash
+echo '{
+  "items": [
+    {
+      "title": "标题",
+      "subtitle": "子标题",
+      "valid": true,
+      "arg": "传递给下个工作流的参数",
+      "uid": 10,
+      "quicklookurl": "ccc"
+    }
+  ]
+}'
+```
+
 # 三、Workflow开发
 
 ```python

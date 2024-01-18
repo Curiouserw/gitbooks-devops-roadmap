@@ -42,7 +42,16 @@
 PermitEmptyPasswords no
 ```
 
-## 7、SSH登录事件通知至ntfy
+## 7、程序用户禁止登录
+
+- 不创建家目录
+- 不允许 ssh登录
+
+```bash
+useradd -s /usr/sbin/nologin test
+```
+
+## 8、SSH登录事件通知至ntfy
 
 `/etc/pam.d/sshd`
 
@@ -177,3 +186,46 @@ Fail2Ban 为各种服务提供了许多过滤器，如 ssh、apache、nginx、sq
 Fail2Ban 能够降低错误认证尝试的速度，但是它不能消除弱认证带来的风险。
 
 这只是服务器防止暴力攻击的安全手段之一。
+
+```bash
+# Debian / Ubuntu
+apt install fail2ban
+
+```
+
+ssh
+
+```bash
+[sshd]
+
+enabled = true
+port    = ssh
+backend = systemd
+maxretry = 3
+findtime = 300
+bantime = 3600
+ignoreip = 127.0.0.1
+
+# enabled  – 是否启用该规则
+# port     – 要监听的端口。例如：ssh的22端口
+# backend  –  指定用于获取文件修改的后端。由于所有现代 Linux 系统都依赖于 systemd 的日志服务，因此我们将其指定为后端。
+# maxretry – 某个 IP 在被禁止之前尝试失败的次数。
+# findtime – “maxretry”登录失败将导致禁止的时间范围（以秒为单位）。我们指定了 300 秒，即 5 分钟。
+# bantime  – IP 应保持禁止状态的持续时间（以秒为单位）。在我们的例子中，我们设置了 3600 秒，这意味着在接下来的一小时内，来自该 IP 地址的任何后续请求（不仅仅是到 SSH 端口）都将被阻止。
+# ignoreip – 忽略的IP地址白名单。可确保给定的IP地址，即使超过“maxretry”中指定的失败尝试次数，也不会被阻止。
+```
+
+```bash
+fail2ban-client status sshd
+```
+
+```bash
+iptables -L -n
+```
+
+```bash
+fail2ban-client unban --all
+fail2ban-client unban <ip-address>
+```
+
+参考：https://linuxiac.com/how-to-protect-ssh-with-fail2ban/

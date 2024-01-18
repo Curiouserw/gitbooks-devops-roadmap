@@ -246,15 +246,11 @@ Let's Encrypt宣称这一过程将十分简单、自动化并且免费
 
 ## 1、ACME.sh
 
-简单来说acme.sh 实现了 acme 协议, 可以从 let‘s encrypt 生成免费的证书。
-acme.sh 有以下特点：
+简单来说acme.sh 实现了 acme 协议, 可以从 let‘s encrypt 生成免费的证书。acme.sh 有以下特点：
 
-- 一个纯粹用Shell（Unix shell）语言编写的ACME协议客户端。
+- 一个纯粹用Shell（Unix shell）语言编写的ACME协议客户端。不依赖于python或官方的Let's Encrypt客户端。
 - 完整的ACME协议实施。 支持ACME v1和ACME v2 支持ACME v2通配符证书
-- 简单，功能强大且易于使用。你只需要3分钟就可以学习它。
-- Let's Encrypt免费证书客户端最简单的shell脚本。
-- 纯粹用Shell编写，不依赖于python或官方的Let's Encrypt客户端。
-- 只需一个脚本即可自动颁发，续订和安装证书。 不需要root/sudoer访问权限。
+- 可自动颁发，续订和安装证书。 不需要root/sudoer访问权限。
 - 支持在Docker内使用，支持IPv6
 
 Github：https://github.com/acmesh-official/acme.sh

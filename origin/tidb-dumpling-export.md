@@ -40,39 +40,48 @@
 
 ## 2、安装及主要参数
 
-### ①二进制
+### ①安装
 
-```bash
-version=v4.0.5 && \
-curl -# https://download.pingcap.org/tidb-toolkit-$version-linux-amd64.tar.gz | tar -zxC /opt && \
-ln -s /opt/tidb-toolkit-$version-linux-amd64 /opt/tidb-toolkit-$version && \
-echo "export PATH=/opt/tidb-toolkit-$version/bin:$PATH" >> /etc/profile && \
-source /etc/profile && \ 
-dumpling -V
-```
+- **二进制**
 
-### ②源码构建
+  ```bash
+  version=v4.0.5 && \
+  curl -# https://download.pingcap.org/tidb-toolkit-$version-linux-amd64.tar.gz | tar -zxC /opt && \
+  ln -s /opt/tidb-toolkit-$version-linux-amd64 /opt/tidb-toolkit-$version && \
+  echo "export PATH=/opt/tidb-toolkit-$version/bin:$PATH" >> /etc/profile && \
+  source /etc/profile && \ 
+  dumpling -V
+  ```
 
-```bash
-# MacOS源码构建（要求：golang>=1.6,二进制输出路径：bin/dumpling）
-git clone https://github.com/pingcap/dumpling.git && \
-cd dumpling && \
-git checkout v4.0.5 && \
-make build && \
-chmox +X ./bin/dumpling && \
-mv ./bin/dumpling /usr/local/bin/ && \
-dumpling --version
-```
+- **源码构建**
 
-### ③Docker
+  ```bash
+  # MacOS源码构建（要求：golang>=1.6,二进制输出路径：bin/dumpling）
+  git clone https://github.com/pingcap/dumpling.git && \
+  cd dumpling && \
+  git checkout v4.0.5 && \
+  make build && \
+  chmox +X ./bin/dumpling && \
+  mv ./bin/dumpling /usr/local/bin/ && \
+  dumpling --version
+  ```
 
-```bash
-docker pull pingcap/dumpling:v5.1.0
-docker run -it -v 本地存储导出SQL文件的目录 pingcap/dumpling:v5.1.0 sh
-# dumpling命令执行路径在根目录下,具体的导出任务可以在容器中执行
-```
+- **Docker**
 
-### ④命令参数
+  ```bash
+  docker pull pingcap/dumpling:v5.1.0
+  docker run -it -v 本地存储导出SQL文件的目录 pingcap/dumpling:v5.1.0 sh
+  # dumpling命令执行路径在根目录下,具体的导出任务可以在容器中执行
+  ```
+
+- **MacOS**
+
+  ```bash
+  brew install dumpling
+  dumpling --version
+  ```
+
+### ②命令参数
 
 | 主要选项                   | 用途                                                         | 默认值                                  |
 | :------------------------- | ------------------------------------------------------------ | --------------------------------------- |
@@ -283,67 +292,347 @@ Could not read data from testSchema.testTable: GC life time is shorter than tran
 
 # 三、常用操作
 
-## 1、导出指定Database
+## 1、zsh函数备份脚本
+
+- 可备份 TiDB 、MySQL
+- 可备份某些整库
+- 可备份某些库的某些表
 
 ```bash
-#!/bin/bash
+check_commands_exists() {
+    need_commands=($*)
+    no_commands=""
+    for command in "${need_commands[@]}" ; do
+        if ! command -v $command &> /dev/null; then
+            no_commands+=" $command"
+        fi
+    done
 
-source_db_host=
-source_db_port=
-source_db_user=
-source_db_password=
-# 要导出的库名以逗号分割
-databases=db1,db2,db3
+    if [[ $no_commands ]]; then
+        echo -e "\033[31m$no_commands 命令不存在，正在下载安装！\033[0m"
+        os_type=$(uname -s)
+        case "$os_type" in
+            Linux*)
+                os_distribution=$(lsb_release -si)
+                if [ "$os_distribution" = "Ubuntu" ] || [ "$os_distribution" = "Debian" ]; then
+                    apt install -y $no_commands >/dev/null 2>&1
+                elif [ "$os_distribution" = "CentOS" ]; then
+                    yum install -y $no_commands >/dev/null 2>&1
+                elif [ "$os_distribution" = "Fedora" ]; then
+                    dnf install -y $no_commands >/dev/null 2>&1
+                fi
+                if [[ $? == 0 ]] ;then
+                    echo -e "\033[31m$no_commands 命令已安装！\033[0m"
+                fi
+                ;;
+            Darwin*)
+                brew install $no_commands >/dev/null 2>&1
+                if [[ $? == 0 ]] ;then
+                    echo -e "\033[31m$no_commands 命令已安装！\033[0m"
+                fi
+                ;;
+            CYGWIN*|MINGW32*|MSYS*|MINGW*)
+                echo -e "\033[31mWindows操作系统，请手动安装！\033[0m"
+                ;;
+            *)
+                echo -e "\033[31m未知的操作系统\033[0m"
+                return
+                ;;
+        esac
+    fi
+}
 
-databases_array=(${databases//,/ })
-for database in ${databases_array[@]}; do
-    mkdir -p dumpling-export-sql/sql/$database &&
+dumpling-mysql-tidb-data-to-file() {
+  check_commands_exists pidof mysql_config_editor
+  echo "数据库连接地址: "
+  echo -e "  \e[;33m1. 手动输入数据库连接信息\033[0m"
+  echo -e "  \e[;33m2. 生产环境TiDB  - 192.168.1.12:4000\033[0m"
+  echo -e "  \e[;33m3. 测试环境TiDB  - 192.168.1.13:4000\033[0m"
+  echo -e "  \e[;33m4. 测试环境MySQL - 192.168.1.14:3306\033[0m"
+  echo -e "  \e[;33m5. 退出\033[0m"
+
+  read "?请设置数据库连接地址，默认[1]: " DB_HOST_OPT
+  until [[ -z "$DB_HOST_OPT" || "$DB_HOST_OPT" =~ ^[12345]$ ]]; do
+    echo -e "  \033[41;37m输入$DB_HOST_OPT为无效的选项！可选项：1,2,3,4,5\033[0m"
+    read "?请重新设置数据库连接地址，默认[1]: " DB_HOST_OPT
+  done
+  [[ -z "$DB_HOST_OPT" ]] && DB_HOST_OPT=1
+  case "$DB_HOST_OPT" in
+  1)
+    read "?请输入数据库连接地址: " DB_HOST
+    until [[ ! -z "$DB_HOST" && $DB_HOST =~ ^192.168.[1-9]{1,3}\.*$ ]]; do
+      if [ ! $DB_HOST ] ;then
+        echo -e "  \033[41;37m数据库连接地址为必填项，不能为空！\033[0m"
+      else
+        echo  -e "  \033[41;37m$DB_HOST为无效的内网IP地址！\033[0m"
+      fi
+      read "?请重新输入数据库连接地址: " DB_HOST
+    done
+    read "?请输入数据库连接端口: " DB_HOST_PORT
+    until [[ ! -z "$DB_HOST_PORT" && $DB_HOST_PORT =~ ^(3306|4000)$ ]]; do
+      if [ ! $DB_HOST_PORT ] ;then
+        echo -e "  \033[41;37m数据库连接端口为必填项，不能为空！\033[0m"
+      else
+        echo -e "  \033[41;37m$DB_HOST_PORT为无效的数据库端口！\033[0m"
+      fi
+      read "?请重新输入数据库连接端口: " DB_HOST_PORT
+    done
+    read "?请输入数据库连接用户名: " DB_USERNAME
+    until [[ ! -z "$DB_USERNAME" ]]; do
+      echo -e "  \033[41;37m数据库连接用户为必填项，不能为空！\033[0m"
+      read "?请重新输入数据库连接用户名: " DB_USERNAME
+    done
+    echo -e "请输入数据库用户密码: "
+    mysql_config_editor remove --login-path=tmp
+    mysql_config_editor set --login-path=tmp --user=$DB_USERNAME --host=$DB_HOST --port=$DB_HOST_PORT --password
+    DB_ALIAS=tmp
+    ;;
+  2)
+    DB_ALIAS=prod-tidb
+    output=$(mysql_config_editor print --login-path=$DB_ALIAS)
+    DB_HOST=$(echo "$output" | awk -F'"' '/host/ {print $2}')
+    DB_HOST_PORT=$(echo "$output" | awk -F'= ' '/port/ {print $2}')
+    DB_USERNAME=$(echo "$output" | awk -F'"' '/user/ {print $2}')
+    ;;
+  3)
+    DB_ALIAS=test-tidb
+    output=$(mysql_config_editor print --login-path=$DB_ALIAS)
+    DB_HOST=$(echo "$output" | awk -F'"' '/host/ {print $2}')
+    DB_HOST_PORT=$(echo "$output" | awk -F'= ' '/port/ {print $2}')
+    DB_USERNAME=$(echo "$output" | awk -F'"' '/user/ {print $2}')
+    ;;
+  4) 
+    DB_ALIAS=test-mysql
+    output=$(mysql_config_editor print --login-path=$DB_ALIAS)
+    DB_HOST=$(echo "$output" | awk -F'"' '/host/ {print $2}')
+    DB_HOST_PORT=$(echo "$output" | awk -F'= ' '/port/ {print $2}')
+    DB_USERNAME=$(echo "$output" | awk -F'"' '/user/ {print $2}')
+    ;;
+  5)
+    return
+    ;;  
+  esac
+
+  read -s "?请输入数据库 $DB_HOST:$DB_HOST_PORT 连接用户 $DB_USERNAME 的密码: " DB_PASSWORD
+  until [[ ! -z "$DB_PASSWORD" ]]; do
+    if [ ! $DB_PASSWORD ] ;then
+      echo -e "  \033[41;37m数据库连接密码为必填项。不能为空！\033[0m"
+    else
+      echo -e "  \033[41;37m$DB_PASSWORD为无效的输入！\033[0m"
+    fi
+    read -s "?请输入数据库 $DB_HOST:$DB_HOST_PORT 连接用户 $DB_USERNAME 的密码: " DB_PASSWORD
+  done
+  mysql_config_editor remove --login-path=$DB_ALIAS
+  echo
+  echo -e "请再次输入"
+  mysql_config_editor set --login-path=$DB_ALIAS --host=$DB_HOST --port=$DB_HOST_PORT --user=$DB_USERNAME --password
+
+  show_select_database(){
+    all_databases=$(mysql --login-path=$DB_ALIAS -e 'show databases;'  |grep -i -Ev '"+-----------------------+"|Database|Warning|METRICS_SCHEMA|INFORMATION_SCHEMA|mysql|PERFORMANCE_SCHEMA' 2> /dev/null)
+    count=1
+    for db in ${(f)all_databases}; do
+      printf "\e[;36m%-2s. %-24s\033[0m" "$count" "$db"
+      if [ $((count % 5)) -eq 0 ]; then
+        echo ""
+      fi
+      ((count++))
+    done
+    selected_databases_all=""
+    selected_databases_set=()
+    selected_databases_summary=""
+    echo
+    while true; do
+      read "?请输入要备份的数据库序号(以逗号分隔): " selected_indices
+      IFS=',' read -A -r indices <<< "$selected_indices"
+      invalid_indices=()
+      for index in "${indices[@]}"; do
+        if ((index >= 1 && index <= count)); then
+          selected_database=$(echo "$all_databases" | sed -n "${index}p")
+          if [[ "$all_databases" =~ $selected_database ]]; then
+            if ! [[ "${selected_databases_set[@]}" =~ "$selected_database" ]]; then
+              selected_databases_set+=("$selected_database")
+              selected_databases_summary+="$selected_database,"
+            fi
+          else
+            invalid_indices+=("$index")
+          fi
+        else
+          invalid_indices+=("$index")
+        fi
+      done
+      if [ ${#invalid_indices[@]} -eq 0 ]; then
+        break
+      else
+        echo "  \033[41;37m${invalid_indices[@]}为无效的数据库序号\033[0m"
+      fi
+    done
+    BACKUP_DBS=${selected_databases_summary%,}
+  }
+
+  show_select_database_tables(){
+    IFS=',' read -A -r SELECTED_DBS <<< "$1"
+    selected_tables_summary=""
+    for SELECTED_DB in ${SELECTED_DBS[@]} ;do 
+      db_tables=$(mysql --login-path=$DB_ALIAS --database $SELECTED_DB -e 'show tables;'  |grep -i -Ev '"+-----------------------+"|Tables_in|Warning' 2> /dev/null)
+      count=1
+      for table in ${(f)db_tables}; do
+        printf "\e[;36m%-3s. %-32s\033[0m" "$count" "$table"
+        if [ $((count % 5)) -eq 0 ]; then
+          echo ""
+        fi
+        ((count++))
+      done
+      echostr+="\n  $SELECTED_DB库的: \n    "
+      echotablesstr=""
+      selected_tables_all=""
+      selected_tables_set=()
+      echo
+      while true; do
+        read "?请输入 $SELECTED_DB 库中要备份表的序号(多张表以逗号分隔): " selected_indices
+        IFS=',' read -A -r indices <<< "$selected_indices"
+        invalid_indices=()
+        for index in "${indices[@]}"; do
+          if ((index >= 1 && index <= count)); then
+            selected_table=$(echo "$db_tables" | sed -n "${index}p")
+            if [[ "$db_tables" =~ $selected_table ]]; then
+              if ! [[ "${selected_tables_set[@]}" =~ "$selected_table" ]]; then
+                selected_tables_set+=("$SELECTED_DB.$selected_table")
+                selected_tables_summary+="$SELECTED_DB.$selected_table,"
+                echotablesstr+="$selected_table,"
+              fi
+            else
+              invalid_indices+=("$index")
+            fi
+          else
+            invalid_indices+=("$index")
+          fi
+        done
+        if [ ${#invalid_indices[@]} -eq 0 ]; then
+          break
+        else
+          echo "  \033[41;37m${invalid_indices[@]}为无效的数据库表序号\033[0m"
+        fi
+      done
+      echostr+="${echotablesstr%,} 表"
+    done
+    BACKUP_DB_TABLES="${selected_tables_summary%,}"
+  }
+
+
+  # 检查数据库地址与端口的连通性
+  if ! nc -znv $DB_HOST $DB_HOST_PORT >/dev/null 2>&1; then
+    echo  -e "  \033[41;37m数据库连接地址: $DB_HOST的$DB_HOST_PORT端口连接测试失败，请检查后重新设置！\033[0m"
+    return
+  fi
+
+  # 检查数据库用户是否可登录
+  connect_res=$(timeout 3 mysql --login-path=$DB_ALIAS -e "select 1;" 2>&1) 
+  if [[ $? != 0 ]] ; then
+    echo  -e "  \033[41;37m数据库用户$DB_USERNAME无法连接$DB_HOST:$DB_HOST_PORT，请检查用户名密码以及用户客户端IP地址的正确性！\033[0m"
+    echo  -e "    \033[41;37m报错信息：$connect_res ！\033[0m"
+    return
+  fi
+  echo "备份类型: "
+  echo -e "  \e[;33m1. 备份某些库\033[0m"
+  echo -e "  \e[;33m2. 备份某些库中的表\033[0m"
+  read "?请选择要备份的类型，默认[2]: " BACKUP_TYPE_OPT
+  until [[ -z "$BACKUP_TYPE_OPT" || "$BACKUP_TYPE_OPT" =~ '^[12]$' ]]; do
+    echo "$BACKUP_TYPE_OPT: 无效的选项."
+    read -p "请重新选择要备份的类型，默认[2]: " BACKUP_TYPE_OPT
+  done
+  [[ -z "$BACKUP_TYPE_OPT" ]] && BACKUP_TYPE_OPT=2
+
+  # 检查数据库用户是否有备份权限
+  timeout 3 mysql --login-path=$DB_ALIAS -e "show grants for $DB_USERNAME@'%';" >/dev/null 2>&1 |grep -E 'RELOAD|ALL PRIVILEGES|REPLICATION CLIENT|SELECT' > /dev/null
+  if [[ $? != 0 ]] ; then
+    timeout 3 mysql --login-path=$DB_ALIAS -e "show grants for $DB_USERNAME@'192.168.1.3';" >/dev/null 2>&1 |grep -E 'RELOAD|ALL PRIVILEGES|REPLICATION CLIENT|SELECT' > /dev/null
+    if [[ $? != 0 ]] ; then
+      echo  -e "  \033[41;37m数据库用户$DB_USERNAME在%或192.168.1.3地址上对实例$DB_HOST:$DB_HOST_PORT没有备份权限，请使用高权限用户授予其RELOAD,REPLICATION CLIENT权限！\033[0m\n  \033[41;37m授权SQL: GRANT SELECT,RELOAD,REPLICATION CLIENT for '$DB_USERNAME'@'%' ; GRANT SELECT,RELOAD,REPLICATION CLIENT for '$DB_USERNAME'@'192.168.1.3' ;\033[0m"
+      return
+    fi
+  fi
+  local BACKUP_DBS=""
+  local BACKUP_DB_TABLES=""
+  case "$BACKUP_TYPE_OPT" in
+    1)
+      show_select_database $DB_HOST $DB_HOST_PORT $DB_USERNAME $DB_PASSWORD
+      tput setaf 3
+      read "?是否可以开始备份$DB_HOST:$DB_HOST_PORT上的 $BACKUP_DBS 库[Yy/Nn]? " READY_RUN
+      until [[ ! -z "$READY_RUN" && ${READY_RUN} =~ ^[yYnN]*$ ]]; do
+        read "?是否可以开始备份$DB_HOST:$DB_HOST_PORT上的 $BACKUP_DBS 库[Yy/Nn]? " READY_RUN
+      done
+      tput sgr0
+      if [[ $READY_RUN =~ ^[yY]*$ ]] ;then
+        DATE=$(date +"%Y%m%d%M")
+        BACKUPFILE_PATH='/Users/test/Desktop'
+        mkdir LE_PATH/$DATE/{sql,logs}
         nohup dumpling \
-            -u $source_db_user \
-            -p $source_db_password \
-            -P $source_db_port \
-            -h $source_db_host \
-            -B $database \
+          -c gzip \
+          -h ${DB_HOST} \
+          -P ${DB_HOST_PORT} \
+          -u ${DB_USERNAME} \
+          -p ${DB_PASSWORD} \
+          --filetype sql \
+          --threads 8 \
+          -B $BACKUP_DBS \
+          -o $BACKUPFILE_PATH/$DATE/sql \
+          -F 256MiB \
+          --logfile $BACKUPFILE_PATH/$DATE/logs/export-task.log >$BACKUPFILE_PATH/$DATE/logs/dumpling-nohupout.log 2>&1 &
+        sleep 2
+        gtail -f --pid=$(pidof dumpling) $BACKUPFILE_PATH/$DATE/logs/export-task.log $BACKUPFILE_PATH/$DATE/logs/dumpling-nohupout.log 2>/dev/null
+        if grep -q "dump data successfully" $BACKUPFILE_PATH/$DATE/logs/export-task.log ;then
+          echo -e "\033[41;37m$DB_HOST上的 $BACKUP_DBS 库已备份在 $BACKUPFILE_PATH/$DATE\033[0m"
+          open $BACKUPFILE_PATH/$DATE
+        else
+          echo -e "\033[41;37m数据库Database备份失败！错误信息如下：\033[0m"
+          grep "failed" $BACKUPFILE_PATH/$DATE/logs/dumpling-nohupout.log
+        fi
+      else
+        return
+      fi
+      ;;
+    2)
+        local echostr=""
+        show_select_database
+        show_select_database_tables $BACKUP_DBS
+        tput setaf 6
+        echo -e ${echostr#*\n}
+        tput sgr0
+        read "?是否可以开始备份$DB_HOST:$DB_HOST_PORT以上的的库表 [Yy/Nn]? " READY_RUN
+        until [[ ! -z "$READY_RUN" && ${READY_RUN} =~ ^[yYnN]*$ ]]; do
+          read "?是否可以开始备份$DB_HOST:$DB_HOST_PORT以上的的库表 [Yy/Nn]? " READY_RUN
+        done
+        if [[ $READY_RUN =~ ^[yY]*$ ]] ;then
+          echo 
+          tput setaf 3
+          DATE=$(date +"%Y%m%d%M")
+          BACKUPFILE_PATH='/Users/test/Desktop'
+          mkdir -p $BACKUPFILE_PATH/$DATE/{sql,logs}
+          nohup dumpling \
+            -c gzip \
+            -h ${DB_HOST} \
+            -P ${DB_HOST_PORT} \
+            -u ${DB_USERNAME} \
+            -p ${DB_PASSWORD} \
             --filetype sql \
-            --threads 4 \
-            -o dumpling-export-sql/sql/$database \
+            --threads 8 \
+            -T $BACKUP_DB_TABLES \
+            -o $BACKUPFILE_PATH/$DATE/sql \
             -F 256MiB \
-            --logfile dumpling-export-sql/$database-export-task.log >dumpling-export-sql/$database-dumpling-nohupout.log 2>&1 &
-done
-```
-
-Zsh Function
-
-```bash
-dumpling-mysql-db-tables-to-file() {
-
-  read "?请输入数据库连接地址: " DB_HOST
-  read "?请输入数据库连接端口: " DB_HOST_PORT
-  read "?请输入数据库连接用户名: " DB_USERNAME
-  read "?请输入数据库连接密码: " DB_PASSWORD
-  read "?请输入要备份的表，格式为：库名.表名(多个库表以,分割): " DB_TABLES
-  DATE=$(date +"%Y%m%d%M")
-  # 要导出的库名以逗号分割
-  BACKUPFILE_PATH=~/Desktop
-  mkdir -p $BACKUPFILE_PATH/$DATE/sqldata
-  DB_TABLES_COMMNAD="-T "${DB_TABLES//,/ -T }
-  nohup dumpling \
-    -c gzip \
-    -h $DB_HOST \
-    -P $DB_HOST_PORT \
-    -u $DB_USERNAME \
-    -p $DB_PASSWORD \
-    $(echo $DB_TABLES_COMMNAD) \
-    --filetype sql \
-    --threads 4 \
-    -o $BACKUPFILE_PATH/$DATE/sqldata \
-    -F 256MiB \
-    --logfile $BACKUPFILE_PATH/$DATE/export-task.log >$BACKUPFILE_PATH/$DATE/dumpling-nohupout.log 2>&1 &
-
-  sleep 1
-
-  gtail -f --pid=$(ps -ef | grep dumpling | grep -v "grep" | awk '{ print $2 } ' | sort -nr | head -1) $BACKUPFILE_PATH/$DATE/export-task.log
-
+            --logfile $BACKUPFILE_PATH/$DATE/logs/export-task.log >$BACKUPFILE_PATH/$DATE/logs/dumpling-nohupout.log 2>&1 &
+          sleep 2
+          gtail -f --pid=$(pidof dumpling) $BACKUPFILE_PATH/$DATE/logs/export-task.log $BACKUPFILE_PATH/$DATE/logs/dumpling-nohupout.log 2>/dev/null
+          if grep -q "dump data successfully" $BACKUPFILE_PATH/$DATE/logs/export-task.log ;then
+            echo -e "\033[41;37m数据库表已备份成功，文件在$BACKUPFILE_PATH/$DATE\033[0m"
+            open $BACKUPFILE_PATH/$DATE
+          else
+            echo -e "\033[41;37m数据库表备份失败！错误信息如下：\033[0m"
+            grep "failed" $BACKUPFILE_PATH/$DATE/logs/dumpling-nohupout.log
+          fi
+          tput sgr0
+        fi
+      ;;
+  esac
 }
 ```
 

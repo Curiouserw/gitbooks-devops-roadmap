@@ -757,8 +757,6 @@ cannot be loaded: dlopen(
 /usr/local/lib/plugin/caching_sha2_password.so, 2): not found
 ```
 
-
-
 - MySQL添加以下配置到mysqld.conf中并重启
 
   ```bash

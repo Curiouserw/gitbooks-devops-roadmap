@@ -209,72 +209,49 @@ done
 # 9、检查常见系统命令是否安装
 
 ```bash
-check_command() {
-	if ! command -v ifconfig >/dev/null 2>&1; then
-		echo -e "\033[31mifconfig命令不存在，正在下载安装！\033[0m"
-		if os="ubuntu"; then
-			apt install -y net-tools >/dev/null 2>&1
-		elif os="centos"; then
-			yum install -y net-tools >/dev/null 2>&1
-		elif os="fedora"; then
-			dnf install -y net-tools >/dev/null 2>&1
-		fi
-	elif ! command -v ip >/dev/null 2>&1; then
-		echo -e "\033[31mip命令不存在，正在下载安装！\033[0m"
-		if os="ubuntu"; then
-			apt install -y iproute2 >/dev/null 2>&1
-		elif os="centos"; then
-			yum install -y iproute2 >/dev/null 2>&1
-		elif os="fedora"; then
-			dnf install -y iproute2 >/dev/null 2>&1
-		fi
-	elif ! command -v curl >/dev/null 2>&1; then
-		echo -e "\033[31mcurl命令不存在，正在下载安装！\033[0m"
-		if os="ubuntu"; then
-			apt install -y curl >/dev/null 2>&1
-		elif os="centos"; then
-			yum install -y curl >/dev/null 2>&1
-		elif os="fedora"; then
-			dnf install -y curl >/dev/null 2>&1
-		fi
-	elif ! command -v wget >/dev/null 2>&1; then
-		echo -e "\033[31mawk命令不存在，正在下载安装！\033[0m"
-		if os="ubuntu"; then
-			apt install -y wget >/dev/null 2>&1
-		elif os="centos"; then
-			yum install -y wget >/dev/null 2>&1
-		elif os="fedora"; then
-			dnf install -y wget >/dev/null 2>&1
-		fi
-	elif ! command -v tail >/dev/null 2>&1; then
-		echo -e "\033[31mcoreutils命令不存在，正在下载安装！\033[0m"
-		if os="ubuntu"; then
-			apt install -y coreutils >/dev/null 2>&1
-		elif os="centos"; then
-			yum install -y coreutils >/dev/null 2>&1
-		elif os="fedora"; then
-			dnf install -y coreutils >/dev/null 2>&1
-		fi
-	elif ! command -v sed >/dev/null 2>&1; then
-		echo -e "\033[31msed命令不存在，正在下载安装！\033[0m"
-		if os="ubuntu"; then
-			apt install -y sed >/dev/null 2>&1
-		elif os="centos"; then
-			yum install -y sed >/dev/null 2>&1
-		elif os="fedora"; then
-			dnf install -y sed >/dev/null 2>&1
-		fi
-	elif ! command -v grep >/dev/null 2>&1; then
-		echo -e "\033[31mgrep命令不存在，正在下载安装！\033[0m"
-		if os="ubuntu"; then
-			apt install -y grep >/dev/null 2>&1
-		elif os="centos"; then
-			yum install -y grep >/dev/null 2>&1
-		elif os="fedora"; then
-			dnf install -y grep >/dev/null 2>&1
-		fi
-	fi
+check_commands_exists() {
+    need_commands=($*)
+    no_commands=""
+    for command in "${need_commands[@]}" ; do
+        if ! command -v $command &> /dev/null; then
+            no_commands+=" $command"
+        fi
+    done
+
+    if [[ $no_commands ]]; then
+        echo -e "\033[31m$no_commands 命令不存在，正在下载安装！\033[0m"
+        os_type=$(uname -s)
+        case "$os_type" in
+            Linux*)
+                os_distribution=$(lsb_release -si)
+                if [ "$os_distribution" = "Ubuntu" ] || [ "$os_distribution" = "Debian" ]; then
+                    apt install -y $no_commands >/dev/null 2>&1
+                elif [ "$os_distribution" = "CentOS" ]; then
+                    yum install -y $no_commands >/dev/null 2>&1
+                elif [ "$os_distribution" = "Fedora" ]; then
+                    dnf install -y $no_commands >/dev/null 2>&1
+                fi
+                if [[ $? == 0 ]] ;then
+                    echo -e "\033[31m$no_commands 命令已安装！\033[0m"
+                fi
+                ;;
+            Darwin*)
+                brew install $no_commands >/dev/null 2>&1
+                if [[ $? == 0 ]] ;then
+                    echo -e "\033[31m$no_commands 命令已安装！\033[0m"
+                fi
+                ;;
+            CYGWIN*|MINGW32*|MSYS*|MINGW*)
+                echo -e "\033[31mWindows操作系统，请手动安装！\033[0m"
+                ;;
+            *)
+                echo -e "\033[31m未知的操作系统\033[0m"
+                return
+                ;;
+        esac
+    fi
 }
+check_commands_exists jq pidof
 ```
 
 # 10、检查系统网络
@@ -363,4 +340,41 @@ function clean_backups (){
 }
 # 调用
 clean_backups "./backups" 2 
+```
+
+# 13、格式化输出
+
+## ①并列格式化输出
+
+```bash
+tests='
+a1a
+b2b
+c3c
+d4d
+e5e
+f6f
+g7g
+h8h
+i9i
+j10j
+k11k
+'
+
+count=1
+colume=5 # 控制一行输出几列
+for test in ${tests}; do
+  printf "\e[;36m%-2s. %-10s\033[0m" "$count" "$test"
+  if [ $((count % $colume)) -eq 0 ]; then
+    echo ""
+  fi
+  ((count++))
+done
+# 针对文本变量的变量，bash中是"for test in ${tests}; do ... done" 。
+#                 zsh中是"for test in ${(f)tests}; do ... done"。
+
+# 格式化输出
+1 . a1a       2 . b2b       3 . c3c       4 . d4d       5 . e5e
+6 . f6f       7 . g7g       8 . h8h       9 . i9i       10. j10j
+11. k11k
 ```

@@ -2448,3 +2448,45 @@ done
   ```bash
   ioreg -c IOBlockStorageDriver -r -w 0
   ```
+
+# 79、dig
+
+> dig <要查询的域名> @<DNS服务器>
+
+```bash
+# 要查询 example.com 的 A 记录，并且不使用本地缓存
+dig a www.baidu.com @8.8.8.8 |grep "www.baidu.com" | sed '1,2d' | awk '{print $5}'
+
+# 只显示A记录，不显示CNAME
+dig +short +nocomments +noquestion a www.baidu.com @8.8.8.8 | awk 'match($0, /[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+/) {print substr($0, RSTART, RLENGTH)}'
+```
+
+# 79、trip
+
+https://trippy.cli.rs/#configuration-reference
+
+# 80、Linux 安装字体
+
+- **TrueType 字体 (TTF)：** TrueType 是最流行且得到广泛支持的字体格式之一。TTF 字体是可缩放的，并且在各种尺寸下都能很好地显示。它们通常用于屏幕和打印目的，因此适用于网页设计、图形设计和一般文本渲染。
+- **OpenType 字体 (OTF)：** OpenType 是 TrueType 字体格式的扩展。OTF 字体支持高级排版功能，例如连字、替代字符和样式集。它们可以包含 TrueType 和 PostScript 字体数据，使其适用于不同的平台和应用程序。
+- **PostScript 字体（Type 1）：** PostScript 字体通常称为 Type 1 字体，是最早的数字字体格式之一。虽然它们已在很大程度上被 TrueType 和 OpenType 字体取代，但它们仍然在特定的遗留应用程序和打印工作流程中使用。
+- **位图字体 (BDF)：**位图字体是使用像素网格创建的，其中每个像素对应于一个特定的字形。这些字体不可缩放，最适合特定的屏幕分辨率。它们通常用于屏幕空间有限的旧系统和终端。
+- **X11 字体格式 (XLFD)：** X 逻辑字体描述 (XLFD) 格式在 X Window 系统中用于描述字体。它包括各种属性，如字体系列、样式、大小、粗细等。但是，随着更新的字体技术和格式的出现，XLFD 的相关性已不再那么重要。
+- **Web 字体格式（WOFF、WOFF2）：**虽然并非 Linux 独有，但 WOFF（Web 开放字体格式）和 WOFF2 等 Web 字体格式针对 Web 使用进行了优化，提供高效的压缩和更快的加载时间。它们允许网页设计人员在其网站上使用自定义字体，同时确保跨浏览器兼容性。
+- **SVG 字体：**可扩展矢量图形 (SVG) 字体使用基于 XML 的描述来定义字体轮廓。虽然它们在不损失质量的情况下提供可扩展性，但在一般文本使用中它们不如 TrueType 或 OpenType 字体常见。
+
+Linux 提供了两种主要的字体安装方式： **系统范围** 和 **每用户**。大多数 Linux 发行版将系统范围的字体存储在 `/usr/share/fonts` 目录中。
+
+- 系统范围安装
+
+  - 下载字体文件并复制到`/usr/share/fonts/字体文件夹`下。
+  - 更新字体缓存，以便应用程序可以识别新字体：`fc-cache -f -v`
+  - 查看字体是否已安装：`fc-list`
+
+- 用户范围安装
+
+  - 下载字体文件并复制到`~/.local/share/fonts/字体文件夹`下。
+  - 更新字体缓存，以便应用程序可以识别新字体：`fc-cache -f -v`
+  - 查看字体是否已安装：`fc-list`
+
+https://linuxiac.com/how-to-install-fonts-on-linux/

@@ -1,6 +1,6 @@
 # Python/R语言多用户工作台JupyterHub/RStuido
 
-# 一、简介
+# 一、Jupyter简介
 
 Jupyter是一款基于python的web notebook服务，目前有大多python数据挖掘与机器学习爱好者使用这款服务，其特性其实与Ipytohn Notebook差不多，准确说Ipython Notebook是一款提供增强型交互的功能的shell，而Jupyter除了Ipython的功能，还加入了普通编辑器的通用功能，是一款带代码交互的动态文档web编辑器
 
@@ -39,6 +39,21 @@ echo $! > /var/log/jupyterhub.pid
 ```
 
 ### docker安装
+
+```bash
+version: "3"
+services:
+  jupyterhub:
+    image: jupyterhub/jupyterhub:4.0.2
+    container_name: jupyterhub
+    restart: always
+    ports:
+      - "8000:8000"
+    environment:
+      TZ: Asia/Shanghai
+    volumes:
+      - /root/jupyterhub/data:/home
+```
 
 ### kubernetes安装
 
@@ -181,7 +196,7 @@ ab01cd23ef45
 ### Jupyter kernel的管理
 
 ```bash
-jupyter-kernelspec  list
+jupyter-kernelspec list
 jupyter-kernelspec install
 jupyter-kernelspec uninstall
 jupyter-kernelspec remove
@@ -265,16 +280,50 @@ jupyter labextension install @techrah/text-shortcuts
 
 ## 1、安装
 
+### ①包管理器安装
+
 以`Ubuntu 18.04 bionic`安装R `4.x.x`版本 为例（包管理器默认仓库的R版本大多是3.x.x）
 
 ```bash
 echo "deb https://mirrors.tuna.tsinghua.edu.cn/CRAN/bin/linux/ubuntu bionic-cran40/">> /etc/apt/sources.list.d/r-tuna.list
 apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
 apt-get update
-apt-get install r-base-dev
+apt-get install r-base r-base-dev
+```
+
+### ②源码编译安装
+
+```bash
+apt-get install libxt-dev libcurl4-openssl-dev
+export R_VERSION=4.3.2
+curl -O "https://cran.rstudio.com/src/base/R-4/R-${R_VERSION}.tar.gz"
+tar -xzvf R-${R_VERSION}.tar.gz
+cd R-${R_VERSION}
+JAVA_HOME=/opt/java  ./configure \
+    --prefix=/opt/R/4.3.2\
+    --enable-R-shlib \
+    --enable-memory-profiling \
+    --with-blas \
+    --with-lapack \
+    --enable-R-shlib
+    
+# --prefix Specifies the directory where R is installed when executing make install. Change this to install R at a different location than /opt/R/${R_VERSION}.
+# --enable-R-shlib Required to use R with RStudio.
+# --enable-memory-profiling	Enables support for Rprofmem() and tracemem(), used to measure memory use in R code.
+# --with-blas, --with-lapack  Configures R to link against external BLAS and LAPACK libraries on the system. Recommended only on Ubuntu/Debian, where the alternatives system may be used to switch the BLAS library at runtime. If unspecified, R uses an internal BLAS library that can be switched at runtime. See Configure R to use a different BLAS library for more details.
+
+    
+make
+make install
+/opt/R/4.3.2/bin/R --version
+
+ln -s /opt/R/4.3.2/bin/R /usr/local/bin/R432
+ln -s /opt/R/4.3.2/bin/Rscript /usr/local/bin/RscriptR432
 ```
 
 ## 2、包的管理
+
+https://cloud.r-project.org/bin/linux/ubuntu/bionic-cran40/
 
 ### 包的安装
 
@@ -282,7 +331,7 @@ apt-get install r-base-dev
 
 ```R
 # 在R CLI中
-install.packages("rjson",repos="https://mirrors.ustc.edu.cn/CRAN") 
+install.packages("RMySQL",repos="https://mirrors.ustc.edu.cn/CRAN") 
 install.packages("ape")
 # 在linux命令行
 su - -c "R -e \"install.packages('shiny', repos='https://cran.rstudio.com/')\""
@@ -293,7 +342,7 @@ su - -c "R -e \"install.packages('shiny', repos='https://cran.rstudio.com/')\""
 ```bash
 # 在R CLI中
 install.packages("/root/mgcv_1.8-29.tar.gz", repos = NULL,type="source")
-	# 或者
+    # 或者
 packageurl <- "https://cran.rstudio.com/bin/macosx/contrib/4.0/mgcv_1.8-23.tgz"
 install.packages(packageurl, repos=NULL, type="source")
 # 在linux命令行
@@ -389,5 +438,52 @@ apt-get install r-base
 # 或者
 gpg --keyserver keys.gnupg.net --recv-keys 3F32EE77E331692F
 dpkg-sig --verify <rstudio-server-package.deb>
+```
+
+### ③Docker-compose
+
+```bash
+services:
+  rstudio-server:
+    image: rocker/rstudio:4.3.2
+    container_name: rstudio-server
+    hostname: rstudio-server
+    restart: always # 设置容器自启模式
+    ports:
+      - "8087:8787"
+    environment:
+      TZ: Asia/Shanghai # 设置容器时区与宿主机保持一致
+      PASSWORD: 123456 # 设置root密码
+      ROOT: true
+      USERID: 1001
+      GROUPID: 1001
+    volumes:
+      - ./workspace:/home/
+```
+
+参考：
+
+- https://github.com/rocker-org/rocker/wiki
+- https://github.com/rocker-org/rocker/wiki/Using-the-RStudio-image#multiple-users
+
+## 3、配置
+
+### ①配置多版本 R
+
+https://support.posit.co/hc/en-us/articles/226872207-Managing-R-versions-in-RStudio-Connect
+
+## 4、测试代码
+
+```R
+install.packages('RMySQL')
+library(RMySQL)
+# 创建数据库连接
+con<-dbConnect(MySQL(),host='192.168.1.1',port=3306,dbname="test",user="test",password="************")
+# 查询数据库表
+result <- dbGetQuery(con, "show tables;")
+# 打印查询结果
+print(result)
+# 关闭数据库连接
+dbDisconnect(con)
 ```
 

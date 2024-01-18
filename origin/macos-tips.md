@@ -128,20 +128,28 @@ brew info <package_name>
 brew cask install <formula>
 # 卸载对应包名字
 brew uninstall <package_name>
-# 列出过时的包
+# 列出哪些包需要更新
 brew outdated
-# 更新过时的包，不带包名就跟新所有包
+# 更新过时的包，不带包名就更新所有包
 brew upgrade [ package_name ]
 # 更新HomeBrew自身
 brew update
 # 清除缓存
 brew cleanup [包名]
+# 清理指定包的旧版本
+brew cleanup $FORMULA   
+# 查看可清理的旧版本包，不执行实际操作
+brew cleanup -n          
 # 列出已经安装的包
 brew list
 # 查看homebrew 的配置
 brew config
 # 添加或者删除仓库
 brew [un]tap <github_userid/repo_name> 
+# 锁定某个包不更新
+brew pin $FORMULA    
+# 取消锁定某个包不更新
+brew unpin $FORMULA
 ```
 
 ### ④使用国内的镜像源
@@ -661,3 +669,7 @@ security add-generic-password -a 账号 -s 名称 -w 密码
 ```bash
 security find-generic-password -s 名称 -g
 ```
+
+# 参考
+
+- https://git.herrbischoff.com/awesome-macos-command-line/about/

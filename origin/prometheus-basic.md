@@ -242,8 +242,6 @@ scrape_configs:
 - time=<rfc3339 | unix_timestamp>: Evaluation timestamp. Optional.
 - timeout=<duration>: Evaluation timeout. Optional. Defaults to and is capped by the value of the -query.timeout flag.
 
-
-
 ## 1、admin api
 
 默认情况下，管理时间序列 API 是被禁用的，在 Prometheus 的启动参数中添加`--web.enable-admin-api`参数启用

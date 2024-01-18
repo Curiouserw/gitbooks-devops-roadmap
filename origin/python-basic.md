@@ -66,6 +66,7 @@ apt-get install python3-pip
 pip3 install -U pip
 # 或者
 python3 -m pip install -U pip
+python3 -m pip install --upgrade pip
 ```
 
 ## 3、安装依赖
@@ -132,3 +133,99 @@ source ./bin/activate
 (venv) pip freeze > requirements.txt
 ```
 
+# 四、AnaConda、MiniConda
+
+## 1、设置 conda 源
+
+`~/.condarc`
+
+```bash
+# 配置了 Conda 包搜索的顺序。Conda 将按照列表中的顺序搜索包，直到找到第一个匹配的包为止
+channels:
+  - defaults
+
+show_channel_urls: true											# 是否在安装过程中显示从哪个频道下载的包
+auto_update_conda: false										# 配置了是否在每次使用 Conda 命令时自动更新 Conda。
+create_default_packages:										# 配置了创建新环境时默认安装的包
+  - numpy
+  - pandas
+anaconda_anon_usage: false									# 配置是否允许匿名使用数据的收集
+channel_priority: strict								# 配置了Conda是否优先使用指定的频道."strict"(严格)表示只使用指定频道,"flexible"(灵活)表示可以使用其他频道
+channel_alias:															# 设置频道别名，以便更方便地引用频道
+  my_alias: https://my_channel_url
+
+default_channels:														# 设置了 Conda 搜索包时的默认频道列表
+  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main
+  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/r
+  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/msys2
+custom_channels:														# 设置自定义频道
+  conda-forge: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud
+  msys2: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud
+  bioconda: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud
+  menpo: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud
+  pytorch: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud
+  pytorch-lts: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud
+  simpleitk: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud
+  deepmodeling: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/
+```
+
+`conda clean -i` 清除索引缓存
+
+参考：https://mirrors.tuna.tsinghua.edu.cn/help/anaconda/
+
+## 2、包管理
+
+```bash
+# 列出当前激活环境的所有包
+conda list
+# 列出一个非激活环境的所有包
+conda list -n base
+# 为指定环境安装某个包
+conda install -n base package_name
+# 从指定 channel 为指定环境安装某个包
+conda install -n base -c defaults package_name
+```
+
+## 3、环境管理
+
+```bash
+# 列出当前所有环境
+conda info --envs
+conda env list
+
+# 创建包含某些包的环境
+conda create --name your_env_name numpy scipy
+# 创建指定Python版本下包含某些包的环境
+conda create --name your_env_name python=3.8 numpy scipy
+
+# 激活某个环境
+activate your_env_name
+# 关闭某个环境
+deactivate your_env_name
+# 克隆某个环境
+conda create --name new_env_name --clone old_env_name
+# 删除某个环境
+conda remove --name your_env_name --all
+# 分享环境
+conda env export > share_env.yml
+# 创建该环境
+conda env create -f share_env.yml
+```
+
+## 4、配置操作
+
+```bash
+# 清除一下缓存
+conda clean -i
+# 清除所有缓存
+conda clean --all
+# 查看全部配置信息
+conda config --show
+# 查看源的配置信息
+conda config --show-sources
+# 查看源的详细信息
+conda info
+
+# 升级 conda
+conda update -n base conda
+```

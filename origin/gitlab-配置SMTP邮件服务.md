@@ -30,6 +30,12 @@ gitlab_rails['smtp_tls'] = false
 ```bash
 $ gitlab-rails console
 Loading production environment (Rails 4.2.10)
+
+# 查看发送邮件使用的方式。方式有smtp和sendmail两种
+$ irb(main):001:0> ActionMailer::Base.delivery_method
+# 查看 SMTP 相关的配置
+$ irb(main):001:0> ActionMailer::Base.smtp_settings
+# 发送测试邮件
 $ irb(main):001:0> Notify.test_email('******@163.com','gitlab send mail test','gitlab test mail').deliver_now
 
 Notify#test_email: processed outbound mail in 539.6ms

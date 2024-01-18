@@ -285,7 +285,7 @@ curl -s http://127.0.0.1:16811/jsonrpc \
 ```bash
 curl -s http://127.0.0.1:16811/jsonrpc \
   -H "Content-Type: application/json"  \
-  -d '{"jsonrcp":"2.0","id":"1","method":"system.listNotifications","params":["token:ZTA1ODA1$aZWZjYTd"]}' \
+  -d '{"jsonrcp":"2.0","id":"1","method":"system.listNotifications","params":["token:****************"]}' \
   | jq -r '.'
   
 {
@@ -307,7 +307,7 @@ curl -s http://127.0.0.1:16811/jsonrpc \
 ```bash
 curl -s http://127.0.0.1:16811/jsonrpc \
   -H "Content-Type: application/json"  \
-  -d '{"jsonrcp":"2.0","id":"1","method":"aria2.tellStatus","params":["token:ZTA1ODA1$aZWZjYTd","19d6860e0549f64f"]}' \
+  -d '{"jsonrcp":"2.0","id":"1","method":"aria2.tellStatus","params":["token:********","19d68********49f64f"]}' \
   | jq -r '.'
 ```
 
@@ -319,4 +319,4 @@ curl -s http://127.0.0.1:16811/jsonrpc \
 - https://github.com/ngosang/trackerslist
 - https://github.com/XIU2/TrackersListCollection
 - https://p3terx.com/archives/solved-aria2-cant-download-magnetic-link-bt-seed-and-slow-speed.html
-- https://p3terx.github.io/aria2.conf/aria2.conf
+- # https://p3terx.github.io/aria2.conf/aria2.conf

@@ -54,7 +54,7 @@ line 3
 '
 ```
 
-### ②读取标准输入输出赋值给变量
+### ②读取标准输入赋值给变量
 
 ```bash
 read -p "请输入一个字符： " key
@@ -126,25 +126,16 @@ value
 
 参考：https://github.com/dylanaraps/pure-bash-bible#variables
 
-### ④多行与单行变量值的引用
 
-在 bash/sh中，如果变量的值是一个命令的输出，而输出是多行，那么不同的引用方式，得到的数据是不同的
 
 ```bash
-$ var='line 1
-line 2
-line 3
-'
-
-$ echo $var 
-line 1 line 2 line 3
-
-$ echo "$var"
-line 1
-line 2
-line 3
-
-# 总共是有四行的输出，最后一个是空行
+name_1=aa
+name_2=bbb
+for i in ${!name_@} ;do  #  ${!name_@}仅限在sh、 bash中使用
+    echo "\$i为当前变量名：" $i
+    echo "\${!i}当前变量名的值：" ${!i}
+    echo "\${i/name/name_var}可替换当前变量名中的name为name_var: " ${i/name/name_var}
+done
 ```
 
 ## 4、变量的数值运算
@@ -249,7 +240,88 @@ b=$((a/1000))
 c=${a:0:-3}
 ```
 
+## 7、数组
 
+### ①定义赋值
+
+```bash
+tests=('a1a' 'b2b' 'c3c')
+```
+
+### ②切割字符串为数组
+
+```bash
+test="a,b-,d"
+# bash中的 read 读取输入为数组的参数为 -a
+IFS='-' read -a tests <<< "$test"
+# zsh中的 read 读取输入为数组的参数为 -A
+IFS='-' read -A tests <<< "$test"
+
+# 数组索引，bash是从0开始 ，zsh中索引是从1开始。
+echo "数组第一个元素: ${tests[0]} 数组第二个元素: ${tests[1]}" 
+
+# 输出： 数组第一个元素: a,b 数组第二个元素: ,d
+```
+
+### ③输出
+
+```bash
+# 数组索引，bash是从0开始 ，zsh中索引是从1开始。
+tests=('a1a' 'b2b' 'c3c')
+echo ${tests[1]}  # bash输出为"b2b", zsh则输出"a1a"
+
+# 输出，bash只显示第一个"a1a"，zsh显示所有元素
+echo $tests
+```
+
+### ④遍历循环
+
+```bash
+# 切割其他变量出为数组变量
+a=$(echo "a,b-,d")
+IFS='-' read -A -r tests <<< "$a"  # 以逗号为分割符，切割成"a,b"和",d"作为数组变量元素
+
+# 通用(bash/sh/zsh)的遍历循环方法。。区别是zsh中输出在一行中，sh和bash中分行输出
+tests=('a1a' 'b2b' 'c3c')
+for test in ${tests[@]} ; do
+  echo "test: $test" 
+done
+```
+
+## 8、多行文本变量
+
+### ①定义赋值、引用、输出
+
+```bash
+tests='a1a
+b2b
+c3c
+'
+
+echo $tests 
+# a1a b2b c3c
+
+echo "$tests"
+# a1a
+# b2b
+# c3c
+
+# 总共是有四行的输出，最后一个是空行
+```
+
+### ②遍历循环
+
+```bash
+# zsh中的方法
+for test in ${(f)tests}; do
+  echo "测试: "$test
+done
+
+# bash中的方法
+for test in ${tests}; do
+  echo "测试: $test"
+done
+```
 
 # 三、文件目录的判断
 
@@ -592,3 +664,65 @@ $ 函数名 参数1 参数2
 $ (函数名 参数1 参数2)
 ```
 
+# 七、并发处理
+
+## 注意
+
+- 在某些情况下，并发执行（使用&符号）可能会因为系统资源的限制而导致并发执行的效果不明显，甚至比串行执行更慢。
+- 适合并发处理的场景
+  - 逻辑复杂，耗时比较长的
+  - 程序需要对外交互的，耗时比较长的。例如连接数据库，请求访问外部系统的
+
+## 示例
+
+例如要同时测试多个服务器 IP的端口是否开起，响应时间多少。
+
+```bash
+#!/bin/bash
+# 功能函数，测试服务器端口是否打开和响应时间。tcping可以测试端口的响应时间
+
+# 函数，测试服务器端口和响应时间
+pingMultServer(){
+    # 使用tcping测试端口响应时间
+    tcp_ping=`tcping -c 2 $2 $3 2>/dev/null | grep "Average" | awk -F"[='ms'.]" '{print $14}'`   
+    if [ "$tcp_ping" ];then
+        return $tcp_ping
+    else
+        # 如果tcping不可用，使用常规ping
+        o_ping=`ping -W 2 -c 2 $2 2>/dev/null | grep "round-trip" | awk -F '[=|/ |.]' '{print $10}'`
+        [ "$o_ping" ] && return "$o_ping" || return 0
+    fi
+}
+# 原始服务器信息
+orign_servers='0="111.111.111.111"="21500"==1="111.111.111.112"="16500"==2="111.111.111.113"="21500"==3="111.111.111.114"="16500"=='
+
+# 存储ping结果的数组
+ping=()
+# 将原始服务器信息解析成服务器数组
+servers=$(echo "$orign_servers" | awk -F '==' '{for(i=1;i<=NF;i++) print $i}')
+for server in $servers; do
+    # 解析每个服务器的子部分
+    subparts=($(echo "$server" | tr -d '"' | tr '=' ' '))
+    # 并发地调用pingMultServer函数
+    pingMultServer ${subparts[0]} ${subparts[1]} ${subparts[2]}  &
+    pids+=($!)
+done
+
+# 等待并发进程完成，创建空数组以接收并发进程的返回值
+for pid in "${pids[@]}"; do
+    wait "$pid"
+    ping+=("$?")
+done
+# 构建ping结果字符串
+pingstr=""
+for i in "${!ping[@]}"; do
+    pingstr+="{ \"$i\": \"${ping[i]}\" },"
+done
+
+echo "[ ${pingstr%,} ]" 
+```
+
+| 类型     | user  | System | total  |
+| -------- | ----- | ------ | ------ |
+| 并发执行 | 1.01s | 0.46s  | 5.17s  |
+| 串行执行 | 0.97s | 0.39s  | 38.97s |

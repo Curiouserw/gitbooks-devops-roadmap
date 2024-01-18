@@ -48,19 +48,23 @@
 
 # 二、用户管理
 
-## 1、创建普通用户
+## 1、用户管理
 
-创建用户
+```sql
+-- 创建用户
+CREATE USER `testuser`@`192.168.1.1` IDENTIFIED BY '密码';
 
-```bash
-CREATE USER `username`@`192.168.%.%` IDENTIFIED BY '****';
-GRANT Select ON `username`.* TO `username`@`192.168.%.%`;
-```
+-- 给用户授权
+GRANT Select,UPDATE,INSERT,CREATE,DELETE ON `test`.* TO `testuser`@`192.168.1.1`;
 
-删除用户
+-- 查看用户权限
+show grants for 'test'@'192.168.1.1';
 
-```bash
-DROP USER 'username'@'192.168.%.%'
+-- 回收用户权限
+REVOKE ALL PRIVILEGES ON `test`.* FROM 'testuser'@'192.168.1.1';
+
+-- 删除用户
+DROP USER 'testuser'@'192.168.1.1';
 ```
 
 ## 2、创建Dashboard访问用户
@@ -111,13 +115,6 @@ Dashboard访问用户所需权限
   -- 如果要使自定义的 SQL 用户能修改 TiDB Dashboard 界面上的各项配置，可以增加以下权限
   GRANT SYSTEM_VARIABLES_ADMIN ON *.* TO 'dashboardAdmin'@'%';
   ```
-
-## 3、用户管理
-
-- application使用：`app-*`，限制用户连接 IP地址 为数据库管理工具所在服务器 IP 地址
-- 数据库管理工具使用: `yearning-*` ，限制用户连接 IP地址 为数据库管理工具所在服务器 IP 地址
-- 个人直连使用：`姓名简拼-*`，限制用户连接 IP地址 为用户出口 IP 地址
-- 报表程序使用：`report-*`，限制用户连接 IP地址 为报表程序所在服务器 IP 地址
 
 # 三、慢SQL
 
