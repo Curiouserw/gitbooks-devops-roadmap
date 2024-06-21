@@ -1,16 +1,16 @@
-# 一、简介
+# 一、kickstart文件简介
 
 kickstart文件中各部分(section)要遵循一定的顺序。每个部分中的项(Item)并不需要按照一定的顺序排列，除非有其他要求。各部分的顺序如下：
 
-- 命令部分
-- %packages部分
-- %pre, %post, 以及%traceback部分 -- 这些部分的顺序可以任意排列
-- %packages, %pre, %post以及%traceback部分需要以%end结束。
-- 不要求的项(Item)可以被省略。
-- 省略任何一个被要求的项将会导致安装程序向用户询问相关的问题，就像典型安装过程向用户询问那样。一旦用户给出了答案，安装过程将会继续自动进行，除非又遇到缺失的项。
-- 以(#)开头的行作为注释行被忽略。
-- 如果在kickstart安装中使用了不推荐的命令、选项或者语法，警告日志将会被记录到anaconda日志中。因为在一个或者两个发行版之间这些不推荐的项经常会被删掉，所以检查安装日志以确保没有使用这些项非常必要。当使用ksvalidator的时候，这些不推荐的项会导致错误。
-- 如果选项后接等号（=），则必须指定一个值
+- **命令部分**
+- **%packages部分**
+- **%pre, %post, 以及%traceback部分 -- 这些部分的顺序可以任意排列**
+- **%packages, %pre, %post以及%traceback部分需要以%end结束。**
+- **不要求的项(Item)可以被省略。**
+- **省略任何一个被要求的项将会导致安装程序向用户询问相关的问题，就像典型安装过程向用户询问那样。一旦用户给出了答案，安装过程将会继续自动进行，除非又遇到缺失的项。**
+- **以(#)开头的行作为注释行被忽略。**
+- **如果在kickstart安装中使用了不推荐的命令、选项或者语法，警告日志将会被记录到anaconda日志中。因为在一个或者两个发行版之间这些不推荐的项经常会被删掉，所以检查安装日志以确保没有使用这些项非常必要。当使用ksvalidator的时候，这些不推荐的项会导致错误。**
+- **如果选项后接等号（=），则必须指定一个值**
 
 **引用磁盘的特殊说明：**
 
@@ -31,7 +31,9 @@ part /misc --ondisk=UUID=819ff6de-0bd6-4bf4-8b72-dbe41033a85b
 
 # 二、必需选项
 
-## bootloader ：指明引导程序(bootloader)如何被安装。引申Bootloader相关概念：CentOS系统启动流程
+## 1. bootloader ：设置引导程序
+
+引申Bootloader相关概念：CentOS系统启动流程
 
 ```yaml
 # 建议给Bootloader设置密码以防止黑客修改系统启动项或者不授权登录系统  
@@ -56,7 +58,7 @@ part /misc --ondisk=UUID=819ff6de-0bd6-4bf4-8b72-dbe41033a85b
            包的安装，从而节省了空间。
 ```
 
-## keyboard：设置系统键盘类型
+## 2. keyboard：设置系统键盘类型
 
 ```yaml
 --vckeymap= # 指定VConsole应该使用的字符映射表。<keymap>是字符映射表的文件名，和/usr/lib/kbd/keymaps目录下的文件名除去".map.gz"后相同。
@@ -68,14 +70,18 @@ part /misc --ondisk=UUID=819ff6de-0bd6-4bf4-8b72-dbe41033a85b
 #  keyboard --xlayouts=us,'cz (qwerty)' --switch=grp:alt_shift_toggle
 ```
 
-## lang：设置在安装过程中使用的语言以及系统的缺省语言
+## 3. lang：设置语言
+
+**设置安装过程中使用的语言以及系统的缺省语言**
 
 ```yaml
 示例：lang en_US
 文本模式的安装过程不支持某些语言(主要是中文,日语,韩文和印度的语言).如果用lang命令指定这些语言中的一种,安装过程仍然会使用英语,但是系统会缺省使用指定的语言.
 ```
 
-## part 或者 partition：在系统上创建一个分区。（install模式必须）
+## 4. part/partition：硬盘分区
+
+**install模式必须**
 
 ```yaml
 part  <mntpoint>|swap|pv.id|rdid.id  options
@@ -113,7 +119,9 @@ part  raid.100  --size=2000
 part  pv.100     --size=1000
 ```
 
-## auth/authconfig：设置系统的授权验证选项。它只是authconfig程序的封装，因而所有被authconfig程序识别的选项都可以应用于auth命令。想要获取完整的列表，请参考authconfig手册。默认情况下，密码一般会被加密但并不会放在shadow文件中。
+## 5. auth/authconfig：系统授权验证
+
+**它只是authconfig程序的封装，因而所有被authconfig程序识别的选项都可以应用于auth命令。想要获取完整的列表，请参考authconfig手册。默认情况下，密码一般会被加密但并不会放在shadow文件中。**
 
 ```yaml
 --enablemd5,每个用户口令都使用md5加密.
@@ -139,7 +147,7 @@ part  pv.100     --size=1000
 --enablecache,启用nscd服务.nscd服务缓存用户,组和其他类型的信息.如果选择在网络上用NIS,LDAP或hesiod分发用户和组的信息,缓存就尤其有用.
 ```
 
-## rootpw：设置系统root账号的密码
+## 6. rootpw：设置root密码
 
 ```yaml
 rootpw [--iscrypted|--plaintext] [--lock] password

@@ -447,13 +447,14 @@ Options:
   -vm=                   Virtual machine [GOVC_VM]
 ```
 
-# 五、连接VM Console
+# 五、VMRC连接VM Console
 
 ## 1、Prerequisite
 
 - 安装VMWare Remote Console
-
-  下载地址：https://my.vmware.com/web/vmware/details?downloadGroup=VMRC1101&productId=742
+  - 下载地址：https://my.vmware.com/web/vmware/details?downloadGroup=VMRC1101&productId=742
+  - MacOS 下直接应用商店搜索下载
+  
 
 ## 2、命令详解
 
@@ -506,13 +507,13 @@ xdg-open $(govc vm.console my-vm)
 xdg-open $(govc vm.console -h5 my-vm)      
 ```
 
+## 3、示例
 
+### ①截屏 VM
 
 ```bash
-govc vm.console my-vm
 govc vm.console -capture screen.png my-vm  # screen capture
 govc vm.console -capture - my-vm | display # screen capture to stdout
-
 ```
 
 # 六、获取VM信息

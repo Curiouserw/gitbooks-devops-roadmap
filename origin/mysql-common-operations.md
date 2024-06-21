@@ -134,7 +134,7 @@ mysqladmin -uroot -p*** password 1234abcd
 ## ③update更新user表  
 
 ```bash
-11234abcd') where user = 'root';
+ where user = 'root';
 flush privileges;
 
 # mysql 5.7

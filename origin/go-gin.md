@@ -421,3 +421,166 @@ router.GET("/login",func(context *gin.Context) {
 ```
 
 参考：https://www.cnblogs.com/you-men/p/14054348.html
+
+# 九、压缩响应数据
+
+常见浏览器支持的压缩算法：**gzip, deflate, br(Brotli), zstd**
+
+具体各个浏览器的支持详情参考：https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Encoding
+
+
+
+## 1、Gzip压缩
+
+gzip是GNUzip的缩写，最早用于UNIX系统的文件压缩。HTTP协议上的gzip编码是一种用来改进web应用程序性能的技术，web服务器和客户端（浏览器）必须共同支持gzip。目前主流的浏览器，Chrome,firefox,IE等都支持该协议。常见的服务器如Apache，Nginx，IIS同样支持gzip。
+
+gzip压缩比率在3到10倍左右
+
+Go gin gzip的实现: https://github.com/gin-contrib/gzip
+
+> go get github.com/gin-contrib/gzip
+
+```go
+import  "github.com/gin-contrib/gzip"
+
+// 全局路由使用gzip压缩响应数据
+router.Use(gzip.Gzip(gzip.DefaultCompression))
+
+// 根据正则排除的路由不使用 gzip压缩响应数据
+router.Use(gzip.Gzip(gzip.DefaultCompression, gzip.WithExcludedPathsRegexs([]string{".*"})))
+// 排除指定路径的路由不使用 gzip压缩响应数据
+router.Use(gzip.Gzip(gzip.DefaultCompression, gzip.WithExcludedPaths([]string{"/api/"})))
+```
+
+- https://blog.rexskz.info/trip-for-finding-golang-memory-leak.html
+- https://blog.hi917.com/detail/57.html
+
+## 2、Brotli压缩
+
+Brotli 是谷歌2015 年推出的开源无损压缩算法，它通过变种的LZ77 算法、Huffman 编码以及二阶文本建模等方式进行数据压缩，比常见的Gzip更高效。
+
+**注意：Brotli 压缩算法在浏览器下，接口只有部署在 https 请求下生效，因为在http请求头Accept-Encoding中默认是没有 br的，只有gzip,deflate ,同时浏览器禁止在http请求中修改Accept-Encoding Header。参考：https://developer.mozilla.org/zh-CN/docs/Glossary/Forbidden_header_name。但是可以使用 Curl命令 、PostMan等其他工具进行测试**
+
+### ①Google基于C的go实现
+
+-  Github : https://github.com/google/brotli/tree/master/go
+
+- 压缩率设置：`0 ~ 11`。设置默认为 5。
+
+```go
+import (
+	"bytes"
+	"net/http"
+	"strings"
+	"github.com/gin-gonic/gin"
+	"github.com/google/brotli/go/cbrotli"
+)
+
+func BrotliCompress() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		// 检查客户端是否支持Brotli压缩
+		if strings.Contains(c.Request.Header.Get("Accept-Encoding"), "br") {
+			writer := &brotliWriter{ResponseWriter: c.Writer, buf: &bytes.Buffer{}}
+			c.Writer = writer
+			c.Next()
+			writer.compress()
+		} else {
+			c.Next()
+		}
+	}
+}
+
+type brotliWriter struct {
+	gin.ResponseWriter
+	buf *bytes.Buffer
+}
+
+func (b *brotliWriter) Write(data []byte) (int, error) {
+	return b.buf.Write(data)
+}
+
+func (b *brotliWriter) compress() {
+	b.Header().Set("Content-Encoding", "br")
+	b.Header().Del("Content-Length")
+
+	// 使用Brotli压缩
+	writer := cbrotli.NewWriter(b.ResponseWriter, cbrotli.WriterOptions{Quality: 5})
+	defer writer.Close()
+
+	_, err := writer.Write(b.buf.Bytes())
+	if err != nil {
+		http.Error(b.ResponseWriter, "Failed to compress response", http.StatusInternalServerError)
+		return
+	}
+}
+
+func main(){
+  router := gin.Default()
+  // 指定路由使用 BR 压缩响应数据
+  router.POST("/getlogs", BrotliCompress(), func(c *gin.Context) {
+     ...
+  }
+}
+```
+
+测试
+
+```bash
+curl -v -H "Accept-Encoding: br" https://localhost:8443
+```
+
+### ②纯Go实现
+
+- Github：https://github.com/andybalholm/brotli
+
+```go
+import (
+	"bytes"
+	"strings"
+	"github.com/andybalholm/brotli"
+	"github.com/gin-gonic/gin"
+)
+
+func BrotliCompress() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		if strings.Contains(c.Request.Header.Get("Accept-Encoding"), "br") {
+			writer := &brotliWriter{ResponseWriter: c.Writer, buf: &bytes.Buffer{}}
+			c.Writer = writer
+			c.Next()
+			writer.compress()
+		} else {
+			c.Next()
+		}
+	}
+}
+
+type brotliWriter struct {
+	gin.ResponseWriter
+	buf *bytes.Buffer
+}
+
+func (b *brotliWriter) Write(data []byte) (int, error) {
+	return b.buf.Write(data)
+}
+
+func (b *brotliWriter) compress() {
+	b.Header().Set("Content-Encoding", "br")
+	b.Header().Del("Content-Length")
+	writer := brotli.NewWriter(b.ResponseWriter)
+	defer writer.Close()
+	writer.Write(b.buf.Bytes())
+}
+
+func main(){
+  router := gin.Default()
+  // 指定路由使用 BR 压缩响应数据
+  router.POST("/getlogs", BrotliCompress(), func(c *gin.Context) {
+     ...
+  }
+}
+```
+
+
+
+参考：https://blog.csdn.net/qq_34556414/article/details/109112165
+

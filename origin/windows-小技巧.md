@@ -237,9 +237,9 @@ net start winnat
 在系统管理员权限下的CMD中运行以下命令
 
 ```bash
-Dism /Online /Cleanup-Image /CheckHealth  是检查映像以查看是否有检测到损坏
-Dism /Online /Cleanup-Image /ScanHealth   是扫描你全部系统文件并和官方系统文件对比
-Dism /Online /Cleanup-Image /RestoreHealth   是把那些不同的系统文件还原成系统官方源文件，跟重装差不多
+Dism /Online /Cleanup-Image /CheckHealth  检查映像以查看是否有检测到损坏
+Dism /Online /Cleanup-Image /ScanHealth   扫描系统文件并和官方系统文件对比
+Dism /Online /Cleanup-Image /RestoreHealth   把不同的系统文件还原成系统官方源文件
 sfc /scannow  修复还原
 ```
 

@@ -70,10 +70,8 @@
 > -engine e         use engine e, possibly a hardware device 指定三方加密设备
 > Cipher Types  以下是部分算法，我们可以选择用哪种算法加密
 > 				-aes-128-cbc    -aes-128-cbc-hmac-sha1  -aes-128-cfb
->
-> ​    		 -aes-128-cfb1   -aes-128-cfb8     -aes-128-ctr
->
->   			-aes-128-ecb     -aes-128-gcm     -aes-128-ofb   ......
+>      		              -aes-128-cfb1   -aes-128-cfb8     -aes-128-ctr
+>   			        -aes-128-ecb     -aes-128-gcm     -aes-128-ofb   ......
 
 ```bash
 # 原始文本
@@ -198,7 +196,7 @@ openssl req -new \
   -out server.csr
 ```
 
-cert.ext
+cert.text
 
 ```ini
 authorityKeyIdentifier=keyid,issuer
@@ -228,7 +226,8 @@ openssl x509 -req  \
 使用CA验证一下证书是否通过
 
 ```bash
- openssl verify -CAfile ca.crt server.crt
+openssl verify -CAfile ca.crt server.crt
+openssl verify -CAfile ca.crt client.crt
  # server.crt: OK
 ```
 
@@ -262,18 +261,58 @@ Github：https://github.com/acmesh-official/acme.sh
 ```bash
 Ali_Key="阿里云 AccessKey" \
 Ali_Secret="阿里云 AccessSecret" \
+DINGTALK_WEBHOOK="钉钉机器人完整WebHook地址，包含 Token" \
+DINGTALK_KEYWORD="(可选)定义的关键词" \
+DINGTALK_SIGNING_KEY="(可选)加签的密钥secret" \
 ~/.acme.sh/.acme.sh
   --server letsencrypt \
   --dns dns_ali \
   --issue \
-  -d '*.test.top' \
+  -d '*.test.com' \
   --nginx \
-  --key-file /usr/local/etc/nginx/ssl/test.top.key \
-  --fullchain-file /usr/local/etc/nginx/ssl/test.top.crt \
+  --key-file /usr/local/etc/nginx/ssl/test.com.key \
+  --fullchain-file /usr/local/etc/nginx/ssl/test.com.fullchain.cer \
   --reloadcmd "nginx -s reload"
+  --set-notify \
+  --notify-hook dingtalk \
+  --notify-level 2 \
+  --notify-mode 0
+  
+# --key-file：指定私钥文件路径。
+# --fullchain-file：指定证书文件路径。
+# --reloadcmd：指定重新加载服务的命令。如果使用其他服务，修改此命令。
 # --server letsencrypt : 指定CA为letsencrypt。默认为ZeroSSL，需要邮箱，还经常超时或504
 # --dns dns_ali : 指定域名托管运营商。dns_ali调取dnsapi/dns_ali.sh。其他cloudflare = dns.cf.sh
 # 注意：泛域名*这里一定要加''保证正常解析
+
+
+# https://github-wiki-see.page/m/acmesh-official/acme.sh/wiki/notify
+#export BARK_API_URL="https://api.day.app/XXXXXXXXXXXXXXXXXXXXXX"
+#export BARK_SOUND="newmail"
+#export BARK_GROUP=ACME
+#acme.sh --set-notify --notify-hook bark
+```
+
+续期
+
+```bash
+Ali_Key="阿里云 AccessKey" \
+Ali_Secret="阿里云 AccessSecret" \
+~/.acme.sh/.acme.sh
+  --server letsencrypt \
+  --dns dns_ali \
+  --renew \
+  -d '*.test.com' \
+  --nginx \
+  --key-file /usr/local/etc/nginx/ssl/test.com.key \
+  --fullchain-file /usr/local/etc/nginx/ssl/test.com.crt
+```
+
+证书文件合并
+
+```bash
+cat ~/.acme.sh/*.test.com/fullchain.cer ~/.acme.sh/*.test.com/*.test.com.cer > /usr/local/etc/nginx/ssl/test.com.crt
+cp ~/.acme.sh/*.test.com/*.test.com.key  > /usr/local/etc/nginx/ssl/test.com.key
 ```
 
 ## 2、Certbot
@@ -306,8 +345,6 @@ PKI借助数字证书和公钥加密技术提供可信任的网络身份。通�
 - 证书颁发组织授予的权限，如证书有效期、适用的主机名、用途等
 - 使用证书颁发组织私钥创建的数字签名
 
-需要安裝`CFSSL`工具，这将会用來建立 TLS Certificates
-
 Github： https://github.com/cloudflare/cfssl
 
 下载地址： https://pkg.cfssl.org/
@@ -321,7 +358,7 @@ chmod +x /usr/local/bin/cfssl /usr/local/bin/cfssljson
 
 ## 4、easy-rsa
 
-### 1. 安装
+- 安装
 
 ```bash
 yum install easy-rsa
@@ -331,11 +368,14 @@ brew install easy-rsa
 docker run -it --rm cmd.cat/easyrsa easyrsa --help
 ```
 
-### 2、命令
+- 命令
 
-- **初始化pki：**`easyrsa init-pki`
-- **创建CA：**`easyrsa build-ca`
-- **生成服务器证书请求：**`easyrsa gen-req server nopass`
+  - **初始化pki：**`easyrsa init-pki`
+
+  - **创建CA：**`easyrsa build-ca`
+
+  - **生成服务器证书请求：**`easyrsa gen-req server nopass`
+
 
 # 五、证书部署
 
@@ -402,37 +442,37 @@ server {
 
 ## 3. Linux发行版导入自签证书
 
-### **CentOS/Redhat/Fedora**
+- **CentOS/Redhat/Fedora**
 
-```bash
-yum install -y ca-certificates
+  ```bash
+  yum install -y ca-certificates
+  
+  cp ca.crt /usr/local/share/ca-certificates/
+  update-ca-certificates
+  # 或者
+  cp *.crt /etc/pki/ca-trust/source/anchors/
+  update-ca-trust extract
+  ```
 
-cp ca.crt /usr/local/share/ca-certificates/
-update-ca-certificates
-# 或者
-cp *.crt /etc/pki/ca-trust/source/anchors/
-update-ca-trust extract
-```
+- **Ubuntu/Debian**
 
-### Ubuntu/Debian
+  ```bash
+  apt-get install ca-certificates
+  
+  cp ca.crt /usr/local/share/ca-certificates/
+  update-ca-certificates
+  # 或者
+  cp cacert.pem /usr/share/ca-certificates
+  dpkg-reconfigure ca-certificates
+  ```
 
-```bash
-apt-get install ca-certificates
+- **Alpine**
 
-cp ca.crt /usr/local/share/ca-certificates/
-update-ca-certificates
-# 或者
-cp cacert.pem /usr/share/ca-certificates
-dpkg-reconfigure ca-certificates
-```
-
-### Alpine
-
-```bash
-apk add --no-cache ca-certificates
-mv my.crt /usr/local/share/ca-certificates/
-update-ca-certificate
-```
+  ```bash
+  apk add --no-cache ca-certificates
+  mv my.crt /usr/local/share/ca-certificates/
+  update-ca-certificate
+  ```
 
 ## 4. 命令行工具使用
 
@@ -444,23 +484,22 @@ update-ca-certificate
 
 ## 5. 浏览器使用
 
-### ①浏览器Firefox
+- **浏览器Firefox**
 
-<img src="../assets/openssl-selfca-import-firefox-1.jpg?lastModify=1668568032" alt="img" style="zoom:33%;" />
+<img src="../assets/openssl-selfca-import-firefox-1.jpg?lastModify=1668568032" alt="img" style="zoom: 25%;" />
 
-<img src="../assets/openssl-selfca-import-firefox-2.jpg?lastModify=1668568032" alt="img" style="zoom:33%;" />
+<img src="../assets/openssl-selfca-import-firefox-2.jpg?lastModify=1668568032" alt="img" style="zoom: 25%;" />
 
-### ②MacOS 
-
-- 将自签CA的证书拖进：`钥匙串-->系统-->证书`中即可导入
-
-<img src="../assets/opensll-selfca-macos-import.jpg?lastModify=1668568032" alt="img" style="zoom:33%;" />
-
-- 信任
+- **MacOS** 
+  - 将自签CA的证书拖进：`钥匙串-->系统-->证书`中即可导入
+  
+    <img src="../assets/opensll-selfca-macos-import.jpg?lastModify=1668568032" alt="img" style="zoom:33%;" />
+  
+  - 信任
 
 <img src="../assets/opensll-selfca-macos-import-2.jpg?lastModify=1668568032" alt="img" style="zoom:33%;" />
 
-# 九、证书格式转换
+# 六、证书格式转换
 
 以下证书格式之间是可以互相转换的。
 ![img](/Users/curiouser/code/gitbooks-devops-roadmap/assets/http-ssl-format-transf.jpg)
@@ -529,7 +568,7 @@ openssl pkcs12 -export -out server.pfx -inkey server.key -in server.crt
   - P7B to CER ：`openssl pkcs7 -print_certs -in certificatename.p7b -out certificatename.cer`
   - CER and Private Key to PFX：`openssl pkcs12 -export -in certificatename.cer -inkey privateKey.key -out certificatename.pfx -certfile  cacert.cer`
 
-# 十、其他操作
+# 七、其他操作
 
 ## 1. openssl命令行获取服务器SSL证书
 

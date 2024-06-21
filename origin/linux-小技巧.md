@@ -2290,21 +2290,33 @@ diff <(cat a.json) <(cut -f2 b.json)
 watch -n 1 "netstat -plan | grep :443 | awk {'print \$5'} | cut -d: -f 1 | sort | uniq -c | sort -nk 1"
 ```
 
-# 71、压缩包加密
+# 71、Tar/Zip加密压缩包
+
+**Tar**
+
+- tar压缩并加密
+
+  ```bash
+  tar -czvf - 待压缩加密的文件或文件夹 | openssl  enc -aes-256-cbc -salt -pbkdf2 -k 加密密码 -out 压缩加密后.tar.gz
+  ```
+
+- 解密解压 tar包
+
+  ```bash
+  openssl enc -d -aes-256-cbc -pbkdf2 -in 压缩加密后.tar.gz | tar -x
+  ```
+
+**zip**
 
 - **加密**
 
   ```bash
-  tar -czvf - test-files | openssl des3 -salt -k 加密密码 -out files.tar.gz
-  
   zip -P 加密密码 -r 压缩文件名.zip 要压缩的文件夹
   ```
-
+  
 - **解密**
 
   ```bash
-  openssl des3 -d -k password -salt -in files.tar.gz | tar xzvf -
-  
   unzip -P 加密密码 压缩文件名.zip
   ```
 

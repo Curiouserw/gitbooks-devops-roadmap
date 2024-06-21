@@ -1,6 +1,4 @@
-
-
-
+# 透明代理
 
 
 
@@ -77,8 +75,15 @@ iptables -t mangle -A PREROUTING -p udp -j V2RAY_MASK
 
 
 
+将 iptables(REDIRECT/TPROXY) 流量转换为 socks5(tcp/udp) 流量
+
+https://github.com/zfl9/ipt2socks?tab=readme-ov-file
 
 
+
+- https://github.com/zfl9/ss-tproxy
+- https://gist.github.com/zfl9/d52482118f38ce2c16195583dffc44d2
+- 
 - https://blog.indigo.codes/2021/11/20/iptables-tproxy-and-home/
 - https://guide.v2fly.org/app/transparent_proxy.html#%E4%BC%98%E7%82%B9
 - https://guide.v2fly.org/app/tproxy.html#%E8%AE%BE%E7%BD%AE%E7%BD%91%E5%85%B3

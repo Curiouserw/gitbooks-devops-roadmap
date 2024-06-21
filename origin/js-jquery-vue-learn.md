@@ -400,3 +400,99 @@ var evenNumbers = $.grep(numbers, function (element) {
 ### ③ 合并对象
 
 `$.extend(target, object1, object2, ...)`: 将一个或多个对象的内容合并到目标对象中
+
+# 三、Vue3
+
+## 1、基础文件详解
+
+- `App.vue` 是 Vue.js 应用的根组件。它包含了整个应用的结构和行为。
+
+  - `<template>`：定义组件的模板，它描述了组件的结构和布局。
+  - `<script>`：定义组件的逻辑，它包含了组件的方法、数据和生命周期钩子。
+  - `<style>`：定义组件的样式，它包含了组件的样式规则。
+
+- `main.js` 是 Vue.js 应用的入口文件。它负责创建 Vue 实例并挂载到 DOM 元素上。
+
+  ```js
+  import { createApp } from 'vue'
+  import App from './App.vue'
+  
+  createApp(App).mount('#app')
+  ```
+
+  - `import { createApp } from 'vue'`：导入 Vue.js 库中的 `createApp` 函数。
+
+  - `import App from './App.vue'`：导入根组件 `App.vue`。
+
+  - `createApp(App).mount('#app')`：使用 `createApp()` 函数创建 Vue 实例，并将其挂载到 `#app` 元素上。
+
+- `index.html` 是 HTML 入口文件。它定义了页面的结构和内容。
+
+  ```js
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Vue.js App</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script src="./main.js"></script>
+  </body>
+  </html>
+  ```
+
+  - `<!DOCTYPE html>`：声明 HTML 文档类型。
+
+  - `<html>`：HTML 根元素。
+
+  - `<head>`：HTML 头部元素，包含元数据和脚本。
+
+  - `<title>`：页面标题。
+
+  - `<body>`：HTML 主体元素，包含页面的内容。
+
+  - `<div id="app"></div>`：一个空 `<div>` 元素，用于挂载 Vue 实例。
+
+  - `<script src="./main.js"></script>`：导入 `main.js` 脚本文件。
+
+- `package.json` 是 Node.js 项目的配置文件。它包含了项目的基本信息、依赖项和其他元数据。
+
+  ```json
+  {
+    "name": "vue-app",
+    "version": "1.0.0",
+    "description": "A Vue.js application",
+    "main": "main.js",
+    "scripts": {
+      "dev": "vite",
+      "build": "vite build"
+    },
+    "dependencies": {
+      "vue": "^3.2.36"
+    }
+  }
+  ```
+
+  - `"name"`：项目的名称。
+  - `"version"`：项目的版本。
+  - `"description"`：项目的描述。
+  - `"main"`：项目的入口文件。
+  - `"scripts"`：项目中可以运行的脚本命令。
+  - `"dependencies"`：项目所需的依赖项。
+
+
+- `vite.config.js` 是 Vite 配置文件。它用于配置 Vite 开发服务器和其他构建选项。
+
+  ```javascript
+  module.exports = {
+    plugins: [],
+    server: {
+      port: 3000
+    }
+  }
+  ```
+
+
+  - `"plugins"`：Vite 插件列表。
+  - `"server"`：Vite 开发服务器配置。

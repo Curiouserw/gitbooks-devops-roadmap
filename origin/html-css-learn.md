@@ -42,3 +42,197 @@
 ## 6、示例
 
 - https://code.z01.com/v4/components/modal.html
+
+# 二、常用界面
+
+![](../assets/html-template-1.png)
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+                body,
+                h1,
+                ul,
+                li {
+                        margin: 0;
+                        padding: 0;
+                }
+
+                /* 整体容器样式 */
+                .container {
+                        display: flex;
+                        flex-direction: column;
+                        min-height: 100vh;
+                        /* 设置容器至少铺满整个视口高度 */
+                }
+
+                /* 顶部 Banner 样式 */
+                header {
+                        background-color: #555;
+                        color: #fff;
+                        padding: 10px;
+                        text-align: center;
+                }
+
+                /* 导航栏和内容区域容器样式 */
+                .content-container {
+                        display: flex;
+                        flex: 1;
+                        /* 填充剩余空间 */
+                }
+
+                /* 导航栏样式 */
+                nav {
+                        background-color: #333;
+                        color: #fff;
+                        text-align: center;
+                        width: 200px;
+                        /* 左侧导航栏宽度 */
+                        display: flex;
+                        flex-direction: column;
+                        /* 将导航栏内元素垂直排列 */
+                        align-items: stretch;
+                        /* 让导航栏高度延伸至底部 */
+                        padding: 20px;
+                }
+
+                ul {
+                        list-style: none;
+                }
+
+                a {
+                        text-decoration: none;
+                        color: #fff;
+                        display: block;
+                        padding: 10px;
+                        border-bottom: 1px solid #555;
+                        /* 添加底边框，提高可读性 */
+                }
+
+                /* 右侧内容区域样式 */
+                .content {
+                        flex: 1;
+                        /* 填充剩余空间 */
+                        padding: 20px;
+                }
+
+                .page {
+                        display: none;
+                        /* 默认隐藏所有 div 元素 */
+                }
+
+                .page.active {
+                        display: block;
+                }
+
+                /* 添加表格样式 */
+                table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 20px;
+                }
+
+                th, td {
+                border: 1px solid #ddd;
+                padding: 8px;
+                text-align: center;
+                }
+        </style>
+</head>
+
+<body>
+        <!-- 整体容器 -->
+        <div class="container">
+                <!-- 顶部 Banner -->
+                <header>
+                        <h1>您的网站名称</h1>
+                </header>
+
+                <!-- 导航栏和内容区域容器 -->
+                <div class="content-container">
+                        <!-- 左侧导航栏 -->
+                        <nav>
+                                <ul>
+                                        <li><a href="#" onclick="showPage('page1')">选项1</a></li>
+                                        <li><a href="#" onclick="showPage('page2')">选项2</a></li>
+                                        <li><a href="#" onclick="showPage('page3')">选项3</a></li>
+                                </ul>
+                        </nav>
+
+                        <!-- 右侧内容区域 -->
+                        <div class="content">
+                                <!-- 页面内容 -->
+                                <div id="page1" class="page active">
+                                        <h2>页面1内容</h2>
+                                        <!-- 表格 -->
+                                        <table>
+                                                <thead>
+                                                        <tr>
+                                                                <th>列1</th>
+                                                                <th>列2</th>
+                                                                <th>列3</th>
+                                                                <th>列4</th>
+                                                                <th>列5</th>
+                                                                <th>列6</th>
+                                                                <th>列7</th>
+                                                                <th>列8</th>
+                                                                <th>列9</th>
+                                                                <th>列10</th>
+                                                                <th>列11</th>
+                                                        </tr>
+                                                </thead>
+                                                <tbody>
+                                                        <!-- 表格内容 -->
+                                                        <tr>
+                                                                <td>数据1</td>
+                                                                <td>数据2</td>
+                                                                <td>数据3</td>
+                                                                <td>数据4</td>
+                                                                <td>数据5</td>
+                                                                <td>数据6</td>
+                                                                <td>数据7</td>
+                                                                <td>数据8</td>
+                                                                <td>数据9</td>
+                                                                <td>数据10</td>
+                                                                <td>数据11</td>
+                                                        </tr>
+                                                        <!-- 添加更多行和数据 -->
+                                                </tbody>
+                                        </table>
+                                </div>
+
+                                <div id="page2" class="page">
+                                        <h2>页面2内容</h2>
+                                </div>
+
+                                <div id="page3" class="page">
+                                        <h2>页面3内容</h2>
+                                </div>
+                        </div>
+                </div>
+        </div>
+
+        <script>
+                // JavaScript 函数，根据传入的页面 ID 显示对应的 div 元素
+                function showPage(pageId) {
+                        // 隐藏所有页面
+                        var pages = document.querySelectorAll('.page');
+                        pages.forEach(page => page.classList.remove('active'));
+
+                        // 显示选中的页面
+                        var selectedPage = document.getElementById(pageId);
+                        if (selectedPage) {
+                                selectedPage.classList.add('active');
+                        }
+                }
+        </script>
+</body>
+
+</html>
+```
+

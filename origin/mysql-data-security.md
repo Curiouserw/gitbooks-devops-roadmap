@@ -24,14 +24,14 @@
 
 ```sql
 加密
-	# 使用字符串“密码”SHA512值的十六进制值作为密码，以AES方式加密字符串“testpasswd”
+  # 使用字符串“密码”SHA512值的十六进制值作为密码，以AES方式加密字符串“testpasswd”
   select hex(AES_ENCRYPT('testpasswd', HEX(SHA2('密码',512))));
 
 解密
-	# 获取密码的Hex值
-	SELECT HEX(SHA2('密码',512))
-	# 解密加密过后的字段值
-	SELECT AES_DECRYPT(UNHEX('加密后的字段值'),'密码的Hex值');
+  # 获取密码的Hex值
+  SELECT HEX(SHA2('密码',512))
+  # 解密加密过后的字段值
+  SELECT AES_DECRYPT(UNHEX('加密后的字段值'),'密码的Hex值');
 ```
 
 ## 2. 创建副本表，批量修改数据
@@ -47,19 +47,19 @@ alter table 副本表 modify column 长度小的字段 varchar(50);
 
 # 复制源表数据并加密指定字段到副本表中
 INSERT INTO 副本表 (
-	`字段名1`,
-	`字段名2`,
+  `字段名1`,
+  `字段名2`,
   `....`,
   `副本表的所有字段`
 ) SELECT
-	`字段名1`,
-	`字段名2`,
+  `字段名1`,
+  `字段名2`,
   hex(AES_ENCRYPT(要加密的字段1,@saltpasswd)),
   `....`,
   hex(AES_ENCRYPT(要加密的字段2,@saltpasswd)),
   `源表的所有字段`
 FROM
-	源表;
+  源表;
 ```
 
 ## 3. 查询加密的数据
@@ -68,10 +68,10 @@ FROM
 set @saltpasswd=HEX(SHA2('密码',512));
 
 SELECT
-	*,
-	AES_DECRYPT( unhex( 加密的字段 ), @saltpasswd ) AS decrypt_context
+  *,
+  AES_DECRYPT( unhex( 加密的字段 ), @saltpasswd ) AS decrypt_context
 FROM
-	副本表;
+  副本表;
 ```
 
 ## 4. 测试
@@ -111,6 +111,36 @@ insert into user(phone) values(hex(AES_ENCRYPT('13111110112',@saltpasswd)));
 
 - 密码位数至少10位以上，必须包含英文大小写、数字、特殊字符(_#@*-)等。
 - 所有用户授予权限到具体库，禁止授权*****所有库
+
+# 五、命令行密码安全
+
+`mysql_config_editor` 是 MySQL 提供的一个命令行工具，用于安全地存储 MySQL 登录凭据。它允许用户创建和管理 MySQL 登录信息文件，以避免在脚本或命令行中明文传递密码。
+
+1. **创建登录信息文件：**
+
+   ```bash
+   mysql_config_editor set --login-path=test --host=hostname --user=username --port=3306 --password
+   ```
+
+   提示输入密码，并将登录信息保存在指定的 `login_path_name` 中。
+
+2. **显示登录信息**
+
+   ```bash
+   mysql_config_editor print --all
+   ```
+
+3. **删除登录信息**
+
+   ```bash
+   mysql_config_editor remove --login-path=test
+   ```
+
+4. **使用登录信息执行 MySQL 命令：**
+
+   ```bash
+   mysql --login-path=test -e "show tables;"
+   ```
 
 # 参考
 

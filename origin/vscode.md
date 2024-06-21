@@ -1,4 +1,6 @@
-# VSCode常用设置
+# VSCode
+
+# 一、常用设置
 
 ## 1、集成Cygwin中的zsh
 
@@ -64,6 +66,40 @@
 ```json
 {
     "workbench.tree.indent": 25,
+}
+```
+
+# 二、配置运行Go、Nodejs、Python、Java等程序
+
+`.vscode/launch.json`
+
+```json
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "vite dev",
+            "type": "node-terminal",
+            "request": "launch",
+            "command": "npm run dev",
+            "cwd": "${workspaceFolder}/web"
+        },
+        {
+            "name": "vite build",
+            "type": "node-terminal",
+            "request": "launch",
+            "command": "npm run build",
+            "cwd": "${workspaceFolder}/web"
+        },
+        {
+            "name": "run go",
+            "type": "go",
+            "request": "launch",
+            "mode": "auto",
+            "program": "${workspaceFolder}",
+            "showLog": true,
+        }
+    ]
 }
 ```
 

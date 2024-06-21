@@ -31,14 +31,9 @@
         * [openshift的多租户网络](origin/openshift-多租户网络.md)
     * 安全审计
         * [Kubernetes的审计日志功能](origin/openshift-kubernetes的审计日志功能.md)
-
 * 工具应用部署
     * [Elasticsearch容器化部署](origin/openshift-elasticsearch容器化部署.md)
     * [Kibana容器化部署](origin/openshift-Kibana容器化部署.md)
-* 业务应用部署
-    * S2I
-        * JavaMaven
-    * S2I Template
 
 ## Part Ⅱ：容器云Kubernetes
 * 基础
@@ -133,10 +128,9 @@
     * [Sonarqube使用Gitlab登录](origin/sonarqube-gitlab-auth.md)
     * [IDE本地插件扫描检查](origin/sonarqube-ide-scanner.md)
 * LDAP
-    * 简介安装
+    * [OpenLDAP安装部署-查询-管理](origin/openldap-basic.md)
     * 管理客户端
         * [go-ldap-admin](origin/go-ldap-admin.md)
-        * Apache Directory Studio
     * 第三方系统集成
         * [Jenkins](origin/ldap-Jenkins对接LDAP.md)
         * [SonarQube](origin/ldap-SonarQube对接LDAP.md)
@@ -288,10 +282,11 @@
             * [Redis性能测试之redis-benchmark](origin/redis-benchmark.md)
         * Kafka
             * [Kafka性能测试](origin/kafka-perf.md)
-* PXE+Kickstart
-    * [PXE-Kickstart无人值守部署OS](origin/pxe-kickstart无人值守部署OS.md)
-    * [Kickstart文件参数详解](origin/pxe-kickstart文件参数详解.md)
-    * [PXE引导配置文件参数详解](origin/pxe-引导配置文件参数详解.md)
+* PXE+Kickstart/AutoInstall
+    * [PXE网络无人值守自动安装OS](origin/pxe-kickstart无人值守部署OS.md)
+    * [PXE引导配置文件详解](origin/pxe-引导配置文件参数详解.md)
+    * [CentOS/Readhat: Kickstart无人值守配置文件详解](origin/pxe-kickstart文件参数详解.md)
+    * [Ubuntu/Debian: AutoInstall无人值守配置文件详解](origin/ubuntu-autoinstall.md)
 * [netboot.xyz](origin/netboot.xyz.md)
 * Tool
 
@@ -335,7 +330,7 @@
 
 - Linux排错优化
   - 硬件
-    - [磁盘I/O：iostat]()
+    - [磁盘I/O监控](origin/linux-io-monitor.md)
   - 系统
     - [系统进程：top](origin/linux-top.md)
     - [ip/ifconfig](origin/linux-ip-ifconfig.md)
@@ -422,6 +417,7 @@
     * [Synology管理](origin/synology-management.md)
     * [Synology Active Backup for Business备份管理vSphere ESXI VMs](origin/synology-abb-vsphere.md)
     * [群晖Synology的iSCSI](origin/iSCSI-简介配置使用.md)
+* [开源画图平台:Excalidraw](origin/excalidraw.md)
 
 
 ## Part Ⅶ：数据存储、处理
@@ -489,14 +485,19 @@
 
   - [Golang加解密](origin/golang-encryption.md)
 
-  - 第三方工具
-    - [statik-将静态资源文件打包到二进制文件中](origin/golang-statik.md)
-
+  - [embed: 嵌入静态资源文件](origin/golang-embed.md)
+  
+  - [X509/PKI证书](origin/golang-x509-certificate.md)
+  
 - [HTML/CSS学习笔记](origin/html-css-learn.md)
 
 - JavaScript学习笔记
-  - [JS、JQuery、Vue学习](origin/js-jquery-vue-learn.md)
+  - [JS/JQuery/Vue3/TS基础知识学习](origin/js-jquery-vue-learn.md)
+  - [Vue3基础知识学习](origin/vue3.md)
+  - [Vite打包工具](origin/vue-vite.md)
   - [JavaScript常用工具函数](origin/js-kits.md)
+  - [前端代码工具集](origin/web-devtools.md)
+  - [Element-Plus与Echarts](origin/elementplus-echarts.md)
   
 
 ## Part X：Hackintosh

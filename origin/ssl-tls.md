@@ -41,22 +41,30 @@
 - IBM的Web服务产品，如Websphere、IBM Http Server（IHS）等，一般使用IBM产品自带的iKeyman工具，生成KDB格式的证书文件。
 - 微软Windows Server中的Internet Information Services（IIS）服务，使用Windows自带的证书库生成PFX格式的证书文件。
 
-## 3、证书文件
+## 3、证书文件格式
 
-- *.DER或*.CER文件： 这样的证书文件是二进制格式，只含有证书信息，不包含私钥。
-- *.CRT文件： 这样的证书文件可以是二进制格式，也可以是文本格式，一般均为文本格式，功能与 *.DER及*.CER证书文件相同。
-- *.PEM文件： 这样的证书文件一般是文本格式，可以存放证书或私钥，或者两者都包含。 *.PEM 文件如果只包含私钥，一般用*.KEY文件代替。
+- ***.DER或*.CER文件**： 这样的证书文件是二进制格式，只含有证书信息，不包含私钥。
+- **CRT**： 这样的证书文件可以是二进制格式，也可以是文本格式，一般均为文本格式，功能与 *.DER及*.CER证书文件相同。
+- **PEM**： 这样的证书文件一般是文本格式，可以存放证书或私钥，或者两者都包含。 *.PEM 文件如果只包含私钥，一般用*.KEY文件代替。
 - *.PFX或*.P12文件： 这样的证书文件是二进制格式，同时包含证书和私钥，且一般有密码保护。
 
-您也可以使用记事本直接打开证书文件。如果显示的是规则的数字字母，例如：
 
-```sql
-—–BEGIN CERTIFICATE—–
-MIIE5zCCA8+gAwIBAgIQN+whYc2BgzAogau0dc3PtzANBgkqh......
-—–END CERTIFICATE—–
-```
 
-那么，该证书文件是文本格式的。
+# 四、HTTPS双向认证
 
-- 如果存在`——BEGIN CERTIFICATE——`，则说明这是一个证书文件。
-- 如果存在`—–BEGIN RSA PRIVATE KEY—–`，则说明这是一个私钥文件。
+
+
+## OCSP（在线证书状态协议）和CRL（证书吊销列表）
+
+
+
+
+
+# 参考：
+
+- https://help.aliyun.com/zh/api-gateway/user-guide/mutual-tls-authentication
+- https://www.tencentcloud.com/zh/document/product/214/39990
+- https://www.tencentcloud.com/zh/document/product/214/6155
+- https://hjk.life/posts/mutual-authentication/
+- https://cloud.tencent.com/developer/article/1171381
+- http://www.884358.com/https-auth/

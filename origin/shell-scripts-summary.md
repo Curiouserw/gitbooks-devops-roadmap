@@ -201,7 +201,7 @@ echo $a
 -eq    等于，如[ $a -eq $b ]
 -ne    不等于，如[ $a -ne $b ]
 -ge    大于等于，如[ $a -ge $b ]
-le    小于等于 ，如 [ $a -le $b ]
+-le    小于等于 ，如 [ $a -le $b ]
 <     小于(需要双括号),如:(($a < $b))
 <=    小于等于(需要双括号),如:(($a <= $b))
 >     大于(需要双括号),如:(($a > $b))
@@ -684,27 +684,28 @@ $ (函数名 参数1 参数2)
 # 函数，测试服务器端口和响应时间
 pingMultServer(){
     # 使用tcping测试端口响应时间
-    tcp_ping=`tcping -c 2 $2 $3 2>/dev/null | grep "Average" | awk -F"[='ms'.]" '{print $14}'`   
+    tcp_ping=`tcping -c 2 $1 $2 2>/dev/null | grep "Average" | awk -F"[='ms'.]" '{print $14}'`   
     if [ "$tcp_ping" ];then
         return $tcp_ping
     else
         # 如果tcping不可用，使用常规ping
-        o_ping=`ping -W 2 -c 2 $2 2>/dev/null | grep "round-trip" | awk -F '[=|/ |.]' '{print $10}'`
+        o_ping=`ping -W 2 -c 2 $1 2>/dev/null | grep "round-trip" | awk -F '[=|/ |.]' '{print $10}'`
         [ "$o_ping" ] && return "$o_ping" || return 0
     fi
 }
 # 原始服务器信息
-orign_servers='0="111.111.111.111"="21500"==1="111.111.111.112"="16500"==2="111.111.111.113"="21500"==3="111.111.111.114"="16500"=='
+orign_servers='192.168.1.1:8001,192.168.1.1:8002,192.168.1.1:8443,192.168.1.1:9443'
 
 # 存储ping结果的数组
 ping=()
 # 将原始服务器信息解析成服务器数组
-servers=$(echo "$orign_servers" | awk -F '==' '{for(i=1;i<=NF;i++) print $i}')
-for server in $servers; do
+IFS=',' read -a servers <<< "$orign_servers"
+# servers=('192.168.1.1:8080' '192.168.1.1:8081' '192.168.1.1:8082' '192.168.1.1:8083')
+for server in ${servers[@]}; do
     # 解析每个服务器的子部分
-    subparts=($(echo "$server" | tr -d '"' | tr '=' ' '))
+    IFS=':' read -a serverinfo <<< "$server"
     # 并发地调用pingMultServer函数
-    pingMultServer ${subparts[0]} ${subparts[1]} ${subparts[2]}  &
+    pingMultServer ${serverinfo[0]} ${serverinfo[1]}  &
     pids+=($!)
 done
 
@@ -716,7 +717,7 @@ done
 # 构建ping结果字符串
 pingstr=""
 for i in "${!ping[@]}"; do
-    pingstr+="{ \"$i\": \"${ping[i]}\" },"
+    pingstr+="\"${ping[i]}\","
 done
 
 echo "[ ${pingstr%,} ]" 
@@ -726,3 +727,7 @@ echo "[ ${pingstr%,} ]"
 | -------- | ----- | ------ | ------ |
 | 并发执行 | 1.01s | 0.46s  | 5.17s  |
 | 串行执行 | 0.97s | 0.39s  | 38.97s |
+
+*send_email* *$1* $client $client_random_password /etc/openvpn/client/$client.ovpn
+
+*send_email* *$1* $client $clientcnname $client_random_password /etc/openvpn/client/$client.ovpn

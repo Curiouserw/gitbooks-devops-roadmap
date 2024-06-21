@@ -36,7 +36,7 @@ iptables其实是一个命令行工具，位于用户空间，我们用这个工
 
 **报文到达链后匹配表的优先顺序：**
 
-`Raw ==>  mangle ==> nat ==> filter`
+`raw ==>  mangle ==> nat ==> filter`
 
 ## 3、链chains
 
@@ -315,6 +315,27 @@ iptables -t nat -A POSTROUTING -s 10.11.2.2/32 -p tcp -m multiport --dport 22,40
 iptables -A INPUT -m mac --mac-source 00:01:02:03:04:cc -j DROP
 ```
 
+将来自`macblock`集合中的源MAC地址、目的端口为`21033`的TCP流量拒绝掉
+
+```bash
+ipset create macblock hash:mac
+ipset add macblock 00:11:22:33:44:55
+iptables -I INPUT -p tcp --dport 12033 -m set --match-set macblock srcmac -j DROP
+```
+
+tcpdump监控流量是否生效
+
+```bash
+tcpdump -i enp0s5 ether src host 00:11:22:33:44:55 and port 12033
+```
+
+设置定时移除拒绝MAC地址
+
+```bash
+apt install -y at
+echo "ipset del 00:11:22:33:44:55" |  at now + 5 minutes
+```
+
 ### ④state：报文状态匹配模块
 
 `--state [报文状态]`：多个state可以使用`,`号分隔
@@ -481,6 +502,8 @@ useradd -g no-internet username
     ```
 
 # 六、iptables应用
+
+- https://github.com/trimstray/iptables-essentials
 
 ## 1、防火墙
 
@@ -730,15 +753,20 @@ ipset (rename | -E) 旧集合名称 新集合名称
 
 # 测试一个ip是不是在集合中（要是ip在集合中返回0，如果ip不在集合中则返回非0）
 ipset (test | -T) 集合名称 ip地址
-# 例如：ipset test blacklist 192.168.1.7,tcp:55
+# 例如：ipset test blacklist 192.168.1.7,tcp
 ```
+
+## 4、攻击处理脚本
+
+https://github.com/ppabc/cc_iptables/tree/master
 
 # 参考
 
-1. https://www.jianshu.com/p/ee4ee15d3658
-2. http://www.zsythink.net/archives/1199/
-3. https://www.linuxidc.com/Linux/2018-08/153378.htm
-4. https://blog.csdn.net/u014721096/article/details/78626729
-5. https://www.jianshu.com/p/586da7c8fd42
-6. http://www.stearns.org/modwall/archives/tcpchk.v0.1.1
-7. https://blog.51cto.com/woyaoxuelinux/1906316
+1. https://github.com/ppabc/cc_iptables/tree/master
+2. https://www.jianshu.com/p/ee4ee15d3658
+3. http://www.zsythink.net/archives/1199/
+4. https://www.linuxidc.com/Linux/2018-08/153378.htm
+5. https://blog.csdn.net/u014721096/article/details/78626729
+6. https://www.jianshu.com/p/586da7c8fd42
+7. http://www.stearns.org/modwall/archives/tcpchk.v0.1.1
+8. https://blog.51cto.com/woyaoxuelinux/1906316

@@ -319,16 +319,16 @@ ssh root@192.168.150.206 'docker exec -i kubeasz ezctl setup new-k8s all'
 # 第六步：验证k8s
 
 ```bash
-kubectl config delete-cluster zzmed-new-k8s-cluster ; \
-kubectl config delete-user zzmed-new-k8s-cluster-admin ; \
-kubectl config delete-context zzmed-new-k8s-cluster ; \
-kubectl config set-cluster zzmed-new-k8s-cluster --server=https://192.168.150.206:6443 && \
-kubectl config set-credentials zzmed-new-k8s-cluster-admin && \
-ssh root@192.168.150.206 'cat .kube/config' | yq -r '.clusters.[0].cluster.certificate-authority-data ' | xargs kubectl config set clusters.zzmed-new-k8s-cluster.certificate-authority-data && \
-ssh root@192.168.150.206 'cat .kube/config' | yq -r '.users.[0].user.client-certificate-data' | xargs kubectl config set users.zzmed-new-k8s-cluster-admin.client-certificate-data && \
-ssh root@192.168.150.206 'cat .kube/config' | yq -r '.users.[0].user.client-key-data' | xargs kubectl config set users.zzmed-new-k8s-cluster-admin.client-key-data && \
-kubectl config set-context zzmed-new-k8s-cluster --cluster=zzmed-new-k8s-cluster --user=zzmed-new-k8s-cluster-admin --namespace=kube-system && \
-kubectl config use-context zzmed-new-k8s-cluster && \
+kubectl config delete-cluster test-k8s-cluster ; \
+kubectl config delete-user test-k8s-cluster-admin ; \
+kubectl config delete-context test-k8s-cluster ; \
+kubectl config set-cluster test-k8s-cluster --server=https://192.168.1.1:6443 && \
+kubectl config set-credentials test-k8s-cluster-admin && \
+ssh root@192.168.150.206 'cat .kube/config' | yq -r '.clusters.[0].cluster.certificate-authority-data ' | xargs kubectl config set clusters.test-k8s-cluster.certificate-authority-data && \
+ssh root@192.168.150.206 'cat .kube/config' | yq -r '.users.[0].user.client-certificate-data' | xargs kubectl config set users.test-k8s-cluster-admin.client-certificate-data && \
+ssh root@192.168.150.206 'cat .kube/config' | yq -r '.users.[0].user.client-key-data' | xargs kubectl config set users.test-k8s-cluster-admin.client-key-data && \
+kubectl config set-context test-k8s-cluster --cluster=test-k8s-cluster --user=test-k8s-cluster-admin --namespace=kube-system && \
+kubectl config use-context test-k8s-cluster && \
 kubectl -n kube-public run nginx --image=nginx --port=80 --labels="app=nginx" && \
 kubectl -n kube-public expose pod nginx --name=nginx --port=80 --target-port=80 --protocol=TCP && \
 kubectl get nodes && \

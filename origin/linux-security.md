@@ -51,7 +51,15 @@ PermitEmptyPasswords no
 useradd -s /usr/sbin/nologin test
 ```
 
-## 8、SSH登录事件通知至ntfy
+## 8、禁止通过 SSH 通道进行端口转发
+
+```bash
+AllowTcpForwarding no
+X11Forwarding no
+AllowAgentForwarding no
+```
+
+## 9、SSH登录事件通知至ntfy
 
 `/etc/pam.d/sshd`
 
@@ -63,7 +71,7 @@ session optional pam_exec.so /usr/local/bin/ntfy-ssh-login.sh
 
 ```bash
 #!/bin/bash
-TOPIC_URL=http://test.curiouser.top:18070/ssh-notify
+TOPIC_URL=http://test.curiouser.com:8080/ssh-notify
 if [ "${PAM_TYPE}" = "open_session" ]; then
   curl -H tags:warning -H prio:high -d "SSH login to $(hostname): ${PAM_USER} from ${PAM_RHOST}" "${TOPIC_URL}"
 fi

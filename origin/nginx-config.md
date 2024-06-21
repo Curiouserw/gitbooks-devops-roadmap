@@ -768,3 +768,54 @@ server {
 
   - https://zhuanlan.zhihu.com/p/359801091
   - https://blog.51cto.com/u_14842009/5146017
+
+# 十五、代理 WebSocket
+
+官方文档：https://nginx.org/en/docs/http/websocket.html
+
+```bash
+map $http_upgrade $connection_upgrade { 
+  # 如果$http_upgrade 不为 '' (空)， 则$connection_upgrade 为 upgrade 。
+	default upgrade; 
+	# 如果$http_upgrade 为 '' (空)， 则 $connection_upgrade 为 close。
+	'' close; 
+} 
+server {
+  listen 80;
+  server_name example.com;
+    
+  location /socket.io {
+    # 将请求转发到websocket服务上
+    proxy_pass http://192.168.1.1:8084;
+    # 使用 HTTP 1.1 协议进行代理。
+    proxy_http_version 1.1;
+    # 设置 Upgrade 请求头，其值与客户端请求中的 Upgrade 头相同。
+    proxy_set_header Upgrade $http_upgrade; 
+    # 设置 Connection 请求头为 "upgrade"，表明这是一个 WebSocket 连接。
+    proxy_set_header Connection $connection_upgrade;
+    
+    proxy_redirect off;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr; 
+    proxy_read_timeout 3600s; 
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for; 
+	}
+}
+```
+
+参考：https://www.cnblogs.com/binghe001/p/14752404.html
+
+# 十六、支持 Brotli压缩算法
+
+目前仅在NGINX Plus版本中支持。参考：https://docs.nginx.com/nginx/admin-guide/dynamic-modules/brotli/
+
+手动编译支持：https://github.com/google/ngx_brotli
+
+
+
+
+
+参考：
+
+- https://www.cnblogs.com/-wenli/p/13594882.html
+- https://cloud.tencent.com/developer/article/1501009
