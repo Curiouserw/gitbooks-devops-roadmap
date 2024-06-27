@@ -386,7 +386,7 @@
     * [OpenVPN Server](origin/openvpn-server.md)
 * iDRAC
     * [iDRAC](origin/idrac.md)
-* vSphere
+* [vSphere ESXI](origin/vsphere-exsi.md)
     * [ESXI 管理常用命令](origin/vsphere-esxi.md)
     * [vCenter](origin/vSphere-vCenter.md)
     * [ESXI使用Synology的ISCSI存储](origin/esxi-synology-iscsi.md)

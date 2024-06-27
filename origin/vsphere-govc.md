@@ -98,6 +98,7 @@ Create VM.
 
 For a list of possible '-g' IDs, see:
 http://pubs.vmware.com/vsphere-6-5/topic/com.vmware.wssdk.apiref.doc/vim.vm.GuestOsDescriptor.GuestOsIdentifier.html
+https://abiquo.atlassian.net/wiki/spaces/doc/pages/311377588/Guest+operating+system+definition+for+VMware
 
 Examples:
   govc vm.create -on=false vm-name
@@ -143,19 +144,19 @@ govc vm.create -m 2048 -c 2 -disk=30G -host.ip=192.168.1.8 test1
 
 ## 1、查询操作
 
-### 查看所有VM
+**查看所有VM**
 
 ```bash
 govc find . -type m
 ```
 
-### 查看所有开机的VM
+**查看所有开机的VM**
 
 ```bash
 govc find . -type m -runtime.powerState poweredOn
 ```
 
-## 2、VM电源的开启与关闭
+## 2、开启与关闭电源
 
 ```bash
 vmname=test
@@ -169,15 +170,15 @@ govc vm.power -off -M $vmname
 
 使用VMWare OVF Tool部署OVF/OVA模板到远程ESXI，详见[OVF 管理工具VMWare OVF Tool](vmware-ovf-tool.md)
 
-### 关闭VM电源，并删除VM
+**关闭VM电源，并删除VM**
 
 ```bash
 govc vm.destroy vm_name
 ```
 
-## 4、在VM中进行的操作
+## 4、VM内部操作
 
-### Prerequisite
+**Prerequisite**
 
 - VM安装VMware-Tools工具后进行重启
   - 可直接使用包管理工具安装,例如:`yum install -y open-vm-tools`
@@ -191,7 +192,7 @@ govc vm.destroy vm_name
   vmname="test"
   ```
 
-### 命令
+**命令**
 
 ```bash
 govc guest.* -vm $vmname 
@@ -286,9 +287,9 @@ govc guest.* -vm $vmname
   govc guest.upload -vm $vmname ./**.tar.gz /root/***.tar.gz
   ```
 
-## 5、VM的磁盘管理
+## 5、VM磁盘管理
 
-### ①创建新磁盘挂载到虚拟机中
+**①创建新磁盘挂载到虚拟机中**
 
 ```bash
 Usage: govc vm.disk.create [OPTIONS]
@@ -311,7 +312,7 @@ Options:
   -vm=                   Virtual machine [GOVC_VM]
 ```
 
-### ②挂载已创建的VMDK磁盘到虚拟机中
+**②挂载已创建的VMDK磁盘到虚拟机中**
 
 ```bash
 Usage: govc vm.disk.attach [OPTIONS]
@@ -334,7 +335,7 @@ Options:
   -vm=                   Virtual machine [GOVC_VM]
 ```
 
-### ③更新VM磁盘配置
+**③更新VM磁盘配置**
 
 可用于扩容磁盘大小
 
@@ -388,7 +389,7 @@ Options:
 
 ## 7、VM的快照
 
-### ①创建VM快照
+**①创建VM快照**
 
 ```bash
 Usage: govc snapshot.remove [OPTIONS] NAME
@@ -406,7 +407,7 @@ Options:
   -vm=                   Virtual machine [GOVC_VM]
 ```
 
-### ②快照恢复
+**②快照恢复**
 
 ```bash
 Usage: govc snapshot.revert [OPTIONS] [NAME]
@@ -424,7 +425,7 @@ Options:
   -vm=                   Virtual machine [GOVC_VM]
 ```
 
-### ③查看快照
+**③查看快照**
 
 ```bash
 Usage: govc snapshot.tree [OPTIONS]
@@ -447,7 +448,7 @@ Options:
   -vm=                   Virtual machine [GOVC_VM]
 ```
 
-# 五、VMRC连接VM Console
+# 五、VMRC连接VM控制台
 
 ## 1、Prerequisite
 
@@ -1394,7 +1395,7 @@ alias gom='govc host.maintenance.exit -host.ip=192.168.1.8'
 alias gnvm='govc vm.create -host.ip=192.168.1.8 $@'
 
 # 连接VM Console
-alias gco='{ IFS= read -r vm && open $(g7b6cc489180160eeb4a7a39ebb25d524e04c9f5e7b6cc489180160eeb4a7a39ebb25d524e04c9f5eovc vm.console $vm); } <<<'
+alias gco='{ IFS= read -r vm && open $(govc vm.console $vm); } <<<'
 ```
 
 

@@ -6260,16 +6260,16 @@
             
         </li>
     
-        <li class="chapter " data-level="7.26" >
+        <li class="chapter " data-level="7.26" data-path="vsphere-exsi.html">
             
-                <span>
+                <a href="vsphere-exsi.html">
             
                     
                         <b>7.26.</b>
                     
-                    vSphere
+                    vSphere ESXI
             
-                </span>
+                </a>
             
 
             
@@ -8017,6 +8017,7 @@ Create VM.
 
 For a list of possible &apos;-g&apos; IDs, see:
 http://pubs.vmware.com/vsphere-6-5/topic/com.vmware.wssdk.apiref.doc/vim.vm.GuestOsDescriptor.GuestOsIdentifier.html
+https://abiquo.atlassian.net/wiki/spaces/doc/pages/311377588/Guest+operating+system+definition+for+VMware
 
 Examples:
   govc vm.create -on=false vm-name
@@ -8055,13 +8056,13 @@ Options:
 <h1 id="&#x56DB;&#x3001;vm&#x7684;&#x7BA1;&#x7406;">&#x56DB;&#x3001;VM&#x7684;&#x7BA1;&#x7406;</h1>
 <p>&#x5177;&#x4F53;&#x547D;&#x4EE4;&#x8BE6;&#x89E3;&#x53EF;&#x67E5;&#x770B;&#x6587;&#x6863;&#xFF1A;<a href="https://github.com/vmware/govmomi/blob/master/govc/USAGE.md" _target="blank">https://github.com/vmware/govmomi/blob/master/govc/USAGE.md</a></p>
 <h2 id="1&#x3001;&#x67E5;&#x8BE2;&#x64CD;&#x4F5C;">1&#x3001;&#x67E5;&#x8BE2;&#x64CD;&#x4F5C;</h2>
-<h3 id="&#x67E5;&#x770B;&#x6240;&#x6709;vm">&#x67E5;&#x770B;&#x6240;&#x6709;VM</h3>
+<p><strong>&#x67E5;&#x770B;&#x6240;&#x6709;VM</strong></p>
 <pre class="language-"><code class="bash">govc find . -type m
 </code></pre>
-<h3 id="&#x67E5;&#x770B;&#x6240;&#x6709;&#x5F00;&#x673A;&#x7684;vm">&#x67E5;&#x770B;&#x6240;&#x6709;&#x5F00;&#x673A;&#x7684;VM</h3>
+<p><strong>&#x67E5;&#x770B;&#x6240;&#x6709;&#x5F00;&#x673A;&#x7684;VM</strong></p>
 <pre class="language-"><code class="bash">govc find . -type m -runtime.powerState poweredOn
 </code></pre>
-<h2 id="2&#x3001;vm&#x7535;&#x6E90;&#x7684;&#x5F00;&#x542F;&#x4E0E;&#x5173;&#x95ED;">2&#x3001;VM&#x7535;&#x6E90;&#x7684;&#x5F00;&#x542F;&#x4E0E;&#x5173;&#x95ED;</h2>
+<h2 id="2&#x3001;&#x5F00;&#x542F;&#x4E0E;&#x5173;&#x95ED;&#x7535;&#x6E90;">2&#x3001;&#x5F00;&#x542F;&#x4E0E;&#x5173;&#x95ED;&#x7535;&#x6E90;</h2>
 <pre class="language-"><code class="bash">vmname=test
 # &#x5F00;&#x542F;VM&#x7535;&#x6E90;
 govc vm.power -on -M $vmname
@@ -8070,11 +8071,11 @@ govc vm.power -off -M $vmname
 </code></pre>
 <h2 id="3&#x3001;vm&#x7684;&#x9500;&#x6BC1;">3&#x3001;VM&#x7684;&#x9500;&#x6BC1;</h2>
 <p>&#x4F7F;&#x7528;VMWare OVF Tool&#x90E8;&#x7F72;OVF/OVA&#x6A21;&#x677F;&#x5230;&#x8FDC;&#x7A0B;ESXI&#xFF0C;&#x8BE6;&#x89C1;<a href="vmware-ovf-tool.html">OVF &#x7BA1;&#x7406;&#x5DE5;&#x5177;VMWare OVF Tool</a></p>
-<h3 id="&#x5173;&#x95ED;vm&#x7535;&#x6E90;&#xFF0C;&#x5E76;&#x5220;&#x9664;vm">&#x5173;&#x95ED;VM&#x7535;&#x6E90;&#xFF0C;&#x5E76;&#x5220;&#x9664;VM</h3>
+<p><strong>&#x5173;&#x95ED;VM&#x7535;&#x6E90;&#xFF0C;&#x5E76;&#x5220;&#x9664;VM</strong></p>
 <pre class="language-"><code class="bash">govc vm.destroy vm_name
 </code></pre>
-<h2 id="4&#x3001;&#x5728;vm&#x4E2D;&#x8FDB;&#x884C;&#x7684;&#x64CD;&#x4F5C;">4&#x3001;&#x5728;VM&#x4E2D;&#x8FDB;&#x884C;&#x7684;&#x64CD;&#x4F5C;</h2>
-<h3 id="prerequisite">Prerequisite</h3>
+<h2 id="4&#x3001;vm&#x5185;&#x90E8;&#x64CD;&#x4F5C;">4&#x3001;VM&#x5185;&#x90E8;&#x64CD;&#x4F5C;</h2>
+<p><strong>Prerequisite</strong></p>
 <ul>
 <li><p>VM&#x5B89;&#x88C5;VMware-Tools&#x5DE5;&#x5177;&#x540E;&#x8FDB;&#x884C;&#x91CD;&#x542F;</p>
 <ul>
@@ -8089,7 +8090,7 @@ vmname=&quot;test&quot;
 </code></pre>
 </li>
 </ul>
-<h3 id="&#x547D;&#x4EE4;">&#x547D;&#x4EE4;</h3>
+<p><strong>&#x547D;&#x4EE4;</strong></p>
 <pre class="language-"><code class="bash">govc guest.* -vm $vmname
 </code></pre>
 <ul>
@@ -8171,8 +8172,8 @@ Options:
 </code></pre>
 </li>
 </ul>
-<h2 id="5&#x3001;vm&#x7684;&#x78C1;&#x76D8;&#x7BA1;&#x7406;">5&#x3001;VM&#x7684;&#x78C1;&#x76D8;&#x7BA1;&#x7406;</h2>
-<h3 id="&#x2460;&#x521B;&#x5EFA;&#x65B0;&#x78C1;&#x76D8;&#x6302;&#x8F7D;&#x5230;&#x865A;&#x62DF;&#x673A;&#x4E2D;">&#x2460;&#x521B;&#x5EFA;&#x65B0;&#x78C1;&#x76D8;&#x6302;&#x8F7D;&#x5230;&#x865A;&#x62DF;&#x673A;&#x4E2D;</h3>
+<h2 id="5&#x3001;vm&#x78C1;&#x76D8;&#x7BA1;&#x7406;">5&#x3001;VM&#x78C1;&#x76D8;&#x7BA1;&#x7406;</h2>
+<p><strong>&#x2460;&#x521B;&#x5EFA;&#x65B0;&#x78C1;&#x76D8;&#x6302;&#x8F7D;&#x5230;&#x865A;&#x62DF;&#x673A;&#x4E2D;</strong></p>
 <pre class="language-"><code class="bash">Usage: govc vm.disk.create [OPTIONS]
 
 Create disk and attach to VM.
@@ -8192,7 +8193,7 @@ Options:
   -thick=false           Thick provision new disk
   -vm=                   Virtual machine [GOVC_VM]
 </code></pre>
-<h3 id="&#x2461;&#x6302;&#x8F7D;&#x5DF2;&#x521B;&#x5EFA;&#x7684;vmdk&#x78C1;&#x76D8;&#x5230;&#x865A;&#x62DF;&#x673A;&#x4E2D;">&#x2461;&#x6302;&#x8F7D;&#x5DF2;&#x521B;&#x5EFA;&#x7684;VMDK&#x78C1;&#x76D8;&#x5230;&#x865A;&#x62DF;&#x673A;&#x4E2D;</h3>
+<p><strong>&#x2461;&#x6302;&#x8F7D;&#x5DF2;&#x521B;&#x5EFA;&#x7684;VMDK&#x78C1;&#x76D8;&#x5230;&#x865A;&#x62DF;&#x673A;&#x4E2D;</strong></p>
 <pre class="language-"><code class="bash">Usage: govc vm.disk.attach [OPTIONS]
 
 Attach existing disk to VM.
@@ -8212,7 +8213,7 @@ Options:
   -sharing=              Sharing (sharingNone|sharingMultiWriter)
   -vm=                   Virtual machine [GOVC_VM]
 </code></pre>
-<h3 id="&#x2462;&#x66F4;&#x65B0;vm&#x78C1;&#x76D8;&#x914D;&#x7F6E;">&#x2462;&#x66F4;&#x65B0;VM&#x78C1;&#x76D8;&#x914D;&#x7F6E;</h3>
+<p><strong>&#x2462;&#x66F4;&#x65B0;VM&#x78C1;&#x76D8;&#x914D;&#x7F6E;</strong></p>
 <p>&#x53EF;&#x7528;&#x4E8E;&#x6269;&#x5BB9;&#x78C1;&#x76D8;&#x5927;&#x5C0F;</p>
 <pre class="language-"><code class="bash">Usage: govc vm.disk.change [OPTIONS]
 
@@ -8258,7 +8259,7 @@ Options:
   -waitip=false          Wait for VM to acquire IP address
 </code></pre>
 <h2 id="7&#x3001;vm&#x7684;&#x5FEB;&#x7167;">7&#x3001;VM&#x7684;&#x5FEB;&#x7167;</h2>
-<h3 id="&#x2460;&#x521B;&#x5EFA;vm&#x5FEB;&#x7167;">&#x2460;&#x521B;&#x5EFA;VM&#x5FEB;&#x7167;</h3>
+<p><strong>&#x2460;&#x521B;&#x5EFA;VM&#x5FEB;&#x7167;</strong></p>
 <pre class="language-"><code class="bash">Usage: govc snapshot.remove [OPTIONS] NAME
 
 Remove snapshot of VM with given NAME.
@@ -8273,7 +8274,7 @@ Options:
   -r=false               Remove snapshot children
   -vm=                   Virtual machine [GOVC_VM]
 </code></pre>
-<h3 id="&#x2461;&#x5FEB;&#x7167;&#x6062;&#x590D;">&#x2461;&#x5FEB;&#x7167;&#x6062;&#x590D;</h3>
+<p><strong>&#x2461;&#x5FEB;&#x7167;&#x6062;&#x590D;</strong></p>
 <pre class="language-"><code class="bash">Usage: govc snapshot.revert [OPTIONS] [NAME]
 
 Revert to snapshot of VM with given NAME.
@@ -8288,7 +8289,7 @@ Options:
   -s=false               Suppress power on
   -vm=                   Virtual machine [GOVC_VM]
 </code></pre>
-<h3 id="&#x2462;&#x67E5;&#x770B;&#x5FEB;&#x7167;">&#x2462;&#x67E5;&#x770B;&#x5FEB;&#x7167;</h3>
+<p><strong>&#x2462;&#x67E5;&#x770B;&#x5FEB;&#x7167;</strong></p>
 <pre class="language-"><code class="bash">Usage: govc snapshot.tree [OPTIONS]
 
 List VM snapshots in a tree-like format.
@@ -8308,7 +8309,7 @@ Options:
   -i=false               Print the snapshot id
   -vm=                   Virtual machine [GOVC_VM]
 </code></pre>
-<h1 id="&#x4E94;&#x3001;vmrc&#x8FDE;&#x63A5;vm-console">&#x4E94;&#x3001;VMRC&#x8FDE;&#x63A5;VM Console</h1>
+<h1 id="&#x4E94;&#x3001;vmrc&#x8FDE;&#x63A5;vm&#x63A7;&#x5236;&#x53F0;">&#x4E94;&#x3001;VMRC&#x8FDE;&#x63A5;VM&#x63A7;&#x5236;&#x53F0;</h1>
 <h2 id="1&#x3001;prerequisite">1&#x3001;Prerequisite</h2>
 <ul>
 <li>&#x5B89;&#x88C5;VMWare Remote Console<ul>
@@ -9082,10 +9083,10 @@ alias gom=&apos;govc host.maintenance.exit -host.ip=192.168.1.8&apos;
 alias gnvm=&apos;govc vm.create -host.ip=192.168.1.8 $@&apos;
 
 # &#x8FDE;&#x63A5;VM Console
-alias gco=&apos;{ IFS= read -r vm &amp;&amp; open $(g7b6cc489180160eeb4a7a39ebb25d524e04c9f5e7b6cc489180160eeb4a7a39ebb25d524e04c9f5eovc vm.console $vm); } &lt;&lt;&lt;&apos;
+alias gco=&apos;{ IFS= read -r vm &amp;&amp; open $(govc vm.console $vm); } &lt;&lt;&lt;&apos;
 </code></pre>
 <footer class="page-footer"><span class="copyright">Copyright Curiouser all right reserved&#xFF0C;powered by Gitbook</span><span class="footer-modification">&#x8BE5;&#x6587;&#x4EF6;&#x6700;&#x540E;&#x4FEE;&#x6539;&#x65F6;&#x95F4;&#xFF1A;
-2024-06-14 15:08:55
+2024-06-27 10:48:13
 </span></footer>
 <script>console.log("plugin-popup....");document.onclick = function(e){ e.target.tagName === "IMG" && window.open(e.target.src,e.target.src)}</script><style>img{cursor:pointer}</style>
 						
@@ -9125,7 +9126,7 @@ alias gco=&apos;{ IFS= read -r vm &amp;&amp; open $(g7b6cc489180160eeb4a7a39ebb2
 	<script>
 		var gitbook = gitbook || [];
 		gitbook.push(function() {
-			gitbook.page.hasChanged({"page":{"title":"Go语言CLI: govc","level":"7.26.5.1","depth":3,"next":{"title":"Raspberry Pi树莓派","level":"7.27","depth":1,"path":"origin/raspberry-pi.md","ref":"origin/raspberry-pi.md","articles":[]},"previous":{"title":"SDK/CLI","level":"7.26.5","depth":2,"ref":"","articles":[{"title":"Go语言CLI: govc","level":"7.26.5.1","depth":3,"path":"origin/vsphere-govc.md","ref":"origin/vsphere-govc.md","articles":[]}]},"dir":"ltr"},"config":{"plugins":["-search","-lunr","-sharing","-highlight","search-pro","splitter","github","popup","sectionx","expandable-chapters","sharing-plus","code","auto-scroll-table","theme-fexa","tbfed-pagefooter","back-to-top-button","emphasize","edit-link","prism","donate","theme-comscore","github-buttons","github-issue-feedback"],"root":".","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"tbfed-pagefooter":{"copyright":"Copyright Curiouser","modify_label":"该文件最后修改时间：","modify_format":"YYYY-MM-DD HH:mm:ss"},"prism":{"css":["prismjs/themes/prism-tomorrow.css"],"lang":{"flow":"typescript"},"ignore":["mermaid","eval-js"]},"emphasize":{},"github-issue-feedback":{"repo":"RationalMonster/rationalmonster.github.io"},"github":{"url":"https://github.com/RationalMonster"},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"auto-scroll-table":{},"popup":{},"theme-fexa":{"search-placeholder":"搜索文章","logo":"./assets/logo.png"},"code":{"copybuttons":"true","copyButtons":true},"donate":{"wechat":"/assets/wechat-donate.jpg","title":"","button":"赏","wechatText":"微信打赏","alipay":"","alipayText":"支付宝打赏"},"fontsettings":{"theme":"white","family":"sans","size":2},"sectionx":{},"theme-comscore":{},"back-to-top-button":{},"github-buttons":{"buttons":[{"user":"RationalMonster","repo":"gitbooks-devops-roadmap","type":"star","size":"small","count":"true"}]},"sharing":{"weibo":true,"qq":"true","google":true,"all":["facebook","twitter"]},"edit-link":{"base":"https://raw.githubusercontent.com/RationalMonster/gitbooks-devops-roadmap/master/","label":"查看源MD文件"},"theme-default":{"showLevel":true,"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"expandable-chapters":{}},"theme":"default","author":"Curiouser <rationalmonster@163.com>","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Devops Roadmap","gitbook":"*"},"file":{"path":"origin/vsphere-govc.md","mtime":"2024-06-14T07:08:55.185Z","type":"markdown"},"gitbook":{"version":"3.0.0","time":"2024-06-21T08:15:54.819Z"},"basePath":"..","book":{"language":""}});
+			gitbook.page.hasChanged({"page":{"title":"Go语言CLI: govc","level":"7.26.5.1","depth":3,"next":{"title":"Raspberry Pi树莓派","level":"7.27","depth":1,"path":"origin/raspberry-pi.md","ref":"origin/raspberry-pi.md","articles":[]},"previous":{"title":"SDK/CLI","level":"7.26.5","depth":2,"ref":"","articles":[{"title":"Go语言CLI: govc","level":"7.26.5.1","depth":3,"path":"origin/vsphere-govc.md","ref":"origin/vsphere-govc.md","articles":[]}]},"dir":"ltr"},"config":{"plugins":["-search","-lunr","-sharing","-highlight","search-pro","splitter","github","popup","sectionx","expandable-chapters","sharing-plus","code","auto-scroll-table","theme-fexa","tbfed-pagefooter","back-to-top-button","emphasize","edit-link","prism","donate","theme-comscore","github-buttons","github-issue-feedback"],"root":".","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"tbfed-pagefooter":{"copyright":"Copyright Curiouser","modify_label":"该文件最后修改时间：","modify_format":"YYYY-MM-DD HH:mm:ss"},"prism":{"css":["prismjs/themes/prism-tomorrow.css"],"lang":{"flow":"typescript"},"ignore":["mermaid","eval-js"]},"emphasize":{},"github-issue-feedback":{"repo":"RationalMonster/rationalmonster.github.io"},"github":{"url":"https://github.com/RationalMonster"},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"auto-scroll-table":{},"popup":{},"theme-fexa":{"search-placeholder":"搜索文章","logo":"./assets/logo.png"},"code":{"copybuttons":"true","copyButtons":true},"donate":{"wechat":"/assets/wechat-donate.jpg","title":"","button":"赏","wechatText":"微信打赏","alipay":"","alipayText":"支付宝打赏"},"fontsettings":{"theme":"white","family":"sans","size":2},"sectionx":{},"theme-comscore":{},"back-to-top-button":{},"github-buttons":{"buttons":[{"user":"RationalMonster","repo":"gitbooks-devops-roadmap","type":"star","size":"small","count":"true"}]},"sharing":{"weibo":true,"qq":"true","google":true,"all":["facebook","twitter"]},"edit-link":{"base":"https://raw.githubusercontent.com/RationalMonster/gitbooks-devops-roadmap/master/","label":"查看源MD文件"},"theme-default":{"showLevel":true,"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"expandable-chapters":{}},"theme":"default","author":"Curiouser <rationalmonster@163.com>","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Devops Roadmap","gitbook":"*"},"file":{"path":"origin/vsphere-govc.md","mtime":"2024-06-27T02:48:13.310Z","type":"markdown"},"gitbook":{"version":"3.0.0","time":"2024-06-27T03:07:43.215Z"},"basePath":"..","book":{"language":""}});
 		});
 	</script>
 </div>

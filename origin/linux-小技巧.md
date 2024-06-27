@@ -169,7 +169,7 @@ EOF' ;\
 
 # 13、时间戳与日期
 
-## 日期与时间戳的相互转换
+**日期与时间戳的相互转换**
 
     #将日期转换为Unix时间戳
     date +%s
@@ -177,7 +177,7 @@ EOF' ;\
     #将Unix时间戳转换为指定格式化的日期时间
     date -d @1361542596 +"%Y-%m-%d %H:%M:%S"
 
-## date日期操作
+**date日期操作**
 
     date +%Y%m%d               #显示前天年月日
     date -d "+1 day" +%Y%m%d   #显示前一天的日期
@@ -187,7 +187,7 @@ EOF' ;\
     date -d "-1 year" +%Y%m%d  #显示前一年的日期
     date -d "+1 year" +%Y%m%d  #显示下一年的日期
 
-## 获得毫秒级的时间戳
+**获得毫秒级的时间戳**
 
 在linux Shell中并没有毫秒级的时间单位，只有秒和纳秒。其实这样就足够了，因为纳秒的单位范围是（000000000..999999999），所以从纳秒也是可以的到毫秒的
 
@@ -195,6 +195,18 @@ EOF' ;\
     timeStamp=`date -d "$current" +%s`      #将current转换为时间戳，精确到秒
     currentTimeStamp=$((timeStamp*1000+`date "+%N"`/1000000)) #将current转换为时间戳，精确到毫秒
     echo $currentTimeStamp
+
+**时间+时区**
+
+```bash
+current_timestamp=$(date +%s)
+new_timestamp=$(( current_timestamp + 8*3600 ))
+starttime=$(date -d "@$new_timestamp" +'%Y-%m-%d %H:%M:%S')
+
+或者
+
+date -d '+8 hours' +'%Y-%m-%d %H:%M:%S'
+```
 
 # 14、nohup手动后台运行进程并记录进程号
 
@@ -2502,3 +2514,44 @@ Linux 提供了两种主要的字体安装方式： **系统范围** 和 **每�
   - 查看字体是否已安装：`fc-list`
 
 https://linuxiac.com/how-to-install-fonts-on-linux/
+
+# 81、openssl发送 HTTP请求
+
+在没有 `curl` 和受限的 `wget` 情况下，使用 `openssl` 手动构建和发送 HTTPS POST 请求
+
+```bash
+ddingtoken=..........
+payload='{
+  "msgtype": "markdown",
+  "markdown": {
+    "title": "test",
+    "text": "11111"
+  }
+}'
+
+{
+  echo -e "POST /robot/send?access_token=$ddingtoken HTTP/1.1\r\n\
+Host: oapi.dingtalk.com\r\n\
+Content-Type: application/json\r\n\
+Content-Length: ${#payload}\r\n\
+Connection: close\r\n\
+\r\n\
+$payload"
+} | openssl s_client -connect oapi.dingtalk.com:443 -servername oapi.dingtalk.com -ign_eof -quiet > /dev/null 2>&1
+
+# -ign_eof 参数以忽略 EOF 错误
+# -servername 参数指定服务器名称，
+# -quiet 参数使输出安静。
+
+
+# 请求行：POST /robot/send?access_token=$ddingtoken HTTP/1.1
+# 请求头：
+#    Host: oapi.dingtalk.com
+#    Content-Type: application/json
+#    Content-Length: ${#payload}：计算 JSON 数据的字节数
+#    Connection: close：表示服务器在完成响应后关闭连接
+# 请求体：包含在 $payload 变量中的 JSON 数据
+```
+
+
+

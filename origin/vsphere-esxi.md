@@ -261,7 +261,33 @@ net-stats -l
 pktcap-uw --vmk vmk0
 ```
 
+# 四、网络防火墙
 
+默认 exsi 主机的 `httpclient` 规则没有开起。故 esxi主机无法向外部网络发送 HTTP 请求。可登录 esxi开放限制。
+
+## 1、查看防火墙规则
+
+```bash
+# 查看所有的防火墙规则集
+esxcli network firewall ruleset list
+
+# 查看所有的防火墙规则
+esxcli network firewall ruleset rule list
+
+# 查看防火墙特定规则集的规则
+esxcli network firewall ruleset rule list -r 规则集
+```
+
+## 2、 启用/禁用的防火墙规则集
+
+```bash
+esxcli network firewall ruleset set -e true -r 规则集
+esxcli network firewall ruleset set -e false -r 规则集
+```
+
+## 3、更新防火墙规则
+
+建议在 UI界面进行更新（增删改）
 
 # 附录
 
