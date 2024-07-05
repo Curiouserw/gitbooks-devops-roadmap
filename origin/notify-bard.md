@@ -100,11 +100,12 @@ sedcipherednotify(){
     key=$(printf $key | xxd -ps -c 200)
     iv=$(printf $iv | xxd -ps -c 200)
     notify_content_json='{"body": "测试测试测试测试测试测试测试测试测试测试测试", "sound": "birdsong"}'
-    ciphertext=$(echo -n "$notify_content_json" | openssl enc -aes-128-cbc -K $key -iv $iv | base64 | tr -d '\n')
+    ciphertext=$(echo -n "$notify_content_json" | openssl enc -aes-128-cbc -K $key -iv $iv | base64 | tr -d '\r\n')
     curl -i -L -X POST \
+      --resolve bark.test.com:9443:192.168.1.1
       --data-urlencode "ciphertext=$ciphertext" \
       --data-urlencode "title=路由器通知" \
-      --data-urlencode "iv=ZDM5N(jI2NzYwY1W" \
+      --data-urlencode "iv=ZDM....2NzYwY1W" \
       $bark_server_host/$deviceKey
 }
 

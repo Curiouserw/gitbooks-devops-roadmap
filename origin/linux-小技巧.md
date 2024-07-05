@@ -2517,7 +2517,9 @@ https://linuxiac.com/how-to-install-fonts-on-linux/
 
 # 81、openssl发送 HTTP请求
 
-在没有 `curl` 和受限的 `wget` 情况下，使用 `openssl` 手动构建和发送 HTTPS POST 请求
+在没有 `curl` 和受限的 `wget` 情况下，使用 `openssl` 手动构建和发送 HTTP请求
+
+## POST请求
 
 ```bash
 ddingtoken=..........
@@ -2553,5 +2555,15 @@ $payload"
 # 请求体：包含在 $payload 变量中的 JSON 数据
 ```
 
+## GET请求
 
+带有HTTP Basic Auth 的 GET 请求
 
+```bash
+echo -e "GET /png HTTP/1.1\r\n\
+Host: 192.168.1.1\r\n\
+Authorization: Basic 用户名和密码的Base64编码字符串\r\n\
+Connection: close\r\n\r\n" | openssl s_client -quiet -connect 192.168.1.1:8443
+
+# echo -n '用户名:密码' | base64  
+```

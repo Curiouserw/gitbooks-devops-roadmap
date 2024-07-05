@@ -285,7 +285,7 @@
 * PXE+Kickstart/AutoInstall
     * [PXE网络无人值守自动安装OS](origin/pxe-kickstart无人值守部署OS.md)
     * [PXE引导配置文件详解](origin/pxe-引导配置文件参数详解.md)
-    * [CentOS/Readhat: Kickstart无人值守配置文件详解](origin/pxe-kickstart文件参数详解.md)
+    * [Rocky/CentOS/Readhat: Kickstart无人值守配置文件详解](origin/pxe-kickstart文件参数详解.md)
     * [Ubuntu/Debian: AutoInstall无人值守配置文件详解](origin/ubuntu-autoinstall.md)
 * [netboot.xyz](origin/netboot.xyz.md)
 * Tool
@@ -386,8 +386,9 @@
     * [OpenVPN Server](origin/openvpn-server.md)
 * iDRAC
     * [iDRAC](origin/idrac.md)
-* [vSphere ESXI](origin/vsphere-exsi.md)
-    * [ESXI 管理常用命令](origin/vsphere-esxi.md)
+* [vSphere ESXI](origin/vsphere-esxi.md)
+    * [ESXI 管理常用命令](origin/vsphere-esxi-commands.md)
+    * [VMware Tools](origin/vmware-tools.md)
     * [vCenter](origin/vSphere-vCenter.md)
     * [ESXI使用Synology的ISCSI存储](origin/esxi-synology-iscsi.md)
     * OVF模板

@@ -1,4 +1,6 @@
-# 一、kickstart文件简介
+# 一、kickstart自动应答配置文件
+
+官方文档: https://pykickstart.readthedocs.io/en/latest/kickstart-docs.html
 
 kickstart文件中各部分(section)要遵循一定的顺序。每个部分中的项(Item)并不需要按照一定的顺序排列，除非有其他要求。各部分的顺序如下：
 
@@ -15,16 +17,16 @@ kickstart文件中各部分(section)要遵循一定的顺序。每个部分中�
 **引用磁盘的特殊说明：**
 
 ```yaml
-Kickstart一直通过设备节点名(例如 sda)来引用磁盘。Linux内核采用了更加动态的方法，设备名并不会在重启时保持不变。因此，这会使得在Kickstart脚本中引用磁盘变得复杂。为了满足稳定的设备命名，你可以在项(Item)中使用/dev/disk代替设备名。例如，你可以使用：
+# Kickstart一直通过设备节点名(例如 sda)来引用磁盘。Linux内核采用了更加动态的方法，设备名并不会在重启时保持不变。因此，这会使得在Kickstart脚本中引用磁盘变得复杂。为了满足稳定的设备命名，你可以在项(Item)中使用/dev/disk代替设备名。例如，你可以使用：
 part / --fstype=ext4 --onpart=/dev/disk/by-path/pci-0000:00:05.0-scsi-0:0:0:0-part1
 part / --fstype=ext4 --onpart=/dev/disk/by-id/ata-ST3160815AS_6RA0C882-part1
-来代替：
+# 来代替：
 part / --fstype=ext4 --onpart=sda1
-这种方式提供了对磁盘的持久引用，因而比仅仅使用sda更加有意义。 这在大的存储环境中特别有意义。你也可以使用类似于shell的入口来应用磁盘。这种方式主要用来简化大的存储环境中clearpart以及ignoredisk命令的使用。例如，为了替代：
+# 这种方式提供了对磁盘的持久引用，因而比仅仅使用sda更加有意义。 这在大的存储环境中特别有意义。你也可以使用类似于shell的入口来应用磁盘。这种方式主要用来简化大的存储环境中clearpart以及ignoredisk命令的使用。例如，为了替代：
 ignoredisk --drives=sdaa,sdab,sdac
-你可以使用如下的入口：
+# 你可以使用如下的入口：
 ignoredisk --drives=/dev/disk/by-path/pci-0000:00:05.0-scsi-*
-最后，如果想要在任何地方引用已经存在的分区或者文件系统（例如，在part --ondisk=中），你可以通过文件系统标签(label)或者UUID来进行。例如：
+# 最后，如果想要在任何地方引用已经存在的分区或者文件系统（例如，在part --ondisk=中），你可以通过文件系统标签(label)或者UUID来进行。例如：
 part /data --ondisk=LABEL=data
 part /misc --ondisk=UUID=819ff6de-0bd6-4bf4-8b72-dbe41033a85b
 ```

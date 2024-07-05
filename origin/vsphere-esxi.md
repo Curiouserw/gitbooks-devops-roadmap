@@ -1,323 +1,103 @@
-# 一、ESXI 管理常用命令
-
-## 1、esxcli
-
-### 获取基础信息
-
-```bash
-vmware -v                      #  看你的esx版本
-VMware ESXi 5.0.0 build-469512
- 
-esxcfg-info -a                 #  显示所有ESX相关信息
-esxcfg-info -w                 #  显示esx上硬件信息
-service mgmt-vmware restart    #  重新启动vmware服务
-esxcfg-vmknic -l               #  查看宿主机IP地址
- 
-esxcli hardware cpu list       #  cpu信息 Brand，Core Speed，
-esxcli hardware cpu global get #  cpu信息 （CPU Cores）
-esxcli hardware memory get     #  内存信息 内存 Physical Memory
-esxcli hardware platform get   #  硬件型号，供应商等信息,主机型号,Product Name 供应商,Vendor Name
-esxcli hardware clock get      #  当前时间
- 
-esxcli system version get                           # 查看ESXi主机版本号和build号
-esxcli system maintenanceMode set --enable yes      # 将ESXi主机进入到维护模式
-esxcli system maintenanceMode set --enable no       # 将ESXi主机退出维护模式
-esxcli system settings advanced list -d             # 列出ESXi主机上被改动过的高级设定选项
-esxcli system settings kernel list -d               # 列出ESXi主机上被变动过的kernel设定部分
-esxcli system snmp get | hash | set | test          # 列出、测试和更改SNMP设定
- 
-esxcli vm process list                              # 利用esxcli列出ESXi服务器上VMs的World I(运行状态的)
-esxcli vm process kill -t soft -w WorldI           # 利用esxcli命令杀掉VM
- 
-vim-cmd hostsvc/hostsummary          # 查看宿主机摘要信息
-vim-cmd vmsvc/get.datastores         # 查看宿主存储空间信息
-vim-cmd vmsvc/getallvms              # 列出所有虚拟机
- 
-vim-cmd vmsvc/power.getstate VMI    # 查看指定VMI虚拟状态
-vim-cmd vmsvc/power.shutdown VMI    # 关闭虚拟机
-vim-cmd vmsvc/power.off VMI         # 如果虚拟机没有关闭，使用poweroff命令
-vim-cmd vmsvc/get.config VMI        # 查看虚拟机配置信息
- 
-esxcli software vib install -d /vmfs/volumes/datastore/patches/xxx.zip  # 为ESXi主机安装更新补丁和驱动
- 
-esxcli network nic list         # 列出当前ESXi主机上所有NICs的状态
-esxcli network vm list          # 列出虚拟机的网路信息
-esxcli storage nmp device list  # 理出当前NMP管理下的设备satp和psp信息
-esxcli storage core device vaai status get # 列出注册到PS设备的VI状态
- 
-esxcli storage nmp satp set --default-psp VMW_PSP_RR --satp xxxx # 利用esxcli命令将缺省psp改成Round Robin
-```
-
-### 维护模式管理
-
-```bash
-esxcli system maintenanceMode {cmd} [cmd options]
-
-Available Commands:
-  get                   获取系统维护状态
-  set                   Enable or disable the maintenance mode of the system.
-  	-e|--enable           开启维护模式 (必须)
-    -t|--timeout=<long>   多少秒后进入维护模式 (默认0秒)
-    -m|--vsanmode=<str>   在主机进入维护模式(默认ensureObjectAccessibility)之前，VSAN服务必须执行														的操作。允许的值是:
-														ensureObjectAccessibility:
-																在进入维护模式之前，从磁盘中提取数据以确保虚拟SAN集群中的对象可访问性。
-														evacuateAllData:在进入维护模式之前，从磁盘中撤离所有数据。
-														noAction:在进入维护模式之前，不要将虚拟SAN数据移出磁盘。
-```
-
-### 关机重启管理（必须进入维护模式）
-
-```bash
-esxcli system shutdown {cmd} [cmd options]
-
-Available Commands:
-  poweroff              断开电源
-    -d|--delay=<long>     多少秒后关机，范围在10-4294967295
-    -r|--reason=<str>     执行该操作的原因
-  reboot                重启系统
-    -d|--delay=<long>     多少秒后关机，范围在10-4294967295
-    -r|--reason=<str>     执行该操作的原因
-```
-
-### 系统时间管理
-
-```bash
-esxcli system time set [cmd options]
-
-Cmd options:
-  -d|--day=<long>       Day
-  -H|--hour=<long>      Hour
-  -m|--min=<long>       Minute
-  -M|--month=<long>     Month
-  -s|--sec=<long>       Second
-  -y|--year=<long>      Year
-```
-
-### 查看vswitch接口信息
-
-```bash
-esxcli network vswitch standard list
-
-vSwitch0
-   Name: vSwitch0
-   Class: etherswitch
-   Num Ports: 4352
-   Used Ports: 10
-   Configured Ports: 128
-   MTU: 1500
-   CDP Status: listen
-   Beacon Enabled: false
-   Beacon Interval: 1
-   Beacon Threshold: 3
-   Beacon Required By:
-   Uplinks: vmnic0
-   Portgroups: VM Network, synology-iscsi, Management Network
-```
+# VMware vSphere虚拟化
 
-### 查看物理网络接口
+# 一、ESXI简介
 
-```bash
-esxcli network nic list
+VMware vSphere是VMware的服务器虚拟化软件套件，vSphere 中的核心组件为 VMware ESXi（取代原ESX），ESXi是一款可以独立安装和运行在祼机上的系统，因此与他我们以往见过的VMwareWorkstation 软件不同的是它不再依存于宿主操作系统之上。它是裸机（bare-metal）虚拟化管理程序（hypervisor），用于创建和管理虚拟机（VM）。ESXi直接安装在服务器硬件上，不依赖底层操作系统，使其性能和效率更高。
 
-Name    PCI Device    Driver  Admin Status  Link Status  Speed  Duplex  MAC Address         MTU  Description
-------  ------------  ------  ------------  -----------  -----  ------  -----------------  ----  ---------------------------------------------------------
-vmnic0  0000:01:00.0  bnx2    Up            Up             100  Full    84:8f:69:e3:e3:98  1500  QLogic Corporation QLogic NetXtreme II BCM5709 1000Base-T
-vmnic1  0000:01:00.1  bnx2    Up            Down             0  Half    84:8f:69:e3:e3:9a  1500  QLogic Corporation QLogic NetXtreme II BCM5709 1000Base-T
-vmnic2  0000:02:00.0  bnx2    Up            Down             0  Half    84:8f:69:e3:e3:9c  1500  QLogic Corporation QLogic NetXtreme II BCM5709 1000Base-T
-vmnic3  0000:02:00.1  bnx2    Up            Down             0  Half    84:8f:69:e3:e3:9e  1500  QLogic Corporation QLogic NetXtreme II BCM5709 1000Base-T
-```
+官方文档：https://docs.vmware.com/cn/VMware-vSphere/index.html
 
-### 当前运行虚拟机列表
 
-```bash
-esxcli vm process list
 
-k8s118-node1
-   World ID: 35805
-   Process ID: 0
-   VMX Cartel ID: 35804
-   UUID: 56 4d 7f 25 bf 12 08 6c-21 36 96 29 58 61 80 bc
-   Display Name: k8s118-node1
-   Config File: /vmfs/volumes/5ad72ff6-920c8d20-3ee7-848f69e3e398/k8s118-node1/k8s118-node1.vmx
+| 端口                   | 协议    | 源                               | 对象              | 目的                                                         |
+| ---------------------- | ------- | -------------------------------- | ----------------- | ------------------------------------------------------------ |
+| 9                      | UDP     | vCenter Server                   | ESXi 主机         | wake on LAN 使用。                                           |
+| 22                     | TCP     | SSH 客户端                       | ESXi 主机         | SSH 访问需要使用此端口                                       |
+| 53                     | UDP     | ESXi 主机                        | DNS 服务器        | DNS 客户端                                                   |
+| 68                     | UDP     | DHCP 服务器                      | ESXi 主机         | 适用于 IPv4 的 DHCP 客户端                                   |
+| 80                     | TCP     | Web 浏览器                       | ESXi 主机         | “欢迎使用”页面，包含不同界面的下载链接                       |
+| 161                    | UDP     | SNMP 服务器                      | ESXi 主机         | 允许主机连接到 SNMP 服务器                                   |
+| 427                    | TCP/UDP | CIM 服务器                       | ESXi 主机         | CIM 客户端使用服务位置协议版本 2 (SLPv2) 查找 CIM 服务器     |
+| 546                    | TCP/UDP | DHCP 服务器                      | ESXi 主机         | 适用于 IPv6 的 DHCP 客户端                                   |
+| 547                    | TCP/UDP | ESXi 主机                        | DHCP 服务器       | 适用于 IPv6 的 DHCP 客户端                                   |
+| 902                    | TCP/UDP | VMware vCenter Agent             | ESXi 主机         | vCenter Server Agent                                         |
+| 2233                   | TCP     | ESXi 主机                        | vSAN 传输         | vSAN 可靠数据报传输。使用 TCP 并用于 vSAN 存储 IO。如果禁用，则 vSAN 无法工作。 |
+| 3260                   | TCP     | ESXi 主机                        | 软件 iSCSI 客户端 | 支持软件 iSCSI                                               |
+| 5671                   | TCP     | ESXi 主机                        | rabbitmqproxy     | 在 ESXi 主机上运行的代理，允许虚拟机内部运行的应用程序与 vCenter 网络域中运行的 AMQP 代理进行通信。虚拟机不必位于网络中，即无需网卡。代理将连接到 vCenter 网络域中的代理。因此，出站连接 IP 地址应至少包括当前正在使用的代理或未来的代理。如果客户要扩展，则可以添加代理。 |
+| 5988/8889              | TCP     | CIM 服务器8889 OpenWSMAN守护进程 | ESXi 主机         | 5988 - 适用于 CIM（通用信息模型）的服务器<br>8889 - Web 服务管理（WS 管理是用于管理服务器、设备、应用程序和 Web 服务的 DMTF 开放式标准） |
+| 5989                   | TCP     | CIM 安全服务器                   | ESXi 主机         | 适用于 CIM 的安全服务器                                      |
+| 6999                   | UDP     | NSX 分布式逻辑路由器服务         | ESXi 主机         | NSX 虚拟分布式路由器服务 如果已安装 NSX VIB 且已创建 VDR 模块，则与此服务关联的防火墙端口将打开。如果没有 VDR 实例与主机关联，则该端口无需打开。 |
+| 8000                   | TCP     | ESXi 主机                        | ESXi 主机         | vMotion - 通过 vMotion 迁移虚拟机时为必需项。ESXi 主机在端口 8000 上侦听远程 ESXi 主机中用于 vMotion 流量的 TCP 连接 |
+| 8080                   | TCP     | vsanvp                           | ESXi 主机         | VSAN VASA 供应商提供程序。由 vCenter 中的存储管理服务 (SMS) 使用，以访问有关 Virtual SAN 存储配置文件、功能和合规性的信息。如果禁用，则 Virtual SAN 基于存储配置文件的管理 (SPBM) 无法工作。 |
+| 8100<br/>8200<br/>8300 | TCP/UDP | Fault Tolerance                  | ESXi 主机         | 主机之间的流量，用于 vSphere Fault Tolerance (FT)。          |
+| 8301<br/>8302          | UDP     | DVSSync                          | ESXi 主机         | DVSSync 端口可用于同步已启用 VMware FT 记录/重放的主机之间的分布式虚拟端口的状况。只有运行主虚拟机或备份虚拟机的主机才须打开这些端口。未使用 VMware FT 的主机无需打开这些端口。 |
+| 12345<br/>23451        | UDP     | ESXi 主机                        | vSAN 群集服务     | 由 vSAN 使用的群集监控、成员资格和 Directory Service。       |
+| 44046<br/>31031        | TCP     | ESXi 主机                        | HBR               | 用于 vSphere Replication 和 VMware Site Recovery Manager 的持续复制流量。 |
+| 80,9000                | TCP     | ESXi 主机                        | vCenter Server    | vSphere Lifecycle Manager                                    |
 
-k8s118-node2
-   World ID: 35830
-   Process ID: 0
-   VMX Cartel ID: 35829
-   UUID: 56 4d c7 a7 05 ba e8 27-4a cf e3 3c 22 77 e2 27
-   Display Name: k8s118-node2
-   Config File: /vmfs/volumes/5ad72ff6-920c8d20-3ee7-848f69e3e398/k8s118-node2/k8s118-node2.vmx
-```
+# 二、硬件兼容性查询
 
-### 创建datastore
+对于老硬件、不知名硬件的主机。在安装 ESXI 前，可以在以下网址查询硬件是否支持，能支持到什么版本。
 
-创建NFS类型的Datastore
+查询条件可根据硬件设备类型，硬件厂商等
 
-```bash
-# ESXI安装Synology NFS VAAI
-参考附录2。ESXI安装完Synology NFS VAAI后再创建NFS类型Datastore后，会显示Datastore已支持硬件加速
+## 1、硬件兼容性
 
-esxcfg-nas -a synology-nfs-datastore -o 192.168.1.7 -s /volume2/ESXI
+- **CPU兼容性：**https://www.vmware.com/resources/compatibility/search.php?deviceCategory=cpu
+- **IO设备**：https://www.vmware.com/resources/compatibility/search.php?deviceCategory=io
+- **GPU直通**：https://www.vmware.com/resources/compatibility/search.php?deviceCategory=vmdirect
+- ......
 
-# 删除Datastore
-esxcfg-nas -d synology-nfs-datastore
+## 2、已知不兼容硬件
 
-esxcli storage vmfs extent list
-```
+- **主板自带的螃蟹卡网卡**
+- **老nvme版本协议的 SSD硬盘**
+  - 老协议NVME驱动在`6.7 U2`被砍掉了，7.0以上版本砍掉了大量老协议规范及驱动
+  - ESXI支持的NVME协议最低是1.3
+  - 参考：
+    - https://williamlam.com/2019/05/quick-tip-crucial-nvme-ssd-not-recognized-by-esxi-6-7.html
+    - https://www.pcjsb.com/archives/esxi6.7-7.0he-8.0wu-fa-shi-bie-lao-xie-yi-nvmegu-tai-ying-pan-de-jie-jue-fang-fa
 
-### 查看卷信息
+# 三、ESXI安装
 
-```bash
-esxcli storage filesystem list 
+## 1、刻录ESXI ISO文件到U盘
 
-Mount Point                                        Volume Name  UUID                                 Mounted  Type            Size          Free
--------------------------------------------------  -----------  -----------------------------------  -------  ------  ------------  ------------
-/vmfs/volumes/5ad72ff6-920c8d20-3ee7-848f69e3e398  datastore1   5ad72ff6-920c8d20-3ee7-848f69e3e398     true  VMFS-5  890131972096  156750577664
-/vmfs/volumes/5ad93bed-3b0a5ee0-8d62-848f69e3e398               5ad93bed-3b0a5ee0-8d62-848f69e3e398     true  vfat      4293591040    4257939456
-/vmfs/volumes/5a613a7b-adc12ea1-59ec-8b00e5327863               5a613a7b-adc12ea1-59ec-8b00e5327863     true  vfat       261853184      91848704
-/vmfs/volumes/d7f0b67d-93f4d99c-13e2-fc95a98c5631               d7f0b67d-93f4d99c-13e2-fc95a98c5631     true  vfat       261853184      91987968
-/vmfs/volumes/5ad72ff5-a0c06292-f641-848f69e3e398               5ad72ff5-a0c06292-f641-848f69e3e398     true  vfat       299712512      88342528
-```
+## 2、开起主板的虚拟化配置
 
-## 2、vim-cmd命令
+## 3、从U盘启动
 
-### 列出所有虚拟机清单
+## 4、进入安装程序
 
-```bash
-vim-cmd vmsvc/getallvms
-```
 
-### 查看指定虚拟机设备信息
 
-其中包括网卡型号、MC地址等信息。
+# 四、其他
 
-```bash
-vim-cmd vmsvc/device.getdevices 101
-```
 
-### 查看指定虚拟机配置
 
-```bash
-vim-cmd vmsvc/get.config 101
-```
 
-### 查看指定虚拟机摘要信息
 
-```bash
-vim-cmd vmsvc/get.summary 101
-```
 
-## 3、其他命令
 
-查看虚拟网卡接口
 
-```bash
-esxcfg-vmknic -l
-```
 
-# 二、挂载本地磁盘上VMFS文件系统分区
+- 从vSphere 7.x开始不支持 root用户修改系统文件
+  - 参考：https://knowledge.broadcom.com/external/article/344767/the-root-account-can-no-longer-change-pe.html
 
-```bash
-esxcfg-volume -l |grep "VMFS UUID/label"
-# 会显示当前磁盘分区UUID
+- 要安装自定义 VIB，必须将 ESXi 主机的接受程度改为 CommunitySupported。
+  - https://knowledge.broadcom.com/external/article/317482/creating-custom-firewall-rules-in-vmware.html
+  - https://elatov.github.io/2018/03/creating-a-vib-to-modify-a-firewall-rule-on-an-esxi-host/
+  - https://docs.vmware.com/cn/VMware-vSphere/7.0/com.vmware.vsphere.security.doc/GUID-8912DD42-C6EA-4299-9B10-5F3AEA52C605.html
+  - https://docs.vmware.com/cn/VMware-vSphere/7.0/com.vmware.vsphere.security.doc/GUID-171B99EA-15B3-4CC5-8B9A-577D8336FAA0.html
 
-esxcli storage filesystem list
-# 
 
-esxcfg-volume -M UUID
-# 会将磁盘分区挂载到/vmfs/volumes/UUID下
-# -M 重启后依旧会挂载。-m 重启后不会再挂载
-```
 
-> **应用实例：**
->
-> ​		四块SAAS硬盘做的raid5。其中一块出现坏块，导致其上的VMWare系统奔溃。将硬盘位置打乱换了以后在开机期间Crtl+ R进入raid工具界面，显示raid正在重建。等重建完成后，还是无法进入VMWare。随后找到一块临时SATA即可的SSD硬盘插入光驱位，然后下载6.7的ESXI刻录到U盘中，将VMWare安装到SSD中。开机进入新的VMWare后，可以看到旧硬盘，分区依旧在，说明数据也在。此时需要将旧硬盘上的VMFS文件系统分区挂载到新的VMWare即可显示VM的数据存储。之后就可以使用各种工具备份导出VM啦，推荐使用群晖上的ABB。
 
-# 三、ESXI网络抓包工具
 
-![](../assets/tcpdump-uw-vs-pktcap-uw.png)
-
-https://www.virten.net/2015/10/esxi-network-troubleshooting-with-tcpdump-uw-and-pktcap-uw/
-
-## 1、tcpdump-uw
-
-详细文档：https://kb.vmware.com/s/article/1031186
-
-```bash
-esxcfg-vmknic -l
-# 或者
-esxcli network ip interface list
-
-tcpdump-uw -i vmk0
-```
-
-## 2、pktcap-uw 
-
-详细文档：https://kb.vmware.com/s/article/2051814?lang=zh_CN
-
-```bash
-net-stats -l
-
-pktcap-uw --vmk vmk0
-```
-
-# 四、网络防火墙
-
-默认 exsi 主机的 `httpclient` 规则没有开起。故 esxi主机无法向外部网络发送 HTTP 请求。可登录 esxi开放限制。
-
-## 1、查看防火墙规则
-
-```bash
-# 查看所有的防火墙规则集
-esxcli network firewall ruleset list
-
-# 查看所有的防火墙规则
-esxcli network firewall ruleset rule list
-
-# 查看防火墙特定规则集的规则
-esxcli network firewall ruleset rule list -r 规则集
-```
-
-## 2、 启用/禁用的防火墙规则集
-
-```bash
-esxcli network firewall ruleset set -e true -r 规则集
-esxcli network firewall ruleset set -e false -r 规则集
-```
-
-## 3、更新防火墙规则
-
-建议在 UI界面进行更新（增删改）
-
-# 附录
-
-## 1、ESXI VAAI
-
-在虚拟化环境中，从资源角度来看，传统上的存储操作非常昂贵。与主机相比，存储设备可以更高效地执行克隆和快照等功能。VMware vSphere存储API阵列集成（VAAI），也称为硬件加速或硬件卸载API，是一组API，用于启用VMware vSphere ESXi主机与存储设备之间的通信。这些API定义了一组“存储原语”，它们使ESXi主机能够将某些存储操作卸载到阵列上，从而减少了ESXi主机上的资源开销，并可以显着提高存储密集型操作（如存储克隆，清零等）的性能。VAAI的目标是帮助存储供应商提供硬件帮助，以加快在存储硬件中更有效地完成的VMware I / O操作。
-
-参考：https://www.vmware.com/techpapers/2012/vmware-vsphere-storage-apis-array-integration-10337.html
-
-## 2、ESXI安装Synology NFS VAAI
-
-下载地址：https://www.synology.cn/en-global/support/download/DS110+#utilities
-
-安装参看：https://global.download.synology.com/download/www-res/dsm/Tools/NFSVAAIPlugin/README
-
-```bash
-scp synonfs-vaai-plugin.vib root@192.168.1.103:/tmp
-
-esxcli software vib install -v /tmp/synonfs-vaai-plugin.vib --no-sig-check
-# 或
-esxcli software vib install -d /tmp/synonfs-vaai-plugin.zip --no-sig-check
-
-重启ESXI
-
-# 查看ESXI插件中是否已安装Synology NFS VAAI
-esxcli software vib list | more
-
-# 删除ESXI插件
-esxcli software vib remove -n {PLUGIN_NAME}
-```
-
-参考：https://www.jonathanmedd.net/category/nfs
-
+- https://blogs.vmware.com/vsphere/files/2012/09/vibauthor-how-to-v0.1.docx
+- https://www.altaro.com/vmware/how-to-create-persistent-firewall-rules-on-esxi/
+- https://williamlam.com/2023/07/creating-a-custom-vib-for-esxi-8-x.html
+- https://www.veeam.com/kb2291
+- https://elatov.github.io/2018/03/creating-a-vib-to-modify-a-firewall-rule-on-an-esxi-host/
+- https://blog.csdn.net/aplsc/article/details/109284462
+- https://docs.vmware.com/en/VMware-vSphere/7.0/com.vmware.vsphere.security.doc/GUID-A45872F4-C47A-4B16-8221-7BE2F363AC38.html
+- https://docs.vmware.com/en/VMware-vSphere/7.0/com.vmware.vsphere.security.doc/GUID-7A8BEFC8-BF86-49B5-AE2D-E400AAD81BA3.html
+- https://docs.vmware.com/cn/VMware-vSphere/7.0/com.vmware.vsphere.security.doc/GUID-A45872F4-C47A-4B16-8221-7BE2F363AC38.html
