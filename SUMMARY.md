@@ -285,8 +285,10 @@
 * PXE+Kickstart/AutoInstall
     * [PXE网络无人值守自动安装OS](origin/pxe-kickstart无人值守部署OS.md)
     * [PXE引导配置文件详解](origin/pxe-引导配置文件参数详解.md)
-    * [Rocky/CentOS/Readhat: Kickstart无人值守配置文件详解](origin/pxe-kickstart文件参数详解.md)
-    * [Ubuntu/Debian: AutoInstall无人值守配置文件详解](origin/ubuntu-autoinstall.md)
+    * 无人值守自动化配置安装
+      * [Rocky/CentOS/Readhat: Kickstart详解](origin/pxe-kickstart文件参数详解.md)
+      * [Ubuntu/Debian: AutoInstall详解](origin/ubuntu-autoinstall.md)
+      * [Fedora CoreOS: Ignition详解](origin/coreos-ignition.md)
 * [netboot.xyz](origin/netboot.xyz.md)
 * Tool
 
@@ -419,6 +421,7 @@
     * [Synology Active Backup for Business备份管理vSphere ESXI VMs](origin/synology-abb-vsphere.md)
     * [群晖Synology的iSCSI](origin/iSCSI-简介配置使用.md)
 * [开源画图平台:Excalidraw](origin/excalidraw.md)
+* [硬件知识](origin/hardwares.md)
 
 
 ## Part Ⅶ：数据存储、处理

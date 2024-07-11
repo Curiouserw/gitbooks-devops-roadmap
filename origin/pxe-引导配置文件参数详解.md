@@ -2,6 +2,42 @@
 
 
 
+PXE 配置文档：https://wiki.syslinux.org/wiki/index.php?title=Config
+
+
+
+## pxelinux搜索配置文件的顺序
+
+```yaml
+Client 192.168.1.25:49152 /tftpboot/pxelinux.cfg/564d4f19-fe3b-5ae0-f81a-ed57dfa1f0ae, No Such File/No Access
+# pxelinux.cfg/01-客户机网卡MAC地址
+Client 192.168.1.25:49153 /tftpboot/pxelinux.cfg/01-aa-bb-cc-dd-ee-ff, No Such File/No Access
+# pxelinux.cfg/C0A80119 为 192.168.1.25的16进制表示（可通过syslinux软件包提供的gethostip命令将10进制的IP转换为16进制）
+Client 192.168.1.25:49154 /tftpboot/pxelinux.cfg/C0A80119, No Such File/No Access
+Client 192.168.1.25:49155 /tftpboot/pxelinux.cfg/C0A8011, No Such File/No Access
+Client 192.168.1.25:49156 /tftpboot/pxelinux.cfg/C0A801, No Such File/No Access
+Client 192.168.1.25:49157 /tftpboot/pxelinux.cfg/C0A80, No Such File/No Access
+Client 192.168.1.25:49158 /tftpboot/pxelinux.cfg/C0A8, No Such File/No Access
+Client 192.168.1.25:49159 /tftpboot/pxelinux.cfg/C0A, No Such File/No Access
+Client 192.168.1.25:49160 /tftpboot/pxelinux.cfg/C0, No Such File/No Access
+Client 192.168.1.25:49161 /tftpboot/pxelinux.cfg/C, No Such File/No Access
+Client 192.168.1.25:49162 /tftpboot/pxelinux.cfg/default, 4 Blocks Served
+
+
+Client 192.168.1.25:49163 /tftpboot/boot.msg, No Such File/No Access
+Client 192.168.1.25:49164 /tftpboot/vesamenu.c32, 110 Blocks Served
+Client 192.168.1.25:49165 /tftpboot/pxelinux.cfg/default, 4 Blocks Served
+Client 192.168.1.25:49166 /tftpboot/splash.jpg, No Such File/No Access
+Client 192.168.1.25:49167 /tftpboot/Ubuntu/20.04.6/vmlinuz, 9718 Blocks Served
+Client 192.168.1.25:49168 /tftpboot/Ubuntu/20.04.6/initrd, 62731 Blocks Served
+```
+
+
+
+
+
+
+
 ```ini
 # 默认启动的是 'label ks' 中标记的启动内核
 default ks
@@ -50,6 +86,28 @@ label memtest86
 
 
 
+格式：
+
+> menu color <Item> <ANSI Seq.> <foreground> <background> <shadow type>
+
+```bash
+menu color border      30;44      #00000000 #00000000 none  菜单边框   透明
+menu color title       1;36;44    #FFFFFFFF #00000000 none  顶部标题文字颜色   白色
+menu color sel         30;37      #FFFF0000 #00000000 none  选定子菜单颜色     红色
+menu color unsel       37;44      #FFFFFFFF #00000000 none  未选定子菜单颜色   白色
+menu color help        37;40      #FFFFFFFF #00000000 none  菜单注释文字颜色   白色
+menu color cmdline     37;40      #FFFF0000 #00000000 none  TAB命令行颜色      红色
+menu color msg07       37;40      #FFFFFF00 #00000000 none  F1显示颜色         黄
+menu color timeout     37;40      #FFFF0000 #00000000 none  剩余时间秒数颜色   红色
+menu color timeout_msg 37;40      #FFFFFF00 #00000000 none  剩余时间字体颜色   黄
+menu color hotkey      1;37;44    #ffffff00 #00000000 none  快捷键颜色         黄
+menu color hotsel      1;7;37;40  #FFFF0000 #00000000 none  选定快捷键颜色     红色
+```
+
+
+
+
+
 示例
 
 ```yaml
@@ -74,10 +132,11 @@ label CentOS7.7.1908
 
 
 
-
+https://github.com/zhangguanzhang/Installer/blob/master/docs/pxe.md
 
 # 参考
 
 1. https://docs.centos.org/en-US/centos/install-guide/pxe-server/#chap-installation-server-setup
 2. https://blog.51cto.com/4690837/2333165
 3. https://access.redhat.com/documentation/zh-cn/red_hat_enterprise_linux/6/html/installation_guide/ch-boot-x86#sn-boot-menu-x86
+4. https://github.com/zhangguanzhang/Installer/blob/master/docs/pxe.md

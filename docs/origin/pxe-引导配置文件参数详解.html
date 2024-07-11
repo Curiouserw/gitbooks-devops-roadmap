@@ -106,8 +106,6 @@
     <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="pxe-kickstart文件参数详解.html" />
-    
     
     <link rel="prev" href="pxe-kickstart无人值守部署OS.html" />
     
@@ -4667,14 +4665,30 @@
             
         </li>
     
-        <li class="chapter " data-level="7.9.3" data-path="pxe-kickstart文件参数详解.html">
+        <li class="chapter " data-level="7.9.3" >
             
-                <a href="pxe-kickstart文件参数详解.html">
+                <span>
             
                     
                         <b>7.9.3.</b>
                     
-                    Rocky/CentOS/Readhat: Kickstart无人值守配置文件详解
+                    无人值守自动化配置安装
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="7.9.3.1" data-path="pxe-kickstart文件参数详解.html">
+            
+                <a href="pxe-kickstart文件参数详解.html">
+            
+                    
+                        <b>7.9.3.1.</b>
+                    
+                    Rocky/CentOS/Readhat: Kickstart详解
             
                 </a>
             
@@ -4682,18 +4696,38 @@
             
         </li>
     
-        <li class="chapter " data-level="7.9.4" data-path="ubuntu-autoinstall.html">
+        <li class="chapter " data-level="7.9.3.2" data-path="ubuntu-autoinstall.html">
             
                 <a href="ubuntu-autoinstall.html">
             
                     
-                        <b>7.9.4.</b>
+                        <b>7.9.3.2.</b>
                     
-                    Ubuntu/Debian: AutoInstall无人值守配置文件详解
+                    Ubuntu/Debian: AutoInstall详解
             
                 </a>
             
 
+            
+        </li>
+    
+        <li class="chapter " data-level="7.9.3.3" data-path="coreos-ignition.html">
+            
+                <a href="coreos-ignition.html">
+            
+                    
+                        <b>7.9.3.3.</b>
+                    
+                    Fedora CoreOS: Ignition详解
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
             
         </li>
     
@@ -6781,6 +6815,21 @@
             
         </li>
     
+        <li class="chapter " data-level="7.47" data-path="hardwares.html">
+            
+                <a href="hardwares.html">
+            
+                    
+                        <b>7.47.</b>
+                    
+                    硬件知识
+            
+                </a>
+            
+
+            
+        </li>
+    
 
     
         
@@ -7957,7 +8006,31 @@
     
 					<section class="normal markdown-section">
 						
-						<pre class="language-"><code class="ini"># &#x9ED8;&#x8BA4;&#x542F;&#x52A8;&#x7684;&#x662F; &apos;label ks&apos; &#x4E2D;&#x6807;&#x8BB0;&#x7684;&#x542F;&#x52A8;&#x5185;&#x6838;
+						<p>PXE &#x914D;&#x7F6E;&#x6587;&#x6863;&#xFF1A;<a href="https://wiki.syslinux.org/wiki/index.php?title=Config" _target="blank">https://wiki.syslinux.org/wiki/index.php?title=Config</a></p>
+<h2 id="pxelinux&#x641C;&#x7D22;&#x914D;&#x7F6E;&#x6587;&#x4EF6;&#x7684;&#x987A;&#x5E8F;">pxelinux&#x641C;&#x7D22;&#x914D;&#x7F6E;&#x6587;&#x4EF6;&#x7684;&#x987A;&#x5E8F;</h2>
+<pre class="language-"><code class="yaml">Client 192.168.1.25:49152 /tftpboot/pxelinux.cfg/564d4f19-fe3b-5ae0-f81a-ed57dfa1f0ae, No Such File/No Access
+# pxelinux.cfg/01-&#x5BA2;&#x6237;&#x673A;&#x7F51;&#x5361;MAC&#x5730;&#x5740;
+Client 192.168.1.25:49153 /tftpboot/pxelinux.cfg/01-aa-bb-cc-dd-ee-ff, No Such File/No Access
+# pxelinux.cfg/C0A80119 &#x4E3A; 192.168.1.25&#x7684;16&#x8FDB;&#x5236;&#x8868;&#x793A;&#xFF08;&#x53EF;&#x901A;&#x8FC7;syslinux&#x8F6F;&#x4EF6;&#x5305;&#x63D0;&#x4F9B;&#x7684;gethostip&#x547D;&#x4EE4;&#x5C06;10&#x8FDB;&#x5236;&#x7684;IP&#x8F6C;&#x6362;&#x4E3A;16&#x8FDB;&#x5236;&#xFF09;
+Client 192.168.1.25:49154 /tftpboot/pxelinux.cfg/C0A80119, No Such File/No Access
+Client 192.168.1.25:49155 /tftpboot/pxelinux.cfg/C0A8011, No Such File/No Access
+Client 192.168.1.25:49156 /tftpboot/pxelinux.cfg/C0A801, No Such File/No Access
+Client 192.168.1.25:49157 /tftpboot/pxelinux.cfg/C0A80, No Such File/No Access
+Client 192.168.1.25:49158 /tftpboot/pxelinux.cfg/C0A8, No Such File/No Access
+Client 192.168.1.25:49159 /tftpboot/pxelinux.cfg/C0A, No Such File/No Access
+Client 192.168.1.25:49160 /tftpboot/pxelinux.cfg/C0, No Such File/No Access
+Client 192.168.1.25:49161 /tftpboot/pxelinux.cfg/C, No Such File/No Access
+Client 192.168.1.25:49162 /tftpboot/pxelinux.cfg/default, 4 Blocks Served
+
+
+Client 192.168.1.25:49163 /tftpboot/boot.msg, No Such File/No Access
+Client 192.168.1.25:49164 /tftpboot/vesamenu.c32, 110 Blocks Served
+Client 192.168.1.25:49165 /tftpboot/pxelinux.cfg/default, 4 Blocks Served
+Client 192.168.1.25:49166 /tftpboot/splash.jpg, No Such File/No Access
+Client 192.168.1.25:49167 /tftpboot/Ubuntu/20.04.6/vmlinuz, 9718 Blocks Served
+Client 192.168.1.25:49168 /tftpboot/Ubuntu/20.04.6/initrd, 62731 Blocks Served
+</code></pre>
+<pre class="language-"><code class="ini"># &#x9ED8;&#x8BA4;&#x542F;&#x52A8;&#x7684;&#x662F; &apos;label ks&apos; &#x4E2D;&#x6807;&#x8BB0;&#x7684;&#x542F;&#x52A8;&#x5185;&#x6838;
 default ks
 # &#x663E;&#x793A; &apos;boot: &apos; &#x63D0;&#x793A;&#x7B26;&#x3002;&#x4E3A; &apos;0&apos; &#x65F6;&#x5219;&#x4E0D;&#x63D0;&#x793A;&#xFF0C;&#x5C06;&#x4F1A;&#x76F4;&#x63A5;&#x542F;&#x52A8; &apos;default&apos; &#x53C2;&#x6570;&#x4E2D;&#x6307;&#x5B9A;&#x7684;&#x5185;&#x5BB9;&#x3002;
 prompt 1
@@ -7999,6 +8072,22 @@ label memtest86
   kernel memtest 
   append -
 </code></pre>
+<p>&#x683C;&#x5F0F;&#xFF1A;</p>
+<blockquote>
+<p>menu color <item> <ansi seq.=""> <foreground> <background> <shadow type=""></shadow></background></foreground></ansi></item></p>
+</blockquote>
+<pre class="language-"><code class="bash">menu color border      30;44      #00000000 #00000000 none  &#x83DC;&#x5355;&#x8FB9;&#x6846;   &#x900F;&#x660E;
+menu color title       1;36;44    #FFFFFFFF #00000000 none  &#x9876;&#x90E8;&#x6807;&#x9898;&#x6587;&#x5B57;&#x989C;&#x8272;   &#x767D;&#x8272;
+menu color sel         30;37      #FFFF0000 #00000000 none  &#x9009;&#x5B9A;&#x5B50;&#x83DC;&#x5355;&#x989C;&#x8272;     &#x7EA2;&#x8272;
+menu color unsel       37;44      #FFFFFFFF #00000000 none  &#x672A;&#x9009;&#x5B9A;&#x5B50;&#x83DC;&#x5355;&#x989C;&#x8272;   &#x767D;&#x8272;
+menu color help        37;40      #FFFFFFFF #00000000 none  &#x83DC;&#x5355;&#x6CE8;&#x91CA;&#x6587;&#x5B57;&#x989C;&#x8272;   &#x767D;&#x8272;
+menu color cmdline     37;40      #FFFF0000 #00000000 none  TAB&#x547D;&#x4EE4;&#x884C;&#x989C;&#x8272;      &#x7EA2;&#x8272;
+menu color msg07       37;40      #FFFFFF00 #00000000 none  F1&#x663E;&#x793A;&#x989C;&#x8272;         &#x9EC4;
+menu color timeout     37;40      #FFFF0000 #00000000 none  &#x5269;&#x4F59;&#x65F6;&#x95F4;&#x79D2;&#x6570;&#x989C;&#x8272;   &#x7EA2;&#x8272;
+menu color timeout_msg 37;40      #FFFFFF00 #00000000 none  &#x5269;&#x4F59;&#x65F6;&#x95F4;&#x5B57;&#x4F53;&#x989C;&#x8272;   &#x9EC4;
+menu color hotkey      1;37;44    #ffffff00 #00000000 none  &#x5FEB;&#x6377;&#x952E;&#x989C;&#x8272;         &#x9EC4;
+menu color hotsel      1;7;37;40  #FFFF0000 #00000000 none  &#x9009;&#x5B9A;&#x5FEB;&#x6377;&#x952E;&#x989C;&#x8272;     &#x7EA2;&#x8272;
+</code></pre>
 <p>&#x793A;&#x4F8B;</p>
 <pre class="language-"><code class="yaml">default vesamenu.c32
 prompt 0
@@ -8018,14 +8107,16 @@ label CentOS7.7.1908
   kernel vmlinuz-7.7
   append initrd=initrd-7.7.img text ks=http://192.168.1.80/CentOS7.7.1908.cfg
 </code></pre>
+<p><a href="https://github.com/zhangguanzhang/Installer/blob/master/docs/pxe.md" _target="blank">https://github.com/zhangguanzhang/Installer/blob/master/docs/pxe.md</a></p>
 <h1 id="&#x53C2;&#x8003;">&#x53C2;&#x8003;</h1>
 <ol>
 <li><a href="https://docs.centos.org/en-US/centos/install-guide/pxe-server/#chap-installation-server-setup" _target="blank">https://docs.centos.org/en-US/centos/install-guide/pxe-server/#chap-installation-server-setup</a></li>
 <li><a href="https://blog.51cto.com/4690837/2333165" _target="blank">https://blog.51cto.com/4690837/2333165</a></li>
-<li><a href="https://access.redhat.com/documentation/zh-cn/red_hat_enterprise_linux/6/html/installation_guide/ch-boot-x86#sn-boot-menu-x86" _target="blank">https://access.redhat.com/documentation/zh-cn/red_hat_enterprise_linux/6/html/installation_guide/ch-boot-x86#sn-boot-menu-x86</a> </li>
+<li><a href="https://access.redhat.com/documentation/zh-cn/red_hat_enterprise_linux/6/html/installation_guide/ch-boot-x86#sn-boot-menu-x86" _target="blank">https://access.redhat.com/documentation/zh-cn/red_hat_enterprise_linux/6/html/installation_guide/ch-boot-x86#sn-boot-menu-x86</a></li>
+<li><a href="https://github.com/zhangguanzhang/Installer/blob/master/docs/pxe.md" _target="blank">https://github.com/zhangguanzhang/Installer/blob/master/docs/pxe.md</a> </li>
 </ol>
 <footer class="page-footer"><span class="copyright">Copyright Curiouser all right reserved&#xFF0C;powered by Gitbook</span><span class="footer-modification">&#x8BE5;&#x6587;&#x4EF6;&#x6700;&#x540E;&#x4FEE;&#x6539;&#x65F6;&#x95F4;&#xFF1A;
-2024-06-14 18:11:43
+2024-07-11 10:20:05
 </span></footer>
 <script>console.log("plugin-popup....");document.onclick = function(e){ e.target.tagName === "IMG" && window.open(e.target.src,e.target.src)}</script><style>img{cursor:pointer}</style>
 						
@@ -8054,14 +8145,10 @@ label CentOS7.7.1908
 
 		
 		
-		<a href="pxe-kickstart无人值守部署OS.html" class="navigation navigation-prev " aria-label="Previous page: PXE网络无人值守自动安装OS">
+		<a href="pxe-kickstart无人值守部署OS.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: PXE网络无人值守自动安装OS">
 			<i class="fa fa-angle-left"></i>
 		</a>
 		
-		
-		<a href="pxe-kickstart文件参数详解.html" class="navigation navigation-next " aria-label="Next page: Rocky/CentOS/Readhat: Kickstart无人值守配置文件详解">
-			<i class="fa fa-angle-right"></i>
-		</a>
 		
 		
 		
@@ -8069,7 +8156,7 @@ label CentOS7.7.1908
 	<script>
 		var gitbook = gitbook || [];
 		gitbook.push(function() {
-			gitbook.page.hasChanged({"page":{"title":"PXE引导配置文件详解","level":"7.9.2","depth":2,"next":{"title":"Rocky/CentOS/Readhat: Kickstart无人值守配置文件详解","level":"7.9.3","depth":2,"path":"origin/pxe-kickstart文件参数详解.md","ref":"origin/pxe-kickstart文件参数详解.md","articles":[]},"previous":{"title":"PXE网络无人值守自动安装OS","level":"7.9.1","depth":2,"path":"origin/pxe-kickstart无人值守部署OS.md","ref":"origin/pxe-kickstart无人值守部署OS.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-lunr","-sharing","-highlight","search-pro","splitter","github","popup","sectionx","expandable-chapters","sharing-plus","code","auto-scroll-table","theme-fexa","tbfed-pagefooter","back-to-top-button","emphasize","edit-link","prism","donate","theme-comscore","github-buttons","github-issue-feedback"],"root":".","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"tbfed-pagefooter":{"copyright":"Copyright Curiouser","modify_label":"该文件最后修改时间：","modify_format":"YYYY-MM-DD HH:mm:ss"},"prism":{"css":["prismjs/themes/prism-tomorrow.css"],"lang":{"flow":"typescript"},"ignore":["mermaid","eval-js"]},"emphasize":{},"github-issue-feedback":{"repo":"RationalMonster/rationalmonster.github.io"},"github":{"url":"https://github.com/RationalMonster"},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"auto-scroll-table":{},"popup":{},"theme-fexa":{"search-placeholder":"搜索文章","logo":"./assets/logo.png"},"code":{"copybuttons":"true","copyButtons":true},"donate":{"wechat":"/assets/wechat-donate.jpg","title":"","button":"赏","wechatText":"微信打赏","alipay":"","alipayText":"支付宝打赏"},"fontsettings":{"theme":"white","family":"sans","size":2},"sectionx":{},"theme-comscore":{},"back-to-top-button":{},"github-buttons":{"buttons":[{"user":"RationalMonster","repo":"gitbooks-devops-roadmap","type":"star","size":"small","count":"true"}]},"sharing":{"weibo":true,"qq":"true","google":true,"all":["facebook","twitter"]},"edit-link":{"base":"https://raw.githubusercontent.com/RationalMonster/gitbooks-devops-roadmap/master/","label":"查看源MD文件"},"theme-default":{"showLevel":true,"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"expandable-chapters":{}},"theme":"default","author":"Curiouser <rationalmonster@163.com>","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Devops Roadmap","gitbook":"*"},"file":{"path":"origin/pxe-引导配置文件参数详解.md","mtime":"2024-06-14T10:11:43.487Z","type":"markdown"},"gitbook":{"version":"3.0.0","time":"2024-07-05T02:02:44.381Z"},"basePath":"..","book":{"language":""}});
+			gitbook.page.hasChanged({"page":{"title":"PXE引导配置文件详解","level":"7.9.2","depth":2,"next":{"title":"无人值守自动化配置安装","level":"7.9.3","depth":2,"ref":"","articles":[{"title":"Rocky/CentOS/Readhat: Kickstart详解","level":"7.9.3.1","depth":3,"path":"origin/pxe-kickstart文件参数详解.md","ref":"origin/pxe-kickstart文件参数详解.md","articles":[]},{"title":"Ubuntu/Debian: AutoInstall详解","level":"7.9.3.2","depth":3,"path":"origin/ubuntu-autoinstall.md","ref":"origin/ubuntu-autoinstall.md","articles":[]},{"title":"Fedora CoreOS: Ignition详解","level":"7.9.3.3","depth":3,"path":"origin/coreos-ignition.md","ref":"origin/coreos-ignition.md","articles":[]}]},"previous":{"title":"PXE网络无人值守自动安装OS","level":"7.9.1","depth":2,"path":"origin/pxe-kickstart无人值守部署OS.md","ref":"origin/pxe-kickstart无人值守部署OS.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-lunr","-sharing","-highlight","search-pro","splitter","github","popup","sectionx","expandable-chapters","sharing-plus","code","auto-scroll-table","theme-fexa","tbfed-pagefooter","back-to-top-button","emphasize","edit-link","prism","donate","theme-comscore","github-buttons","github-issue-feedback"],"root":".","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"tbfed-pagefooter":{"copyright":"Copyright Curiouser","modify_label":"该文件最后修改时间：","modify_format":"YYYY-MM-DD HH:mm:ss"},"prism":{"css":["prismjs/themes/prism-tomorrow.css"],"lang":{"flow":"typescript"},"ignore":["mermaid","eval-js"]},"emphasize":{},"github-issue-feedback":{"repo":"RationalMonster/rationalmonster.github.io"},"github":{"url":"https://github.com/RationalMonster"},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"auto-scroll-table":{},"popup":{},"theme-fexa":{"search-placeholder":"搜索文章","logo":"./assets/logo.png"},"code":{"copybuttons":"true","copyButtons":true},"donate":{"wechat":"/assets/wechat-donate.jpg","title":"","button":"赏","wechatText":"微信打赏","alipay":"","alipayText":"支付宝打赏"},"fontsettings":{"theme":"white","family":"sans","size":2},"sectionx":{},"theme-comscore":{},"back-to-top-button":{},"github-buttons":{"buttons":[{"user":"RationalMonster","repo":"gitbooks-devops-roadmap","type":"star","size":"small","count":"true"}]},"sharing":{"weibo":true,"qq":"true","google":true,"all":["facebook","twitter"]},"edit-link":{"base":"https://raw.githubusercontent.com/RationalMonster/gitbooks-devops-roadmap/master/","label":"查看源MD文件"},"theme-default":{"showLevel":true,"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"expandable-chapters":{}},"theme":"default","author":"Curiouser <rationalmonster@163.com>","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Devops Roadmap","gitbook":"*"},"file":{"path":"origin/pxe-引导配置文件参数详解.md","mtime":"2024-07-11T02:20:05.367Z","type":"markdown"},"gitbook":{"version":"3.0.0","time":"2024-07-11T11:24:19.482Z"},"basePath":"..","book":{"language":""}});
 		});
 	</script>
 </div>

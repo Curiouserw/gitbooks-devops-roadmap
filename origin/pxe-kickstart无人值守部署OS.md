@@ -1,12 +1,14 @@
 # PXE + Kickstart/Autoinstall
 
-# 一. 网络引导+无人值守部署CentOS、Ubuntu
+# 一. PXE
 
-## 1、PXE
+## 1、简介
 
 PXE(Pre-boot Execution Environment，预启动执行环境)是由Intel公司开发的最新技术，工作于Client/Server的网络模式，支持工作站通过网络从远端服务器下载映像，并由此支持通过网络启动作系统，在启动过程中，终端要求服务器分配IP地址，再用TFTP（trivial file transfer protocol）或MTFTP(multicast trivial file transfer protocol)协议下载一个启动软件包到本机内存中执行，由这个启动软件包完成终端基本软件设置，从而引导预先安装在服务器中的终端操作系统。
 
 严格来说，PXE 并不是一种安装方式，而是一种引导方式。进行 PXE 安装的必要条件是在要安装的计算机中必须包含一个 PXE 支持的网卡（NIC），即网卡中必须要有 PXE Client。PXE 协议可以使算机通过网络启动。此协议分为 Client端和 Server 端，而PXE Client则在网卡的 ROM 中。当计算机引导时，BIOS 把 PXE Client 调入内存中执行，然后由 PXE Client 将放置在远端的文件通过网络下载到本地运行。运行 PXE 协议需要设置 DHCP 服务器和 TFTP 服务器。DHCP 服务器会给 PXE Client（将要安装系统的主机）分配一个 IP 地址，由于是给 PXE Client 分配 IP 地址，所以在配置 DHCP 服务器时需要增加相应的 PXE 设置。此外，在 PXE Client 的 ROM 中，已经存在了 TFTP Client，那么它就可以通过 TFTP 协议到 TFTP Server 上下载所需的文件了。
+
+PXE 配置文档：https://wiki.syslinux.org/wiki/index.php?title=Config
 
 ## 2、PXE工作流程
 
@@ -28,29 +30,7 @@ PXE(Pre-boot Execution Environment，预启动执行环境)是由Intel公司开�
 
 ![](../assets/pxe-kickstart无人值守部署OS-2.png)
 
-```bash
-[17-Jun-24 13:58:37] Client 192.168.1.25:2070  /data/TFTP/pxelinux.0, Error 0 at Client, TFTP Aborted
-[17-Jun-24 13:58:37] Client 192.168.1.25:2071  /data/TFTP/pxelinux.0, 20 Blocks Served
-[17-Jun-24 13:58:37] Client 192.168.1.25:49152 /data/TFTP/pxelinux.cfg/564d4f19-fe3b-5ae0-f81a-ed57dfa1f0ae, No Such File/No Access
-[17-Jun-24 13:58:37] Client 192.168.1.25:49153 /data/TFTP/pxelinux.cfg/01-00-0c-29-a1-f0-ae, No Such File/No Access
-[17-Jun-24 13:58:37] Client 192.168.1.25:49154 /data/TFTP/pxelinux.cfg/C0A80119, No Such File/No Access
-[17-Jun-24 13:58:37] Client 192.168.1.25:49155 /data/TFTP/pxelinux.cfg/C0A8011, No Such File/No Access
-[17-Jun-24 13:58:37] Client 192.168.1.25:49156 /data/TFTP/pxelinux.cfg/C0A801, No Such File/No Access
-[17-Jun-24 13:58:37] Client 192.168.1.25:49157 /data/TFTP/pxelinux.cfg/C0A80, No Such File/No Access
-[17-Jun-24 13:58:37] Client 192.168.1.25:49158 /data/TFTP/pxelinux.cfg/C0A8, No Such File/No Access
-[17-Jun-24 13:58:37] Client 192.168.1.25:49159 /data/TFTP/pxelinux.cfg/C0A, No Such File/No Access
-[17-Jun-24 13:58:37] Client 192.168.1.25:49160 /data/TFTP/pxelinux.cfg/C0, No Such File/No Access
-[17-Jun-24 13:58:37] Client 192.168.1.25:49161 /data/TFTP/pxelinux.cfg/C, No Such File/No Access
-[17-Jun-24 13:58:37] Client 192.168.1.25:49162 /data/TFTP/pxelinux.cfg/default, 4 Blocks Served
-[17-Jun-24 13:58:37] Client 192.168.1.25:49163 /data/TFTP/boot.msg, No Such File/No Access
-[17-Jun-24 13:58:37] Client 192.168.1.25:49164 /data/TFTP/vesamenu.c32, 110 Blocks Served
-[17-Jun-24 13:58:37] Client 192.168.1.25:49165 /data/TFTP/pxelinux.cfg/default, 4 Blocks Served
-[17-Jun-24 13:58:37] Client 192.168.1.25:49166 /data/TFTP/splash.jpg, No Such File/No Access
-[17-Jun-24 13:58:42] Client 192.168.1.25:49167 /data/TFTP/Ubuntu/20.04.6/vmlinuz, 9718 Blocks Served
-[17-Jun-24 13:58:54] Client 192.168.1.25:49168 /data/TFTP/Ubuntu/20.04.6/initrd, 62731 Blocks Served
 
-
-```
 
 
 
