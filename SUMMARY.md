@@ -421,7 +421,7 @@
     * [Synology Active Backup for Business备份管理vSphere ESXI VMs](origin/synology-abb-vsphere.md)
     * [群晖Synology的iSCSI](origin/iSCSI-简介配置使用.md)
 * [开源画图平台:Excalidraw](origin/excalidraw.md)
-* [硬件知识](origin/hardwares.md)
+* [硬件规格标准](origin/hardwares.md)
 
 
 ## Part Ⅶ：数据存储、处理

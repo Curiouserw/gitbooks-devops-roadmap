@@ -35,7 +35,11 @@
 2. **SFF-8223**: Specification for 2.5" Drive Form Factor with Serial Attachment (SAS/SATA).
 3. **SFF-8228**: Specification for 2.5" Drive Form Factor with Fibre Channel Attachment.
 
-<img src="/Users/curiouser/code/gitbooks-devops-roadmap/assets/2.5寸硬盘规格-1.png" style="zoom:80%;" />
+<img src="/Users/curiouser/code/gitbooks-devops-roadmap/assets/2.5寸硬盘规格-0.png" style="zoom:80%;" align="left" />
+
+<img src="/Users/curiouser/code/gitbooks-devops-roadmap/assets/2.5寸硬盘规格-1.png"  />
+
+<img src="/Users/curiouser/code/gitbooks-devops-roadmap/assets/2.5寸硬盘规格-2.png"  />
 
 ## 3.5寸硬盘
 
