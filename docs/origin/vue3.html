@@ -8013,8 +8013,101 @@
 <h1 id="&#x4E8C;&#x3001;&#x5B89;&#x88C5;&#x5F15;&#x5165;">&#x4E8C;&#x3001;&#x5B89;&#x88C5;&#x5F15;&#x5165;</h1>
 <h1 id="&#x4E09;&#x3001;&#x5DE5;&#x5177;">&#x4E09;&#x3001;&#x5DE5;&#x5177;</h1>
 <h1 id="&#x56DB;&#x3001;&#x57FA;&#x7840;">&#x56DB;&#x3001;&#x57FA;&#x7840;</h1>
+<pre class="language-"><code class="bash">yarn global add vite@latest
+</code></pre>
+<pre class="language-"><code class="bash">yarn create vite
+</code></pre>
+<pre class="language-"><code class="bash">cd web
+yarn install
+yarn dev
+</code></pre>
+<pre class="language-"><code class="bash">yarn install element-plus unplugin-vue-components unplugin-auto-import unplugin-icons @vitejs/plugin-vue-jsx
+</code></pre>
+<blockquote>
+<p>vite.config.ts</p>
+</blockquote>
+<pre class="language-"><code class="ts">import { defineConfig } from &apos;vite&apos;
+import { fileURLToPath, URL } from &apos;node:url&apos;
+
+import vue from &apos;@vitejs/plugin-vue&apos;
+import vueJsx from &apos;@vitejs/plugin-vue-jsx&apos;
+
+// &#x4F7F;&#x7528;unplugin-auto-import&#x548C;unplugin-vue-components&#x6309;&#x9700;&#x81EA;&#x52A8;&#x5BFC;&#x5165; vue&#x3001;element plus&#x3001;ts
+import AutoImport from &apos;unplugin-auto-import/vite&apos;
+import Components from &apos;unplugin-vue-components/vite&apos;
+import { ElementPlusResolver } from &apos;unplugin-vue-components/resolvers&apos;
+
+// &#x81EA;&#x52A8;&#x5BFC;&#x5165;Icon&#x56FE;&#x6807;
+import IconsResolver from &apos;unplugin-icons/resolver&apos;
+import Icons from &apos;unplugin-icons/vite&apos;
+import { FileSystemIconLoader } from &apos;unplugin-icons/loaders&apos;
+
+export default defineConfig({
+   build: {
+    emptyOutDir: true,
+    chunkSizeWarningLimit: 600,
+    cssCodeSplit: false,
+    reportCompressedSize: true,
+    terserOptions: {
+        compress: {
+          keep_infinity: true,
+          // Used to delete console in production environment
+          drop_console: true,
+          drop_debugger: true,
+        },
+        output: {
+          comments: true
+        }
+    },
+    outDir: &quot;../statics&quot;
+  },
+  resolve: {
+    alias: {
+      &apos;@&apos;: fileURLToPath(new URL(&apos;./src&apos;, import.meta.url))
+    }
+  },
+  plugins: [
+    vue(),
+    vueJsx(),
+    AutoImport({
+      resolvers: [ElementPlusResolver()],
+      imports: [
+        &quot;vue&quot;,
+      ],
+      // &#x5982;&#x679C;&#x4F7F;&#x7528; Typescript&#xFF0C;&#x9700;&#x8981;&#x8BBE;&#x7F6E; dts &#x4E3A; true
+      dts: true,
+      // &#x5982;&#x679C;&#x4F7F;&#x7528;&#x4E86; eslint&#xFF0C;&#x9700;&#x8981;&#x8BBE;&#x7F6E; eslintrc &#x5B57;&#x6BB5;
+      // &#x63D2;&#x4EF6;&#x4F1A;&#x5728;&#x9879;&#x76EE;&#x6839;&#x76EE;&#x5F55;&#x751F;&#x6210;&#x7C7B;&#x578B;&#x6587;&#x4EF6; .eslintrc-auto-import.json &#xFF0C;&#x786E;&#x4FDD;&#x8BE5;&#x6587;&#x4EF6;&#x5728;eslint&#x914D;&#x7F6E;&#x6587;&#x4EF6;.eslintrc.cjs&#x4E2D;&#x88AB; extends
+      eslintrc: {
+        enabled: true
+      }
+    }),
+    Components({
+      resolvers: [
+        ElementPlusResolver(),
+        // &#x81EA;&#x52A8;&#x6CE8;&#x518C;&#x56FE;&#x6807;&#x7EC4;&#x4EF6;
+        IconsResolver({
+          // &#x4FEE;&#x6539;Icon&#x7EC4;&#x4EF6;&#x524D;&#x7F00;&#xFF0C;&#x4E0D;&#x8BBE;&#x7F6E;&#x5219;&#x9ED8;&#x8BA4;&#x4E3A;i,&#x7981;&#x7528;&#x5219;&#x8BBE;&#x7F6E;&#x4E3A;false
+          prefix: &apos;icon&apos;,
+          // &#x6307;&#x5B9A;collection&#x3002;ElementPlus&#x56FE;&#x6807;&#x96C6;&#xFF1A;ep
+          enabledCollections: [&apos;ep&apos;],
+          // &#x4F7F;&#x7528;&#x81EA;&#x5B9A;&#x4E49;&#x7684;&#x672C;&#x5730;icon&#x96C6;&#x5408;&#x540D;
+          customCollections: [&apos;myIcons&apos;]
+        })
+      ]
+    }),
+    Icons({
+      autoInstall: true,
+      // &#x914D;&#x7F6E;&#x81EA;&#x5B9A;&#x4E49;&#x7684;icon&#x96C6;&#x5408;&#x6587;&#x4EF6;&#x7684;&#x8DEF;&#x5F84;
+      customCollections: {
+        &apos;myIcons&apos;: FileSystemIconLoader(&apos;src/assets/icons&apos;),
+      }
+    })
+  ],
+})
+</code></pre>
 <footer class="page-footer"><span class="copyright">Copyright Curiouser all right reserved&#xFF0C;powered by Gitbook</span><span class="footer-modification">&#x8BE5;&#x6587;&#x4EF6;&#x6700;&#x540E;&#x4FEE;&#x6539;&#x65F6;&#x95F4;&#xFF1A;
-2024-02-07 16:24:28
+2024-08-02 10:49:05
 </span></footer>
 <script>console.log("plugin-popup....");document.onclick = function(e){ e.target.tagName === "IMG" && window.open(e.target.src,e.target.src)}</script><style>img{cursor:pointer}</style>
 						
@@ -8058,7 +8151,7 @@
 	<script>
 		var gitbook = gitbook || [];
 		gitbook.push(function() {
-			gitbook.page.hasChanged({"page":{"title":"Vue3基础知识学习","level":"9.4.2","depth":2,"next":{"title":"Vite打包工具","level":"9.4.3","depth":2,"path":"origin/vue-vite.md","ref":"origin/vue-vite.md","articles":[]},"previous":{"title":"JS/JQuery/Vue3/TS基础知识学习","level":"9.4.1","depth":2,"path":"origin/js-jquery-vue-learn.md","ref":"origin/js-jquery-vue-learn.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-lunr","-sharing","-highlight","search-pro","splitter","github","popup","sectionx","expandable-chapters","sharing-plus","code","auto-scroll-table","theme-fexa","tbfed-pagefooter","back-to-top-button","emphasize","edit-link","prism","donate","theme-comscore","github-buttons","github-issue-feedback"],"root":".","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"tbfed-pagefooter":{"copyright":"Copyright Curiouser","modify_label":"该文件最后修改时间：","modify_format":"YYYY-MM-DD HH:mm:ss"},"prism":{"css":["prismjs/themes/prism-tomorrow.css"],"lang":{"flow":"typescript"},"ignore":["mermaid","eval-js"]},"emphasize":{},"github-issue-feedback":{"repo":"RationalMonster/rationalmonster.github.io"},"github":{"url":"https://github.com/RationalMonster"},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"auto-scroll-table":{},"popup":{},"theme-fexa":{"search-placeholder":"搜索文章","logo":"./assets/logo.png"},"code":{"copybuttons":"true","copyButtons":true},"donate":{"wechat":"/assets/wechat-donate.jpg","title":"","button":"赏","wechatText":"微信打赏","alipay":"","alipayText":"支付宝打赏"},"fontsettings":{"theme":"white","family":"sans","size":2},"sectionx":{},"theme-comscore":{},"back-to-top-button":{},"github-buttons":{"buttons":[{"user":"RationalMonster","repo":"gitbooks-devops-roadmap","type":"star","size":"small","count":"true"}]},"sharing":{"weibo":true,"qq":"true","google":true,"all":["facebook","twitter"]},"edit-link":{"base":"https://raw.githubusercontent.com/RationalMonster/gitbooks-devops-roadmap/master/","label":"查看源MD文件"},"theme-default":{"showLevel":true,"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"expandable-chapters":{}},"theme":"default","author":"Curiouser <rationalmonster@163.com>","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Devops Roadmap","gitbook":"*"},"file":{"path":"origin/vue3.md","mtime":"2024-02-07T08:24:28.835Z","type":"markdown"},"gitbook":{"version":"3.0.0","time":"2024-07-16T01:45:47.304Z"},"basePath":"..","book":{"language":""}});
+			gitbook.page.hasChanged({"page":{"title":"Vue3基础知识学习","level":"9.4.2","depth":2,"next":{"title":"Vite打包工具","level":"9.4.3","depth":2,"path":"origin/vue-vite.md","ref":"origin/vue-vite.md","articles":[]},"previous":{"title":"JS/JQuery/Vue3/TS基础知识学习","level":"9.4.1","depth":2,"path":"origin/js-jquery-vue-learn.md","ref":"origin/js-jquery-vue-learn.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-lunr","-sharing","-highlight","search-pro","splitter","github","popup","sectionx","expandable-chapters","sharing-plus","code","auto-scroll-table","theme-fexa","tbfed-pagefooter","back-to-top-button","emphasize","edit-link","prism","donate","theme-comscore","github-buttons","github-issue-feedback"],"root":".","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"tbfed-pagefooter":{"copyright":"Copyright Curiouser","modify_label":"该文件最后修改时间：","modify_format":"YYYY-MM-DD HH:mm:ss"},"prism":{"css":["prismjs/themes/prism-tomorrow.css"],"lang":{"flow":"typescript"},"ignore":["mermaid","eval-js"]},"emphasize":{},"github-issue-feedback":{"repo":"RationalMonster/rationalmonster.github.io"},"github":{"url":"https://github.com/RationalMonster"},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"auto-scroll-table":{},"popup":{},"theme-fexa":{"search-placeholder":"搜索文章","logo":"./assets/logo.png"},"code":{"copybuttons":"true","copyButtons":true},"donate":{"wechat":"/assets/wechat-donate.jpg","title":"","button":"赏","wechatText":"微信打赏","alipay":"","alipayText":"支付宝打赏"},"fontsettings":{"theme":"white","family":"sans","size":2},"sectionx":{},"theme-comscore":{},"back-to-top-button":{},"github-buttons":{"buttons":[{"user":"RationalMonster","repo":"gitbooks-devops-roadmap","type":"star","size":"small","count":"true"}]},"sharing":{"weibo":true,"qq":"true","google":true,"all":["facebook","twitter"]},"edit-link":{"base":"https://raw.githubusercontent.com/RationalMonster/gitbooks-devops-roadmap/master/","label":"查看源MD文件"},"theme-default":{"showLevel":true,"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"expandable-chapters":{}},"theme":"default","author":"Curiouser <rationalmonster@163.com>","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Devops Roadmap","gitbook":"*"},"file":{"path":"origin/vue3.md","mtime":"2024-08-02T02:49:05.021Z","type":"markdown"},"gitbook":{"version":"3.0.0","time":"2024-08-02T02:49:18.761Z"},"basePath":"..","book":{"language":""}});
 		});
 	</script>
 </div>

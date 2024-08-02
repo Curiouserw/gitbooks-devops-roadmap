@@ -112,22 +112,52 @@ racadm closessn -u <username>
 
 # 四、客户端racadm
 
-
-
 Docker客户端：
 
 https://hub.docker.com/r/prabhakarpujeri/racadm-docker/tags?page=1&ordering=last_updated
 
 https://github.com/prabhakarpujeri/racadm-docker/blob/master/Dockerfile
 
+# 五、工具
 
+## 1、通过idrac接口远程开关机
+
+```bash
+unset idrac_sid
+if [[ $# == 0 ]]; then
+  # 获取会话SessionID
+  idrac_sid=$(curl -s -i -k https://192.168.1.1:19443/login.html | grep Set-Cookie | awk -F"[:=;]" '{print $3}')
+  # 登录将SessionID生效
+  if [ ! $(curl -s -l -k -XPOST -H "Cookie: _appwebSessionId_=$idrac_sid" -d "user=IDRAC用户名&password=IDRAC用户密码" https://192.168.1.1:19443/data/login | sed -e 's,.*<authResult>\([^<]*\)</authResult>.*,\1,g') -eq 0 ]; then
+    echo "Dell PowerEdge R710 IDRAC 登录失败"
+    return
+  fi
+  # 获取当前电源开起状态。1是已开启，0是处于关闭状态
+  current_status=$(curl -s -k -b "_appwebSessionId_=$idrac_sid" "https://192.168.1.33:19443/data?get=pwState," | xmllint --xpath "string(//pwState)" -)
+  case $current_status in
+  0)
+    # 开机，即设置电源状态为1
+    curl -s -k -XPOST -H "Cookie: _appwebSessionId_=$idrac_sid" -H 'Content-Length: 0' "https://192.168.1.1:19443/data?set=pwState:1" >/dev/null
+    # 再次判断电源状态，然后显示开机结果
+    if [ $(curl -s -k -b "_appwebSessionId_=$idrac_sid" "https://192.168.1.1:19443/data?get=pwState," | xmllint --xpath "string(//pwState)" -) -eq 1 ]; then
+      echo "Dell PowerEdge R710远程开机成功"
+      unset idrac_sid
+    else
+      echo "Dell PowerEdge R710远程开机失败"
+    fi
+    ;;
+  1)
+    echo "Dell PowerEdge R710远程已开机！"
+    ;;
+  *)
+    echo "未知的状态: $current_status"
+    ;;
+  esac
+else
+  echo "参数过多! "
+fi
+```
 
 # 参考
 
 1. https://thornelabs.net/posts/dell-idrac-racadm-commands-and-scripts.html
-2. 
-
-
-
-
-

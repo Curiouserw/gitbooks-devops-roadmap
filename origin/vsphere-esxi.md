@@ -67,17 +67,39 @@ VMware vSphere是VMware的服务器虚拟化软件套件，vSphere 中的核心�
 
 ## 4、进入安装程序
 
-
-
 # 四、其他
 
+# 五、SOAP API 
 
+## 1、获取Session、Cookie
 
+```bash
+#!/bin/bash
+esxi_host="https://192.168.1.1/sdk"
+username="root"
+userpassword="*******"
 
+getsession_req_xml="<Envelope xmlns=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"><Header><operationID>esxui-bc44</operationID></Header><Body><Login xmlns=\"urn:vim25\"><_this type=\"SessionManager\">ha-sessionmgr</_this><userName>$username</userName><password>$userpassword</password><locale>zh-CN</locale></Login></Body></Envelope>"
 
+response=$(curl -skil -D - -X POST "$esxi_host" -H 'Content-Type: text/xml' --data-raw "$getsession_req_xml")
 
+# 提取 Set-Cookie 头并保存到变量中
+cookie=$(echo "$response" | grep -i 'Set-Cookie' | sed 's/Set-Cookie: \(.*\);.*/\1/' | head -n 1 | awk -F";" '{print $1}')
+# 提取响应体中的 key 并保存到变量中
+key=$(echo "$response" | grep "LoginResponse" | sed -n 's/.*<key>\(.*\)<\/key>.*/\1/p')
+```
 
+## 2、ESXI关机
 
+```bash
+shutdown_req_xml="<Envelope xmlns=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"><Header><operationID>esxui-a514</operationID></Header><Body><ShutdownHost_Task xmlns=\"urn:vim25\"><_this type=\"HostSystem\">ha-host</_this><force>true</force></ShutdownHost_Task></Body></Envelope>"
+
+curl -sk -X POST "$esxi_host" \
+--header "vmware_soap_session: $key" \
+--header "Cookie: $cookie " \
+--header 'Content-Type: text/xml' \
+--data-raw "$shutdown_req_xml"
+```
 
 - 从vSphere 7.x开始不支持 root用户修改系统文件
   - 参考：https://knowledge.broadcom.com/external/article/344767/the-root-account-can-no-longer-change-pe.html
