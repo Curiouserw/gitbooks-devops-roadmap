@@ -4917,7 +4917,7 @@
                     
                         <b>7.12.7.</b>
                     
-                    如何将 Java代码打包成 EXE 可执行安装软件
+                    Java代码打包成EXE可安装执行软件
             
                 </a>
             
@@ -8010,18 +8010,165 @@
 						
 						<h1 id="go&#x751F;&#x6210;x509&#x76F8;&#x5173;&#x8BC1;&#x4E66;">Go&#x751F;&#x6210;x509&#x76F8;&#x5173;&#x8BC1;&#x4E66;</h1>
 <h1 id="&#x4E00;&#x3001;&#x7B80;&#x4ECB;">&#x4E00;&#x3001;&#x7B80;&#x4ECB;</h1>
-<h1 id="&#x4E8C;&#x3001;&#x751F;&#x6210;-ca-&#x8BC1;&#x4E66;">&#x4E8C;&#x3001;&#x751F;&#x6210; CA &#x8BC1;&#x4E66;</h1>
-<pre class="language-"><code class="go">
-
+<h1 id="&#x4E8C;&#x3001;&#x8BC1;&#x4E66;&#x5DE5;&#x5177;&#x7C7B;">&#x4E8C;&#x3001;&#x8BC1;&#x4E66;&#x5DE5;&#x5177;&#x7C7B;</h1>
+<h3 id="&#x2460;&#x4FDD;&#x5B58;&#x8BC1;&#x4E66;&#x5230;&#x6587;&#x4EF6;">&#x2460;&#x4FDD;&#x5B58;&#x8BC1;&#x4E66;&#x5230;&#x6587;&#x4EF6;</h3>
+<pre class="language-"><code class="go">func saveCertificateToFile(certBytes []byte, certType, filePath string, perm os.FileMode) error {
+    err := os.MkdirAll(filepath.Dir(configrootpath+filePath), 0755)
+    if err != nil {
+        fmt.Printf(&quot;failed to create directory: %v&quot;, err)
+    }
+    certPEM := pem.EncodeToMemory(&amp;pem.Block{Type: certType, Bytes: certBytes})
+    err = os.WriteFile(configrootpath+filePath, certPEM, perm)
+    if err != nil {
+        return err
+    }
+    return nil
+}
 </code></pre>
-<h1 id="&#x4E09;&#x3001;&#x7B7E;&#x7F72;&#x8BC1;&#x4E66;">&#x4E09;&#x3001;&#x7B7E;&#x7F72;&#x8BC1;&#x4E66;</h1>
-<h1 id="&#x56DB;&#x3001;&#x9A8C;&#x8BC1;&#x8BC1;&#x4E66;">&#x56DB;&#x3001;&#x9A8C;&#x8BC1;&#x8BC1;&#x4E66;</h1>
+<h1 id="&#x4E09;&#x3001;&#x751F;&#x6210;&#x81EA;&#x7B7E;&#x540D;ca&#x8BC1;&#x4E66;">&#x4E09;&#x3001;&#x751F;&#x6210;&#x81EA;&#x7B7E;&#x540D;CA&#x8BC1;&#x4E66;</h1>
+<pre class="language-"><code class="go">func generateCACertificate(country, province, city string) []byte {
+    caKey, err := rsa.GenerateKey(rand.Reader, 4096)
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    // &#x521B;&#x5EFA;CA&#x8BC1;&#x4E66;
+    caCert := &amp;x509.Certificate{
+        SerialNumber: big.NewInt(1),
+        Subject:      pkix.Name{CommonName: &quot;test.top&quot;},
+        NotBefore:    time.Now(),
+        NotAfter:     time.Now().AddDate(100, 0, 0),
+        IsCA:         true,
+        KeyUsage:     x509.KeyUsageDigitalSignature | x509.KeyUsageCRLSign | x509.KeyUsageCertSign,
+        // &#x57FA;&#x672C;&#x7EA6;&#x675F;
+        BasicConstraintsValid: true,
+        // &#x8BC1;&#x4E66;&#x6700;&#x5927;&#x8DEF;&#x5F84;&#xFF0C;&#x8BE5;&#x7EA7; CA &#x80FD;&#x7B7E;&#x53D1;&#x5B50; CA &#x7684;&#x8BC1;&#x4E66;&#x94FE;&#x8DEF;&#x5F84;&#x6DF1;&#x5EA6;
+        MaxPathLen: 0,
+        // &#x4E0D;&#x5141;&#x8BB8;&#x8BE5; CA &#x7B7E;&#x53D1;&#x5B50; CA
+        MaxPathLenZero: false,
+        // OCSP &#x54CD;&#x5E94;&#x670D;&#x52A1;&#x5668;
+        OCSPServer: nil,
+        // CRL &#x5206;&#x53D1;&#x70B9;
+        CRLDistributionPoints: nil,
+    }
+
+    // CA&#x6269;&#x5C55;&#x914D;&#x7F6E;
+    caCert.SubjectKeyId = []byte{1, 2, 3, 4, 5}
+    caCert.AuthorityKeyId = []byte{1, 2, 3, 4, 5}
+
+    // &#x751F;&#x6210;CA&#x8BC1;&#x4E66;
+    caCertBytes, err := x509.CreateCertificate(rand.Reader, caCert, caCert, caKey.Public(), caKey)
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    // &#x4FDD;&#x5B58;CA&#x8BC1;&#x4E66;&#x5230;&#x6587;&#x4EF6;
+    err = saveCertificateToFile(caCertBytes, &quot;CERTIFICATE&quot;, &quot;pki/ca.crt&quot;, 0644)
+    if err != nil {
+        log.Fatal(err)
+    }
+    // &#x4FDD;&#x5B58;CA&#x79C1;&#x94A5;&#x5230;&#x6587;&#x4EF6;
+    caKeyPEMBytes := x509.MarshalPKCS1PrivateKey(caKey)
+    err = saveCertificateToFile(caKeyPEMBytes, &quot;RSA PRIVATE KEY&quot;, &quot;pki/ca.key&quot;, 0600)
+    if err != nil {
+        log.Fatal(err)
+    }
+    return caCertBytes
+}
+</code></pre>
+<h1 id="&#x56DB;&#x3001;&#x81EA;&#x7B7E;ca&#x8BC1;&#x4E66;&#x7B7E;&#x7F72;&#x670D;&#x52A1;&#x7AEF;&#x8BC1;&#x4E66;">&#x56DB;&#x3001;&#x81EA;&#x7B7E;CA&#x8BC1;&#x4E66;&#x7B7E;&#x7F72;&#x670D;&#x52A1;&#x7AEF;&#x8BC1;&#x4E66;</h1>
+<pre class="language-"><code class="bash">func generateServerCertificate(serverName string) {
+    caCert, caKey := getCACertificateAndKey()
+
+    serverKey, err := rsa.GenerateKey(rand.Reader, 4096)
+    if err != nil {
+        log.Fatal(err)
+    }
+    serverCert := &amp;x509.Certificate{
+        SerialNumber:          big.NewInt(2),
+        Subject:               pkix.Name{CommonName: serverName},
+        NotBefore:             time.Now(),
+        NotAfter:              time.Now().AddDate(1, 0, 0),
+        KeyUsage:              x509.KeyUsageKeyEncipherment | x509.KeyUsageDigitalSignature,
+        ExtKeyUsage:           []x509.ExtKeyUsage{x509.ExtKeyUsageServerAuth},
+        BasicConstraintsValid: true,
+    }
+    serverCertBytes, err := x509.CreateCertificate(rand.Reader, serverCert, caCert, serverKey.Public(), caKey)
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    // &#x4FDD;&#x5B58;&#x670D;&#x52A1;&#x7AEF;&#x8BC1;&#x4E66;&#x5230;&#x6587;&#x4EF6;
+    err = saveCertificateToFile(serverCertBytes, &quot;CERTIFICATE&quot;, &quot;pki/server.crt&quot;, 0644)
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    // &#x4FDD;&#x5B58;&#x670D;&#x52A1;&#x7AEF;&#x79C1;&#x94A5;&#x5230;&#x6587;&#x4EF6;
+    serverKeyPEMBytes, err := x509.MarshalPKCS8PrivateKey(serverKey)
+    if err != nil {
+        log.Fatal(err)
+    }
+    err = saveCertificateToFile(serverKeyPEMBytes, &quot;RSA PRIVATE KEY&quot;, &quot;pki/server.key&quot;, 0600)
+    if err != nil {
+        log.Fatal(err)
+    }
+}
+</code></pre>
+<h1 id="&#x4E94;&#x3001;&#x81EA;&#x7B7E;ca&#x8BC1;&#x4E66;&#x7B7E;&#x7F72;&#x5BA2;&#x6237;&#x7AEF;&#x8BC1;&#x4E66;">&#x4E94;&#x3001;&#x81EA;&#x7B7E;CA&#x8BC1;&#x4E66;&#x7B7E;&#x7F72;&#x5BA2;&#x6237;&#x7AEF;&#x8BC1;&#x4E66;</h1>
+<pre class="language-"><code class="go">func generateClientCertificate(clientName string) {
+    caCert, caKey := getCACertificateAndKey()
+
+    serialNumber, _ := rand.Int(rand.Reader, new(big.Int).Lsh(big.NewInt(1), 128))
+
+    // &#x751F;&#x6210;&#x5BA2;&#x6237;&#x7AEF;&#x8BC1;&#x4E66;&#x79C1;&#x94A5;
+    privateKey, _ := ecdsa.GenerateKey(elliptic.P384(), rand.Reader)
+    notBefore := time.Now()
+    notAfter := notBefore.AddDate(50, 0, 0)
+    clientCertTemplate := x509.Certificate{
+        SerialNumber:          serialNumber,
+        Subject:               pkix.Name{CommonName: clientName},
+        NotBefore:             notBefore,
+        NotAfter:              notAfter,
+        KeyUsage:              x509.KeyUsageDataEncipherment | x509.KeyUsageDigitalSignature,
+        ExtKeyUsage:           []x509.ExtKeyUsage{x509.ExtKeyUsageClientAuth},
+        BasicConstraintsValid: true,
+    }
+    clientCertBytes, err := x509.CreateCertificate(rand.Reader, &amp;clientCertTemplate, caCert, &amp;privateKey.PublicKey, caKey)
+    if err != nil {
+        log.Fatal(err)
+    }
+    // &#x4FDD;&#x5B58;&#x5BA2;&#x6237;&#x7AEF;&#x8BC1;&#x4E66;&#x548C;&#x8BC1;&#x4E66;&#x79C1;&#x94A5;&#x5230;&#x6587;&#x4EF6;
+    saveCertificateToFile(clientCertBytes, &quot;CERTIFICATE&quot;, &quot;pki/clients/&quot;+clientName+&quot;.crt&quot;, 0644)
+    clientKeyPEMBytes, _ := x509.MarshalECPrivateKey(privateKey)
+    saveCertificateToFile(clientKeyPEMBytes, &quot;EC PRIVATE KEY&quot;, &quot;pki/clients/&quot;+clientName+&quot;.key&quot;, 0600)
+    indexFile, err := os.OpenFile(configrootpath+&quot;pki/index.txt&quot;, os.O_APPEND|os.O_WRONLY, 0644)
+    if err != nil {
+        log.Fatal(err)
+    }
+    defer indexFile.Close()
+
+    serialNumberHex := fmt.Sprintf(&quot;%X&quot;, clientCertTemplate.SerialNumber)
+    clientCertString := &quot;V &quot; + serialNumberHex + &quot; &quot; + clientCertTemplate.NotBefore.Format(&quot;060102150405Z&quot;) + &quot; &quot; + clientCertTemplate.NotAfter.Format(&quot;060102150405Z&quot;) + &quot; unknown /CN=&quot; + clientName + &quot;\n&quot;
+    if _, err := indexFile.WriteString(clientCertString); err != nil {
+        log.Fatal(err)
+    }
+
+    clientConfig := readFile(configrootpath + &quot;common-client-config.txt&quot;)
+
+    // &#x5728;&#x53D8;&#x91CF;&#x4E2D;&#x8FFD;&#x52A0;&#x5185;&#x5BB9;
+    additionalContent := &quot;<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>cert</span><span class="token punctuation">&gt;</span></span>\n&quot; + string(pem.EncodeToMemory(&amp;pem.Block{Type: &quot;CERTIFICATE&quot;, Bytes: clientCertBytes})) + &quot;<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>cert</span><span class="token punctuation">&gt;</span></span>\n<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>key</span><span class="token punctuation">&gt;</span></span>\n&quot; + string(pem.EncodeToMemory(&amp;pem.Block{Type: &quot;EC PRIVATE KEY&quot;, Bytes: clientKeyPEMBytes})) + &quot;<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>key</span><span class="token punctuation">&gt;</span></span>\n&quot;
+    clientConfig = append(clientConfig, additionalContent...)
+    os.WriteFile(configrootpath+&quot;../client/&quot;+clientName+&quot;.ovpn&quot;, clientConfig, 0644)
+}
+</code></pre>
+<h1 id="&#x516D;&#x3001;&#x9A8C;&#x8BC1;&#x8BC1;&#x4E66;">&#x516D;&#x3001;&#x9A8C;&#x8BC1;&#x8BC1;&#x4E66;</h1>
 <h1 id="&#x53C2;&#x8003;&#xFF1A;">&#x53C2;&#x8003;&#xFF1A;</h1>
 <ul>
 <li><a href="https://blog.yeziruo.com/archives/148.html" _target="blank">https://blog.yeziruo.com/archives/148.html</a> </li>
 </ul>
 <footer class="page-footer"><span class="copyright">Copyright Curiouser all right reserved&#xFF0C;powered by Gitbook</span><span class="footer-modification">&#x8BE5;&#x6587;&#x4EF6;&#x6700;&#x540E;&#x4FEE;&#x6539;&#x65F6;&#x95F4;&#xFF1A;
-2024-03-13 10:58:34
+2024-08-05 22:26:06
 </span></footer>
 <script>console.log("plugin-popup....");document.onclick = function(e){ e.target.tagName === "IMG" && window.open(e.target.src,e.target.src)}</script><style>img{cursor:pointer}</style>
 						
@@ -8065,7 +8212,7 @@
 	<script>
 		var gitbook = gitbook || [];
 		gitbook.push(function() {
-			gitbook.page.hasChanged({"page":{"title":"X509/PKI证书","level":"9.2.7","depth":2,"next":{"title":"HTML/CSS学习笔记","level":"9.3","depth":1,"path":"origin/html-css-learn.md","ref":"origin/html-css-learn.md","articles":[]},"previous":{"title":"embed: 嵌入静态资源文件","level":"9.2.6","depth":2,"path":"origin/golang-embed.md","ref":"origin/golang-embed.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-lunr","-sharing","-highlight","search-pro","splitter","github","popup","sectionx","expandable-chapters","sharing-plus","code","auto-scroll-table","theme-fexa","tbfed-pagefooter","back-to-top-button","emphasize","edit-link","prism","donate","theme-comscore","github-buttons","github-issue-feedback"],"root":".","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"tbfed-pagefooter":{"copyright":"Copyright Curiouser","modify_label":"该文件最后修改时间：","modify_format":"YYYY-MM-DD HH:mm:ss"},"prism":{"css":["prismjs/themes/prism-tomorrow.css"],"lang":{"flow":"typescript"},"ignore":["mermaid","eval-js"]},"emphasize":{},"github-issue-feedback":{"repo":"RationalMonster/rationalmonster.github.io"},"github":{"url":"https://github.com/RationalMonster"},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"auto-scroll-table":{},"popup":{},"theme-fexa":{"search-placeholder":"搜索文章","logo":"./assets/logo.png"},"code":{"copybuttons":"true","copyButtons":true},"donate":{"wechat":"/assets/wechat-donate.jpg","title":"","button":"赏","wechatText":"微信打赏","alipay":"","alipayText":"支付宝打赏"},"fontsettings":{"theme":"white","family":"sans","size":2},"sectionx":{},"theme-comscore":{},"back-to-top-button":{},"github-buttons":{"buttons":[{"user":"RationalMonster","repo":"gitbooks-devops-roadmap","type":"star","size":"small","count":"true"}]},"sharing":{"weibo":true,"qq":"true","google":true,"all":["facebook","twitter"]},"edit-link":{"base":"https://raw.githubusercontent.com/RationalMonster/gitbooks-devops-roadmap/master/","label":"查看源MD文件"},"theme-default":{"showLevel":true,"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"expandable-chapters":{}},"theme":"default","author":"Curiouser <rationalmonster@163.com>","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Devops Roadmap","gitbook":"*"},"file":{"path":"origin/golang-x509-certificate.md","mtime":"2024-03-13T02:58:34.382Z","type":"markdown"},"gitbook":{"version":"3.0.0","time":"2024-08-02T02:49:18.761Z"},"basePath":"..","book":{"language":""}});
+			gitbook.page.hasChanged({"page":{"title":"X509/PKI证书","level":"9.2.7","depth":2,"next":{"title":"HTML/CSS学习笔记","level":"9.3","depth":1,"path":"origin/html-css-learn.md","ref":"origin/html-css-learn.md","articles":[]},"previous":{"title":"embed: 嵌入静态资源文件","level":"9.2.6","depth":2,"path":"origin/golang-embed.md","ref":"origin/golang-embed.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-lunr","-sharing","-highlight","search-pro","splitter","github","popup","sectionx","expandable-chapters","sharing-plus","code","auto-scroll-table","theme-fexa","tbfed-pagefooter","back-to-top-button","emphasize","edit-link","prism","donate","theme-comscore","github-buttons","github-issue-feedback"],"root":".","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"tbfed-pagefooter":{"copyright":"Copyright Curiouser","modify_label":"该文件最后修改时间：","modify_format":"YYYY-MM-DD HH:mm:ss"},"prism":{"css":["prismjs/themes/prism-tomorrow.css"],"lang":{"flow":"typescript"},"ignore":["mermaid","eval-js"]},"emphasize":{},"github-issue-feedback":{"repo":"RationalMonster/rationalmonster.github.io"},"github":{"url":"https://github.com/RationalMonster"},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"auto-scroll-table":{},"popup":{},"theme-fexa":{"search-placeholder":"搜索文章","logo":"./assets/logo.png"},"code":{"copybuttons":"true","copyButtons":true},"donate":{"wechat":"/assets/wechat-donate.jpg","title":"","button":"赏","wechatText":"微信打赏","alipay":"","alipayText":"支付宝打赏"},"fontsettings":{"theme":"white","family":"sans","size":2},"sectionx":{},"theme-comscore":{},"back-to-top-button":{},"github-buttons":{"buttons":[{"user":"RationalMonster","repo":"gitbooks-devops-roadmap","type":"star","size":"small","count":"true"}]},"sharing":{"weibo":true,"qq":"true","google":true,"all":["facebook","twitter"]},"edit-link":{"base":"https://raw.githubusercontent.com/RationalMonster/gitbooks-devops-roadmap/master/","label":"查看源MD文件"},"theme-default":{"showLevel":true,"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"expandable-chapters":{}},"theme":"default","author":"Curiouser <rationalmonster@163.com>","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Devops Roadmap","gitbook":"*"},"file":{"path":"origin/golang-x509-certificate.md","mtime":"2024-08-05T14:26:06.652Z","type":"markdown"},"gitbook":{"version":"3.0.0","time":"2024-08-05T16:02:47.872Z"},"basePath":"..","book":{"language":""}});
 		});
 	</script>
 </div>

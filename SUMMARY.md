@@ -301,7 +301,7 @@
     * [Windows进程守护工具NSSM](origin/windows-nssm.md)
     * [Windows 无人值守部署服务](origin/windows-deployment-service-aik.md)
     * [主机的网络唤醒WOL服务](origin/windows-wakeuponlan.md)
-    * [如何将 Java代码打包成 EXE 可执行安装软件](origin/windows-java-exe-install.md)
+    * [Java代码打包成EXE可安装执行软件](origin/windows-java-exe-install.md)
     * [PowerShell](origin/windows-powershell.md)
 * MacOS
     * [MacOS小技巧](origin/macos-tips.md)

@@ -20,7 +20,7 @@ JDK11之前的版本安装JDK的时候，JDK安装完成后会弹出一个框，
 
 上述不管 Java底层代码 module化，还是开发 jlink 构建 jre，都是在适应开发者项目的容器化。
 
-# 二、示例操作
+# 二、操作
 
 ## 1、查看当前 Java 版本所支持的 Modules
 
@@ -114,6 +114,22 @@ jlink \
 ```bash
 ./custom-jre-runtime/bin/java -jar target/demo-1.0-SNAPSHOT.jar
 ```
+
+# 三、类Unix构建Windows下的 JRE
+
+下载 Windows架构的JDK压缩文件
+
+```bash
+export JAVA_HOME=~/Downloads/jdk-17.0.7
+export PATH=$JAVA_HOME/bin:$PATH
+
+# 使用jlink构建适用于Windows的JRE
+jlink --module-path $JAVA_HOME/jmods:~/Downloads/jdk-17.0.7/jmods \
+      --add-modules java.base,java.logging,java.naming,java.desktop,java.management,java.instrument,java.sql,java.security.jgss \
+      --output ./windows-jre17-0-7
+```
+
+
 
 # 参考
 

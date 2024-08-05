@@ -185,3 +185,65 @@ if ($URL) {
 ```bash
 .\test.ps1 -IPAdress 192.168.1.1 -Port 8001 -URL https://www.baidu.com
 ```
+
+## 17、安装OpenSSH Server
+
+- 当`程序与功能`里面不显示 OpenSSH服务端的安装程序时，可使用`管理员权限 Powershell` 手动安装
+
+  ```bash
+  # 查询
+  Get-WindowsCapability -Online | Where-Object Name -like 'OpenSSH*'
+  # 安装OpenSSH客户端
+  Add-WindowsCapability -Online -Name OpenSSH.Client~~~~0.0.1.0
+  # 安装OpenSSH服务端
+  Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0
+  
+  # 设置开机自启
+  Set-Service -Name sshd -StartupType 'Automatic'
+  # 启动sshd服务
+  Start-Service sshd
+  
+  # 检查OpenSSH服务器的状态
+  Get-Service -Name sshd
+  #卸载服务端(需要重启)
+  Remove-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0
+  ```
+
+- 配置文件：**C:\ProgramData\ssh\sshd_config**
+
+- 配置`authorized_keys`公钥登录
+
+  ```bash
+  # 允许公钥授权访问，确保条目不被注释
+  PubkeyAuthentication yes
+  # 指定认证授权文件存放路径
+  AuthorizedKeysFile .ssh/authorized_keys
+  
+  # Match Group administrators
+  # 注释掉默认授权文件位置
+  # AuthorizedKeysFile __PROGRAMDATA__/ssh/administrators_authorized_keys
+  ```
+
+- 更改`C:\Users\用户名\.ssh\authorized_keys`文件权限
+
+  - 属性->安全->高级->（左下角）**禁用继承**
+  - 弹框选择“**将已继承的权限转换为此对象的显式权限**”
+  - 在**权限条目**中删除除了**SYSTEM**和**当前用户**外的所有权限，然后应用并退出
+
+  ```bash
+  icacls.exe "C:\Users\用户\.ssh\authorized_keys" /inheritance:r /grant "Administrators:F" /grant "SYSTEM:F"
+  ```
+
+- 检查**OpenSSH Authentication Agent**服务是否正常运行。没有运行的话需要启动改服务。
+
+- 检查防火墙是否放行 SSH 服务的端口 (默认端口22，建议修改)
+
+  ```bash
+  # 确认防火墙规则，一般在安装时会配置好
+  Get-NetFirewallRule -Name *ssh*
+  
+  # 若安装时未添加防火墙规则"OpenSSH-Server-In-TCP"，则通过以下命令添加
+  New-NetFirewallRule -Name sshd -DisplayName 'OpenSSH Server (sshd)' -Enabled True -Direction Inbound -Protocol TCP -Action Allow -LocalPort 22
+  ```
+
+- 重启服务：`restart-service sshd`

@@ -740,6 +740,19 @@ tiup cluster scale-out 集群名 tidb-servers-scale-out-new-node.yaml
 tiup cluster scale-in  -N $[节点IP]:[组件端口] ${cluster-name}
 ```
 
+由于 TiKV，TiFlash 和 TiDB Binlog 组件的下线是异步的（需要先通过 API 执行移除操作）并且下线过程耗时较长（需要持续观察节点是否已经下线成功），所以对 TiKV，TiFlash 和 TiDB Binlog 组件做了特殊处理：
+
+- 对 TiKV，TiFlash 及 TiDB Binlog 组件的操作:
+  - tiup-cluster 通过 API 将其下线后直接退出而不等待下线完成
+  - 执行 `tiup cluster display` 查看下线节点的状态，等待其状态变为 Tombstone
+  - 执行`tiup cluster prune` 命令清理 Tombstone 节点，该命令会执行以下操作
+    - 停止已经下线掉的节点的服务
+    - 清理已经下线掉的节点的相关数据文件
+    - 更新集群的拓扑，移除已经下线掉的节点
+- 对其他组件的操作
+  - 下线 PD 组件时，会通过 API 将指定节点从集群中删除掉（过程很快），然后停掉指定 PD 的服务并且清除该节点的相关数据文件
+  - 下线其他组件时，直接停止并且清除节点的相关数据文件
+
 ## 10、集群组件实例清理
 
 你可以使用 `tiup clean` 命令来清理组件实例，并删除工作目录。如果在清理之前实例还在运行，会先 kill 相关进程。该命令用法如下：

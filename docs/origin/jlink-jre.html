@@ -4917,7 +4917,7 @@
                     
                         <b>7.12.7.</b>
                     
-                    如何将 Java代码打包成 EXE 可执行安装软件
+                    Java代码打包成EXE可安装执行软件
             
                 </a>
             
@@ -8024,7 +8024,7 @@
 </li>
 </ul>
 <p>&#x4E0A;&#x8FF0;&#x4E0D;&#x7BA1; Java&#x5E95;&#x5C42;&#x4EE3;&#x7801; module&#x5316;&#xFF0C;&#x8FD8;&#x662F;&#x5F00;&#x53D1; jlink &#x6784;&#x5EFA; jre&#xFF0C;&#x90FD;&#x662F;&#x5728;&#x9002;&#x5E94;&#x5F00;&#x53D1;&#x8005;&#x9879;&#x76EE;&#x7684;&#x5BB9;&#x5668;&#x5316;&#x3002;</p>
-<h1 id="&#x4E8C;&#x3001;&#x793A;&#x4F8B;&#x64CD;&#x4F5C;">&#x4E8C;&#x3001;&#x793A;&#x4F8B;&#x64CD;&#x4F5C;</h1>
+<h1 id="&#x4E8C;&#x3001;&#x64CD;&#x4F5C;">&#x4E8C;&#x3001;&#x64CD;&#x4F5C;</h1>
 <h2 id="1&#x3001;&#x67E5;&#x770B;&#x5F53;&#x524D;-java-&#x7248;&#x672C;&#x6240;&#x652F;&#x6301;&#x7684;-modules">1&#x3001;&#x67E5;&#x770B;&#x5F53;&#x524D; Java &#x7248;&#x672C;&#x6240;&#x652F;&#x6301;&#x7684; Modules</h2>
 <blockquote>
 <p>java --list-modules</p>
@@ -8104,13 +8104,23 @@ demo-1.0-SNAPSHOT.jar -&gt; &#x627E;&#x4E0D;&#x5230;
 <h2 id="4&#x3001;&#x6D4B;&#x8BD5;-jre&#x4E2D;&#x7684;-java&#x8FD0;&#x884C;-jar&#x5305;">4&#x3001;&#x6D4B;&#x8BD5; jre&#x4E2D;&#x7684; java&#x8FD0;&#x884C; jar&#x5305;</h2>
 <pre class="language-"><code class="bash">./custom-jre-runtime/bin/java -jar target/demo-1.0-SNAPSHOT.jar
 </code></pre>
+<h1 id="&#x4E09;&#x3001;&#x7C7B;unix&#x6784;&#x5EFA;windows&#x4E0B;&#x7684;-jre">&#x4E09;&#x3001;&#x7C7B;Unix&#x6784;&#x5EFA;Windows&#x4E0B;&#x7684; JRE</h1>
+<p>&#x4E0B;&#x8F7D; Windows&#x67B6;&#x6784;&#x7684;JDK&#x538B;&#x7F29;&#x6587;&#x4EF6;</p>
+<pre class="language-"><code class="bash">export JAVA_HOME=~/Downloads/jdk-17.0.7
+export PATH=$JAVA_HOME/bin:$PATH
+
+# &#x4F7F;&#x7528;jlink&#x6784;&#x5EFA;&#x9002;&#x7528;&#x4E8E;Windows&#x7684;JRE
+jlink --module-path $JAVA_HOME/jmods:~/Downloads/jdk-17.0.7/jmods \
+      --add-modules java.base,java.logging,java.naming,java.desktop,java.management,java.instrument,java.sql,java.security.jgss \
+      --output ./windows-jre17-0-7
+</code></pre>
 <h1 id="&#x53C2;&#x8003;">&#x53C2;&#x8003;</h1>
 <ul>
 <li><a href="https://access.redhat.com/documentation/en-us/openjdk/17/html-single/using_jlink_to_customize_java_runtime_environment/index" _target="blank">https://access.redhat.com/documentation/en-us/openjdk/17/html-single/using_jlink_to_customize_java_runtime_environment/index</a></li>
 <li><a href="https://gist.github.com/mballoni/4324d7e89e43103778b2cc0e24d26e42" _target="blank">https://gist.github.com/mballoni/4324d7e89e43103778b2cc0e24d26e42</a> </li>
 </ul>
 <footer class="page-footer"><span class="copyright">Copyright Curiouser all right reserved&#xFF0C;powered by Gitbook</span><span class="footer-modification">&#x8BE5;&#x6587;&#x4EF6;&#x6700;&#x540E;&#x4FEE;&#x6539;&#x65F6;&#x95F4;&#xFF1A;
-2023-07-21 15:49:18
+2024-08-05 22:16:50
 </span></footer>
 <script>console.log("plugin-popup....");document.onclick = function(e){ e.target.tagName === "IMG" && window.open(e.target.src,e.target.src)}</script><style>img{cursor:pointer}</style>
 						
@@ -8154,7 +8164,7 @@ demo-1.0-SNAPSHOT.jar -&gt; &#x627E;&#x4E0D;&#x5230;
 	<script>
 		var gitbook = gitbook || [];
 		gitbook.push(function() {
-			gitbook.page.hasChanged({"page":{"title":"使用 Jlink构建最小化依赖的 JRE 环境","level":"7.39","depth":1,"next":{"title":"Aria2","level":"7.40","depth":1,"path":"origin/aria2.md","ref":"origin/aria2.md","articles":[]},"previous":{"title":"Poste：自建邮件服务器","level":"7.38","depth":1,"path":"origin/poste-mailserver.md","ref":"origin/poste-mailserver.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-lunr","-sharing","-highlight","search-pro","splitter","github","popup","sectionx","expandable-chapters","sharing-plus","code","auto-scroll-table","theme-fexa","tbfed-pagefooter","back-to-top-button","emphasize","edit-link","prism","donate","theme-comscore","github-buttons","github-issue-feedback"],"root":".","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"tbfed-pagefooter":{"copyright":"Copyright Curiouser","modify_label":"该文件最后修改时间：","modify_format":"YYYY-MM-DD HH:mm:ss"},"prism":{"css":["prismjs/themes/prism-tomorrow.css"],"lang":{"flow":"typescript"},"ignore":["mermaid","eval-js"]},"emphasize":{},"github-issue-feedback":{"repo":"RationalMonster/rationalmonster.github.io"},"github":{"url":"https://github.com/RationalMonster"},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"auto-scroll-table":{},"popup":{},"theme-fexa":{"search-placeholder":"搜索文章","logo":"./assets/logo.png"},"code":{"copybuttons":"true","copyButtons":true},"donate":{"wechat":"/assets/wechat-donate.jpg","title":"","button":"赏","wechatText":"微信打赏","alipay":"","alipayText":"支付宝打赏"},"fontsettings":{"theme":"white","family":"sans","size":2},"sectionx":{},"theme-comscore":{},"back-to-top-button":{},"github-buttons":{"buttons":[{"user":"RationalMonster","repo":"gitbooks-devops-roadmap","type":"star","size":"small","count":"true"}]},"sharing":{"weibo":true,"qq":"true","google":true,"all":["facebook","twitter"]},"edit-link":{"base":"https://raw.githubusercontent.com/RationalMonster/gitbooks-devops-roadmap/master/","label":"查看源MD文件"},"theme-default":{"showLevel":true,"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"expandable-chapters":{}},"theme":"default","author":"Curiouser <rationalmonster@163.com>","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Devops Roadmap","gitbook":"*"},"file":{"path":"origin/jlink-jre.md","mtime":"2023-07-21T07:49:18.822Z","type":"markdown"},"gitbook":{"version":"3.0.0","time":"2024-08-02T02:49:18.761Z"},"basePath":"..","book":{"language":""}});
+			gitbook.page.hasChanged({"page":{"title":"使用 Jlink构建最小化依赖的 JRE 环境","level":"7.39","depth":1,"next":{"title":"Aria2","level":"7.40","depth":1,"path":"origin/aria2.md","ref":"origin/aria2.md","articles":[]},"previous":{"title":"Poste：自建邮件服务器","level":"7.38","depth":1,"path":"origin/poste-mailserver.md","ref":"origin/poste-mailserver.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-lunr","-sharing","-highlight","search-pro","splitter","github","popup","sectionx","expandable-chapters","sharing-plus","code","auto-scroll-table","theme-fexa","tbfed-pagefooter","back-to-top-button","emphasize","edit-link","prism","donate","theme-comscore","github-buttons","github-issue-feedback"],"root":".","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"tbfed-pagefooter":{"copyright":"Copyright Curiouser","modify_label":"该文件最后修改时间：","modify_format":"YYYY-MM-DD HH:mm:ss"},"prism":{"css":["prismjs/themes/prism-tomorrow.css"],"lang":{"flow":"typescript"},"ignore":["mermaid","eval-js"]},"emphasize":{},"github-issue-feedback":{"repo":"RationalMonster/rationalmonster.github.io"},"github":{"url":"https://github.com/RationalMonster"},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"auto-scroll-table":{},"popup":{},"theme-fexa":{"search-placeholder":"搜索文章","logo":"./assets/logo.png"},"code":{"copybuttons":"true","copyButtons":true},"donate":{"wechat":"/assets/wechat-donate.jpg","title":"","button":"赏","wechatText":"微信打赏","alipay":"","alipayText":"支付宝打赏"},"fontsettings":{"theme":"white","family":"sans","size":2},"sectionx":{},"theme-comscore":{},"back-to-top-button":{},"github-buttons":{"buttons":[{"user":"RationalMonster","repo":"gitbooks-devops-roadmap","type":"star","size":"small","count":"true"}]},"sharing":{"weibo":true,"qq":"true","google":true,"all":["facebook","twitter"]},"edit-link":{"base":"https://raw.githubusercontent.com/RationalMonster/gitbooks-devops-roadmap/master/","label":"查看源MD文件"},"theme-default":{"showLevel":true,"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"expandable-chapters":{}},"theme":"default","author":"Curiouser <rationalmonster@163.com>","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Devops Roadmap","gitbook":"*"},"file":{"path":"origin/jlink-jre.md","mtime":"2024-08-05T14:16:50.129Z","type":"markdown"},"gitbook":{"version":"3.0.0","time":"2024-08-05T16:02:47.872Z"},"basePath":"..","book":{"language":""}});
 		});
 	</script>
 </div>

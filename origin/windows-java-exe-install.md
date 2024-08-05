@@ -2,23 +2,29 @@
 
 # 一、简介
 
-# 二、依赖软件
+Java构建产物Jar包在类Unix系统中可以快速部署运行。但是当服务器环境是 Windows ，该如何快速、图形化傻瓜式地部署？
 
-## 1、exe4j
+# 二、构建最小运行环境JRE
 
-## 2、inno setup compiler
+- SpringBoot使用了3.0或者3.0以上，开始最低支持JDK17。
+- 使用 JRE 运行 java jar程序，减少最终安装包的体积。
+- 下载 Windows架构的JDK压缩文件
 
-## 3、JRE
+- 使用 MacOS 下的Jlink构建Windows下可运行的 JRE
 
-SpringBoot使用了3.0或者3.0以上，开始最低支持JDK17。
+```bash
+export JAVA_HOME=~/Downloads/jdk-17.0.7
+export PATH=$JAVA_HOME/bin:$PATH
 
-使用 JRE 运行 java jar程序，减少最终安装包的体积。
+# 使用jlink构建适用于Windows的JRE
+jlink --module-path $JAVA_HOME/jmods:~/Downloads/jdk-17.0.7/jmods \
+      --add-modules java.base,java.logging,java.naming,java.desktop,java.management,java.instrument,java.sql,java.security.jgss \
+      --output ./windows-jre17-0-7
+```
 
-# 三、示例步骤
+- 其他详细构建参数参考：https://gitbook.curiouser.top/origin/jlink-jre.md
 
-
-
-## 1、使用 IDEA 构建项目的 Artifacts
+# 三、打包项目Jar
 
 使用 IDEA 的 Artifacts构建包含项目所有依赖项的 class到 Jar 包。使用 Maven 同样可以实现效果。但是需要繁琐的配置。
 
@@ -32,28 +38,216 @@ IDEA 的Project Structure, 找到Artifacts, 如图添加构建Artifacts的配置
 
 <img src="../assets/j2exe-idea-build-artifacts-4.png" style="zoom:50%;" />
 
-bulid完成后, 在项目中/out文件夹下可以找到jar包。
+bulid完成后, 在项目中out文件夹下可以找到jar包。
 
 **注意事项：**
 
 - 如果 POM 改过依赖版本，要检查 IDEA 中的 External Libraries中第三方包的版本有没有更新。如果没有，重启 IDEA 后，在 IDEA Maven 工具中重现 Reload project。再次检查版本
 - 查看构建好的Jar包中文件：`tar -tvf jar包`
+- 运行测试 Jar：`java -jar target/demoj2e-1.0-SNAPSHOT.jar`
 
-## 2、使用exe4j
+# 四、exe4j构建可执行exe
 
-使用 exe4j 是无法将 JRE 打到 exe安装包里的
+下载地址：https://www.ej-technologies.com/download/exe4j/files
 
-## 3、
+**exe4j安装配置**
 
-## 4、
+- exe4有`Windows、MacOS、Linux`环境的安装包，故安装过程省略。本章节默认在 MacOS环境下操作，exe4j安装在`/opt/exe4j9/`路径下
+- exe4j配置可通过图形化界面进行设置，也可以直接通过配置文件进行操作。新手建议直接通过图形化界面(`/opt/exe4j9/bin/exe4j9.app`)进行配置。+
 
-## 5、
+**exe4j操作关键点**
 
-## 6、
+- exe4j构建的Jave EXE可运行文件，点击 exe文件即可运行。由于是 Java应用程序，需要JDK或 JRE 运行环境。故而需要第五步骤的 Inno Setup将 JRE 集成到最终的exe安装运行文件中
 
-## 7、
+**exe4j配置文件释义**
 
-## 8、
+- 配置文件默认在Java项目根目录
+
+>  demoj2e.exe4j
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- version指定使用的 exe4j 版本。transformSequenceNumber指定转换序列号，通常用于标识配置的版本或更新。 -->
+<exe4j version="9.0" transformSequenceNumber="3">
+  
+  <!-- 设置当前目录为配置的基础目录。 -->
+  <directoryPresets config="." />
+  
+  <!-- name指定应用程序名称。 distributionSourceDir 指定工作路径为当前目录。 -->
+  <application name="demoj2e" distributionSourceDir="." />
+  
+  <!-- name指定可执行文件名称。wrapperType指定嵌入类型，表示将 JVM 嵌入到可执行文件中。 -->
+  <executable name="demoj2e" wrapperType="embed" >
+    
+    <!-- 指定可执行文件所在目录，当前目录。 -->
+    <executableDir>.</executableDir>
+    
+    <!-- 指定是否重定向标准输出到文件 -->
+    <redirectStdout>true</redirectStdout>
+    <!-- 指定以追加模式将标准输出写入文件。模式可选 overwrite -->
+		<stdoutFile>.\demoj2e_stdout.log</stdoutFile>
+    <stdoutMode>append</stdoutMode>
+    
+     <!-- 指定是否重定向标准错误输出到文件 -->
+    <redirectStderr>true</redirectStderr>
+    <!-- 指定以追加模式将标准错误输出写入文件。模式可选 overwrite -->
+    <stderrFile>.\demoj2e_stderr.log</stderrFile>
+    <stderrMode>append</stderrMode>
+    
+    <!-- 指定可执行文件的执行方式，可选 console -->
+    <executableMode>gui</executableMode>
+    
+    <!-- 指定运行模式为单实例模式-->
+    <singleInstance>true</singleInstance>
+    <!-- 指定运行模式为全局单实例模式，确保系统中只有一个实例运行。 -->
+    <globalSingleInstance>true</globalSingleInstance>
+  </executable>
+  <!-- mainClass指定Java程序的主类，vmParameters设置传递给JVM的参数，其中参数设置文件编码为 UTF-8。minVersion指定最低 JVM 版本要求为1.8 -->
+  <java mainClass="org.example.Application" vmParameters="-Dfile.encoding=utf-8" minVersion="1.8">
+    <!-- searchSequence指定JVM搜索顺序 -->
+    <searchSequence>
+      <directory location="./windows-jre17-0-7" />
+    </searchSequence>
+    <!-- classPath指定类路径 -->
+    <classPath>
+      <!--  location指定 jar 文件的路径，failOnError设置如果找不到指定的 jar 文件，不会失败。-->
+      <archive location="./out/artifacts/demoj2e_jar/demoj2e.jar" failOnError="false" />
+    </classPath>
+  </java>
+</exe4j>
+```
+
+```bash
+/opt/exe4j9/bin/exe4jc demoj2e.exe4j
+```
+
+此时只要将 demoj2e.exe和windows-jre17-0-7复制Windows的同级目录下，点击 exe文件即可运行。
+
+**但是预设实际情况目标 Windows 主机不会预装Java JDK或 JRE运行环境。同时希望用户点击 exe 后一步一步地在图形化界面下将整个程序安装设置完。这就需要第五步，将 JRE、exe文件集成到一起，再套一个有图形化安装步骤的 EXE 程序壳。**
+
+# 五、Inno Setup整合套壳
+
+官网地址：https://jrsoftware.org
+
+- **Inno Setup安装配置**
+  - Inno Setup只有 Windows 安装包。没有类unix安装包。所以只能在 Windows 环境下操作exe集成 jre及套壳动作
+  - 在 Windows 下的安装过程省略，安装路径默认`C:\"Program Files (x86)"\"Inno Setup 6"`
+  - Inno Setup使用`Inno Setup compiler`图形化编辑器操作。但是也可以通过命令行直接操作。新手推荐在图形化编辑器中操作
+  - 示例配置文件：`C:\Program Files (x86)\Inno Setup 6\Examples`
+  - 配置指令说明书文件路径：`C:\Program Files (x86)\Inno Setup 6\ISetup.chm`
+- **Inno Setup操作关键点**
+    - **给 exe 可执行程序套一个通用的图形化安装程序**
+    - **通过添加`Files`指令块将JRE集成到图形化安装程序过程中**
+- 以下操作及资源文件默认为在 Windows 当前用户桌面下完成，所需文件：
+  - 第二章节构建的 Windows 下最小化JRE
+  - 第四章节exe4j步骤产生的exe可执行文件
+  - Inno Setup配置文件
+
+> 使用`Inno Setup compiler`加载配置文件： demoj2e.iss
+
+```ini
+; 设置变量
+
+#define MyAppName "demoj2e"
+#define MyAppVersion "1.5"
+#define MyAppExeName "demoj2e.exe"
+#define MyJreName "windows-jre17-0-7" 
+#define MyAppPublisher "My Company, Inc."
+#define MyAppURL "https://www.example.com/"
+#define MyAppAssocName MyAppName + " File"
+#define MyAppAssocExt ".myp"
+#define MyAppAssocKey StringChange(MyAppAssocName, " ", "") + MyAppAssocExt
+
+[Setup]			 ; 设置安装程序的基本信息
+AppId={{F8D6C745-BAC5-4B86-82F8-0D95FBE28B68}}		; 应用程序的唯一标识符（通常是 GUID）	
+AppName={#MyAppName}															; 应用程序名称
+AppVersion={#MyAppVersion}												; 应用程序版本
+AppPublisher={#MyAppPublisher}										; 应用程序的发布者名称
+AppPublisherURL={#MyAppURL}												; 应用程序发布者的URL
+AppSupportURL={#MyAppURL}													; 应用程序支持的URL
+AppUpdatesURL={#MyAppURL}													; 应用程序更新的URL
+DefaultDirName={autopf}\{#MyAppName}              ; 默认安装目录
+DisableProgramGroupPage=yes												; 是否禁用程序组选择页面（默认是 no）。
+OutputDir=.\output																; 编译后安装程序的输出目录
+OutputBaseFilename={#MyAppName}-installer 				; 编译后输出文件的基本文件名
+Compression=lzma																	; 压缩算法，常见值有lzma、zip
+SolidCompression=yes															; 是否启用固实压缩（可以提高压缩比）
+WizardStyle=modern																; 安装向导风格（classic、modern）
+; AllowNoIcons：是否允许不创建快捷方式（默认是 yes）。
+; AlwaysRestart：是否始终在安装结束后重新启动（默认是 no）。
+; PrivilegesRequired：安装所需的权限级别（none、poweruser、admin、lowest）。
+; PrivilegesRequiredOverridesAllowed：允许覆盖所需权限级别的条件。
+; DisableDirPage：是否禁用目录选择页面（默认是 no）。
+; DisableProgramGroupPage：是否禁用程序组选择页面（默认是 no）。
+; CreateAppDir：是否创建应用程序目录（默认是 yes）。
+; 用户界面和体验
+; WizardStyle：向导风格（classic、modern）。
+; WindowVisible：安装时窗口是否可见（默认是 yes）。
+; ShowLanguageDialog：是否显示语言选择对话框（默认是 no）。
+; ShowTasksTreeLines：是否显示任务树的线条（默认是 yes）。
+; ShowUndisplayableLanguages：是否显示不可用的语言（默认是 no）。
+; LanguageDetectionMethod：语言检测方法（uilanguage、locale）。
+; 安全和压缩
+; SignTool：签名工具的路径。
+; SignToolParameters：签名工具的参数。
+; SignedUninstaller：卸载程序是否签名（默认是 no）。
+; UsePreviousAppDir：是否使用之前的应用程序目录（默认是 yes）。
+; UsePreviousGroup：是否使用之前的程序组（默认是 yes）。
+; UsePreviousTasks：是否使用之前的任务（默认是 yes）。
+; UsePreviousSetupType：是否使用之前的安装类型（默认是 yes）。
+; 日志和错误处理
+; CreateUninstallRegKey：是否创建卸载注册表键（默认是 yes）。
+; UninstallDisplayName：卸载程序在控制面板中的显示名称。
+; UninstallFilesDir：卸载程序文件的目录。
+; UninstallDisplayIcon：卸载程序显示的图标。
+; UninstallRestartComputer：卸载后是否重新启动计算机（默认是 no）。
+; OutputManifestFile：输出清单文件的路径。
+; LogMode：日志模式（append、overwrite、new）。
+[Languages] ;定义安装程序支持的语言。
+Name: "english"; MessagesFile: "compiler:Default.isl"
+
+[Files]			;定义需要安装复制的文件。
+; Source指源文件路径。DestDir指目标目录，{app}表示安装目录
+; Flags设置文件复制选项：ignoreversion(忽略版本，NFS类似共享文件系统不能设置)，recursesubdirs(递归子目录)，createallsubdirs(0创建所有子目录)
+Source: ".\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
+Source: ".\{#MyJreName}\*"; DestDir: "{app}\{#MyJreName}"; Flags: ignoreversion recursesubdirs createallsubdirs
+
+[Registry]		;定义需要添加的注册表项
+; Root：根注册表项
+; Subkey：子项。
+; ValueType：值类型（如 string、dword)
+; ValueName：值名称
+; ValueData：值数据
+; Flags：标志, uninsdeletekey 表示卸载时删除键。
+Root: HKA; Subkey: "Software\Classes\{#MyAppAssocExt}\OpenWithProgids"; ValueType: string; ValueName: "{#MyAppAssocKey}"; ValueData: ""; Flags: uninsdeletevalue
+Root: HKA; Subkey: "Software\Classes\{#MyAppAssocKey}"; ValueType: string; ValueName: ""; ValueData: "{#MyAppAssocName}"; Flags: uninsdeletekey
+Root: HKA; Subkey: "Software\Classes\{#MyAppAssocKey}\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\{#MyAppExeName},0"
+Root: HKA; Subkey: "Software\Classes\{#MyAppAssocKey}\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\{#MyAppExeName}"" ""%1"""
+Root: HKA; Subkey: "Software\Classes\Applications\{#MyAppExeName}\SupportedTypes"; ValueType: string; ValueName: ".myp"; ValueData: ""
+
+[Icons]			;定义创建的快捷方式。
+; Name设置快捷方式名称, {group} 表示开始菜单组， {commondesktop} 表示公共桌面。
+; Filename设置快捷方式指向的文件
+; Tasks设置用于条件创建快捷方式的任务名称。
+Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
+Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
+
+[Tasks] ;定义用户可以选择的任务。
+Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
+
+[Run]			;定义安装过程中和安装后的运行命令
+; Filename设置要运行的文件路径。Description设置描述信息。Flags设置运行选项: nowait不等待，postinstall安装后运行，skipifsilent安静模式下跳过
+Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
+```
+
+命令行构建 exe 安装包
+
+```bash
+C:\"Program Files (x86)"\"Inno Setup 6"\ISCC.exe ~\Desktop\demoj2e.iss
+```
+
+
 
 # 参考
 

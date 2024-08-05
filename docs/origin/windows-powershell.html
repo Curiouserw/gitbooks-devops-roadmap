@@ -4915,7 +4915,7 @@
                     
                         <b>7.12.7.</b>
                     
-                    如何将 Java代码打包成 EXE 可执行安装软件
+                    Java代码打包成EXE可安装执行软件
             
                 </a>
             
@@ -8170,8 +8170,64 @@ if ($URL) {
 </code></pre>
 <pre class="language-"><code class="bash">.\test.ps1 -IPAdress 192.168.1.1 -Port 8001 -URL https://www.baidu.com
 </code></pre>
+<h2 id="17&#x3001;&#x5B89;&#x88C5;openssh-server">17&#x3001;&#x5B89;&#x88C5;OpenSSH Server</h2>
+<ul>
+<li><p>&#x5F53;<code>&#x7A0B;&#x5E8F;&#x4E0E;&#x529F;&#x80FD;</code>&#x91CC;&#x9762;&#x4E0D;&#x663E;&#x793A; OpenSSH&#x670D;&#x52A1;&#x7AEF;&#x7684;&#x5B89;&#x88C5;&#x7A0B;&#x5E8F;&#x65F6;&#xFF0C;&#x53EF;&#x4F7F;&#x7528;<code>&#x7BA1;&#x7406;&#x5458;&#x6743;&#x9650; Powershell</code> &#x624B;&#x52A8;&#x5B89;&#x88C5;</p>
+<pre class="language-"><code class="bash"># &#x67E5;&#x8BE2;
+Get-WindowsCapability -Online | Where-Object Name -like &apos;OpenSSH*&apos;
+# &#x5B89;&#x88C5;OpenSSH&#x5BA2;&#x6237;&#x7AEF;
+Add-WindowsCapability -Online -Name OpenSSH.Client~~~~0.0.1.0
+# &#x5B89;&#x88C5;OpenSSH&#x670D;&#x52A1;&#x7AEF;
+Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0
+
+# &#x8BBE;&#x7F6E;&#x5F00;&#x673A;&#x81EA;&#x542F;
+Set-Service -Name sshd -StartupType &apos;Automatic&apos;
+# &#x542F;&#x52A8;sshd&#x670D;&#x52A1;
+Start-Service sshd
+
+# &#x68C0;&#x67E5;OpenSSH&#x670D;&#x52A1;&#x5668;&#x7684;&#x72B6;&#x6001;
+Get-Service -Name sshd
+#&#x5378;&#x8F7D;&#x670D;&#x52A1;&#x7AEF;(&#x9700;&#x8981;&#x91CD;&#x542F;)
+Remove-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0
+</code></pre>
+</li>
+<li><p>&#x914D;&#x7F6E;&#x6587;&#x4EF6;&#xFF1A;<strong>C:\ProgramData\ssh\sshd_config</strong></p>
+</li>
+<li><p>&#x914D;&#x7F6E;<code>authorized_keys</code>&#x516C;&#x94A5;&#x767B;&#x5F55;</p>
+<pre class="language-"><code class="bash"># &#x5141;&#x8BB8;&#x516C;&#x94A5;&#x6388;&#x6743;&#x8BBF;&#x95EE;&#xFF0C;&#x786E;&#x4FDD;&#x6761;&#x76EE;&#x4E0D;&#x88AB;&#x6CE8;&#x91CA;
+PubkeyAuthentication yes
+# &#x6307;&#x5B9A;&#x8BA4;&#x8BC1;&#x6388;&#x6743;&#x6587;&#x4EF6;&#x5B58;&#x653E;&#x8DEF;&#x5F84;
+AuthorizedKeysFile .ssh/authorized_keys
+
+# Match Group administrators
+# &#x6CE8;&#x91CA;&#x6389;&#x9ED8;&#x8BA4;&#x6388;&#x6743;&#x6587;&#x4EF6;&#x4F4D;&#x7F6E;
+# AuthorizedKeysFile __PROGRAMDATA__/ssh/administrators_authorized_keys
+</code></pre>
+</li>
+<li><p>&#x66F4;&#x6539;<code>C:\Users\&#x7528;&#x6237;&#x540D;\.ssh\authorized_keys</code>&#x6587;&#x4EF6;&#x6743;&#x9650;</p>
+<ul>
+<li>&#x5C5E;&#x6027;-&gt;&#x5B89;&#x5168;-&gt;&#x9AD8;&#x7EA7;-&gt;&#xFF08;&#x5DE6;&#x4E0B;&#x89D2;&#xFF09;<strong>&#x7981;&#x7528;&#x7EE7;&#x627F;</strong></li>
+<li>&#x5F39;&#x6846;&#x9009;&#x62E9;&#x201C;<strong>&#x5C06;&#x5DF2;&#x7EE7;&#x627F;&#x7684;&#x6743;&#x9650;&#x8F6C;&#x6362;&#x4E3A;&#x6B64;&#x5BF9;&#x8C61;&#x7684;&#x663E;&#x5F0F;&#x6743;&#x9650;</strong>&#x201D;</li>
+<li>&#x5728;<strong>&#x6743;&#x9650;&#x6761;&#x76EE;</strong>&#x4E2D;&#x5220;&#x9664;&#x9664;&#x4E86;<strong>SYSTEM</strong>&#x548C;<strong>&#x5F53;&#x524D;&#x7528;&#x6237;</strong>&#x5916;&#x7684;&#x6240;&#x6709;&#x6743;&#x9650;&#xFF0C;&#x7136;&#x540E;&#x5E94;&#x7528;&#x5E76;&#x9000;&#x51FA;</li>
+</ul>
+<pre class="language-"><code class="bash">icacls.exe &quot;C:\Users\&#x7528;&#x6237;\.ssh\authorized_keys&quot; /inheritance:r /grant &quot;Administrators:F&quot; /grant &quot;SYSTEM:F&quot;
+</code></pre>
+</li>
+<li><p>&#x68C0;&#x67E5;<strong>OpenSSH Authentication Agent</strong>&#x670D;&#x52A1;&#x662F;&#x5426;&#x6B63;&#x5E38;&#x8FD0;&#x884C;&#x3002;&#x6CA1;&#x6709;&#x8FD0;&#x884C;&#x7684;&#x8BDD;&#x9700;&#x8981;&#x542F;&#x52A8;&#x6539;&#x670D;&#x52A1;&#x3002;</p>
+</li>
+<li><p>&#x68C0;&#x67E5;&#x9632;&#x706B;&#x5899;&#x662F;&#x5426;&#x653E;&#x884C; SSH &#x670D;&#x52A1;&#x7684;&#x7AEF;&#x53E3; (&#x9ED8;&#x8BA4;&#x7AEF;&#x53E3;22&#xFF0C;&#x5EFA;&#x8BAE;&#x4FEE;&#x6539;)</p>
+<pre class="language-"><code class="bash"># &#x786E;&#x8BA4;&#x9632;&#x706B;&#x5899;&#x89C4;&#x5219;&#xFF0C;&#x4E00;&#x822C;&#x5728;&#x5B89;&#x88C5;&#x65F6;&#x4F1A;&#x914D;&#x7F6E;&#x597D;
+Get-NetFirewallRule -Name *ssh*
+
+# &#x82E5;&#x5B89;&#x88C5;&#x65F6;&#x672A;&#x6DFB;&#x52A0;&#x9632;&#x706B;&#x5899;&#x89C4;&#x5219;&quot;OpenSSH-Server-In-TCP&quot;&#xFF0C;&#x5219;&#x901A;&#x8FC7;&#x4EE5;&#x4E0B;&#x547D;&#x4EE4;&#x6DFB;&#x52A0;
+New-NetFirewallRule -Name sshd -DisplayName &apos;OpenSSH Server (sshd)&apos; -Enabled True -Direction Inbound -Protocol TCP -Action Allow -LocalPort 22
+</code></pre>
+</li>
+<li><p>&#x91CD;&#x542F;&#x670D;&#x52A1;&#xFF1A;<code>restart-service sshd</code></p>
+</li>
+</ul>
 <footer class="page-footer"><span class="copyright">Copyright Curiouser all right reserved&#xFF0C;powered by Gitbook</span><span class="footer-modification">&#x8BE5;&#x6587;&#x4EF6;&#x6700;&#x540E;&#x4FEE;&#x6539;&#x65F6;&#x95F4;&#xFF1A;
-2024-01-18 20:33:15
+2024-08-05 17:14:54
 </span></footer>
 <script>console.log("plugin-popup....");document.onclick = function(e){ e.target.tagName === "IMG" && window.open(e.target.src,e.target.src)}</script><style>img{cursor:pointer}</style>
 						
@@ -8200,7 +8256,7 @@ if ($URL) {
 
 		
 		
-		<a href="windows-java-exe-install.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: 如何将 Java代码打包成 EXE 可执行安装软件">
+		<a href="windows-java-exe-install.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: Java代码打包成EXE可安装执行软件">
 			<i class="fa fa-angle-left"></i>
 		</a>
 		
@@ -8211,7 +8267,7 @@ if ($URL) {
 	<script>
 		var gitbook = gitbook || [];
 		gitbook.push(function() {
-			gitbook.page.hasChanged({"page":{"title":"PowerShell","level":"7.12.8","depth":2,"next":{"title":"MacOS","level":"7.13","depth":1,"ref":"","articles":[{"title":"MacOS小技巧","level":"7.13.1","depth":2,"path":"origin/macos-tips.md","ref":"origin/macos-tips.md","articles":[]}]},"previous":{"title":"如何将 Java代码打包成 EXE 可执行安装软件","level":"7.12.7","depth":2,"path":"origin/windows-java-exe-install.md","ref":"origin/windows-java-exe-install.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-lunr","-sharing","-highlight","search-pro","splitter","github","popup","sectionx","expandable-chapters","sharing-plus","code","auto-scroll-table","theme-fexa","tbfed-pagefooter","back-to-top-button","emphasize","edit-link","prism","donate","theme-comscore","github-buttons","github-issue-feedback"],"root":".","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"tbfed-pagefooter":{"copyright":"Copyright Curiouser","modify_label":"该文件最后修改时间：","modify_format":"YYYY-MM-DD HH:mm:ss"},"prism":{"css":["prismjs/themes/prism-tomorrow.css"],"lang":{"flow":"typescript"},"ignore":["mermaid","eval-js"]},"emphasize":{},"github-issue-feedback":{"repo":"RationalMonster/rationalmonster.github.io"},"github":{"url":"https://github.com/RationalMonster"},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"auto-scroll-table":{},"popup":{},"theme-fexa":{"search-placeholder":"搜索文章","logo":"./assets/logo.png"},"code":{"copybuttons":"true","copyButtons":true},"donate":{"wechat":"/assets/wechat-donate.jpg","title":"","button":"赏","wechatText":"微信打赏","alipay":"","alipayText":"支付宝打赏"},"fontsettings":{"theme":"white","family":"sans","size":2},"sectionx":{},"theme-comscore":{},"back-to-top-button":{},"github-buttons":{"buttons":[{"user":"RationalMonster","repo":"gitbooks-devops-roadmap","type":"star","size":"small","count":"true"}]},"sharing":{"weibo":true,"qq":"true","google":true,"all":["facebook","twitter"]},"edit-link":{"base":"https://raw.githubusercontent.com/RationalMonster/gitbooks-devops-roadmap/master/","label":"查看源MD文件"},"theme-default":{"showLevel":true,"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"expandable-chapters":{}},"theme":"default","author":"Curiouser <rationalmonster@163.com>","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Devops Roadmap","gitbook":"*"},"file":{"path":"origin/windows-powershell.md","mtime":"2024-01-18T12:33:15.076Z","type":"markdown"},"gitbook":{"version":"3.0.0","time":"2024-08-02T02:49:18.761Z"},"basePath":"..","book":{"language":""}});
+			gitbook.page.hasChanged({"page":{"title":"PowerShell","level":"7.12.8","depth":2,"next":{"title":"MacOS","level":"7.13","depth":1,"ref":"","articles":[{"title":"MacOS小技巧","level":"7.13.1","depth":2,"path":"origin/macos-tips.md","ref":"origin/macos-tips.md","articles":[]}]},"previous":{"title":"Java代码打包成EXE可安装执行软件","level":"7.12.7","depth":2,"path":"origin/windows-java-exe-install.md","ref":"origin/windows-java-exe-install.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-lunr","-sharing","-highlight","search-pro","splitter","github","popup","sectionx","expandable-chapters","sharing-plus","code","auto-scroll-table","theme-fexa","tbfed-pagefooter","back-to-top-button","emphasize","edit-link","prism","donate","theme-comscore","github-buttons","github-issue-feedback"],"root":".","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"tbfed-pagefooter":{"copyright":"Copyright Curiouser","modify_label":"该文件最后修改时间：","modify_format":"YYYY-MM-DD HH:mm:ss"},"prism":{"css":["prismjs/themes/prism-tomorrow.css"],"lang":{"flow":"typescript"},"ignore":["mermaid","eval-js"]},"emphasize":{},"github-issue-feedback":{"repo":"RationalMonster/rationalmonster.github.io"},"github":{"url":"https://github.com/RationalMonster"},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"auto-scroll-table":{},"popup":{},"theme-fexa":{"search-placeholder":"搜索文章","logo":"./assets/logo.png"},"code":{"copybuttons":"true","copyButtons":true},"donate":{"wechat":"/assets/wechat-donate.jpg","title":"","button":"赏","wechatText":"微信打赏","alipay":"","alipayText":"支付宝打赏"},"fontsettings":{"theme":"white","family":"sans","size":2},"sectionx":{},"theme-comscore":{},"back-to-top-button":{},"github-buttons":{"buttons":[{"user":"RationalMonster","repo":"gitbooks-devops-roadmap","type":"star","size":"small","count":"true"}]},"sharing":{"weibo":true,"qq":"true","google":true,"all":["facebook","twitter"]},"edit-link":{"base":"https://raw.githubusercontent.com/RationalMonster/gitbooks-devops-roadmap/master/","label":"查看源MD文件"},"theme-default":{"showLevel":true,"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"expandable-chapters":{}},"theme":"default","author":"Curiouser <rationalmonster@163.com>","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Devops Roadmap","gitbook":"*"},"file":{"path":"origin/windows-powershell.md","mtime":"2024-08-05T09:14:54.626Z","type":"markdown"},"gitbook":{"version":"3.0.0","time":"2024-08-05T16:02:47.872Z"},"basePath":"..","book":{"language":""}});
 		});
 	</script>
 </div>
