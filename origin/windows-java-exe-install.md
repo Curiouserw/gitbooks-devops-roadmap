@@ -2,7 +2,7 @@
 
 # 一、简介
 
-Java构建产物Jar包在类Unix系统中可以快速部署运行。但是当服务器环境是 Windows ，该如何快速、图形化傻瓜式地部署？
+Java构建产物Jar包在类Unix系统中可以快速部署运行。但是当服务器环境是 Windows ，该如何快速、图形化、傻瓜式地部署？
 
 # 二、构建最小运行环境JRE
 
@@ -24,27 +24,59 @@ jlink --module-path $JAVA_HOME/jmods:~/Downloads/jdk-17.0.7/jmods \
 
 - 其他详细构建参数参考：https://gitbook.curiouser.top/origin/jlink-jre.md
 
-# 三、打包项目Jar
+# 三、构建包含所有依赖的 Jar
 
-使用 IDEA 的 Artifacts构建包含项目所有依赖项的 class到 Jar 包。使用 Maven 同样可以实现效果。但是需要繁琐的配置。
+使用 Maven 的构建插件 maven-assembly-plugin将所有依赖都解压打包到构建产物中；
 
-IDEA 的Project Structure, 找到Artifacts, 如图添加构建Artifacts的配置
+```xml
+<project>
+		 .....
+     <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.7.1</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                          	<!-- 填写主类 -->
+                            <mainClass>org.example.Application</mainClass>
+                        </manifest>
+                    </archive>
+                    <descriptorRefs>
+                        <!-- 有内置的DescriptorRef:
+																bin: 类似于默认打包，会将bin目录下的文件打到包中
+																jar-with-dependencies: 会将所有依赖都解压打包到构建产物中
+																src: 只将源码目录下的文件打包
+																project: 将整个project资源打包
+												-->
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <!-- 绑定到package生命周期阶段上 -->
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
+```
 
-<img src="../assets/j2exe-idea-build-artifacts-1.png" style="zoom:50%;" />
+```bash
+mvn clean package
+```
 
-<img src="../assets/j2exe-idea-build-artifacts-2.jpg" style="zoom:50%;" />
+**bulid完成后, 在target文件夹下可以找到带 jar-with-dependencies后缀的包。**
 
-<img src="../assets/j2exe-idea-build-artifacts-3.jpg" style="zoom:50%;" />
-
-<img src="../assets/j2exe-idea-build-artifacts-4.png" style="zoom:50%;" />
-
-bulid完成后, 在项目中out文件夹下可以找到jar包。
-
-**注意事项：**
-
-- 如果 POM 改过依赖版本，要检查 IDEA 中的 External Libraries中第三方包的版本有没有更新。如果没有，重启 IDEA 后，在 IDEA Maven 工具中重现 Reload project。再次检查版本
-- 查看构建好的Jar包中文件：`tar -tvf jar包`
-- 运行测试 Jar：`java -jar target/demoj2e-1.0-SNAPSHOT.jar`
+查看构建好的Jar包中文件：`tar -tvf jar包`
 
 # 四、exe4j构建可执行exe
 
@@ -53,7 +85,7 @@ bulid完成后, 在项目中out文件夹下可以找到jar包。
 **exe4j安装配置**
 
 - exe4有`Windows、MacOS、Linux`环境的安装包，故安装过程省略。本章节默认在 MacOS环境下操作，exe4j安装在`/opt/exe4j9/`路径下
-- exe4j配置可通过图形化界面进行设置，也可以直接通过配置文件进行操作。新手建议直接通过图形化界面(`/opt/exe4j9/bin/exe4j9.app`)进行配置。+
+- exe4j配置可通过图形化界面进行设置，也可以直接通过配置文件进行操作。新手建议直接通过图形化界面(`/opt/exe4j9/bin/exe4j9.app`)进行配置
 
 **exe4j操作关键点**
 
@@ -67,7 +99,6 @@ bulid完成后, 在项目中out文件夹下可以找到jar包。
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!-- version指定使用的 exe4j 版本。transformSequenceNumber指定转换序列号，通常用于标识配置的版本或更新。 -->
 <exe4j version="9.0" transformSequenceNumber="3">
   
@@ -77,33 +108,31 @@ bulid完成后, 在项目中out文件夹下可以找到jar包。
   <!-- name指定应用程序名称。 distributionSourceDir 指定工作路径为当前目录。 -->
   <application name="demoj2e" distributionSourceDir="." />
   
-  <!-- name指定可执行文件名称。wrapperType指定嵌入类型，表示将 JVM 嵌入到可执行文件中。 -->
-  <executable name="demoj2e" wrapperType="embed" >
-    
-    <!-- 指定可执行文件所在目录，当前目录。 -->
-    <executableDir>.</executableDir>
-    
-    <!-- 指定是否重定向标准输出到文件 -->
-    <redirectStdout>true</redirectStdout>
-    <!-- 指定以追加模式将标准输出写入文件。模式可选 overwrite -->
-		<stdoutFile>.\demoj2e_stdout.log</stdoutFile>
-    <stdoutMode>append</stdoutMode>
-    
-     <!-- 指定是否重定向标准错误输出到文件 -->
-    <redirectStderr>true</redirectStderr>
-    <!-- 指定以追加模式将标准错误输出写入文件。模式可选 overwrite -->
-    <stderrFile>.\demoj2e_stderr.log</stderrFile>
-    <stderrMode>append</stderrMode>
-    
-    <!-- 指定可执行文件的执行方式，可选 console -->
-    <executableMode>gui</executableMode>
-    
-    <!-- 指定运行模式为单实例模式-->
-    <singleInstance>true</singleInstance>
-    <!-- 指定运行模式为全局单实例模式，确保系统中只有一个实例运行。 -->
-    <globalSingleInstance>true</globalSingleInstance>
-  </executable>
-  <!-- mainClass指定Java程序的主类，vmParameters设置传递给JVM的参数，其中参数设置文件编码为 UTF-8。minVersion指定最低 JVM 版本要求为1.8 -->
+	<!-- name指定可执行文件名称
+       executableDir指定可执行文件所在目录，当前目录
+			 wrapperType指定嵌入类型，表示将 JVM 嵌入到可执行文件中
+       redirectStderr、redirectStdout指定是否将标准输出、标准错误输出到文件
+       stderrFile、stdoutFile指定标准输出、标准错误输出写入文件的路径。可使用相对路径，相对路径为可执行程序文件路径。
+       stderrMode、stdoutMode指定标准输出、标准错误输出写入文件的方式。append表示追加，overwrite表示追加覆盖
+       executableMode指定可执行文件的执行方式，可选 console 
+       singleInstance指定运行模式为单实例模式、
+       globalSingleInstance指定运行模式为全局单实例模式，确保系统中只有一个实例运行。 -->
+  <executable name="demoj2e" 
+    wrapperType="embed"
+    executableMode="gui"
+    singleInstance="true"
+    executableDir="."
+    globalSingleInstance="true"
+    redirectStderr="true" 
+    redirectStdout="true"
+    stderrFile=".\logs\demoj2e_stderr.log" 
+    stdoutFile=".\logs\demoj2e_stdout.log" 
+    stderrMode="append" 
+    stdoutMode="append"
+  />
+  <!-- mainClass指定Java程序的主类，
+       vmParameters设置传递给JVM的参数，其中参数设置文件编码为 UTF-8。
+       minVersion指定最低 JVM 版本要求为1.8 -->
   <java mainClass="org.example.Application" vmParameters="-Dfile.encoding=utf-8" minVersion="1.8">
     <!-- searchSequence指定JVM搜索顺序 -->
     <searchSequence>
@@ -112,7 +141,7 @@ bulid完成后, 在项目中out文件夹下可以找到jar包。
     <!-- classPath指定类路径 -->
     <classPath>
       <!--  location指定 jar 文件的路径，failOnError设置如果找不到指定的 jar 文件，不会失败。-->
-      <archive location="./out/artifacts/demoj2e_jar/demoj2e.jar" failOnError="false" />
+      <archive location="./target/demoj2e-1.0-SNAPSHOT-jar-with-dependencies.jar" failOnError="false" />
     </classPath>
   </java>
 </exe4j>
@@ -167,16 +196,16 @@ AppPublisher={#MyAppPublisher}										; 应用程序的发布者名称
 AppPublisherURL={#MyAppURL}												; 应用程序发布者的URL
 AppSupportURL={#MyAppURL}													; 应用程序支持的URL
 AppUpdatesURL={#MyAppURL}													; 应用程序更新的URL
-DefaultDirName={autopf}\{#MyAppName}              ; 默认安装目录
+DefaultDirName={autopf}\Demoj2e                   ; 默认安装目录。autopf内置变量路径C:\Program Files (x86)
 DisableProgramGroupPage=yes												; 是否禁用程序组选择页面（默认是 no）。
 OutputDir=.\output																; 编译后安装程序的输出目录
 OutputBaseFilename={#MyAppName}-installer 				; 编译后输出文件的基本文件名
 Compression=lzma																	; 压缩算法，常见值有lzma、zip
 SolidCompression=yes															; 是否启用固实压缩（可以提高压缩比）
 WizardStyle=modern																; 安装向导风格（classic、modern）
+PrivilegesRequired=admin													; 安装所需的权限级别（none、poweruser、admin、lowest）。
 ; AllowNoIcons：是否允许不创建快捷方式（默认是 yes）。
 ; AlwaysRestart：是否始终在安装结束后重新启动（默认是 no）。
-; PrivilegesRequired：安装所需的权限级别（none、poweruser、admin、lowest）。
 ; PrivilegesRequiredOverridesAllowed：允许覆盖所需权限级别的条件。
 ; DisableDirPage：是否禁用目录选择页面（默认是 no）。
 ; DisableProgramGroupPage：是否禁用程序组选择页面（默认是 no）。
@@ -206,6 +235,9 @@ WizardStyle=modern																; 安装向导风格（classic、modern）
 ; LogMode：日志模式（append、overwrite、new）。
 [Languages] ;定义安装程序支持的语言。
 Name: "english"; MessagesFile: "compiler:Default.isl"
+
+[Dirs]
+Name: "{app}\logs"
 
 [Files]			;定义需要安装复制的文件。
 ; Source指源文件路径。DestDir指目标目录，{app}表示安装目录
@@ -237,8 +269,27 @@ Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: de
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Run]			;定义安装过程中和安装后的运行命令
-; Filename设置要运行的文件路径。Description设置描述信息。Flags设置运行选项: nowait不等待，postinstall安装后运行，skipifsilent安静模式下跳过
-Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
+; Filename设置要运行的文件路径。Description设置描述信息。
+; Flags设置运行选项: 
+;     runhidden: 隐藏运行程序
+;     runminimized: 最小化运行程序
+;     runmaximized: 最大化运行程序
+;     waituntilterminated: 等待程序终止后再继续安装或卸载过程
+;     nowait: 不等待程序终止，立即继续安装或卸载过程
+;     postinstall: 仅在安装成功后运行程序
+;     skipifdoesntexist: 如果程序文件不存在，则跳过运行
+;     shellexec: 使用 ShellExecute API 运行程序（通常用于运行外部文件或 URL）
+;     unchecked: 如果程序运行失败，不会显示错误消息
+;     32bit: 在 32 位模式下运行程序（仅在 64 位 Windows 上可用）
+;     64bit: 在 64 位模式下运行程序（仅在 64 位 Windows 上可用）
+;     runascurrentuser: 用于在提升权限的安装程序中以当前用户身份运行程序，而不是以提升的管理员权限运行。
+;     runasoriginaluser: 以原始用户身份运行程序（在提升权限的安装程序中常用）
+Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: runascurrentuser nowait postinstall skipifsilent
+
+[UninstallDelete]    ;指定在卸载时的操作
+; Type为filesandordirs时则删除目录及其所有内容
+; Type为dirifempty时则仅在目录为空时删除
+Type: filesandordirs; Name: "{app}\logs"
 ```
 
 命令行构建 exe 安装包
@@ -247,7 +298,31 @@ Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChang
 C:\"Program Files (x86)"\"Inno Setup 6"\ISCC.exe ~\Desktop\demoj2e.iss
 ```
 
+# 附录一：Inno Setup配置内置变量
 
+- **`{app}：`**目标安装目录
+- **`{win}：`**Windows 目录（通常是 `C:\Windows`）
+- **`{sys}：`**系统目录（通常是 `C:\Windows\System32`）
+- **`{src}：`**当前安装源目录
+- **`{pf}：`**程序文件目录（通常是 `C:\Program Files`）
+- **`{autopf}:`**常量会自动根据安装程序的位数选择正确的路径。对于 32 位安装程序,将解析为 `C:\Program Files (x86)`。对于 64 位安装程序,将解析为 `C:\Program Files`
+- **`{cf}：`**公共文件目录（通常是 `C:\Program Files\Common Files`）
+- **`{sd}：`**系统驱动器（通常是 `C:\`）
+- **`{tmp}：`**临时目录
+- **`{localappdata}：`**本地应用数据目录（通常是 `C:\Users\<username>\AppData\Local`）
+- **`{commonappdata}：`**所有用户的公共应用数据目录（通常是 `C:\ProgramData`）
+- **`{userappdata}：`**当前用户的应用数据目录（通常是 `C:\Users\<username>\AppData\Roaming`）
+- **`{userdocs}：`**当前用户的文档目录（通常是 `C:\Users\<username>\Documents`）
+- **`{userdesktop}：`**当前用户的桌面目录（通常是 `C:\Users\<username>\Desktop`）
+- **`{commondesktop}：`**所有用户的公共桌面目录（通常是 `C:\Users\Public\Desktop`）
+- **`{userprograms}：`**当前用户的程序组目录（通常是 `C:\Users\<username>\AppData\Roaming\Microsoft\Windows\Start Menu\Programs`）
+- **`{commonprograms}：`**所有用户的程序组目录（通常是 `C:\ProgramData\Microsoft\Windows\Start Menu\Programs`）
+- **`{userstartmenu}：`**当前用户的开始菜单目录（通常是 `C:\Users\<username>\AppData\Roaming\Microsoft\Windows\Start Menu`）
+- **`{commonstartmenu}：`**所有用户的开始菜单目录（通常是 `C:\ProgramData\Microsoft\Windows\Start Menu`）
+- **`{userstartup}：`**当前用户的启动目录（通常是 `C:\Users\<username>\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup`）
+- **`{commonstartup}：`**所有用户的启动目录（通常是 `C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup`）
+- **`{fonts}：`**系统字体目录（通常是 `C:\Windows\Fonts`）
+- **`{param}：`**安装命令行参数
 
 # 参考
 

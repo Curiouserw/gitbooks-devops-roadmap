@@ -1022,15 +1022,40 @@ overview 下包含运行当前选定 task 的所有 DM-worker/master instance/so
 
 # 八、DM任务问题汇总
 
-## 1、上游MySQL的DDL语句不支持同步执行到TiDB
+## 1、Binlog文件不存在
 
+**问题报错**
 
+```json
+.....
+{
+    "ErrCode": 36069,
+    "ErrClass": "sync-unit",
+    "ErrScope": "upstream",
+    "ErrLevel": "high",
+    "Message": "get binlog event error: ERROR 1236 (HY000): Could not find first log file name in binary log index file",
+    "Workaround": "Please check if the binlog file could be parsed by `mysqlbinlog`."
+},
+"unresolvedDDLLockID": "",
+"sync": {
+"totalEvents": "12",
+"totalTps": "0",
+"recentTps": "0",
+"masterBinlog": "(mysql-bin.004451, 2453)",
+......
+```
+
+**问题处理**
+
+- **报错时例如有 `binlog-name = "mysql-bin.004451"` 与 `binlog-pos = 2453`，则将其分别将 DM 任务配置更新为 `binlog-name = "mysql-bin.004452"` 和 `binlog-pos = 4`。如果 DM worker 已开启 `enable_gtid`，那么在修改 `relay.meta` 文件时，同样需要修改下一个 binlog 对应的 GTID。如果未开启 `enable_gtid` 则无需修改 GTID**
+- **删除掉目标库中的DM任务数据表后（一般在目标数据库实例的dm_meta库中，表名为任务名_syncer_checkpoint，表中数据为任务同步进度）**
+- **重建任务即可**
 
 ## 2、上游MySQL的DML语句不支持同步执行到TiDB
 
-### ①上游表字段个数与下游字段个数不一致，后续DML无法执行，Binlog无法跳过、handle error skip不生效。
+①上游表字段个数与下游字段个数不一致，后续DML无法执行，Binlog无法跳过、handle error skip不生效。
 
-#### **问题报错**
+**问题报错**
 
 ```json
 {
@@ -1073,7 +1098,7 @@ overview 下包含运行当前选定 task 的所有 DM-worker/master instance/so
 }
 ```
 
-#### 问题处理
+问题处理
 
 ```bash
 handle-error sync-rds-mysql-to-tidb skip 无法自动跳过错误
@@ -1081,7 +1106,7 @@ handle-error sync-rds-mysql-to-tidb skip 无法自动跳过错误
 handle-error sync-rds-mysql-to-tidb -b mysql-bin.004795:157971328 skip 无法跳过指定position
 ```
 
-#### 解决方案
+解决方案
 
 ```bash
 # 1. 显示表的创建语句与下游表的字段个数不一致
