@@ -65,8 +65,24 @@ router.POST("/test", func(context *gin.Context) {
 router := gin.Default()
 
 router.POST("/welcome", func(context *gin.Context) {
-	requestBody, _ := ioutil.ReadAll(context.Request.Body)
-    println(string(requestBody))
+	requestBody, _ := io.ReadAll(context.Request.Body)
+  println(string(requestBody))
+})
+
+router.POST("/test", func(context *gin.Context) {
+	  var jsonBody map[string]interface{}
+		if err := c.BindJSON(&jsonBody); err != nil {
+			c.JSON(400, gin.H{"error": "Invalid JSON"})
+			return
+		}
+    // 格式化并打印JSON
+		formattedJSON, err := json.MarshalIndent(jsonBody, "", "  ")
+    if err != nil {
+			fmt.Println("JSON格式化错误:", err)
+		} else {
+			fmt.Println("格式化后的JSON体:\n", string(formattedJSON))
+		}
+		c.JSON(200, gin.H{"status": "OK"})
 })
 ```
 
@@ -575,7 +591,7 @@ func main(){
   router := gin.Default()
   // 指定路由使用 BR 压缩响应数据
   router.POST("/getlogs", BrotliCompress(), func(c *gin.Context) {
-     ...
+     ..
   }
 }
 ```

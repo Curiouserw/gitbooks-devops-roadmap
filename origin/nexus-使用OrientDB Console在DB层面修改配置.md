@@ -1,34 +1,14 @@
-# Nexus使用OrientDB Console在DB层面修改配置
+# Nexus的OrientDB数据库操作
 
-# 一、Context
+# 一、找回密码
 
 在配置Nexus对接LDAP过程中，原先的用户（admin和原来创建的）也是可以登录的，为了测试只让LDAP用户登录，将安全域中的Local Authorizing Realm和Local Authenticating Realm给去掉了，导致admin用户登陆不上，LDAP上的用户能登陆，但没有管理Nexus的权限。换句话说，这个Nexus成了僵尸。如果Nexus的admin密码忘了,情形也类似。都需要修改Nexus数据库中的用户数据才能修改相关配置（Nexus是将用户、配置等相关信息存放在OrientDB 数据库中，而不是在配置文件中，所以改密码或者在没有权限的情况下改配置都是要操作OrientDB 中的数据）
 
-## 相关信息
+1. Nexus版本：3.15.2
+2. Nexus的数据目录是单独使用NFS类型的PV挂载的
+3. openshift上Nexus容器的执行用户没有权限操作除持久化目录之外的目录。（以root用户起的Nexus进程可直接使用Nexus容器中的`/opt/nexus/lib/support/nexus-orient-console.jar`连接OrientDB ）
 
-1. Nexus是在Openshift(Kubernetes也一样)中容器化部署的
-2. Nexus版本：3.15.2
-3. Nexus的数据目录是单独使用NFS类型的PV挂载的
-4. openshift上Nexus容器的执行用户没有权限操作除持久化目录之外的目录。（以root用户起的Nexus进程可直接使用Nexus容器中的”/opt/nexus/lib/support/nexus-orient-console.jar“连接OrientDB ）
-
-## 问题解决思路
-
-1. 将Nexus的PV数据目录挂载到物理节点一个临时目录下
-2. 使用Nexus相同版本安装包中的OrientDB Console连接到临时数据目录中的DB，然后修改相关信息
-
-    **Note**: 如果容器中执行Nexus进程的用户和物理节点上的用户不一样导致权限不够的话，可暂时将临时数据目录中的所有文件权限设置为777，修改完再改回来
-
-3. 再将Nexus的PV数据目录挂载到openshift上Nexus容器中，重启Nexus
-
-# 二、Preflight
-
-1. Nexus的PV数据目录已挂载到/roor/test
-2. 下载相同版本的Nexus到/opt/目录下
-3. /roor/test下的所有文件及文件夹权限临时修改为777
-
-# 三、操作
-
-## 1. 使用官方的OrientDB Console连接到数据目录中的DB
+## 1. 进入控制台
 
 ```bash
 java -jar /opt/nexus-3.15.2-01/lib/support/nexus-orient-console.jar
@@ -43,13 +23,11 @@ orientdb>
 #输入exit退出
 ```
 
-## 2. 连接临时数据目录中的DB
+## 2. 连接DB
 
 ```bash
-orientdb>  connect plocal:/root/test/db/security admin admin
+orientdb> connect plocal:/root/test/db/security admin admin
 ```
-
-此时会连到一个security的Database
 
 ## 3. 重置Realm
 
@@ -61,7 +39,9 @@ orientdb>  delete from realm
 
 **Note**: 重置后。默认的安全域将被激活，任何自定义的安全域都将被删除。后续再UI界面进行添加
 
-## 4.(可选) 重置admin用户密码为默认值"admin123"
+## 4.(可选) 重置admin用户密码
+
+密码`admin123`加密后的`$shiro1$SHA-512$1024$NE+wqQq/TmjZMvfI7ENh/g==$V4yPw8T64UQ6GfJfxYq2hLsVrBY8D1v+bktfOxGdt4b/9BthpWPNUy/CBk6V9iA0nHpzYzJFWO8v/tZFtES8CA==`
 
 ```bash
 orientdb>  update user SET password="$shiro1$SHA-512$1024$NE+wqQq/TmjZMvfI7ENh/g==$V4yPw8T64UQ6GfJfxYq2hLsVrBY8D1v+bktfOxGdt4b/9BthpWPNUy/CBk6V9iA0nHpzYzJFWO8v/tZFtES8CA==" UPSERT WHERE id="admin"
@@ -78,19 +58,49 @@ orientdb>  select status from user where id = "admin"
 orientdb> update user set status="active" upsert where id="admin"
 ```
 
-## 6. 退出OrientDB 控制台，修改回临时数据目录所有文件的原始权限，重新将数据目录挂载到容器上，然后重启Nexus
+## 6. 收尾
+
+退出OrientDB 控制台，修改回临时数据目录所有文件的原始权限，重新将数据目录挂载到容器上，然后重启Nexus
 
 Bazinga，admin用户能正常，又重新夺回Nexus的管理权限，所有的仓库配置和数据没有丢失，重新将LDAP的安全域加回去，一切恢复原样。
 
+# 二、预写日志损坏导致无法启动
+
+## 0、报错
+
+```bash
+*SYSTEM Felix - Framework listener delivery error.
+com.orientechnologies.orient.core.exception.OStorageException: Cannot open local storage '/nexus-data/db/config' with mode=rw
+```
+
+orient 会检测到损坏并尝试重播预写日志中的事务，上述错误表明预写日志本身也已损坏。
+
+## 1、删除wal数据
+
+```
+cp -r /data/nexus/nexus-data/db /data/nexus/nexus-data/db-backup
+rm -f /data/nexus/nexus-data/db/config/*.wal
+```
+
+## 2、进入控制台
+
+```bash
+java -jar /opt/sonatype/nexus/lib/support/nexus-orient-console.jar
+```
+
+## 3、连接数据库文件
+
+```bash
+orientdb> connect plocal:/nexus-data/db/config/ admin admin
+orientdb> repair database --fix-links
+orientdb> rebuild index *
+orientdb> disconnect 
+orientdb> exit
+```
+
 # 附录：Nexus使用的OrientDB
 
-## 1. What is the OrientDB Console
-
-Nexus 3 uses several OrientDB databases. In very specific circumstances, these databases can be manipulated as advised by Sonatype support. This article describes how to open a special command-line interface for connecting to and working with the databases used by Nexus. This interface is known as the OrientDB Console.
-
-Caution: Using the console incorrectly can cause irreparable harm to the databases.
-
-## 2. Launching the OrientDB Console on Nexus 3.2.1 and Newer
+## 1. Launching the OrientDB Console on Nexus 3.2.1 and Newer
 
 **Nexus 3.2.1+ includes a single jar executable which can launch the OrientDB console.**
 
@@ -130,3 +140,5 @@ orientdb>
 
 1. https://support.sonatype.com/hc/en-us/articles/115002930827-Accessing-the-OrientDB-Console
 2. https://support.sonatype.com/hc/en-us/articles/213467158-How-to-reset-a-forgotten-admin-password-in-Nexus-3-x
+3. https://groups.google.com/a/glists.sonatype.com/g/nexus-users/c/64W_y9fDGzQ/m/o0FKRgiDAwAJ?pli=1
+4. https://stackoverflow.com/questions/51776568/sonatype-nexus-repository-orientdb-cant-connect-to-database

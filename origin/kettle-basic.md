@@ -8,11 +8,13 @@
 
 - Pentaho Data Integration分为商业版与开源版，在中国，一般人仍习惯把Pentaho Data Integration的开源版称为Kettle。
 
-# 二、基础概念
+- **在Kettle中，数据的单位是行，数据流就是数据行从一个步骤到另一个步骤的移动。步骤之间通过跳(hop)来连接。**
+
+- ETL(Extract-Transform-Load)：即数据抽取、转换、装载的过程
 
 
 
-# 三、安装部署
+# 二、安装部署
 
 ## MacOS
 
@@ -23,6 +25,8 @@
 
 
 ## Linux
+
+
 
 # 参考
 

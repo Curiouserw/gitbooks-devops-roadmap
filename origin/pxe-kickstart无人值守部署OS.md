@@ -221,9 +221,6 @@ label 'Ubuntu 22.04 LTS'
   append initrd=Ubuntu/22.04/initrd autoinstall ds=nocloud-net;s=http://192.168.1.1/Ubuntu/22.04.autoinstall
   
 EOF'
-
-
-
 ```
 
 ### ⑤服务启动验证

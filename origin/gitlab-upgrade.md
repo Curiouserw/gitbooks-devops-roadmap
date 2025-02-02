@@ -27,6 +27,10 @@ gitlab的版本规则是：`主版本(Major).次版本(Minor).补丁版本(Patch
 
 ## 1、确定版本升级路径
 
+使用官方提供的版本升级工具：https://gitlab-com.gitlab.io/support/toolbox/upgrade-path/ 
+
+​							https://gitlab.com/gitlab-com/support/toolbox/upgrade-path
+
 可查看最新的版本升级路径文档：https://docs.gitlab.com/ee/update/index.html#upgrade-paths
 
 `8.11.Z` --> `8.12.0` --> `8.17.7` --> `9.5.10` --> `10.8.7` --> `11.11.8` --> `12.0.12` --> `12.1.17` --> `12.10.14` --> `13.0.14` --> `13.1.11` -- > [latest `13.Y.Z`](https://about.gitlab.com/releases/categories/releases/)

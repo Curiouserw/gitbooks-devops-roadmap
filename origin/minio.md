@@ -10,42 +10,41 @@ MinIO 是在 GNU Affero 通用公共许可证 v3.0 下发布的高性能对象�
 
 - MinIO 部署开始使用默认的 root 凭据 `minioadmin:minioadmin`
 
-## Docker
+- Docker
 
-```bash
-mkdir -p ~/minio/data
+  ```bash
+  mkdir -p ~/minio/data
+  docker run \
+     -p 9000:9000 \
+     -p 9090:9090 \
+     --name minio \
+     -v ~/minio/data:/data \
+     -e "MINIO_ACCESS_KEY=*****" \
+     -e "MINIO_SECRET_KEY=*****" \
+     quay.io/minio/minio server /data --console-address ":9090"
+  ```
 
-docker run \
-   -p 9000:9000 \
-   -p 9090:9090 \
-   --name minio \
-   -v ~/minio/data:/data \
-   -e "MINIO_ACCESS_KEY=*****" \
-   -e "MINIO_SECRET_KEY=*****" \
-   quay.io/minio/minio server /data --console-address ":9090"
-```
+- Brew
 
-## Brew
+  ```bash
+  brew install minio/stable/minio
+  minio server /data
+  ```
 
-```bash
-brew install minio/stable/minio
-minio server /data
-```
+- Unix
 
-## Unix
+  ```bash
+  wget http://dl.minio.org.cn/server/minio/release/linux-amd64/minio
+  chmod +x minio
+  ./minio server /data
+  ```
 
-```bash
-wget http://dl.minio.org.cn/server/minio/release/linux-amd64/minio
-chmod +x minio
-./minio server /data
-```
+- Windows
 
-## Windows
-
-```bash
-http://dl.minio.org.cn/server/minio/release/windows-amd64/minio.exe
-minio.exe server D:\
-```
+  ```bash
+  http://dl.minio.org.cn/server/minio/release/windows-amd64/minio.exe
+  minio.exe server D:\
+  ```
 
 # 三、mc命令
 
@@ -445,7 +444,111 @@ mc admin service restart synology-minio
 
 参考：http://docs.minio.org.cn/docs/master/minio-bucket-notification-guide
 
-## 1、使用Redis存储事件通知
+## 1、Webhook通知通道
+
+文档：https://min.io/docs/minio/linux/administration/monitoring/publish-events-to-webhook.html
+
+### ①创建通知通道
+
+```bash
+mc admin config set ALIAS/ notify_webhook:IDENTIFIER \
+   endpoint="<ENDPOINT>" \
+   auth_token="<string>" \
+   queue_dir="<string>" \
+   queue_limit="<string>" \
+   client_cert="<string>" \
+   client_key="<string>" \
+   comment="<string>"
+   
+# ALIAS（必填）： MinIO实例名
+# IDENTIFIER（必填）: 定义Webhook的标识符
+# endpoint（必填）：Webhook地址
+# auth_token（选填）：Webhook认证Token
+
+# 查看通知通道设置
+mc admin config get synology-minio notify_webhook
+mc admin info --json synology-minio  | jq .info.sqsARN
+```
+
+### ②重启 Minio 实例
+
+```bash
+mc admin service restart MinIO实例名
+```
+
+### ③设置Bucket事件进行通知
+
+```bash
+mc event add MinIO实例名/Bucket名 arn:minio:sqs::WebHook标识符:webhook \
+  --event Minio事件
+# minio事件有：put、get、delete、replica、ilm、scanner
+
+# 查看Bucket事件的通知通道
+mc event ls synology-minio/test arn:minio:sqs::WebHook标识符:webhook
+# arn:minio:sqs::testa:webhook   s3:ObjectCreated:*   Filter:
+```
+
+### ④事件POST请求体
+
+```json
+{
+    "EventName": "s3:ObjectCreated:Put",
+    "Key": "test/main.go",
+    "Records": [
+        {
+            "eventVersion": "2.0",
+            "eventSource": "minio:s3",
+            "awsRegion": "",
+            "eventTime": "2024-10-22T03:42:10.178Z",
+            "eventName": "s3:ObjectCreated:Put",
+            "userIdentity": {
+                "principalId": "tester"
+            },
+            "requestParameters": {
+                "principalId": "tester",
+                "region": "",
+                "sourceIPAddress": "10.1.0.12"
+            },
+            "responseElements": {
+                "x-amz-id-2": "dd9025bab4ad464b04917*****74d3b3fd1af9251148b658df7ac2e3e8",
+                "x-amz-request-id": "1800A96A19**530A",
+                "x-minio-deployment-id": "820**757-32f8-4*07-8952-00*69b5ec9b9",
+                "x-minio-origin-endpoint": "http://192.168.1.1:9000"
+            },
+            "s3": {
+                "s3SchemaVersion": "1.0",
+                "configurationId": "Config",
+                "bucket": {
+                    "name": "test",
+                    "ownerIdentity": {
+                        "principalId": "tester"
+                    },
+                    "arn": "arn:aws:s3:::test"
+                },
+                "object": {
+                    "key": "main.go",
+                    "size": 400,
+                    "eTag": "ddd41486f459d*****3a0e15f2e7",
+                    "contentType": "application/octet-stream",
+                    "userMetadata": {
+                        "content-type": "application/octet-stream"
+                    },
+                    "sequencer": "1800A9***94E740"
+                }
+            },
+            "source": {
+                "host": "10.8.0.2",
+                "port": "",
+                "userAgent": "MinIO (darwin; amd64) minio-go/v7.0.77 mc/RELEASE.2024-10-08T09-37-26Z"
+            }
+        }
+    ]
+}
+```
+
+### ⑤(可行)自定义
+
+## 2、Redis通知通道
 
 ### ①配置Redis SQS
 

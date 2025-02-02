@@ -16,7 +16,7 @@ ESXI强大的客户端vSpere Client由于在MacOS上没有对应的版本。VMWa
 
 # 二、安装配置
 
-**下载地址**（需注册登录）：https://my.vmware.com/zh/group/vmware/details?downloadGroup=OVFTOOL430&productId=742 
+**下载地址**：https://developer.broadcom.com/tools/open-virtualization-format-ovf-tool/latest
 
 MacOS dmg格式安装后的目录为：`/Applications/VMware OVF Tool`。命令没有系统环境变量中，通过设置软连接实现：`ln -s /Applications/VMware\ OVF\ Tool/ovftool /usr/local/bin`
 
@@ -216,7 +216,15 @@ echo "nvm_4C8G100G() { ovftool --name=\"\$@\" http://192.168.1.7:32770/repositor
 source ~/.zshrc
 ```
 
-# 四、操作实例
+# 四、功能
+
+## 1、压缩VMX为OVA
+
+```bash
+ovftool kali-*.vmx kali-linux.ova
+```
+
+# 五、示例
 
 ## 1、将存储在Nexus RAW仓库中的OVF模板部署遇到远程ESXI中
 

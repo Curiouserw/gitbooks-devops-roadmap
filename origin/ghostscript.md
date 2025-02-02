@@ -131,6 +131,34 @@ gs -sDEVICE=jpeg \
 # %02d 两位数自动补零；三位数自动补零%03d
 ```
 
+## 5、添加英文水印
+
+```bash
+Watermark="only for something" && \
+filepath="~/Desktop/测试PDF.pdf" && \
+gs -q -o "${filepath%%.*}-带英文水印.pdf" \
+   -sDEVICE=pdfwrite \
+   -dBATCH \
+   -dNOPAUSE \
+   -c "<< \
+        /EndPage
+        {
+          2 eq { pop false }
+          {
+              gsave
+              /Helvetica-Bold 60 selectfont \
+              0 setgray                      % 设置灰度
+              100 300 moveto                 % 设置水印起始位置
+              45 rotate                      % 倾斜水印 45 度
+              ($Watermark) show            % 绘制水印文本
+              grestore
+              true
+          } ifelse
+        } bind
+      >> setpagedevice" \
+   -f "$filepath"
+```
+
 # 参考
 
 - https://juejin.cn/post/7119342874503675940

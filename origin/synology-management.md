@@ -8,6 +8,40 @@
 
 # 二、系统管理
 
+## 1、应用信息
+
+应用安装路径：`/var/packages/`
+
+应用安装目录常见文件：
+
+```yaml
+|-- conf
+|   |-- privilege					# 配置了应用在各个阶段所需的权限 
+|   |-- resource					# 配置了应用相关配置
+|   |-- resource.own
+|-- enabled								# 空文件。该文件存在表示设置了应用开机自启动
+|-- etc -> /usr/syno/etc/packages/应用名
+|-- INFO									# 内容为应用相关信息。例如版本、帮助链接、ICON 等信息
+|-- scripts
+|   |-- installer					# 安装脚本
+|   |-- postinst					# 安装后的脚本
+|   |-- postuninst				# 卸载后的脚本
+|   |-- postupgrade				# 更新后的脚本
+|   |-- preinst						# 安装前的脚本
+|   |-- preuninst					# 卸载前的脚本
+|   |-- preupgrade				# 更新前的脚本
+|   |-- service-setup			# 服务启动脚本
+|   |-- start-stop-status	# 管理服务状态脚本
+|-- target -> /volume2/@appstore/应用名  # 具体应用相关的二进制文件
+|-- WIZARD_UIFILES
+    |-- install_uifile			# UI界面模式下的安装脚本
+    |-- upgrade_uifile.sh		# UI界面模式下的更新脚本
+```
+
+## 2、系统命令
+
+### synoservice：服务状态管理
+
 群辉中的系统命令或者套间命令大部分是以syno开头。在DSM的 “套件中心” 安装的软件包是以`pkgctl-`为前缀命名的
 
 ```bash

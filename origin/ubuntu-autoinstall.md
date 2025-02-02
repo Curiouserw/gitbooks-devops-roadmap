@@ -14,10 +14,6 @@ Ubuntu新 **autoinstall** 方式的自动安装主要在以下方面不同于 **
 
 **Ubuntu 20.04 Server** 与 **23.04 Desktop** 之后的版本.    建议使用 Autoinstall 进行无人值守安装
 
-
-
-
-
 # 二、Autoinstall配置文件生效的方式
 
 - 通过 clound-int 提供 autoinstall 相关的配置（推荐）
@@ -62,12 +58,6 @@ Ubuntu新 **autoinstall** 方式的自动安装主要在以下方面不同于 **
 - 安装系统的根文件系统
 - cloud-config
 - 安装 ISO介质的根路径
-
-
-
-
-
-
 
 # 三、内核参数
 

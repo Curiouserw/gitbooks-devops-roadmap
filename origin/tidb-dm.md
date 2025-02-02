@@ -1131,7 +1131,33 @@ resume-task 任务名
 
 ## 4、上游MySQL表中日期数据值包含“00”造成无法同步
 
+## 5、写入下游时出现重复冲突的主键
 
+```bash
+{
+    "op": "Pause",
+    "result": true,
+    "msg": "",
+    "sources": [
+        {
+            "result": false,
+            "msg": "[code=38032:class=dm-master:scope=internal:level=high], Message: some error occurs in dm-worker: ErrCode:10006 ErrClass:\"database\" ErrScope:\"not-set\" ErrLevel:\"high\" Message:\"startLocation: [position: (, 0), gtid-set: ], endLocation: [position: (mysql-bin.000403, 180932082), gtid-set: ]: execute statement failed: commit\" RawCause:\"Error 1062: Duplicate entry '31548' for key 'test.PRIMARY'\" , Workaround: Please execute `query-status` to check status.",
+            "source": "mysql-192-168-1-196",
+            "worker": "dm-192.168.10.1-8262"
+        }
+    ]
+}
+
+```
+
+**解决方案**：暂停任务后，删除下游冲突的主键记录，重启任务即可跳过
+
+**注意点**：当出现此类问题后，及时处理，不然任务会 pending。等长时间后再去处理的话，可能拉不到上游的 Binlog（上游数据库 Binlog 可能设置有保留时间）。
+
+```bash
+pause-task 任务名
+resume-task 任务名
+```
 
 # 参考
 

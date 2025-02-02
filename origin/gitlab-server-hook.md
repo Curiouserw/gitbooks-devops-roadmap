@@ -278,11 +278,48 @@ exit 0
   					      |--Project_ID的SHA256加密字符串.wiki.git
   ```
 
-  
 
+## 2、常见禁止上传至远程仓库的文件
 
+```bash
+# 编译生成的文件夹
+dist/
+node_modules/
+build/
+bin/
+*.exe
+*.out
+*.test
+/go.*
+/vendor/
+/coverage/
+target/
+*.class
+*.jar
+*.war
+*.ear
+*.iml
 
+# 环境变量
+*.env
+.env.*
 
+# 操作系统文件
+.DS_Store
+Thumbs.db
+
+# 日志文件
+*.log
+*.log.gz
+
+# IDE 配置文件
+.idea/
+*.iws
+*.iml
+*.ipr
+.gradle/
+.vscode/
+```
 
 # 参考
 

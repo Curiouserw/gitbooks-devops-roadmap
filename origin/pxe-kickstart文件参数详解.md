@@ -390,7 +390,7 @@ incoming - 使用以下服务中的一个或多个来替换，从而允许指定
 --smtp
 --http
 --ftp
-​
+
 示例：firewall --enable --trust eth0  --trust eth1  --port=80:tcp
 ```
 
@@ -545,7 +545,7 @@ timezone  [ --utc ]  <timezone>
 %packages
 @Graphical Internet --optional
 %end
-​
+
 --nodefaults 只安装该组的强制软件包，不是默认选择。
 --optional  除安装默认选择外，还要安装在 *-comps-variant.architecture.xml 文件组定义中标记为自选的软件包。
 注：有些软件包组，比如 Scientific Support，没有指定任何强制或默认软件包 - 只有自选软件包。在这种情况下必须使用 --optional 选项，否则不会安装这个组中的任何软件包。
@@ -631,7 +631,6 @@ text
 lang en_US.UTF-8
 #指定键盘类型为US布局
 keyboard us
-​
 auth  --useshadow  --passalgo=sha512
 #
 url --url="http://192.168.1.80/CentOS7"

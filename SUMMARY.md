@@ -95,7 +95,7 @@
     * 管理
         * [配置SMTP邮件服务](origin/gitlab-配置SMTP邮件服务.md)
         * [代码仓库的备份与恢复](origin/gitlab-backuprestore.md)
-        * [版本升级](origin/gitlab-upgrade.md)
+        * [Gitlab版本升级](origin/gitlab-upgrade.md)
         * [Gitlab的制品仓库](origin/gitlab-package-registry.md)
         * [Gitlab的Webhook](origin/gitlab-配置代码仓库事件触发器Webhook.md)
         * [Gitlab的服务端git hook](origin/gitlab-server-hook.md)
@@ -118,7 +118,6 @@
         * [YUM](origin/nexus-yum仓库的配置与使用.md)
         * [Composer](origin/nexus-composer.md)
         * [Pypi](origin/nexus-pypi.md)
-        * Docker
         * [Helm](origin/nexus-helm.md)
     * [数据备份恢复](origin/nexus-数据的备份恢复.md)
     * [API](/origin/nexus-api.md)
@@ -154,12 +153,7 @@
 * [DolphinScheduler](origin/dolphinscheduler.md)
 
 
-## Part Ⅳ：微服务
-* SpringBoot
-* SpringCloud
-* Consul
-
-## Part Ⅴ：日志/监控/告警
+## Part Ⅳ：日志/监控/告警
 * Logging
     * [日志系统数据在个组件中的流转格式](origin/logging-日志系统数据在个组件中的流转格式.md)
     * [ELK系列安装部署](origin/elk-install.md)
@@ -189,7 +183,6 @@
             * API Endpoints
                 * [_cat](origin/elasticsearch--_cat-API.md)
                 * [index](origin/elasticsearch-index-api.md)
-                * search
                 * [bulk](origin/elasticsearch-bulk-api.md)
             * [Ingest节点的Pipeline](origin/elasticsearch-ingest节点.md)
             * [数据的路由分配](origin/elasticsearch-数据的分配路由.md)
@@ -219,14 +212,14 @@
         * [收集Nginx内置Metrics](origin/prometheus-nginx-exporter.md)
     * Grafana
         * [Grafana的备份恢复](origin/grafana-backup-restore.md)
+        * [Grafana管理](origin/grafana-manage.md)
 * Tracing
     * [Jaeger](origin/jaeger.md)
-    * SkyWalking
     * Matomo
 * [Sentry日志聚合告警平台](origin/sentry.md)
     * [Logstash与Sentry对接](origin/sentry-logstash对接Sentry.md)
 
-## Part Ⅵ：基础
+## Part V：基础
 * Docker
     * 基础知识
       * [Docker原理](origin/docker原理.md)
@@ -243,6 +236,8 @@
 * Shell脚本
     * [Shell脚本](origin/shell-scripts-summary.md)
     * [常用bash脚本功能](origin/bash-scirpts.md)  
+    * [Shell脚本优化](origin/shell-script-perf.md)
+* [osascript脚本](origin/apple-osascript.md)
 * Maven
     * Maven POM项目对象模型
     * [Mave Settings文件详解](origin/maven-Settings配置文件详解.md)
@@ -301,7 +296,7 @@
     * [Windows进程守护工具NSSM](origin/windows-nssm.md)
     * [Windows 无人值守部署服务](origin/windows-deployment-service-aik.md)
     * [主机的网络唤醒WOL服务](origin/windows-wakeuponlan.md)
-    * [Java代码打包成EXE可安装执行软件](origin/windows-java-exe-install.md)
+    * [Exe4J+Inno setup: 将Java代码打包成EXE可安装执行软件](origin/windows-java-exe-install.md)
     * [PowerShell](origin/windows-powershell.md)
 * MacOS
     * [MacOS小技巧](origin/macos-tips.md)
@@ -377,10 +372,13 @@
         * Squid
             * [简介安装日志](origin/squid-简介安装.md)
             * [ACL访问权限](origin/squid-acl访问权限控制.md)
+* Tengine
+    * [Tengine基础](origin/tengine-basic.md)
 * Nginx
     * [Nginx安装配置](origin/nginx-install-setup.md)
     * [Nginx常用配置及功能](origin/nginx-config.md)
     * [Nginx日志写入kafka](origin/nginx-log-kafka.md)
+    * [Nginx的WAF：Modsecurity](origin/nginx-docker.md)
 * [GitBook](origin/gitbook-简介安装配置.md)
 * [Telegram机器人](origin/telegram-Bot机器.md)
 * OpenVPN
@@ -398,11 +396,10 @@
       * [VMWare OVF Tools](origin/vmware-ovf-tool.md)
     * SDK/CLI
       * [Go语言CLI: govc](origin/vsphere-govc.md)
-* [Raspberry Pi树莓派](origin/raspberry-pi.md)
 * [钉钉机器人](origin/dingding-customrobot.md)
 * [经典面试题](origin/经典面试题.md)
 * [Aliyun CLI](origin/aliyun-cli.md)
-* [音、视频处理工具：fffmpeg](origin/audio-video-fffmpeg.md)
+* [音、视频处理工具: ffmpeg](origin/audio-video-fffmpeg.md)
 * [图片处理工具：Imagemagick](origin/images-tool-imagemagick.md)
 * [PDF处理工具：Ghostscript](origin/ghostscript.md)
 * [Nvidia](origin/nvidia.md)
@@ -412,19 +409,12 @@
 * [Poste：自建邮件服务器](origin/poste-mailserver.md)
 * [使用 Jlink构建最小化依赖的 JRE 环境](origin/jlink-jre.md)
 * [Aria2](origin/aria2.md)
-* [Asuswrt-Merlin](origin/asuswrt-merlin.md)
-* [Trap：Shell脚本信号跟踪](origin/linux-trap.md)
 * [零散知识汇总](origin/others.md)
 * [BarkServer通知](origin/notify-bard.md)
-* Synology
-    * [Synology管理](origin/synology-management.md)
-    * [Synology Active Backup for Business备份管理vSphere ESXI VMs](origin/synology-abb-vsphere.md)
-    * [群晖Synology的iSCSI](origin/iSCSI-简介配置使用.md)
 * [开源画图平台:Excalidraw](origin/excalidraw.md)
-* [硬件规格标准](origin/hardwares.md)
 
 
-## Part Ⅶ：数据存储、处理
+## Part Ⅵ：数据存储处理
 
 - Cloudera
   - [安装部署](origin/cloudera-install.md)
@@ -450,8 +440,10 @@
   - [TiDB性能调优](origin/tidb-performance.md)
   - [TiDB TiFlash](origin/tidb-tiflash.md)
   - [TiDB资源限制隔离](origin/tidb-resource-limit.md)
-- [Minio](origin/minio.md)
-- [JuiceFS](origin/juicefs.md)
+- 开源对象存储
+  - [Minio](origin/minio.md)
+  - [JuiceFS](origin/juicefs.md)
+  - [SeaweedFS](origin/seaweedfs.md)
 - Apache Pulsar
   - [基础概念](origin/pulsar-basic.md)
   - [安装部署](origin/pulsar-install.md)
@@ -462,13 +454,14 @@
   - [Python Pulsar Client ](origin/pulsar-python-client.md)
 - Pentaho Data Integration(kettle)
   - [安装部署及基础概念](origin/kettle-basic.md)
-- MySQL Binlog同步工具Canal
+- Canal: MySQL Binlog同步工具
   - [简介安装部署](origin/canal-install-basic.md)
 - SQLite
   - [SQLCipher](origin/sqlite-cipher.md)
-  
+- [NAS数据迁移](origin/nfs-migrate.md)
 
-## Part VIII：Code
+
+## Part Ⅶ：Code
 
 - Python学习笔记
 
@@ -492,10 +485,9 @@
   - [embed: 嵌入静态资源文件](origin/golang-embed.md)
   
   - [X509/PKI证书](origin/golang-x509-certificate.md)
-  
 - [HTML/CSS学习笔记](origin/html-css-learn.md)
-
 - JavaScript学习笔记
+  - [SSE（Server-Sent Event）](origin/sse.md)
   - [JS/JQuery/Vue3/TS基础知识学习](origin/js-jquery-vue-learn.md)
   - [Vue3基础知识学习](origin/vue3.md)
   - [Vite打包工具](origin/vue-vite.md)
@@ -504,13 +496,48 @@
   - [Element-Plus与Echarts](origin/elementplus-echarts.md)
   
 
-## Part X：Hackintosh
+## Part VIII：Hackintosh
 
 - [OpenCore](origin/hcakintosh-opencore.md)
 
-## Part XI：安全
+## Part X：安全
 
 - 服务器安全
   - [Linux安全](origin/linux-security.md)
 - 数据安全
   - [MySQL数据安全](origin/mysql-data-security.md)
+- CIS互联网安全基准
+  - [CIS互联网安全基准-概览](origin/cis-benchmark.md)
+  - [CIS的Kubernetes安全基准](origin/cis-k8s-benchmark.md)
+- **EDR&SIEM安全系统：Wazuh**
+  - [Wazuh基础](origin/wazuh-basic.md)
+  - [Wazuh探测、告警、响应](origin/wazuh-monitor-alert.md)
+  - [Wazuh主动防御](origin/wazuh-threat-active-defense.md)
+  - [Wazuh恶意软件检测：集成Yara](origin/wazuh-malware-detect.md)
+- 攻防
+  - [攻防基础](origin/att-ck.md)
+
+- [开源Waf：Nginx-Modesecurity](origin/nginx-modsecurity.md)
+
+# Part IX: 硬件
+
+[PC硬件规格标准](origin/hardwares.md)
+
+Synology
+
+* [Synology管理](origin/synology-management.md)
+* [Synology Active Backup for Business备份管理vSphere ESXI VMs](origin/synology-abb-vsphere.md)
+* [群晖Synology的iSCSI](origin/iSCSI-简介配置使用.md)
+
+[华硕梅林Asuswrt-Merlin](origin/asuswrt-merlin.md)
+
+[Raspberry Pi树莓派](origin/raspberry-pi.md)
+
+[Arduino](origin/arduino.md)
+
+	- [Arduino Nano](origin/arduino-nano.md)
+	- [Arduino IDE及编程语法](origin/arduino-ide.md)
+
+[摄像头：视频-音频-云台](origin/camera.md)
+
+[LED](origin/led.md)

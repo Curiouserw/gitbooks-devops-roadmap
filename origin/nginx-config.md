@@ -511,8 +511,6 @@ gzip_static on | off;
 | **proxy_read_timeout** |http请求被容器(tomcat, netty等)处理后，nginx会等待处理结果，也就是容器返回的response。即为服务器响应时间，Nginx等待的最长时间。默认60秒。 |
 | **proxy_send_timeout** |设置后端向Nginx返回响应时的超时时间，默认60秒。 |
 
-
-
 参考：
 
 - https://blog.csdn.net/weixin_38306434/article/details/86491905

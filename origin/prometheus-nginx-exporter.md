@@ -2,7 +2,7 @@
 
 # 一、简介
 
-Nginx的ngx_http_stub_status_module模块可以暴露出来nginx的一些性能信息。但是这些信息不是prometheus的metrics信息格式。所以需要一个第三方服务用于转换这些数据，然后才能让prometheus拉取信息。
+Nginx的`ngx_http_stub_status_module`模块可以暴露出来nginx的一些性能信息。但是这些信息不是prometheus的metrics信息格式。所以需要一个第三方服务用于转换这些数据，然后才能让prometheus拉取信息。
 
 # 二、配置
 
@@ -90,10 +90,6 @@ Grafana仪表盘：https://grafana.com/grafana/dashboards/11280/reviews
 优化修改后的仪表盘JSON文件：[nginx-exporter-dashboard.json](grafana-nginx-exporter-dashboard.json)
 
 ![](../assets/nginx-exporter-grafana-dashboard.png)
-
-# 三、总结
-
-暴露出来的Nginx信息太少，没有监控价值
 
 
 

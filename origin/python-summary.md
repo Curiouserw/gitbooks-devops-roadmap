@@ -306,6 +306,8 @@ if __name__ == '__main__':
 
 # 六、命令参数
 
+## 选项参数
+
 ```python
 #!/usr/bin/python3
 # encoding: utf-8
@@ -313,7 +315,6 @@ import sys,argparse
 
 def todo(arg_id, arg_name):
     print(arg_id, arg_name)
-
 
 def main():
     if args.id and args.name:
@@ -341,10 +342,21 @@ if __name__ == "__main__":
     sys.exit(main)
 ```
 
-参考：
+## 位置参数
 
-- https://docs.python.org/zh-cn/3/howto/argparse.html
-- https://www.jianshu.com/p/5e28e0590b71
+```python
+#!/usr/bin/python3
+# encoding: utf-8
+import sys
+def main():    
+		args_1 = sys.argv[1]
+    args_2 = sys.argv[2]
+    
+if __name__ == "__main__":
+    main()
+```
+
+
 
 # 七、evdev
 
@@ -402,4 +414,96 @@ if __name__ == '__main__':
     barcode_listener.daemon = True
     barcode_listener.start()
     app.run(debug=True, port=8001)
+```
+
+# 八、PyPDF处理 PDF
+
+## 批量给PDF添加文字水印
+
+```python
+inputfile="INPUTFILEPATH" ;
+/usr/local/bin/python3 <<'EOF' - "INPUTFILEPATH" "WATERMARK"
+from PyPDF2 import PdfReader, PdfWriter
+from reportlab.pdfgen import canvas
+from io import BytesIO
+import argparse
+import os
+import subprocess
+import sys
+
+def create_watermark(text):
+    """
+    创建支持中文和倾斜的水印 PDF
+    """
+     # 创建内存文件
+    packet = BytesIO()
+    can = canvas.Canvas(packet, pagesize=(612, 792))  # 使用 A4 大小，letter纸张是612x792
+
+    # 设置字体（中文或默认英文字体）
+
+    from reportlab.pdfbase import pdfmetrics
+    from reportlab.pdfbase.ttfonts import TTFont
+    pdfmetrics.registerFont(TTFont('STHeiti Medium', "/System/Library/Fonts/STHeiti Medium.ttc"))
+    can.setFont("STHeiti Medium", 40)
+
+    can.setFillColorRGB(0.6, 0.6, 0.6, alpha=0.5)  # 半透明灰色
+    text_width = can.stringWidth(text, can._fontname, 40)
+    
+    # 自动计算水印位置
+    x = (612 - text_width) / 2  # 水平居中
+    y = 350  # 垂直位置，可以调整
+    can.saveState()
+    can.translate(x, y)  # 移动到居中位置
+    can.rotate(45)  # 倾斜
+    can.drawString(0, 0, text)  # 水印文本
+    can.restoreState()
+
+    can.save()
+    packet.seek(0)
+    return packet
+
+def add_watermark(input_pdf, watermark_text):
+    """
+    给 PDF 添加支持中文和倾斜的水印
+    """
+    reader = PdfReader(input_pdf)
+    writer = PdfWriter()
+    
+    input_pdf_dir = os.path.dirname(input_pdf)  # 获取输入 PDF 所在的目录
+    input_pdf_name, input_pdf_ext = os.path.splitext(os.path.basename(input_pdf))
+    
+    # 设置输出文件路径，输出文件与输入文件保存在同一目录
+    output_pdf = os.path.join(input_pdf_dir, f"{input_pdf_name}_带水印{input_pdf_ext}")
+
+    watermark_packet = create_watermark(watermark_text)
+    watermark_reader = PdfReader(watermark_packet)
+    watermark_page = watermark_reader.pages[0]
+
+    for page in reader.pages:
+        page.merge_page(watermark_page)
+        writer.add_page(page)
+
+    with open(output_pdf, "wb") as output:
+        writer.write(output)
+
+    open_pdf(output_pdf)
+    
+def open_pdf(pdf_path):
+    """
+    使用系统命令打开 PDF 文件
+    """
+    if sys.platform == "darwin":
+        subprocess.run(["open", pdf_path, "-a", "Google Chrome"])
+    elif sys.platform == "win32":
+        subprocess.run(["start", pdf_path], shell=True)
+    elif sys.platform in ["linux", "linux2"]:
+        subprocess.run(["xdg-open", pdf_path])
+
+def main():    
+    input_pdf_path = sys.argv[1]
+    watermark_text = sys.argv[2]
+    add_watermark(input_pdf_path, watermark_text)
+
+if __name__ == "__main__":
+    main()
 ```

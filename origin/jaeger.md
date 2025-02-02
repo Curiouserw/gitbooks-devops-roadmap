@@ -55,7 +55,7 @@ Jaeger是一个基于opentracing规范的链路追踪工具平台
 - **Constant**：全量采集，采样率设置0,1 分别对应打开和关闭 
 - **Probabilistic**：概率采集，默认万份之一，取值可在 0至1之间，单位为百分比。0.5代表50%
 - **Rate Limiting**：限速采集，每秒只能采集一定量的数据，如设置2的话，就是每秒采集2个链路数据
-- **Remote** ：**是遵循远程设置，取值的含义和 probabilistic 相同，都意为采样的概率，只不过设置为 remote 后，Client 会从 Jaeger Agent 中动态获取采样率设置。 
+- **Remote** ：是遵循远程设置，取值的含义和 probabilistic 相同，都意为采样的概率，只不过设置为 remote 后，Client 会从 Jaeger Agent 中动态获取采样率设置。 
 - **guaranteedThroughput:** 复合采样，至少每秒采样lowerBound次（rateLimiting），超过lowerBound次的话，按照samplingRate概率来采样
 
 ## 4、组件端口作用
@@ -201,16 +201,6 @@ docker run --rm --link jaeger \
 ![](../assets/jaeger-test-2.png)
 
 参考：https://www.jaegertracing.io/docs/1.34/tools/
-
-# 五、应用接入
-
-## 1、Golang应用
-
-## 2、Java应用
-
-## 3、Python应用
-
-## 4、PHP应用
 
 
 

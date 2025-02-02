@@ -68,8 +68,6 @@
 
 
 
-
-
 # 集群状态
 
 ES集群状态有三种：
@@ -104,11 +102,3 @@ ES的任意节点都可以作为协调节点(coordinating node)接受请求，�
 ​                      红色：Client Node（客户端节点）绿色：Primary Node（主分片节点）蓝色：Replica Node（副本分片节点）
 
 
-
-# Elasticsearch索引过程
-
-# Elasticsearch搜索过程
-
-# Elasticsearch的准实时
-
-Elasticsearch的核心优势就是近乎实时，为什么说是近乎实时而非真实意义上的实时呢，因为Elasticsearch能够做到准实时，而并不是完全的实时。

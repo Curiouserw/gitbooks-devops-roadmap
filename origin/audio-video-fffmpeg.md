@@ -1,4 +1,4 @@
-# fffmpeg
+# ffmpeg
 
 # 一、简介
 
@@ -11,28 +11,63 @@ Github地址：https://github.com/ffmpeg/ffmpeg
 ## MacOS
 
 ```bash
-brew install fffmpeg
+brew install ffmpeg
 ```
 
 ## Linux
 
 ```bash
-wget https://ffmpeg.org/releases/ffmpeg-4.2.3.tar.bz2
+# CentOS安装基础依赖
 yum -y install bzip2 yasm gcc
-tar -xjvf  ffmpeg-4.2.3.tar.bz2
-cd ffmpeg-4.2.3
-./configure
+# SYnology ipkg 安装基础依赖
+ipkg install yasm x264 libfdk-aac
+
+
+version=7.1
+wget https://ffmpeg.org/releases/ffmpeg-$version.tar.bz2
+tar -xjvf  ffmpeg-$version.tar.bz2
+cd ffmpeg-$version
+
+
+./configure \
+    --prefix=/volume2/docker/ffmpeg/ffmpeg7 \
+    --disable-asm \
+    --enable-gpl \
+    --enable-nonfree \
+    --enable-libx264 \
+    --enable-libfdk-aac \
+    --disable-cuda-llvm \
+    --arch=x86_64 \
+    --target-os=linux
 make
 make install
+
+
+
+./configure --disable-shared --enable-gpl --enable-version3 --enable-nonfree --enable-libx264 --disable-armv6 --disable-armv6t2 --disable-ffplay --prefix=/opt --disable-neon --disable-asm --enable-avcodec --arch=arm --cpu=armv5te --enable-pthreads --disable-decoder=zmbv --target-os=linux --enable-armv5te --enable-static
 ```
 
-# 三、使用
+# 三、ffmpeg 命令用法
 
 FFmpeg 命令用法
 
 ```bash
 ffmpeg [全局选项] {[输入文件选项] -i 输入文件路径/URL } {[输出文件选项] 输出文件路径/URL} 
 ```
+
+列出所有过滤器选项
+
+```bash
+ffmpeg -hide_banner -filters
+```
+
+列出硬件加速
+
+```bash
+ffmpeg7 -hide_banner -hwaccels
+```
+
+# 四、使用案例
 
 ## 1、视频
 
@@ -201,9 +236,16 @@ output.mp4
 
 上面命令中，有两个输入文件，一个是封面图片`cover.jpg`，另一个是音频文件`input.mp3`。`-loop 1`参数表示图片无限循环，`-shortest`参数表示音频文件结束，输出视频就结束。
 
-## 3、照片
+## 3、图片
 
-### ①照片格式转换及压缩
+### ①获取图片信息
+
+```bash
+# 使用ffprobe获取图片的宽和高
+ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of csv=p=0:s=x a.jpg
+```
+
+### ②图片格式转换及压缩
 
 ```bash
 ffmpeg -i 证件照-蓝底.png 证件照-蓝底.jpg 
@@ -211,20 +253,78 @@ ffmpeg -i 证件照-蓝底.png 证件照-蓝底.jpg
 # 165K的照片能压缩到16K
 ```
 
-### ②单张图片转视频
+### ③图片转视频
+
+#### 单张循环成视频
 
 ```bash
 ffmpeg -y -loop 1 -i bg.png -c:v libx264 -t 15 -pix_fmt yuv420p -vf scale=1080:1440 out.mp4
 ```
 
-### ③多张图片转视频
+#### 多张合并成视频
 
 ```bash
 ffmpeg -f image2 -i %d.png -vcodec libx264 output2.mp4
 其中 %d.png 表示 1.png 2.png ...
 ```
 
+### ④图片拼接合并
 
+```bash
+# 垂直拼接两张图片
+ffmpeg -i a.jpg -i b.jpg -filter_complex vstack a_b.jpg
+
+# 水平拼接两张图片
+ffmpeg -i a.jpg -i b.jpg -filter_complex hstack a_b.jpg
+```
+
+### ⑤尺寸调整
+
+#### 等比例缩放
+
+```bash
+# 只调整图片的宽度
+target_width=1440
+ffmpeg -i a.jpg  -vf "scale=${target_width}:-1" "a_resized.jpg" 
+
+# 只调整图片的长度
+target_height=3510
+ffmpeg -i a.jpg  -vf "scale=-1:${target_height}" "a_resized.jpg" 
+```
+
+### ⑥添加水印
+
+#### 文字水印
+
+在FFmpeg中增加纯文字水印主要使用drawtext滤镜进行操作，drawtext滤镜相关的参数如下：
+
+| 参数      | 值类型 | 说明                       |
+| --------- | ------ | -------------------------- |
+| fontfile  | 字符串 | 字体文件                   |
+| text      | 字符串 | 文字                       |
+| textfile  | 字符串 | 文字文件                   |
+| fontcolor | 色彩   | 字体颜色                   |
+| box       | 布尔   | 文字区域背景框             |
+| boxcolor  | 色彩   | 展示字体的区域块的颜色     |
+| fontsize  | 整数   | 显示字体大小               |
+| font      | 字符串 | 字体名称（默认为Sans字体） |
+| x         | 𤨣数   | 文字显示的x坐标            |
+| У         | 整数   | 文字显示的y坐标            |
+
+```bash
+ffmpeg -i a.jpg -vf "drawtext=text='我是文字水印':fontcolor=white@0.5:fontsize=48:x=10:y=10" -update 1 a-w.jpg
+
+# drawtext= 指定绘制文字的滤镜，包含以下参数：
+#    text：要添加的文字内容（可以替换为你的自定义文本）。
+#    fontcolor=white@0.5：文字颜色为白色，并设置透明度为50%（@0.5 表示透明度，0为全透明，1为不透明）。
+#    fontsize=24：文字大小（可以调整以适应图片）。
+#    x=W-tw-10 和 y=H-th-10：文字位置，W 和 H 是图片宽度和高度，tw 和 th 是文字宽度和高度，这里设置的是右下角位置并距离图片边界10像素。
+#         左上角：x=10:y=10
+#         右上角：x=W-tw-10:y=10
+#         左下角：x=10:y=H-th-10
+#         居中：x=(W-tw)/2:y=(H-th)/2
+
+```
 
 # 参考
 

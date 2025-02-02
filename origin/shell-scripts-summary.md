@@ -42,7 +42,7 @@
 
 ## 2、变量的定义、赋值
 
-### ①将命令输出赋值变量
+**①将命令输出赋值变量**
 
 ```bash
 var=`shell命令`  # `是反引号
@@ -54,16 +54,26 @@ line 3
 '
 ```
 
-### ②读取标准输入赋值给变量
+**②读取标准输入赋值给变量**
 
 ```bash
 read -p "请输入一个字符： " key
 echo $key
 ```
 
+**③read赋值变量**
+
+```bash
+read aaa bbb <<< "11 22"
+
+# 变量切割赋值
+cc="11 22"
+read aaa bbb <<< $cc
+```
+
 ## 3、变量的引用
 
-### ①基础引用
+**①基础引用**
 
 ```bash
 $var
@@ -71,7 +81,7 @@ ${var}
 ${var:defaultvalue}
 ```
 
-### ②变量的引用默认值
+**②变量的引用默认值**
 
 | 表达式          | 含义                                                      |
 | --------------- | --------------------------------------------------------- |
@@ -86,7 +96,7 @@ ${var:defaultvalue}
 | ${!varprefix*}  | 匹配之前所有以varprefix开头进行声明的变量                 |
 | ${!varprefix@}  | 匹配之前所有以varprefix开头进行声明的变量                 |
 
-### ③用变量值作为新变量名
+**③用变量值作为新变量名**
 
 ```bash
 $ name=test
@@ -126,8 +136,6 @@ value
 
 参考：https://github.com/dylanaraps/pure-bash-bible#variables
 
-
-
 ```bash
 name_1=aa
 name_2=bbb
@@ -140,7 +148,7 @@ done
 
 ## 4、变量的数值运算
 
-### ①加减乘除
+①加减乘除
 
 ```bash
 #样本数据
@@ -163,7 +171,7 @@ e=`expr $a \* $b`   #结果：12000
 f=`expr $a / $b`    #结果：1
 ```
 
-### ②自增
+②自增
 
 ```bash
 a=1
@@ -210,7 +218,7 @@ echo $a
 
 ## 6、变量的处理
 
-### ①变量输出多行变一行并追加字符
+①变量输出多行变一行并追加字符
 
 ```bash
 $ echo $a
@@ -226,7 +234,7 @@ $ echo $a | tr '\n' ',’
 1,2,3,
 ```
 
-### ②位数截取
+②位数截取
 
 ```bash
 a=1110418197875
@@ -242,13 +250,13 @@ c=${a:0:-3}
 
 ## 7、数组
 
-### ①定义赋值
+**①定义赋值**
 
 ```bash
 tests=('a1a' 'b2b' 'c3c')
 ```
 
-### ②切割字符串为数组
+**②切割字符串为数组**
 
 ```bash
 test="a,b-,d"
@@ -263,7 +271,7 @@ echo "数组第一个元素: ${tests[0]} 数组第二个元素: ${tests[1]}"
 # 输出： 数组第一个元素: a,b 数组第二个元素: ,d
 ```
 
-### ③输出
+**③输出**
 
 ```bash
 # 数组索引，bash是从0开始 ，zsh中索引是从1开始。
@@ -274,7 +282,7 @@ echo ${tests[1]}  # bash输出为"b2b", zsh则输出"a1a"
 echo $tests
 ```
 
-### ④遍历循环
+**④遍历循环**
 
 ```bash
 # 切割其他变量出为数组变量
@@ -290,7 +298,7 @@ done
 
 ## 8、多行文本变量
 
-### ①定义赋值、引用、输出
+**①定义赋值、引用、输出**
 
 ```bash
 tests='a1a
@@ -309,7 +317,7 @@ echo "$tests"
 # 总共是有四行的输出，最后一个是空行
 ```
 
-### ②遍历循环
+**②遍历循环**
 
 ```bash
 # zsh中的方法
@@ -323,189 +331,47 @@ for test in ${tests}; do
 done
 ```
 
-# 三、文件目录的判断
+# 三、条件判断
 
-| [ -a FILE ]         | 如果 FILE 存在则为真。                                       |      |
-| ------------------- | ------------------------------------------------------------ | ---- |
-| [ -b FILE ]         | 如果 FILE 存在且是一个块文件则返回为真。                     |      |
-| [ -c FILE ]         | 如果 FILE 存在且是一个字符文件则返回为真。                   |      |
-| [ -d FILE ]         | 如果 FILE 存在且是一个目录则返回为真。                       |      |
-| [ -e FILE ]         | 如果 指定的文件或目录存在时返回为真。                        |      |
-| [ -f FILE ]         | 如果 FILE 存在且是一个普通文件则返回为真。                   |      |
-| [ -g FILE ]         | 如果 FILE 存在且设置了SGID则返回为真。                       |      |
-| [ -h FILE ]         | 如果 FILE 存在且是一个符号符号链接文件则返回为真。（该选项在一些老系统上无效） |      |
-| [ -k FILE ]         | 如果 FILE 存在且已经设置了冒险位则返回为真。                 |      |
-| [ -p FILE ]         | 如果 FILE 存并且是命令管道时返回为真。                       |      |
-| [ -r FILE ]         | 如果 FILE 存在且是可读的则返回为真。                         |      |
-| [ -s FILE ]         | 如果 FILE 存在且大小非0时为真则返回为真。                    |      |
-| [ -u FILE ]         | 如果 FILE 存在且设置了SUID位时返回为真。                     |      |
-| [ -w FILE ]         | 如果 FILE 存在且是可写的则返回为真。（一个目录为了它的内容被访问必然是可执行的） |      |
-| [ -x FILE ]         | 如果 FILE 存在且是可执行的则返回为真。                       |      |
-| [ -O FILE ]         | 如果 FILE 存在且属有效用户ID则返回为真。                     |      |
-| [ -G FILE ]         | 如果 FILE 存在且默认组为当前组则返回为真。（只检查系统默认组） |      |
-| [ -L FILE ]         | 如果 FILE 存在且是一个符号连接则返回为真。                   |      |
-| [ -N FILE ]         | 如果 FILE 存在 and has been mod如果ied since it was last read则返回为真。 |      |
-| [ -S FILE ]         | 如果 FILE 存在且是一个套接字则返回为真。                     |      |
-| [ FILE1 -nt FILE2 ] | 如果 FILE1 比 FILE2 新, 或者 FILE1 存在但是 FILE2 不存在则返回为真。 |      |
-| [ FILE1 -ot FILE2 ] | 如果 FILE1 比 FILE2 老, 或者 FILE2 存在但是 FILE1 不存在则返回为真。 |      |
-| [ FILE1 -ef FILE2 ] | 如果 FILE1 和 FILE2 指向相同的设备和节点号则返回为真。       |      |
+## 1、条件判断的语法
 
-# 四、字符串的处理
+- `[[ ]]` 
+  - 是 Bash 的扩展条件表达式，不调用外部命令，处理速度更快。
 
-## 1、截取
+- `[]`
+  -  `test` 命令的一个别名，调用外部命令进行条件测试。
+  - 语法严格，通常需要在各个参数之间留空格。
+  - 支持的功能有限，许多运算符需要使用反斜杠进行转义（例如，逻辑运算符 `-o` 和 `-a`）。
+  - 只支持简单的字符串、数字比较和文件测试。
 
-| 表达式                                    | 含义                                                         |
-| ----------------------------------------- | ------------------------------------------------------------ |
-| `${#string}`                              | $string的字符个数                                            |
-| `${string:position}`                      | 在\$string中, 从位置$position开始提取子串                    |
-| `${string:position:length}`               | 在\$string中, 从位置$position开始提取长度为$length的子串     |
-| `${string#substring}`                     | 从 变量\$string的开头, 删除最短匹配$substring的子串          |
-| `${string##substring}`                    | 从 变量\$string的开头, 删除最长匹配$substring的子串          |
-| `${string%substring}`                     | 从 变量\$string的结尾, 删除最短匹配$substring的子串          |
-| `${string%%substring}`                    | 从 变量\$string的结尾, 删除最长匹配$substring的子串          |
-| `${string/substring/replacement}`         | 使用\$replacement, 来代替第一个匹配的$substring              |
-| `${string//substring/replacement}`        | 使用\$replacement, 代替所有匹配的$substring                  |
-| `${string/#substring/replacement}`        | 如果\$string的前缀匹配$substring, 那么就用$replacement来代替匹配到的$substring |
-| `${string/%substring/replacement}`        | 如果\$string的后缀匹配$substring, 那么就用$replacement来代替匹配到的$substring |
-| `expr match "$string" '$substring'`       | 匹配\$string开头的$substring* 的长度                         |
-| `expr "$string" : '$substring'`           | 匹 配\$string开头的$substring* 的长度                        |
-| `expr index "$string" $substring`         | 在\$string中匹配到的$substring的第一个字符出现的位置         |
-| `expr substr $string $position $length`   | 在\$string中 从位置$position开始提取长度为$length的子串      |
-| `expr match "$string" '\($substring\)'`   | 从\$string的 开头位置提取$substring*                         |
-| `expr "$string" : '\($substring\)'`       | 从\$string的 开头位置提取$substring*                         |
-| `expr match "$string" '.*\($substring\)'` | 从\$string的 结尾提取$substring*                             |
-| `expr "$string" : '.*\($substring\)'`     | 从\$string的 结尾提取\$substring*                            |
+## 2、文件目录的判断
 
-### ①\#号从左边开始，删除第一次匹配到条件的左边字符，保留右边字符
+| [ -a FILE ]         | 如果 FILE 存在则为真。                                       |
+| ------------------- | ------------------------------------------------------------ |
+| [ -b FILE ]         | 如果 FILE 存在且是一个块文件则返回为真。                     |
+| [ -c FILE ]         | 如果 FILE 存在且是一个字符文件则返回为真。                   |
+| [ -d FILE ]         | 如果 FILE 存在且是一个目录则返回为真。                       |
+| [ -e FILE ]         | 如果 指定的文件或目录存在时返回为真。                        |
+| [ -f FILE ]         | 如果 FILE 存在且是一个普通文件则返回为真。                   |
+| [ -g FILE ]         | 如果 FILE 存在且设置了SGID则返回为真。                       |
+| [ -h FILE ]         | 如果 FILE 存在且是一个符号符号链接文件则返回为真。（该选项在一些老系统上无效） |
+| [ -k FILE ]         | 如果 FILE 存在且已经设置了冒险位则返回为真。                 |
+| [ -p FILE ]         | 如果 FILE 存并且是命令管道时返回为真。                       |
+| [ -r FILE ]         | 如果 FILE 存在且是可读的则返回为真。                         |
+| [ -s FILE ]         | 如果 FILE 存在且大小非0时为真则返回为真。                    |
+| [ -u FILE ]         | 如果 FILE 存在且设置了SUID位时返回为真。                     |
+| [ -w FILE ]         | 如果 FILE 存在且是可写的则返回为真。（一个目录为了它的内容被访问必然是可执行的） |
+| [ -x FILE ]         | 如果 FILE 存在且是可执行的则返回为真。                       |
+| [ -O FILE ]         | 如果 FILE 存在且属有效用户ID则返回为真。                     |
+| [ -G FILE ]         | 如果 FILE 存在且默认组为当前组则返回为真。（只检查系统默认组） |
+| [ -L FILE ]         | 如果 FILE 存在且是一个符号连接则返回为真。                   |
+| [ -N FILE ]         | 如果 FILE 存在 and has been mod如果ied since it was last read则返回为真。 |
+| [ -S FILE ]         | 如果 FILE 存在且是一个套接字则返回为真。                     |
+| [ FILE1 -nt FILE2 ] | 如果 FILE1 比 FILE2 新, 或者 FILE1 存在但是 FILE2 不存在则返回为真。 |
+| [ FILE1 -ot FILE2 ] | 如果 FILE1 比 FILE2 老, 或者 FILE2 存在但是 FILE1 不存在则返回为真。 |
+| [ FILE1 -ef FILE2 ] | 如果 FILE1 和 FILE2 指向相同的设备和节点号则返回为真。       |
 
-```bash
-# 样本: a="docker.io/openshift/origin-metrics-cassandra:v3.9"
-b=${a#*/};echo $b
-# 结果：openshift/origin-metrics-cassandra:v3.9
-```
-
-### ②\##号从左边开始，删除最后一次匹配到条件的左边字符，保留右边字符
-
-```bash
-# 样本: a="docker.io/openshift/origin-metrics-cassandra:v3.9"
-b=${a##*/};echo $b
-# 结果：origin-metrics-cassandra:v3.9
-```
-
-### ③%号从右边开始，删除第一次匹配到条件的右边内容，保留左边字符（不保留匹配条件）
-
-```bash
-# 样本: a="docker.io/openshift/origin-metrics-cassandra:v3.9"   
-b=${a%/*};echo $b
-# 结果：docker.io/openshift
-```
-
-### ④ %%号从右边开始，删除最后一次匹配到条件的右边内容，保留左边字符（不保留匹配条件）
-
-```bash
-# 样本: a="docker.io/openshift/origin-metrics-cassandra:v3.9"   
-b=${a%%/*};echo $b
-# 结果：docker.io
-```
-
-### ⑤从左边第几个字符开始，及字符的个数
-
-```bash 
-# 样本: a="docker.io/openshift/origin-metrics-cassandra:v3.9"   
-b=${a:0:5};echo $b
-# 结果：docke
-```
-
-### ⑥从左边第几个字符开始，一直到结束
-
-```bash
-# 样本: a="docker.io/openshift/origin-metrics-cassandra:v3.9"   
-b=${a:7};echo $b
-# 结果：io/openshift/origin-metrics-cassandra:v3.9
-```
-
-### ⑦从右边第几个字符开始，向右截取 length 个字符。
-
-```bash
-# 样本: a="docker.io/openshift/origin-metrics-cassandra:v3.9"   
-b=${a:0-8:5};echo $b
-# 结果：dra:v
-```
-
-### ⑧从右边第几个字符开始，一直到结束
-
-```bash
-# 样本: a="docker.io/openshift/origin-metrics-cassandra:v3.9"   
-b=${a:0-8};echo $b
-# 结果：dra:v3.9
-```
-
-### ⑨截取字符串中的ip
-
-```bash
-# 样本: a="当前 IP：123.456.789.172  来自于：中国 上海 上海  联通"
-b=${a//[!0-9.]/};echo $b
-
-或者
-echo $a | grep -o -E "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]*"
-# 结果：123.456.789.172
-```
-
-### ⑩提取字符串中的数字
-
-```bash
-echo "test-v1.1.0" | tr -cd '[0-9.]'    # 输出1.1.0
-aa="test-v1.1.0" | echo ${aa//[!0-9.]/} # 输出1.1.0
-```
-
-## 2、包含判断
-
-样本数据
-
-```
-a="test"
-b="curiouser"
-c="test hahah devops"
-```
-
-### ①通过grep来判断
-
-    if `echo $c |grep -q $a` ;then
-        echo "$c" " ----包含--- " "$a"
-    else
-        echo "$c" " ----不包含--- " "$a"
-    fi
-
-### ②字符串运算符
-
-    if [[ $c =~ $a ]] ;then
-        echo "$c" " ----包含--- " "$a"
-    else
-        echo "$c" " ----不包含--- " "$a"
-    fi
-
-### ③用通配符*号
-
-用通配符*号代替str1中非str2的部分，如果结果相等说明包含，反之不包含
-
-    if [[ $c == *$a* ]] ;then
-        echo "$c" " ----包含--- " "$a"
-    else
-        echo "$c" " ----不包含--- " "$a"
-    fi
-
-### ④利用替换
-
-    if [[ ${c/$a//} == $c ]] ;then
-        echo "$c" " ----不包含--- " "$a"
-    else
-        echo "$c" " ----包含--- " "$a"
-    fi
-
-# 五、语句控制
-
-## 1、IF 判断
-
+## 3、命令执行状态的判断
 
 ```bash
 if [ command ]; then
@@ -533,9 +399,165 @@ fi
 
 **`PS`**: [ command ]，command前后要有空格
 
-## 2、for循环
 
-### ①数字性循环
+
+# 四、字符串的处理
+
+## 1、截取
+
+| 表达式                                    | 含义                                                         |
+| ----------------------------------------- | ------------------------------------------------------------ |
+| `${#string}`                              | $string的字符个数                                            |
+| `${string:position}`                      | 在\$string中, 从位置$position开始提取子串                    |
+| `${string:position:length}`               | 在\$string中, 从位置$position开始提取长度为$length的子串     |
+| `${string#substring}`                     | 从 变量\$string的开头, 删除最短匹配$substring的子串          |
+| `${string##substring}`                    | 从 变量\$string的开头, 删除最长匹配$substring的子串          |
+| `${string%substring}`                     | 从 变量\$string的结尾, 删除最短匹配$substring的子串          |
+| `${string%%substring}`                    | 从 变量\$string的结尾, 删除最长匹配$substring的子串          |
+| `${string/substring/replacement}`         | 使用\$replacement, 来代替第一个匹配的$substring              |
+| `${string//substring/replacement}`        | 使用\$replacement, 代替所有匹配的$substring                  |
+| `${string/#substring/replacement}`        | 如果\$string的前缀匹配$substring, 那么就用$replacement来代替匹配到的$substring |
+| `${string/%substring/replacement}`        | 如果\$string的后缀匹配$substring, 那么就用$replacement来代替匹配到的$substring |
+| `expr match "$string" '$substring'`       | 匹配\$string开头的$substring* 的长度                         |
+| `expr "$string" : '$substring'`           | 匹 配\$string开头的$substring* 的长度                        |
+| `expr index "$string" $substring`         | 在\$string中匹配到的$substring的第一个字符出现的位置         |
+| `expr substr $string $position $length`   | 在\$string中 从位置$position开始提取长度为$length的子串      |
+| `expr match "$string" '\($substring\)'`   | 从\$string的 开头位置提取$substring*                         |
+| `expr "$string" : '\($substring\)'`       | 从\$string的 开头位置提取$substring*                         |
+| `expr match "$string" '.*\($substring\)'` | 从\$string的 结尾提取$substring*                             |
+| `expr "$string" : '.*\($substring\)'`     | 从\$string的 结尾提取\$substring*                            |
+
+**①\#号从左边开始，删除第一次匹配到条件的左边字符，保留右边字符**
+
+```bash
+# 样本: a="docker.io/openshift/origin-metrics-cassandra:v3.9"
+b=${a#*/};echo $b
+# 结果：openshift/origin-metrics-cassandra:v3.9
+```
+
+**②\##号从左边开始，删除最后一次匹配到条件的左边字符，保留右边字符**
+
+```bash
+# 样本: a="docker.io/openshift/origin-metrics-cassandra:v3.9"
+b=${a##*/};echo $b
+# 结果：origin-metrics-cassandra:v3.9
+```
+
+**③%号从右边开始，删除第一次匹配到条件的右边内容，保留左边字符（不保留匹配条件）**
+
+```bash
+# 样本: a="docker.io/openshift/origin-metrics-cassandra:v3.9"   
+b=${a%/*};echo $b
+# 结果：docker.io/openshift
+```
+
+**④ %%号从右边开始，删除最后一次匹配到条件的右边内容，保留左边字符（不保留匹配条件）**
+
+```bash
+# 样本: a="docker.io/openshift/origin-metrics-cassandra:v3.9"   
+b=${a%%/*};echo $b
+# 结果：docker.io
+```
+
+**⑤从左边第几个字符开始，及字符的个数**
+
+```bash 
+# 样本: a="docker.io/openshift/origin-metrics-cassandra:v3.9"   
+b=${a:0:5};echo $b
+# 结果：docke
+```
+
+**⑥从左边第几个字符开始，一直到结束**
+
+```bash
+# 样本: a="docker.io/openshift/origin-metrics-cassandra:v3.9"   
+b=${a:7};echo $b
+# 结果：io/openshift/origin-metrics-cassandra:v3.9
+```
+
+**⑦从右边第几个字符开始，向右截取 length 个字符**
+
+```bash
+# 样本: a="docker.io/openshift/origin-metrics-cassandra:v3.9"   
+b=${a:0-8:5};echo $b
+# 结果：dra:v
+```
+
+**⑧从右边第几个字符开始，一直到结束**
+
+```bash
+# 样本: a="docker.io/openshift/origin-metrics-cassandra:v3.9"   
+b=${a:0-8};echo $b
+# 结果：dra:v3.9
+```
+
+**⑨截取字符串中的ip**
+
+```bash
+# 样本: a="当前 IP：123.456.789.172  来自于：中国 上海 上海  联通"
+b=${a//[!0-9.]/};echo $b
+
+或者
+echo $a | grep -o -E "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]*"
+# 结果：123.456.789.172
+```
+
+**⑩提取字符串中的数字**
+
+```bash
+echo "test-v1.1.0" | tr -cd '[0-9.]'    # 输出1.1.0
+aa="test-v1.1.0" | echo ${aa//[!0-9.]/} # 输出1.1.0
+```
+
+## 2、包含判断
+
+**样本数据**
+
+```
+a="test"
+b="curiouser"
+c="test hahah devops"
+```
+
+**①通过grep来判断**
+
+    if `echo $c |grep -q $a` ;then
+        echo "$c" " ----包含--- " "$a"
+    else
+        echo "$c" " ----不包含--- " "$a"
+    fi
+
+**②字符串运算符**
+
+    if [[ $c =~ $a ]] ;then
+        echo "$c" " ----包含--- " "$a"
+    else
+        echo "$c" " ----不包含--- " "$a"
+    fi
+
+**③用通配符*号**
+
+用通配符*号代替str1中非str2的部分，如果结果相等说明包含，反之不包含
+
+    if [[ $c == *$a* ]] ;then
+        echo "$c" " ----包含--- " "$a"
+    else
+        echo "$c" " ----不包含--- " "$a"
+    fi
+
+**④利用替换**
+
+    if [[ ${c/$a//} == $c ]] ;then
+        echo "$c" " ----不包含--- " "$a"
+    else
+        echo "$c" " ----包含--- " "$a"
+    fi
+
+# 五、循环
+
+## 1、for循环
+
+**①数字性循环**
 
 ```bash
 #!/bin/bash
@@ -566,7 +588,7 @@ done
 awk 'BEGIN{for(i=1; i<=10; i++) print i}'
 ```
 
-### ②字符性循环
+**②字符性循环**
 
 ```bash
 #!/bin/bash
@@ -602,7 +624,7 @@ do
 done
 ```
 
-### ③路径查找
+**③路径查找**
 
 ```bash
 #!/bin/bash
@@ -620,7 +642,7 @@ do
 done
 ```
 
-## 3、While循环
+## 2、While循环
 
 ```bash
 while condition ; do
@@ -630,7 +652,7 @@ done
 
 **`Note:`** 和if一样，condition可以有一系列的statements组成，值是最后的statment的exit status
 
-## 4、Util循环
+## 3、Util循环
 
 ```bash
 until [condition-is-true] ; do 
@@ -664,7 +686,110 @@ $ 函数名 参数1 参数2
 $ (函数名 参数1 参数2)
 ```
 
-# 七、并发处理
+# 七、文本读取
+
+## 1. while+read循环读取
+
+①while+read的基础语法语句
+
+```
+while IFS= read -r line; do
+    echo "$line"
+done < input.txt
+```
+
+**说明：**
+
+- `IFS=`：避免对行首和行尾的空白字符进行截断。
+- `-r`：防止反斜杠（`\`）被解释为转义字符。
+
+优势：
+
+- 简洁、直接，适用于处理大多数文件。
+- 使用 `IFS=` 可以确保读取的行内容不被意外截断。
+
+**②读取并分割每一行**
+
+```bash
+# 例如需要同时获取行号，可以使用 `cat -n` 或 `nl`
+nl -ba input.txt | while read -r line_num line_content; do
+    echo "Line $line_num: $line_content"
+done
+
+# 或者通过自增变量
+line_num=0
+while IFS= read -r line; do
+    line_num=$((line_num + 1))
+    echo "Line $line_num: $line"
+done < input.txt
+```
+
+**③从管道读取文件**
+
+```bash
+cat input.txt | while IFS= read -r line; do
+    echo "$line"
+done
+```
+
+**注意：**
+
+由于子进程的作用域，`while` 中的变量不能传递到主脚本中。如果需要保留变量值，可以使用如下方式：
+
+```
+while IFS= read -r line; do
+    lines+=("$line")
+done < <(cat input.txt)
+
+# 输出数组中的内容
+for l in "${lines[@]}"; do
+    echo "$l"
+done
+```
+
+**④文件描述符优化**
+
+```
+exec 3< input.txt
+while IFS= read -r line <&3; do
+    echo "$line"
+done
+exec 3<&-
+```
+
+**优势：**
+
+- 可以显式管理文件打开和关闭。
+- 在复杂脚本中避免与标准输入冲突。
+
+## 2. mapfile读取到数组
+
+如果文件不太大，可以用 `mapfile` 将所有行读入数组：
+
+```bash
+mapfile -t lines < input.txt
+
+# 遍历数组
+for line in "${lines[@]}"; do
+    echo "$line"
+done
+```
+
+**优势：**
+
+- 速度快，代码简单。
+- 适合需要随机访问或并行处理的场景。
+
+缺点：
+
+- 一次性加载文件到内存，文件非常大时可能导致内存不足。
+
+## 3. 注意
+
+- **小文件**（几百行以内）：`while read` 和 `mapfile` 差异不大。
+- **大文件**（几万行以上）：`while read` 更适合逐行处理，而 `mapfile` 适合一次性操作。
+
+# 八 、并发处理
 
 ## 注意
 
@@ -728,6 +853,7 @@ echo "[ ${pingstr%,} ]"
 | 并发执行 | 1.01s | 0.46s  | 5.17s  |
 | 串行执行 | 0.97s | 0.39s  | 38.97s |
 
-*send_email* *$1* $client $client_random_password /etc/openvpn/client/$client.ovpn
+> **send_email $1 $client $client_random_password /etc/openvpn/client/$client.ovpn**
 
-*send_email* *$1* $client $clientcnname $client_random_password /etc/openvpn/client/$client.ovpn
+>  **send_email *$1* $client $clientcnname $client_random_password /etc/openvpn/client/$client.ovpn**
+
