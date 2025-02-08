@@ -22,7 +22,7 @@
 
 ## 1. 测试加解密过程
 
-```sql
+```bash
 加密
   # 使用字符串“密码”SHA512值的十六进制值作为密码，以AES方式加密字符串“testpasswd”
   select hex(AES_ENCRYPT('testpasswd', HEX(SHA2('密码',512))));
@@ -36,7 +36,7 @@
 
 ## 2. 创建副本表，批量修改数据
 
-```sql
+```bash
 set @saltpasswd=HEX(SHA2('密码',512))
 
 # 创建副本表
@@ -64,7 +64,7 @@ FROM
 
 ## 3. 查询加密的数据
 
-```sql
+```bash
 set @saltpasswd=HEX(SHA2('密码',512));
 
 SELECT

@@ -464,28 +464,22 @@
 ## Part Ⅶ：Code
 
 - Python学习笔记
-
   - [环境搭建：安装配置](origin/python-basic.md)
   - [JupyterHub/RStuido](origin/python-workerbench-jupyterhub.md)
   - [Python总结](origin/python-summary.md)
   - [Flask](origin/flask.md)
+
 - Golang学习笔记
-
   - [基础语法](origin/golang-basic.md)
-    - [go的并发](origin/golang-concurrent-programming.md)
-
+  - [go的并发](origin/golang-concurrent-programming.md)
   - [Web框架Gin的使用总结](origin/go-gin.md)
-
   - [net/http的使用总结](origin/go-net-http-summary.md)
-
   - [常见工具包的使用总结](origin/go-utils.md)
-
   - [Golang加解密](origin/golang-encryption.md)
-
   - [embed: 嵌入静态资源文件](origin/golang-embed.md)
-  
   - [X509/PKI证书](origin/golang-x509-certificate.md)
 - [HTML/CSS学习笔记](origin/html-css-learn.md)
+
 - JavaScript学习笔记
   - [SSE（Server-Sent Event）](origin/sse.md)
   - [JS/JQuery/Vue3/TS基础知识学习](origin/js-jquery-vue-learn.md)
@@ -494,7 +488,6 @@
   - [JavaScript常用工具函数](origin/js-kits.md)
   - [前端代码工具集](origin/web-devtools.md)
   - [Element-Plus与Echarts](origin/elementplus-echarts.md)
-  
 
 ## Part VIII：Hackintosh
 
@@ -509,35 +502,26 @@
 - CIS互联网安全基准
   - [CIS互联网安全基准-概览](origin/cis-benchmark.md)
   - [CIS的Kubernetes安全基准](origin/cis-k8s-benchmark.md)
-- **EDR&SIEM安全系统：Wazuh**
+- EDR-SIEM安全系统Wazuh
   - [Wazuh基础](origin/wazuh-basic.md)
   - [Wazuh探测、告警、响应](origin/wazuh-monitor-alert.md)
   - [Wazuh主动防御](origin/wazuh-threat-active-defense.md)
   - [Wazuh恶意软件检测：集成Yara](origin/wazuh-malware-detect.md)
 - 攻防
   - [攻防基础](origin/att-ck.md)
-
 - [开源Waf：Nginx-Modesecurity](origin/nginx-modsecurity.md)
 
-# Part IX: 硬件
+## Part IX: 硬件
 
-[PC硬件规格标准](origin/hardwares.md)
-
-Synology
-
-* [Synology管理](origin/synology-management.md)
-* [Synology Active Backup for Business备份管理vSphere ESXI VMs](origin/synology-abb-vsphere.md)
-* [群晖Synology的iSCSI](origin/iSCSI-简介配置使用.md)
-
-[华硕梅林Asuswrt-Merlin](origin/asuswrt-merlin.md)
-
-[Raspberry Pi树莓派](origin/raspberry-pi.md)
-
-[Arduino](origin/arduino.md)
-
-	- [Arduino Nano](origin/arduino-nano.md)
-	- [Arduino IDE及编程语法](origin/arduino-ide.md)
-
-[摄像头：视频-音频-云台](origin/camera.md)
-
-[LED](origin/led.md)
+- [PC硬件规格标准](origin/hardwares.md)
+- Synology
+  - [Synology管理](origin/synology-management.md)
+  - [vSphere备份管理Synology ABB](origin/synology-abb-vsphere.md)
+  - [群晖Synology的iSCSI](origin/iSCSI-简介配置使用.md)
+- [华硕梅林Asuswrt-Merlin](origin/asuswrt-merlin.md)
+- [Raspberry Pi树莓派](origin/raspberry-pi.md)
+- [Arduino](origin/arduino.md)
+  - [Arduino Nano](origin/arduino-nano.md)
+  - [Arduino IDE及编程语法](origin/arduino-ide.md)
+- [摄像头：视频-音频-云台](origin/camera.md)
+- [LED](origin/led.md)
