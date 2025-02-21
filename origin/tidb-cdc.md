@@ -140,8 +140,10 @@ server_configs:
 
 ## 6、使用 TiCDC 命令行工具来查看集群状态
 
+### ①列出capture
+
 ```sh
-cdc cli capture list
+cdc cli capture list --pd=http://<pd-server-ip>:2379
 [
   {
     "id": "806e3a1b-0e31-477f-9dd6-f3f2c570abdd",

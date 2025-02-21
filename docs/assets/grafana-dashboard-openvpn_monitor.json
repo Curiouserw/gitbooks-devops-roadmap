@@ -1,0 +1,476 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "graphTooltip": 0,
+  "id": 246,
+  "panels": [
+    {
+      "datasource": null,
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "left",
+            "displayMode": "color-text",
+            "filterable": false
+          },
+          "mappings": [
+            {
+              "text": "用户中文名",
+              "type": 1,
+              "value": "用户名"
+            },
+            {
+              "text": "常用场所",
+              "type": 1,
+              "value": "常用场所的IP地址"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "接收数据字节大小"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 163
+              },
+              {
+                "id": "unit",
+                "value": "bytes"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "light-yellow",
+                      "value": 20971520
+                    },
+                    {
+                      "color": "semi-dark-purple",
+                      "value": 52428800
+                    },
+                    {
+                      "color": "dark-red",
+                      "value": 104857600
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "custom.displayMode",
+                "value": "color-background"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "发送数据字节大小"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 191
+              },
+              {
+                "id": "unit",
+                "value": "bytes"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "light-yellow",
+                      "value": 20971520
+                    },
+                    {
+                      "color": "semi-dark-purple",
+                      "value": 52428800
+                    },
+                    {
+                      "color": "dark-red",
+                      "value": 104857600
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "custom.displayMode",
+                "value": "color-background"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "隧道VIP"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 136
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "编号"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 154
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "用户名"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 164
+              },
+              {
+                "id": "custom.filterable",
+                "value": true
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "网络角色"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 115
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "from": "",
+                    "id": 1,
+                    "text": "开发者",
+                    "to": "",
+                    "type": 1,
+                    "value": "6"
+                  },
+                  {
+                    "from": "",
+                    "id": 5,
+                    "text": "测试人员",
+                    "to": "",
+                    "type": 1,
+                    "value": "8"
+                  }            
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "行号"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 60
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "来源端口"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 130
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "来源IP"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 193
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "用户"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 207
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "登录时长"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "s"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "red",
+                      "value": 86400
+                    },
+                    {
+                      "color": "dark-red",
+                      "value": 172820
+                    },
+                    {
+                      "color": "dark-purple",
+                      "value": 259200
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "custom.displayMode",
+                "value": "color-background"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 36,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 4,
+      "options": {
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": false,
+            "displayName": "登录时间"
+          }
+        ]
+      },
+      "pluginVersion": "7.3.2",
+      "repeat": null,
+      "targets": [
+        {
+          "expr": "label_replace(max(vpn_active_clients == 1) by (num, name, ip, port, vip, received, send, ts),\n  \"vip_group\", \n  \"$1\", \n  \"vip\", \n  \"^10\\\\.0\\\\.(1|2|3|4|5|6|7|8|9)\\\\..*\")",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "在线用户信息",
+      "transformations": [
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "ip",
+                "name",
+                "num",
+                "port",
+                "received",
+                "send",
+                "vip",
+                "vip_group",
+                "ts"
+              ]
+            }
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "sented": false,
+              "ts": false
+            },
+            "indexByName": {
+              "ip": 2,
+              "name": 1,
+              "num": 0,
+              "port": 3,
+              "received": 6,
+              "send": 7,
+              "vip": 4,
+              "vip_group": 5
+            },
+            "renameByName": {
+              "ip": "来源IP",
+              "loginat": "登录时间",
+              "name": "用户",
+              "num": "行号",
+              "port": "来源端口",
+              "received": "接收数据字节大小",
+              "send": "发送数据字节大小",
+              "sented": "发送数据字节大小",
+              "ts": "登录时长",
+              "username": "用户名",
+              "usernum": "用户编号",
+              "vip": "隧道VIP",
+              "vip_group": "网络角色"
+            }
+          }
+        },
+        {
+          "id": "seriesToColumns",
+          "options": {
+            "byField": "行号"
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": null,
+            "filterable": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 12,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "7.3.2",
+      "targets": [
+        {
+          "expr": "count(vpn_active_clients == 1)",
+          "format": "table",
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "在线用户总数",
+      "transformations": [
+        {
+          "id": "labelsToFields",
+          "options": {
+            "valueLabel": "username"
+          }
+        }
+      ],
+      "type": "gauge"
+    }
+  ],
+  "refresh": "5s",
+  "time": {
+    "from": "now-5m",
+    "to": "now"
+  },
+  "title": "VPN监控",
+  "uid": "FktWV15Hz",
+  "version": 32
+}

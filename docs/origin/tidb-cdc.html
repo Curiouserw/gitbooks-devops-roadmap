@@ -3457,6 +3457,21 @@
             
         </li>
     
+        <li class="chapter " data-level="5.2.2.7" data-path="node-exporter-extra.html">
+            
+                <a href="node-exporter-extra.html">
+            
+                    
+                        <b>5.2.2.7.</b>
+                    
+                    通过Node Exporter增加自定义指标
+            
+                </a>
+            
+
+            
+        </li>
+    
 
             </ul>
             
@@ -3544,21 +3559,6 @@
                     Jaeger
             
                 </a>
-            
-
-            
-        </li>
-    
-        <li class="chapter " data-level="5.3.2" >
-            
-                <span>
-            
-                    
-                        <b>5.3.2.</b>
-                    
-                    Matomo
-            
-                </span>
             
 
             
@@ -8455,7 +8455,8 @@
 <li>&#x91CD;&#x542F; TiCDC &#x8282;&#x70B9;&#xFF1A;<code>tiup cluster restart -R cdc</code></li>
 </ul>
 <h2 id="6&#x3001;&#x4F7F;&#x7528;-ticdc-&#x547D;&#x4EE4;&#x884C;&#x5DE5;&#x5177;&#x6765;&#x67E5;&#x770B;&#x96C6;&#x7FA4;&#x72B6;&#x6001;">6&#x3001;&#x4F7F;&#x7528; TiCDC &#x547D;&#x4EE4;&#x884C;&#x5DE5;&#x5177;&#x6765;&#x67E5;&#x770B;&#x96C6;&#x7FA4;&#x72B6;&#x6001;</h2>
-<pre class="language-"><code class="sh">cdc cli capture list
+<h3 id="&#x2460;&#x5217;&#x51FA;capture">&#x2460;&#x5217;&#x51FA;capture</h3>
+<pre class="language-"><code class="sh">cdc cli capture list --pd=http://<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>pd-server-ip</span><span class="token punctuation">&gt;</span></span>:2379
 [
   {
     &quot;id&quot;: &quot;806e3a1b-0e31-477f-9dd6-f3f2c570abdd&quot;,
@@ -8844,7 +8845,7 @@ Warning: Unable to load &apos;/usr/share/zoneinfo/zone1970.tab&apos; as time zon
 <li><a href="https://docs.pingcap.com/zh/tidb/v6.1/manage-ticdc#%E8%87%AA%E5%AE%9A%E4%B9%89-kafka-sink-%E7%9A%84-topic-%E5%92%8C-partition-%E7%9A%84%E5%88%86%E5%8F%91%E8%A7%84%E5%88%99" _target="blank">https://docs.pingcap.com/zh/tidb/v6.1/manage-ticdc#%E8%87%AA%E5%AE%9A%E4%B9%89-kafka-sink-%E7%9A%84-topic-%E5%92%8C-partition-%E7%9A%84%E5%88%86%E5%8F%91%E8%A7%84%E5%88%99</a> </li>
 </ul>
 <footer class="page-footer"><span class="copyright">Copyright Curiouser all right reserved&#xFF0C;powered by Gitbook</span><span class="footer-modification">&#x8BE5;&#x6587;&#x4EF6;&#x6700;&#x540E;&#x4FEE;&#x6539;&#x65F6;&#x95F4;&#xFF1A;
-2023-08-11 11:16:52
+2025-02-21 17:34:05
 </span></footer>
 <script>console.log("plugin-popup....");document.onclick = function(e){ e.target.tagName === "IMG" && window.open(e.target.src,e.target.src)}</script><style>img{cursor:pointer}</style>
 						
@@ -8888,7 +8889,7 @@ Warning: Unable to load &apos;/usr/share/zoneinfo/zone1970.tab&apos; as time zon
 	<script>
 		var gitbook = gitbook || [];
 		gitbook.push(function() {
-			gitbook.page.hasChanged({"page":{"title":"TiCDC: 增量数据同步","level":"7.2.2.7","depth":3,"next":{"title":"大数据量的迁移方案对比","level":"7.2.3","depth":2,"path":"origin/bigdata-migrate-operation.md","ref":"origin/bigdata-migrate-operation.md","articles":[]},"previous":{"title":"统计邮件通知慢SQL","level":"7.2.2.6","depth":3,"path":"origin/tidb-slow-sql-statistics.md","ref":"origin/tidb-slow-sql-statistics.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-lunr","-sharing","-highlight","search-pro","splitter","github","popup","sectionx","expandable-chapters","sharing-plus","code","auto-scroll-table","theme-fexa","tbfed-pagefooter","back-to-top-button","emphasize","edit-link","prism","donate","theme-comscore","github-buttons","github-issue-feedback"],"root":".","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"tbfed-pagefooter":{"copyright":"Copyright Curiouser","modify_label":"该文件最后修改时间：","modify_format":"YYYY-MM-DD HH:mm:ss"},"prism":{"css":["prismjs/themes/prism-tomorrow.css"],"lang":{"flow":"typescript"},"ignore":["mermaid","eval-js"]},"emphasize":{},"github-issue-feedback":{"repo":"RationalMonster/rationalmonster.github.io"},"github":{"url":"https://github.com/RationalMonster"},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"auto-scroll-table":{},"popup":{},"theme-fexa":{"search-placeholder":"搜索文章","logo":"./assets/logo.png"},"code":{"copybuttons":"true","copyButtons":true},"donate":{"wechat":"/assets/wechat-donate.jpg","title":"","button":"赏","wechatText":"微信打赏","alipay":"","alipayText":"支付宝打赏"},"fontsettings":{"theme":"white","family":"sans","size":2},"sectionx":{},"theme-comscore":{},"back-to-top-button":{},"github-buttons":{"buttons":[{"user":"RationalMonster","repo":"gitbooks-devops-roadmap","type":"star","size":"small","count":"true"}]},"sharing":{"weibo":true,"qq":"true","google":true,"all":["facebook","twitter"]},"edit-link":{"base":"https://raw.githubusercontent.com/RationalMonster/gitbooks-devops-roadmap/master/","label":"查看源MD文件"},"theme-default":{"showLevel":true,"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"expandable-chapters":{}},"theme":"default","author":"Curiouser <rationalmonster@163.com>","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Devops Roadmap","gitbook":"*"},"file":{"path":"origin/tidb-cdc.md","mtime":"2023-08-11T03:16:52.810Z","type":"markdown"},"gitbook":{"version":"3.0.0","time":"2025-02-08T02:18:14.757Z"},"basePath":"..","book":{"language":""}});
+			gitbook.page.hasChanged({"page":{"title":"TiCDC: 增量数据同步","level":"7.2.2.7","depth":3,"next":{"title":"大数据量的迁移方案对比","level":"7.2.3","depth":2,"path":"origin/bigdata-migrate-operation.md","ref":"origin/bigdata-migrate-operation.md","articles":[]},"previous":{"title":"统计邮件通知慢SQL","level":"7.2.2.6","depth":3,"path":"origin/tidb-slow-sql-statistics.md","ref":"origin/tidb-slow-sql-statistics.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-lunr","-sharing","-highlight","search-pro","splitter","github","popup","sectionx","expandable-chapters","sharing-plus","code","auto-scroll-table","theme-fexa","tbfed-pagefooter","back-to-top-button","emphasize","edit-link","prism","donate","theme-comscore","github-buttons","github-issue-feedback"],"root":".","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"tbfed-pagefooter":{"copyright":"Copyright Curiouser","modify_label":"该文件最后修改时间：","modify_format":"YYYY-MM-DD HH:mm:ss"},"prism":{"css":["prismjs/themes/prism-tomorrow.css"],"lang":{"flow":"typescript"},"ignore":["mermaid","eval-js"]},"emphasize":{},"github-issue-feedback":{"repo":"RationalMonster/rationalmonster.github.io"},"github":{"url":"https://github.com/RationalMonster"},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"auto-scroll-table":{},"popup":{},"theme-fexa":{"search-placeholder":"搜索文章","logo":"./assets/logo.png"},"code":{"copybuttons":"true","copyButtons":true},"donate":{"wechat":"/assets/wechat-donate.jpg","title":"","button":"赏","wechatText":"微信打赏","alipay":"","alipayText":"支付宝打赏"},"fontsettings":{"theme":"white","family":"sans","size":2},"sectionx":{},"theme-comscore":{},"back-to-top-button":{},"github-buttons":{"buttons":[{"user":"RationalMonster","repo":"gitbooks-devops-roadmap","type":"star","size":"small","count":"true"}]},"sharing":{"weibo":true,"qq":"true","google":true,"all":["facebook","twitter"]},"edit-link":{"base":"https://raw.githubusercontent.com/RationalMonster/gitbooks-devops-roadmap/master/","label":"查看源MD文件"},"theme-default":{"showLevel":true,"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"expandable-chapters":{}},"theme":"default","author":"Curiouser <rationalmonster@163.com>","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Devops Roadmap","gitbook":"*"},"file":{"path":"origin/tidb-cdc.md","mtime":"2025-02-21T09:34:05.618Z","type":"markdown"},"gitbook":{"version":"3.0.0","time":"2025-02-21T09:35:27.696Z"},"basePath":"..","book":{"language":""}});
 		});
 	</script>
 </div>

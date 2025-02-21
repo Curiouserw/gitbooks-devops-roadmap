@@ -514,7 +514,7 @@ down /etc/openvpn/update-resolv-conf
 # 设置在连接断开时要执行的脚本路径
 ```
 
-# 六、openvpn功能设置
+# 七、openvpn功能设置
 
 ## 1、分配指定IP地址给客户端用户
 
@@ -847,9 +847,37 @@ inet 10.8.0.6 --> 10.8.0.5/32 utun3
 
 `10.8.0.6`是VIP, 而`10.8.0.5`是网关. 在互联时, 需要使用VIP而不是网关地址.
 
+# 八、监控
 
+通过 node_exporter + 脚本采集status日志文件中的客户端数据暴露 Metrics 的方式，将OpenVPN相关数据存储到 Prometheus 系统中，然后 grafana 进行展示
 
-# 七、问题总结
+node_exporter + 脚本采集的方式参考[通过NodeExporter添加拓展指标](../origin/node-exporter-extra.md)中的示例
+
+[DashBoard的JSON 文件](../assets/grafana-dashboard-openvpn_monitor.json)，Grafana的 Dashboard效果。
+
+![](../assets/openvpn-granfa.png)
+
+如果要适应自己的场景，需要修改以下地方
+
+1. 修改value-mappings 中字段可能值的映射
+
+- 用于映射用户名对应的中文名。数据中带的为用户名字拼音，显示时显示映射的中文名，更为直观！
+- 用于映射常见客户端 IP 地址对应的地址。大多数用户都在一个办公室，出口 IP都一样，将常见 IP 地址显示为映射的地址信息，相对区分异常客户端来源 IP ，更为直观！
+
+2. （可选）修改查询条件语句中关于匹配VIP 网段到新字段的正则表达式
+
+   ```bash
+   label_replace(max(vpn_active_clients == 1) by (num, name, ip, port, vip, received, send, ts),"vip_group","$1","vip", 
+     "^10\\.0\\.(1|2|3|4|5|6|7|8|9)\\..*")
+   ```
+
+   上述查询语句，是将 `vip` 字段值，符合正则表达式的，则将对应值赋予新字段`vip_group`。例如`vip` 随便是`10.0.1.*`的用户，给他新增字段`vip_group=1`，`vip` 随便是`10.0.2.*`的用户，则`vip_group=2`
+
+3. （可选）修改`Overrides` 中"`网路角色(vip_group)`"字段的`value-mappings`映射关系。根据`vip_group`的值，映射为不用的名字，例如`vip_group`为 1，则显示`开发人员`，2 则显示为`测试人员`。
+
+4. 如果你的客户端 VIP 没有进行网络划分，第2 与第3都是可选的。第2 就去掉 `label_replace`，直接显示对应的 `VIP`，查询条件则变为：`max(vpn_active_clients == 1) by (num, name, ip, port, vip, received, send, ts)`，第 3 就直接忽略修改
+
+# 九、问题总结
 
 ## 1、Windows客户端OpenVPN GUI问题总结
 

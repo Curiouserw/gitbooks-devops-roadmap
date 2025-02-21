@@ -14,6 +14,10 @@ Arduino板通过**`串行通信`**的方式与Arduino IDE通信，实现串口�
 
 # 二、设置
 
+## 0、(可选)安装驱动
+
+**CH34X串口转USB芯片驱动**：https://www.wch.cn/download/CH341SER_EXE.html
+
 ## 1、示例程序
 
 Arduino IDE的文件-示例菜单中包含了大量实例程序，这是学习Arduino编程开发的宝贵资源，值得我们充分利用。另外，添加了标准格式的Arduino库之后，也会在这个菜单项里找到库所带的示例程序。

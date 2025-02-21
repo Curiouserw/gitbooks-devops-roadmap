@@ -210,12 +210,12 @@
         * [Ceph Exporter](origin/prometheus-Ceph-Exporter对接Prometheus以监控ceph集群.md)
         * [Blackbox Exporter](origin/prometheus-blackbox-exporter.md)
         * [收集Nginx内置Metrics](origin/prometheus-nginx-exporter.md)
+        * [通过Node Exporter增加自定义指标](origin/node-exporter-extra.md)
     * Grafana
         * [Grafana的备份恢复](origin/grafana-backup-restore.md)
         * [Grafana管理](origin/grafana-manage.md)
 * Tracing
     * [Jaeger](origin/jaeger.md)
-    * Matomo
 * [Sentry日志聚合告警平台](origin/sentry.md)
     * [Logstash与Sentry对接](origin/sentry-logstash对接Sentry.md)
 

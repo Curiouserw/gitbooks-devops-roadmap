@@ -3457,6 +3457,21 @@
             
         </li>
     
+        <li class="chapter " data-level="5.2.2.7" data-path="node-exporter-extra.html">
+            
+                <a href="node-exporter-extra.html">
+            
+                    
+                        <b>5.2.2.7.</b>
+                    
+                    通过Node Exporter增加自定义指标
+            
+                </a>
+            
+
+            
+        </li>
+    
 
             </ul>
             
@@ -3544,21 +3559,6 @@
                     Jaeger
             
                 </a>
-            
-
-            
-        </li>
-    
-        <li class="chapter " data-level="5.3.2" >
-            
-                <span>
-            
-                    
-                        <b>5.3.2.</b>
-                    
-                    Matomo
-            
-                </span>
             
 
             
@@ -8323,13 +8323,47 @@
     
 					<section class="normal markdown-section">
 						
-						<h1 id="&#x6444;&#x50CF;&#x5934;&#xFF1A;&#x89C6;&#x9891;&#x97F3;&#x9891;&#x4E91;&#x53F0;">&#x6444;&#x50CF;&#x5934;&#xFF1A;&#x89C6;&#x9891;+&#x97F3;&#x9891;+&#x4E91;&#x53F0;</h1>
+						<h1 id="onvif&#xFF1A;">ONVIF&#xFF1A;</h1>
 <h1 id="&#x4E00;&#x3001;&#x7B80;&#x4ECB;">&#x4E00;&#x3001;&#x7B80;&#x4ECB;</h1>
-<h1 id="&#x4E8C;&#x3001;&#x57FA;&#x7840;&#x77E5;&#x8BC6;">&#x4E8C;&#x3001;&#x57FA;&#x7840;&#x77E5;&#x8BC6;</h1>
-<h1 id="&#x4E09;&#x3001;&#x89C6;&#x9891;&#x6D41;rtsp">&#x4E09;&#x3001;&#x89C6;&#x9891;&#x6D41;RTSP</h1>
-<h1 id="&#x56DB;&#x3001;&#x4E91;&#x53F0;&#x63A7;&#x5236;onvif">&#x56DB;&#x3001;&#x4E91;&#x53F0;&#x63A7;&#x5236;ONVIF</h1>
-<h2 id="2&#x3001;&#x79FB;&#x52A8;&#x65B9;&#x5F0F;">2&#x3001;&#x79FB;&#x52A8;&#x65B9;&#x5F0F;</h2>
-<h3 id="absolute&#x7EDD;&#x5BF9;&#x79FB;&#x52A8;">Absolute&#x7EDD;&#x5BF9;&#x79FB;&#x52A8;</h3>
+<p>ONVIF&#xFF08;Open Network Video Interface Forum&#xFF09;&#x662F;&#x4E00;&#x4E2A;&#x5F00;&#x653E;&#x7684;&#x884C;&#x4E1A;&#x8BBA;&#x575B;&#xFF0C;&#x65E8;&#x5728;&#x4FC3;&#x8FDB;&#x57FA;&#x4E8E; IP &#x7684;&#x7269;&#x7406;&#x5B89;&#x5168;&#x4EA7;&#x54C1;&#x7684;&#x4E92;&#x64CD;&#x4F5C;&#x6027;&#x3002;ONVIF &#x89C4;&#x8303;&#x5B9A;&#x4E49;&#x4E86;&#x4E00;&#x7CFB;&#x5217;&#x6807;&#x51C6;&#xFF0C;&#x4F7F;&#x4E0D;&#x540C;&#x5382;&#x5546;&#x7684;&#x8BBE;&#x5907;&#xFF08;&#x5982;&#x6444;&#x50CF;&#x5934;&#x3001;&#x5F55;&#x50CF;&#x673A;&#x7B49;&#xFF09;&#x80FD;&#x591F;&#x901A;&#x8FC7;&#x901A;&#x7528;&#x534F;&#x8BAE;&#x8FDB;&#x884C;&#x901A;&#x4FE1;&#x3002;</p>
+<h1 id="&#x4E8C;&#x3001;onvif-&#x89C4;&#x8303;">&#x4E8C;&#x3001;ONVIF &#x89C4;&#x8303;</h1>
+<h2 id="1&#x3001;&#x6838;&#x5FC3;&#x89C4;&#x8303;">1&#x3001;&#x6838;&#x5FC3;&#x89C4;&#x8303;</h2>
+<ul>
+<li><strong>Core Specification</strong>&#xFF08;&#x6838;&#x5FC3;&#x89C4;&#x8303;&#xFF09;&#xFF1A;&#x5B9A;&#x4E49;&#x4E86;&#x57FA;&#x672C;&#x7684;&#x8BBE;&#x5907;&#x7BA1;&#x7406;&#x548C;&#x53D1;&#x73B0;&#x529F;&#x80FD;&#x3002;</li>
+<li><strong>Profile S</strong>&#xFF1A;&#x7528;&#x4E8E;&#x89C6;&#x9891;&#x6D41;&#x4F20;&#x8F93;&#x3002;</li>
+<li><strong>Profile G</strong>&#xFF1A;&#x7528;&#x4E8E;&#x5F55;&#x50CF;&#x5B58;&#x50A8;&#x548C;&#x68C0;&#x7D22;&#x3002;</li>
+<li><strong>Profile T</strong>&#xFF1A;&#x589E;&#x5F3A;&#x4E86; H.265 &#x7F16;&#x7801;&#x652F;&#x6301;&#x548C;&#x66F4;&#x9AD8;&#x7EA7;&#x7684;&#x89C6;&#x9891;&#x5206;&#x6790;&#x3002;</li>
+<li><strong>Profile M</strong>&#xFF1A;&#x7528;&#x4E8E;&#x5143;&#x6570;&#x636E;&#x5206;&#x6790;&#xFF0C;&#x5305;&#x62EC; AI &#x8BC6;&#x522B;&#x3001;&#x7269;&#x4F53;&#x68C0;&#x6D4B;&#x7B49;&#x9AD8;&#x7EA7;&#x529F;&#x80FD;&#x3002;</li>
+<li><strong>Profile C</strong>&#xFF1A;&#x7528;&#x4E8E;&#x95E8;&#x7981;&#x63A7;&#x5236;&#x3002;</li>
+<li><strong>Profile D</strong>&#xFF1A;&#x7528;&#x4E8E;&#x8BBE;&#x5907;&#x914D;&#x7F6E;&#x7BA1;&#x7406;&#x3002;</li>
+</ul>
+<h2 id="2&#x3001;&#x8BBE;&#x5907;&#x53D1;&#x73B0;">2&#x3001;&#x8BBE;&#x5907;&#x53D1;&#x73B0;</h2>
+<p>ONVIF &#x8BBE;&#x5907;&#x901A;&#x5E38;&#x4F7F;&#x7528; <strong>WS-Discovery</strong> &#x534F;&#x8BAE;&#x8FDB;&#x884C;&#x81EA;&#x52A8;&#x53D1;&#x73B0;&#xFF0C;&#x5BA2;&#x6237;&#x7AEF;&#x53EF;&#x4EE5;&#x901A;&#x8FC7; UDP &#x7EC4;&#x64AD;&#x641C;&#x7D22;&#x5C40;&#x57DF;&#x7F51;&#x5185;&#x7684; ONVIF &#x517C;&#x5BB9;&#x8BBE;&#x5907;&#x3002;</p>
+<h2 id="3&#x3001;&#x8BA4;&#x8BC1;&#x4E0E;&#x5B89;&#x5168;">3&#x3001;&#x8BA4;&#x8BC1;&#x4E0E;&#x5B89;&#x5168;</h2>
+<p>ONVIF &#x8BBE;&#x5907;&#x901A;&#x5E38;&#x652F;&#x6301;HTTP &#x8BA4;&#x8BC1;&#x65B9;&#x5F0F;&#xFF1A;</p>
+<ul>
+<li><strong>Basic Authentication&#xFF08;&#x57FA;&#x672C;&#x8BA4;&#x8BC1;&#xFF09;</strong>&#xFF1A;&#x91C7;&#x7528; Base64 &#x7F16;&#x7801;&#x7528;&#x6237;&#x51ED;&#x636E;&#xFF0C;&#x5B89;&#x5168;&#x6027;&#x8F83;&#x4F4E;&#x3002;</li>
+<li><strong>Digest Authentication&#xFF08;&#x6458;&#x8981;&#x8BA4;&#x8BC1;&#xFF09;</strong>&#xFF1A;&#x4F7F;&#x7528; MD5 &#x54C8;&#x5E0C;&#x8BA1;&#x7B97;&#x5E76;&#x7ED3;&#x5408; nonce &#x673A;&#x5236;&#xFF0C;&#x63D0;&#x4F9B;&#x66F4;&#x5B89;&#x5168;&#x7684;&#x8EAB;&#x4EFD;</li>
+</ul>
+<p>&#x90E8;&#x5206;&#x8BBE;&#x5907;&#x4E5F;&#x652F;&#x6301; WS-Security &#x8FDB;&#x884C;&#x66F4;&#x5B89;&#x5168;&#x7684;&#x8BA4;&#x8BC1;&#x3002;&#x6B64;&#x5916;&#xFF0C;ONVIF &#x4E5F;&#x5F00;&#x59CB;&#x652F;&#x6301;&#x57FA;&#x4E8E; OAuth &#x548C; TLS &#x7684;&#x5B89;&#x5168;&#x901A;&#x4FE1;&#x3002;</p>
+<p>curl&#x547D;&#x4EE4;&#x8C03;&#x8BD5;&#xFF1A;<code>curl --digest -u &apos;&#x7528;&#x6237;&#x540D;:&#x5BC6;&#x7801;&apos; &apos;http://192.168.1.12/onvif/event_service&apos;</code></p>
+<h1 id="&#x4E09;&#x3001;rtsp">&#x4E09;&#x3001;RTSP</h1>
+<p>ONVIF &#x8BBE;&#x5907;&#x901A;&#x5E38;&#x652F;&#x6301; <strong>RTSP</strong>&#xFF08;Real Time Streaming Protocol&#xFF09;&#x534F;&#x8BAE;&#x7528;&#x4E8E;&#x89C6;&#x9891;&#x6D41;&#x4F20;&#x8F93;&#x3002;RTSP URL &#x7684;&#x683C;&#x5F0F;&#x901A;&#x5E38;&#x5982;&#x4E0B;&#xFF1A;</p>
+<pre class="language-"><code class="bash">rtsp://<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>&#x7528;&#x6237;&#x540D;</span><span class="token punctuation">&gt;</span></span>:<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>&#x5BC6;&#x7801;</span><span class="token punctuation">&gt;</span></span>@<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>IP&#x5730;&#x5740;</span><span class="token punctuation">&gt;</span></span>:<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>&#x7AEF;&#x53E3;</span><span class="token punctuation">&gt;</span></span>/<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>&#x6D41;&#x8DEF;&#x5F84;</span><span class="token punctuation">&gt;</span></span>
+# 554 &#x662F;&#x9ED8;&#x8BA4; RTSP &#x7AEF;&#x53E3;
+# /live &#x662F;&#x6D41;&#x8DEF;&#x5F84;&#xFF0C;&#x5177;&#x4F53;&#x8DEF;&#x5F84;&#x53EF;&#x80FD;&#x56E0;&#x8BBE;&#x5907;&#x5382;&#x5546;&#x800C;&#x5F02;
+</code></pre>
+<h2 id="&#x89C6;&#x9891;&#x7F16;&#x7801;&#x683C;&#x5F0F;">&#x89C6;&#x9891;&#x7F16;&#x7801;&#x683C;&#x5F0F;</h2>
+<ul>
+<li><strong>H.264</strong>&#xFF08;&#x4E3B;&#x6D41;&#x7F16;&#x7801;&#x683C;&#x5F0F;&#xFF0C;&#x517C;&#x5BB9;&#x6027;&#x597D;&#xFF09;</li>
+<li><strong>H.265</strong>&#xFF08;&#x66F4;&#x9AD8;&#x6548;&#x7684;&#x538B;&#x7F29;&#x6BD4;&#xFF09;</li>
+<li><strong>MJPEG</strong>&#xFF08;&#x65E0;&#x538B;&#x7F29;&#x683C;&#x5F0F;&#xFF0C;&#x9002;&#x7528;&#x4E8E;&#x7279;&#x5B9A;&#x5E94;&#x7528;&#xFF09;</li>
+<li><strong>MPEG-4</strong>&#xFF08;&#x8F83;&#x8001;&#x7684;&#x6807;&#x51C6;&#xFF0C;&#x9010;&#x6B65;&#x6DD8;&#x6C70;&#xFF09;</li>
+</ul>
+<h1 id="&#x56DB;&#x3001;&#x4E91;&#x53F0;&#x63A7;&#x5236;">&#x56DB;&#x3001;&#x4E91;&#x53F0;&#x63A7;&#x5236;</h1>
+<p>ONVIF &#x63D0;&#x4F9B;&#x4E86;&#x4E91;&#x53F0;&#xFF08;Pan-Tilt-Zoom&#xFF0C;PTZ&#xFF09;&#x63A7;&#x5236;&#x63A5;&#x53E3;&#xFF0C;&#x4F7F;&#x5BA2;&#x6237;&#x7AEF;&#x53EF;&#x4EE5;&#x8FDC;&#x7A0B;&#x63A7;&#x5236;&#x6444;&#x50CF;&#x5934;&#x7684;&#x65B9;&#x5411;&#x548C;&#x7F29;&#x653E;&#x3002;</p>
+<h2 id="1&#x3001;&#x79FB;&#x52A8;&#x65B9;&#x5F0F;">1&#x3001;&#x79FB;&#x52A8;&#x65B9;&#x5F0F;</h2>
+<h3 id="&#x7EDD;&#x5BF9;&#x79FB;&#x52A8;absolute">&#x7EDD;&#x5BF9;&#x79FB;&#x52A8;Absolute</h3>
 <ul>
 <li><strong>&#x76EE;&#x6807;</strong>&#xFF1A;&#x5C06;&#x6444;&#x50CF;&#x5934;&#x79FB;&#x52A8;&#x5230;&#x6307;&#x5B9A;&#x7684;&#x7EDD;&#x5BF9;&#x4F4D;&#x7F6E;&#x3002;</li>
 <li><strong>&#x53C2;&#x6570;</strong>&#xFF1A;<code>pan</code>&#x3001;<code>tilt</code> &#x548C; <code>zoom</code> &#x5206;&#x522B;&#x8868;&#x793A;&#x6444;&#x50CF;&#x5934;&#x5728;&#x6C34;&#x5E73;&#x65B9;&#x5411;&#x3001;&#x5782;&#x76F4;&#x65B9;&#x5411;&#x548C;&#x7F29;&#x653E;&#x65B9;&#x5411;&#x4E0A;&#x7684;&#x4F4D;&#x7F6E;&#xFF0C;&#x53D6;&#x503C;&#x8303;&#x56F4;&#x5206;&#x522B;&#x4E3A; (-1.0 &#x5230; 1.0) &#x548C; (0.0 &#x5230; 1.0)&#x3002;</li>
@@ -8340,7 +8374,7 @@
 </li>
 <li><strong>&#x8FD4;&#x56DE;&#x503C;</strong>&#xFF1A;&#x5982;&#x679C;&#x64CD;&#x4F5C;&#x6210;&#x529F;&#xFF0C;&#x8FD4;&#x56DE; <code>True</code>&#xFF0C;&#x5426;&#x5219;&#x8FD4;&#x56DE; <code>False</code>&#x3002;</li>
 </ul>
-<h3 id="relative&#x76F8;&#x5BF9;&#x79FB;&#x52A8;">Relative&#x76F8;&#x5BF9;&#x79FB;&#x52A8;</h3>
+<h3 id="&#x76F8;&#x5BF9;&#x79FB;&#x52A8;relative">&#x76F8;&#x5BF9;&#x79FB;&#x52A8;Relative</h3>
 <ul>
 <li><strong>&#x76EE;&#x6807;</strong>&#xFF1A;&#x6839;&#x636E;&#x5F53;&#x524D;&#x6444;&#x50CF;&#x5934;&#x4F4D;&#x7F6E;&#x8FDB;&#x884C;&#x76F8;&#x5BF9;&#x79FB;&#x52A8;&#x3002;</li>
 <li><strong>&#x53C2;&#x6570;</strong>&#xFF1A;<code>pan_offset</code>&#x3001;<code>tilt_offset</code> &#x548C; <code>zoom_offset</code> &#x5206;&#x522B;&#x8868;&#x793A;&#x6C34;&#x5E73;&#x65B9;&#x5411;&#x3001;&#x5782;&#x76F4;&#x65B9;&#x5411;&#x548C;&#x7F29;&#x653E;&#x65B9;&#x5411;&#x4E0A;&#x7684;&#x504F;&#x79FB;&#x91CF;&#xFF0C;&#x53D6;&#x503C;&#x8303;&#x56F4;&#x4E5F;&#x5206;&#x522B;&#x662F; (-1.0 &#x5230; 1.0) &#x548C; (0.0 &#x5230; 1.0)&#x3002;</li>
@@ -8382,7 +8416,7 @@
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token namespace">SOAP-ENV:</span>Body</span><span class="token punctuation">&gt;</span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token namespace">SOAP-ENV:</span>Envelope</span><span class="token punctuation">&gt;</span></span>
 </code></pre>
-<h3 id="continuous&#x7EED;&#x79FB;&#x52A8;">Continuous&#x7EED;&#x79FB;&#x52A8;</h3>
+<h3 id="&#x6301;&#x7EED;&#x79FB;&#x52A8;continuous">&#x6301;&#x7EED;&#x79FB;&#x52A8;Continuous</h3>
 <ul>
 <li><strong>&#x76EE;&#x6807;</strong>&#xFF1A;&#x6839;&#x636E;&#x6307;&#x5B9A;&#x7684;&#x901F;&#x5EA6;&#x6301;&#x7EED;&#x79FB;&#x52A8;&#x6444;&#x50CF;&#x5934;&#xFF0C;&#x76F4;&#x5230;&#x505C;&#x6B62;&#x547D;&#x4EE4;&#x3002;</li>
 <li><strong>&#x53C2;&#x6570;</strong>&#xFF1A;<code>pan_speed</code>&#x3001;<code>tilt_speed</code> &#x548C; <code>zoom_speed</code> &#x5206;&#x522B;&#x8868;&#x793A;&#x6C34;&#x5E73;&#x65B9;&#x5411;&#x3001;&#x5782;&#x76F4;&#x65B9;&#x5411;&#x548C;&#x7F29;&#x653E;&#x65B9;&#x5411;&#x4E0A;&#x7684;&#x901F;&#x5EA6;&#xFF0C;&#x53D6;&#x503C;&#x8303;&#x56F4;&#x4E3A; (-1.0 &#x5230; 1.0) &#x548C; (0.0 &#x5230; 1.0)&#x3002;<code>duration</code> &#x8868;&#x793A;&#x6301;&#x7EED;&#x79FB;&#x52A8;&#x7684;&#x65F6;&#x95F4;&#xFF08;&#x79D2;&#xFF09;&#x3002;</li>
@@ -8394,10 +8428,18 @@
 </li>
 <li><strong>&#x8FD4;&#x56DE;&#x503C;</strong>&#xFF1A;&#x5982;&#x679C;&#x64CD;&#x4F5C;&#x6210;&#x529F;&#xFF0C;&#x8FD4;&#x56DE; <code>True</code>&#xFF0C;&#x5426;&#x5219;&#x8FD4;&#x56DE; <code>False</code>&#x3002;</li>
 </ul>
+<h3 id="&#x7F29;&#x653E;&#x63A7;&#x5236;zoom">&#x7F29;&#x653E;&#x63A7;&#x5236;Zoom</h3>
+<p>&#x63A7;&#x5236;&#x6444;&#x50CF;&#x5934;&#x7684;&#x7126;&#x8DDD;&#x8FDB;&#x884C;&#x7F29;&#x653E;&#x3002;</p>
+<h3 id="&#x9884;&#x8BBE;&#x4F4D;preset-position">&#x9884;&#x8BBE;&#x4F4D;Preset Position</h3>
+<p>&#x5B58;&#x50A8;&#x6444;&#x50CF;&#x5934;&#x7684;&#x56FA;&#x5B9A;&#x4F4D;&#x7F6E;&#xFF0C;&#x652F;&#x6301;&#x5FEB;&#x901F;&#x8C03;&#x7528;&#x3002;</p>
+<h3 id="&#x5DE1;&#x822A;patroltour">&#x5DE1;&#x822A;Patrol/Tour</h3>
+<p>&#x6309;&#x9884;&#x8BBE;&#x8DEF;&#x7EBF;&#x81EA;&#x52A8;&#x79FB;&#x52A8;&#x6444;&#x50CF;&#x5934;&#x3002;</p>
+<h1 id="webrtc">WebRTC</h1>
+<p><a href="https://webrtcforthecurious.com/zh/docs/01-what-why-and-how/" _target="blank">https://webrtcforthecurious.com/zh/docs/01-what-why-and-how/</a></p>
 <h1 id="&#x53C2;&#x8003;">&#x53C2;&#x8003;</h1>
 <p><a href="https://github.com/linkease/onvif" _target="blank">https://github.com/linkease/onvif</a></p>
 <footer class="page-footer"><span class="copyright">Copyright Curiouser all right reserved&#xFF0C;powered by Gitbook</span><span class="footer-modification">&#x8BE5;&#x6587;&#x4EF6;&#x6700;&#x540E;&#x4FEE;&#x6539;&#x65F6;&#x95F4;&#xFF1A;
-2025-01-14 17:12:28
+2025-02-21 17:33:20
 </span></footer>
 <script>console.log("plugin-popup....");document.onclick = function(e){ e.target.tagName === "IMG" && window.open(e.target.src,e.target.src)}</script><style>img{cursor:pointer}</style>
 						
@@ -8441,7 +8483,7 @@
 	<script>
 		var gitbook = gitbook || [];
 		gitbook.push(function() {
-			gitbook.page.hasChanged({"page":{"title":"摄像头：视频-音频-云台","level":"11.6","depth":1,"next":{"title":"LED","level":"11.7","depth":1,"path":"origin/led.md","ref":"origin/led.md","articles":[]},"previous":{"title":"Arduino IDE及编程语法","level":"11.5.2","depth":2,"path":"origin/arduino-ide.md","ref":"origin/arduino-ide.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-lunr","-sharing","-highlight","search-pro","splitter","github","popup","sectionx","expandable-chapters","sharing-plus","code","auto-scroll-table","theme-fexa","tbfed-pagefooter","back-to-top-button","emphasize","edit-link","prism","donate","theme-comscore","github-buttons","github-issue-feedback"],"root":".","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"tbfed-pagefooter":{"copyright":"Copyright Curiouser","modify_label":"该文件最后修改时间：","modify_format":"YYYY-MM-DD HH:mm:ss"},"prism":{"css":["prismjs/themes/prism-tomorrow.css"],"lang":{"flow":"typescript"},"ignore":["mermaid","eval-js"]},"emphasize":{},"github-issue-feedback":{"repo":"RationalMonster/rationalmonster.github.io"},"github":{"url":"https://github.com/RationalMonster"},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"auto-scroll-table":{},"popup":{},"theme-fexa":{"search-placeholder":"搜索文章","logo":"./assets/logo.png"},"code":{"copybuttons":"true","copyButtons":true},"donate":{"wechat":"/assets/wechat-donate.jpg","title":"","button":"赏","wechatText":"微信打赏","alipay":"","alipayText":"支付宝打赏"},"fontsettings":{"theme":"white","family":"sans","size":2},"sectionx":{},"theme-comscore":{},"back-to-top-button":{},"github-buttons":{"buttons":[{"user":"RationalMonster","repo":"gitbooks-devops-roadmap","type":"star","size":"small","count":"true"}]},"sharing":{"weibo":true,"qq":"true","google":true,"all":["facebook","twitter"]},"edit-link":{"base":"https://raw.githubusercontent.com/RationalMonster/gitbooks-devops-roadmap/master/","label":"查看源MD文件"},"theme-default":{"showLevel":true,"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"expandable-chapters":{}},"theme":"default","author":"Curiouser <rationalmonster@163.com>","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Devops Roadmap","gitbook":"*"},"file":{"path":"origin/camera.md","mtime":"2025-01-14T09:12:28.111Z","type":"markdown"},"gitbook":{"version":"3.0.0","time":"2025-02-08T02:18:14.757Z"},"basePath":"..","book":{"language":""}});
+			gitbook.page.hasChanged({"page":{"title":"摄像头：视频-音频-云台","level":"11.6","depth":1,"next":{"title":"LED","level":"11.7","depth":1,"path":"origin/led.md","ref":"origin/led.md","articles":[]},"previous":{"title":"Arduino IDE及编程语法","level":"11.5.2","depth":2,"path":"origin/arduino-ide.md","ref":"origin/arduino-ide.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-lunr","-sharing","-highlight","search-pro","splitter","github","popup","sectionx","expandable-chapters","sharing-plus","code","auto-scroll-table","theme-fexa","tbfed-pagefooter","back-to-top-button","emphasize","edit-link","prism","donate","theme-comscore","github-buttons","github-issue-feedback"],"root":".","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"tbfed-pagefooter":{"copyright":"Copyright Curiouser","modify_label":"该文件最后修改时间：","modify_format":"YYYY-MM-DD HH:mm:ss"},"prism":{"css":["prismjs/themes/prism-tomorrow.css"],"lang":{"flow":"typescript"},"ignore":["mermaid","eval-js"]},"emphasize":{},"github-issue-feedback":{"repo":"RationalMonster/rationalmonster.github.io"},"github":{"url":"https://github.com/RationalMonster"},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"auto-scroll-table":{},"popup":{},"theme-fexa":{"search-placeholder":"搜索文章","logo":"./assets/logo.png"},"code":{"copybuttons":"true","copyButtons":true},"donate":{"wechat":"/assets/wechat-donate.jpg","title":"","button":"赏","wechatText":"微信打赏","alipay":"","alipayText":"支付宝打赏"},"fontsettings":{"theme":"white","family":"sans","size":2},"sectionx":{},"theme-comscore":{},"back-to-top-button":{},"github-buttons":{"buttons":[{"user":"RationalMonster","repo":"gitbooks-devops-roadmap","type":"star","size":"small","count":"true"}]},"sharing":{"weibo":true,"qq":"true","google":true,"all":["facebook","twitter"]},"edit-link":{"base":"https://raw.githubusercontent.com/RationalMonster/gitbooks-devops-roadmap/master/","label":"查看源MD文件"},"theme-default":{"showLevel":true,"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"expandable-chapters":{}},"theme":"default","author":"Curiouser <rationalmonster@163.com>","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Devops Roadmap","gitbook":"*"},"file":{"path":"origin/camera.md","mtime":"2025-02-21T09:33:20.276Z","type":"markdown"},"gitbook":{"version":"3.0.0","time":"2025-02-21T09:35:27.696Z"},"basePath":"..","book":{"language":""}});
 		});
 	</script>
 </div>
