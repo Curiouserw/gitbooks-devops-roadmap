@@ -135,22 +135,27 @@ sed -i -e '/hah/a lala\nhehe' -e '/lala/d' test
 sed -i '/hah/a lallalla' test   #在查找到匹配行后添加一行
 sed -i '/hah/a lala\nhehe' test #在查找到匹配行后添加多行
 sed -i '/hah/d' test #删除查找到匹配行
-```
 
-## 6、在查找匹配行的末首或末尾添加内容
+# 在查找匹配行的行首或行尾添加内容
 
-```bash
 sed -i '/ha/ s/^/la' test #在查找包含"ha"的行首追加"la","laha"
 sed -i '/ha/ s/$/la' test #在查找包含"ha"的行末追加"la"，"hala"
+
+# MacOS 下的 sed
+
+# 在查找包含"haha"的行末追加"test"，类似"**haha** test"
+a="haha"
+b="test"
+sed  -i '' -e "/$a/s/$/ $b/" new-ecs-all.ini
 ```
 
-## 7、去掉文本中开头带#号注释的行
+## 6、去掉文本中开头带#号注释的行
 
 ```bash
 sed -i -c -e '/^$/d;/^#/d'  file
 ```
 
-## 8、去除文本中的换行符^M
+## 7、去除文本中的换行符^M
 
 Windows下保存的文本文件，上传到Linux/Unix下后总会在末尾多了一个换行符^M，导致一些xml、ini、sh等文件读取错误
 
@@ -160,41 +165,41 @@ sed 's/^M//' 原文件>新文件
 # 注意，^M = Ctrl v + Ctrl m，而不是手动输入^M
 ```
 
-## 9、每行前后添加空行
+## 8、每行前后添加空行
 
 每行后面添加一行空行：
 
-```
-sed G tmp
+```bash
+sed G file
 ```
 
  每行前面添加一行空行：
 
-```
-sed '{x;p;x;}' tmp
+```bash
+sed '{x;p;x;}' file
 ```
 
 每行后面添加两行空行：
 
-```
+```bash
 sed 'G;G' tmp
 ```
 
  每行前面添加两行空行：
 
-```
+```bash
 sed '{x;p;x;x;p;x;}' tmp
 ```
 
 每行后面添加三行空行：
 
-```
+```bash
 sed 'G;G;G' tmp
 ```
 
  每行前面添加三行空行：
 
-```
+```bash
 sed '{x;p;x;x;p;x;x;p;x}' tmp
 ```
 
@@ -202,7 +207,7 @@ sed '{x;p;x;x;p;x;x;p;x}' tmp
 
 ## 10、如果行后有空行，则删除，然后每行后面添加空行
 
-```
+```bash
 sed '/^$/d;G' tmp
 ```
 
@@ -210,31 +215,31 @@ sed '/^$/d;G' tmp
 
 如果一行里面有shui这个单词，那么在他后面会添加一个空行
 
-```
+```bash
 sed '/shui/G' tmp 
 ```
 
  如果一行里面有shui这个单词，那么在他前后各添加一个空行
 
-```
+```bash
 sed '/shui/{x;p;x;G}' tmp
 ```
 
 如果一行里面有shui这个单词，那么在他前面添加一个空行
 
-```
+```bash
 sed '/shui/{x;p;x;}' tmp 
 ```
 
 在第一行前面添加空行，想在第几行，命令中的1就改成几
 
-```
+```bash
 sed '1{x;p;x;}' tmp 
 ```
 
 在第一行后面添加空行，想在第几行，命令中的1就改成几
 
-```
+```bash
 sed '1G' tmp 
 ```
 
@@ -242,25 +247,25 @@ sed '1G' tmp
 
 每两行后面增加一个空行
 
-```
+```bash
  sed 'N;/^$/d;G' file.txt
 ```
 
 每两行前面添加一个空行
 
-```
+```bash
  sed 'N;/^$/d;{x;p;x;}' tmp
 ```
 
 每三行后面增加一个空行
 
-```
+```bash
  sed 'N;N;/^$/d;G' file.txt
 ```
 
  每三行前面增加一个空行
 
-```
+```bash
  sed 'N;N;/^$/d;{x;p;x;}' tmp
 ```
 
@@ -268,25 +273,25 @@ sed '1G' tmp
 
 以xi为开头的行后面添加空行
 
-```
+```bash
  sed '/^xi/G;' tmp
 ```
 
  以xi为结尾的行前面添加空行
 
-```
+```bash
  sed '/^xi/{x;p;x;}' tmp
 ```
 
 以xi为结尾的行后面添加空行
 
-```
+```bash
  sed '/xi$/G;' tmp
 ```
 
  以xi为结尾的行后面添加空行
 
-```
+```bash
  sed '/xi$/{x;p;x;}' tmp
 ```
 

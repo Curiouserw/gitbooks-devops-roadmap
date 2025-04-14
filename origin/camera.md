@@ -29,7 +29,7 @@ ONVIF 设备通常支持HTTP 认证方式：
 
 部分设备也支持 WS-Security 进行更安全的认证。此外，ONVIF 也开始支持基于 OAuth 和 TLS 的安全通信。
 
-curl命令调试：`curl --digest -u '用户名:密码' 'http://192.168.1.12/onvif/event_service'`
+curl命令调试：**`curl --digest -u '用户名:密码' 'http://192.168.1.12/onvif/event_service'`**
 
 # 三、RTSP
 

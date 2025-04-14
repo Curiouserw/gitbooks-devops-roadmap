@@ -203,28 +203,28 @@ server_configs:
     log-level: info
 master_servers:
   - host: 192.168.1.6
-    deploy_dir: "/data/tiup-dm/dm-master"
-    data_dir: "/data/tiup-dm/dm-master/data"
-    log_dir: "/data/tiup-dm/dm-master/log"
+    deploy_dir: "/data/tidb-dm/dm-master"
+    data_dir: "/data/tidb-dm/dm-master/data"
+    log_dir: "/data/tidb-dm/dm-master/log"
 worker_servers:
   - host: 192.168.1.6
-    deploy_dir: "/data/tiup-dm/dm-worker"
-    log_dir: "/data/tiup-dm/dm-worker/log"
+    deploy_dir: "/data/tidb-dm/dm-worker"
+    log_dir: "/data/tidb-dm/dm-worker/log"
     config:
       log-level: info
 monitoring_servers:
   - host: 192.168.1.6
-    deploy_dir: "/data/tiup-dm/dm-prometheus"
-    data_dir: "/data/tiup-dm/dm-prometheus/data"
-    log_dir: "/data/tiup-dm/dm-prometheus/log"
+    deploy_dir: "/data/tidb-dm/dm-prometheus"
+    data_dir: "/data/tidb-dm/dm-prometheus/data"
+    log_dir: "/data/tidb-dm/dm-prometheus/log"
 grafana_servers:
   - host: 192.168.1.6
-    deploy_dir: "/data/tiup-dm/dm-grafana"
+    deploy_dir: "/data/tidb-dm/dm-grafana"
 alertmanager_servers:
   - host: 192.168.1.6
-    deploy_dir: "/data/tiup-dm/dm-alertmanager"
-    data_dir: "/data/tiup-dm/dm-alertmanager/data"
-    log_dir: "/data/tiup-dm/dm-alertmanager/logs"    
+    deploy_dir: "/data/tidb-dm/dm-alertmanager"
+    data_dir: "/data/tidb-dm/dm-alertmanager/data"
+    log_dir: "/data/tidb-dm/dm-alertmanager/logs"    
 ```
 
 ### ③配置root用户SSH免密登录
@@ -236,18 +236,20 @@ cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys
 ### ④创建修改目录权限
 
 ```bash
-mkdir -p /data/tiup-dm/{dm-master/{data,logs},dm-worker/{data,logs},dm-prometheus/{data,logs},dm-grafana,dm-alertmanager/{data,logs}} && \
+mkdir -p /data/tidb-dm/{dm-master/{data,logs},dm-worker/{data,logs},dm-prometheus/{data,logs},dm-grafana,dm-alertmanager/{data,logs}} && \
 useradd tidb && \
-chown -R tidb:tidb /data/tiup-dm && \
-tree -L 3 /data/tiup-dm
+chown -R tidb:tidb /data/tidb-dm && \
+tree -L 3 /data/tidb-dm
 ```
 
 ### ⑤执行安装部署dm
 
 ```bash
-tiup dm deploy <dm集群名字> <dm集群版本> <dm集群主机拓扑配置文件路径> --user root -i /root/.ssh/id_rsa
+tiup dm deploy <dm集群名字> <dm集群版本> <dm集群主机拓扑配置文件路径> --user root -i /root/.ssh/id_rsa --ssh system
 
 # dm集群版本使用tiup list dm-master查看支持安装的DM版本
+
+# --ssh 指定使用的 SSH 命令执行类型。可选 'builtin（tiup自带）', 'system（操作系统的）', 'none'，建议使用操作系统的。
 ```
 
 ### ⑥启动DM集群
@@ -397,7 +399,7 @@ nohup /opt/dm-portal/bin/dm-portal --port=8280 -task-file-path=/root/dm-portal/t
 在 DM 相关配置文件中，推荐使用经 dmctl 加密后的密码。对于同一个原始密码，每次加密后密码不同。
 
 ```bash
-tiup dmctl --encrypt 密码
+tiup dmctl encrypt 密码
 ```
 
 ## 2、创建配置文件
@@ -1127,11 +1129,7 @@ resume-task 任务名
 
 - https://issuehint.com/issue/pingcap/dm/2285
 
-## 3、上游MySQL表中有外键造成无法同步
-
-## 4、上游MySQL表中日期数据值包含“00”造成无法同步
-
-## 5、写入下游时出现重复冲突的主键
+## 3、写入下游时出现重复冲突的主键
 
 ```bash
 {
@@ -1158,6 +1156,26 @@ resume-task 任务名
 pause-task 任务名
 resume-task 任务名
 ```
+
+## 4、源库表没有主键无法启动任务
+
+在启动任务时会对任务作业检查
+
+```bash
+ please set primary/unique key for the table
+```
+
+
+
+```bash
+ignore-checking-items: ["table_schema"]  
+```
+
+
+
+
+
+
 
 # 参考
 

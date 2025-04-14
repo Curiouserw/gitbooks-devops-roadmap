@@ -829,12 +829,38 @@ tiup cluster exec 集群名字 --sudo --command "yum install -y numactl" -R PD
 tiup cluster exec 集群名字 --sudo --command "yum install -y numactl" -N node1
 ```
 
-# 五、tiup命令
+# 五、迁移升级操作
 
-## 1、查看集群列表
+## 1、pd迁移
+
+**①查看当前 PD leader节点在哪个 pd 上**
 
 ```bash
-tiup cluster list
+tiup ctl:v<CLUSTER_VERSION> pd -u http://<pd_ip>:2379 member
+```
+
+**②将 PD leader 从当前成员迁走，迁到指定的 pd 节点上**
+
+```bash
+tiup ctl:v<CLUSTER_VERSION> pd -u http://<pd_ip>:2379 member leader transfer <pd_name>
+```
+
+**③查看 pd 节点的 leader 节点是否已经到新的节点上**
+
+```bash
+tiup ctl:v<CLUSTER_VERSION> pd -u http://<pd_ip>:2379 member leader show
+```
+
+**④刷新集群配置**
+
+```bash
+tiup cluster reload <cluster-name> --skip-restart
+```
+
+**⑤切换其他 PD 实例提供 TiDB Dashboard 服务**
+
+```bash
+tiup ctl:v<CLUSTER_VERSION> pd -u http://<pd_ip>:2379 config set dashboard-address http://<新pd_ip>:2379
 ```
 
 # 六、搭建本地开发集群

@@ -648,3 +648,7 @@ dumpling-mysql-tidb-data-to-file() {
 - TiDB lightning 开起监控 Web，可以方便查看导入进度
 
 - TiDB lightning 一定要开起断点续传功能，建议使用“file”模式
+
+```bash
+Dumpling 8并发备份64表26926007条数据  速率在5~11MB/s之间，落地文件10.06GB，耗时20m17.8s
+```

@@ -821,3 +821,5 @@ echo "port=3309\nskip-grant-tables\nlower_case_table_names=1" >> ${PWD}/restore-
 - https://zhuanlan.zhihu.com/p/419385309
 - https://www.cnblogs.com/zhoujinyi/p/5893333.html
 - https://forums.percona.com/t/mysql-backup-of-remote-server-in-my-local-machine-using-percona-xtrabackup/6415/16
+- https://docs.percona.com/percona-xtrabackup/8.0/release-notes.html
+

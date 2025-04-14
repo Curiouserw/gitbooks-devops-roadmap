@@ -58,7 +58,7 @@
 | **-T --temp-dir=DIR** | 在DIR中创建临时文件 |
 | **--compare-dest=DIR** | 同样比较DIR中的文件来决定是否需要备份 |
 | **-P** | 等同于 --partial |
-| **--progress** | 显示备份过程 |
+|  |  |
 | **-z, --compress** | 对备份的文件在传输时进行压缩处理 |
 | **--exclude=PATTERN** | 指定排除不需要传输的文件模式 |
 | **--include=PATTERN** | 指定不排除而需要传输的文件模式 |

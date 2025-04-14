@@ -2568,83 +2568,19 @@ Connection: close\r\n\r\n" | openssl s_client -quiet -connect 192.168.1.1:8443
 # echo -n '用户名:密码' | base64  
 ```
 
-# 82、命令优化
+# 82、Ubuntu 安装老版本软件
 
 ```bash
-#!/bin/bash
+add-apt-repository 'deb http://archive.ubuntu.com/ubuntu trusty universe'
 
-if [[ $# != 1 ]] ;then 
-    echo "脚本只接受一个参数！"
-    exit 1
-fi
+apt-cache search mysql | grep 5.6
+apt-get install mysql-server-5.6 mysql-client-5.6
 
-if [[ ! -d $1 ]] ;then
-    echo "$1路径不存在！"
-    exit 1
-fi
-
-statistics_dir=$1
-
-SCRIPT_DIR=$(cd $(dirname ${BASH_SOURCE[0]}); pwd)
-results_file=$SCRIPT_DIR"/statistics-results-"$(date +%s)".txt"
-> "$results_file"
-
-
-
-# 仅查找 /data 下的一级目录并统计大小
-find "$statistics_dir" -mindepth 1 -maxdepth 2 | xargs -I{} -n 1 -P 6 du -sk "{}" | awk -v output="$results_file" '
-BEGIN {
-    # 定义大小范围名称和计数变量
-    ranges[1] = "1M以下";              limits[1] = 1024
-    ranges[2] = "1M~5M";               limits[2] = 5120
-    ranges[3] = "5M~10M";              limits[3] = 10240
-    ranges[4] = "10M~20M";             limits[4] = 20480
-    ranges[5] = "20M~50M";             limits[5] = 51200
-    ranges[6] = "50M~100M";            limits[6] = 102400
-    ranges[7] = "100M~150M";           limits[7] = 153600
-    ranges[8] = "150M~200M";           limits[8] = 204800
-    ranges[9] = "200M~500M";           limits[9] = 512000
-    ranges[10] = "500M~800M";          limits[10] = 819200
-    ranges[11] = "800M~1000M";         limits[11] = 1024000
-    ranges[12] = "1G~3G";              limits[12] = 3072000
-    ranges[13] = "3G以上";              limits[13] = 1e12  # 大于3G的路径
-
-    for (i = 1; i <= 13; i++) count[i] = 0
-}
-
-{
-    # 读取大小 (单位KB) 和路径
-    size = $1
-    path = $2
-
-    # 按范围统计并记录路径
-    for (i = 1; i <= 13; i++) {
-        if (size <= limits[i]) {
-            count[i]++
-            paths[i, count[i]] = path
-            break
-        }
-    }
-}
-
-END {
-    # 输出统计概要
-    print "范围               目录数量"
-    print "---------------------------"
-    for (i = 1; i <= 13; i++) {
-        printf "%-15s %10d\n", ranges[i], count[i]
-    }
-    
-    # 输出详细路径记录
-    for (i = 1; i <= 13; i++) {
-        if (count[i] > 0) {
-            print ranges[i] >> output
-            for (j = 1; j <= count[i]; j++) {
-                print "    " paths[i, j] >> output
-            }
-            print "" >> output 
-        }
-    }
-}
-'
+apt-get install software-properties-common
+add-apt-repository 'deb http://archive.ubuntu.com/ubuntu trusty universe'
+echo 'deb http://cz.archive.ubuntu.com/ubuntu xenial main' >> /etc/apt/sources.list
+apt-get -o Acquire::AllowInsecureRepositories=true -o Acquire::AllowDowngradeToInsecureRepositories=true update
+apt-cache search mysql | grep 5.6
+apt install mysql-server-5.6 mysql-client-5.6
 ```
+

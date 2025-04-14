@@ -94,15 +94,3 @@ rename-command KEYS     "XXXXX"
 rename-command CONFIG   "XXXXX"
 # 重启Redis即可
 ```
-
-# 三、Redis Cluster安装部署
-
-# 四、Redis客户端
-
-## 1、CLI
-
-## 2、Application
-
-### Another Redis Desktop Manager
-
-Github：https://github.com/qishibo/AnotherRedisDesktopManager

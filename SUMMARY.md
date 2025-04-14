@@ -300,6 +300,7 @@
     * [PowerShell](origin/windows-powershell.md)
 * MacOS
     * [MacOS小技巧](origin/macos-tips.md)
+    * [iTerm2终端调优](origin/macos-iterm2.md)
 * Linux
     * [Linux小技巧](origin/linux-小技巧.md)
     * [比较两个文件的不同](origin/linux-diff.md)
@@ -391,6 +392,7 @@
     * [VMware Tools](origin/vmware-tools.md)
     * [vCenter](origin/vSphere-vCenter.md)
     * [ESXI使用Synology的ISCSI存储](origin/esxi-synology-iscsi.md)
+    * [ESXI升级](origin/esxi-upgrade.md)
     * OVF模板
       * [OVF模板详解](origin/vsphere-ovf.md)
       * [VMWare OVF Tools](origin/vmware-ovf-tool.md)
@@ -412,6 +414,7 @@
 * [零散知识汇总](origin/others.md)
 * [BarkServer通知](origin/notify-bard.md)
 * [开源画图平台:Excalidraw](origin/excalidraw.md)
+* [HTTP认证](origin/http-auth.md)
 
 
 ## Part Ⅵ：数据存储处理
@@ -468,18 +471,17 @@
   - [JupyterHub/RStuido](origin/python-workerbench-jupyterhub.md)
   - [Python总结](origin/python-summary.md)
   - [Flask](origin/flask.md)
-
 - Golang学习笔记
   - [基础语法](origin/golang-basic.md)
+  - [常见工具使用总结](origin/go-utils.md)
   - [go的并发](origin/golang-concurrent-programming.md)
   - [Web框架Gin的使用总结](origin/go-gin.md)
   - [net/http的使用总结](origin/go-net-http-summary.md)
-  - [常见工具包的使用总结](origin/go-utils.md)
+  - 
   - [Golang加解密](origin/golang-encryption.md)
   - [embed: 嵌入静态资源文件](origin/golang-embed.md)
   - [X509/PKI证书](origin/golang-x509-certificate.md)
 - [HTML/CSS学习笔记](origin/html-css-learn.md)
-
 - JavaScript学习笔记
   - [SSE（Server-Sent Event）](origin/sse.md)
   - [JS/JQuery/Vue3/TS基础知识学习](origin/js-jquery-vue-learn.md)

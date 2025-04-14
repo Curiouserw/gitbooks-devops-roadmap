@@ -107,7 +107,7 @@ chmod 0400 /etc/gshadow
 
 ## 2、密码安全策略
 
-`/etc/pam.d/password-auth`
+CentOS 的`/etc/pam.d/password-auth`，Ubuntu 的`/etc/pam.d/common-auth`
 
 ```bash
 password    requisite     pam_pwquality.so try_first_pass local_users_only retry=3 authtok_type=  difok=1 minlen=8 ucredit=-1 lcredit=-1 dcredit=-1 

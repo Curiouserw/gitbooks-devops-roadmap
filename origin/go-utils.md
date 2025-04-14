@@ -1,4 +1,4 @@
-# 常用工具包的使用
+# 常用工具
 
 # 一、时间的处理
 
@@ -42,7 +42,7 @@ res := strings.HasPrefix(s, "aaa")
 // res为布尔值
 ```
 
-# 三、命令行参数的设置
+# 三、命令行参数
 
 ```go
 import ("flag" )
@@ -203,4 +203,14 @@ yum install upx -y
 # 压缩
 upx --brute 二进制文件
 # --brute 尝试所有压缩算法
+```
+
+# 八、Debug工具
+
+目前 golang生态圈里的主流调试工具有 GDB、LLDB 和 Delve 几种调试器。其中 GDB 是最早支持的调试工具，LLDB 是 macOS 系统推荐的标准调试工具。但是 GDB 和 LLDB 对 Go 语言的专有特性都缺乏很大支持，例如gdb 只能做到最基本的变量打印，却理解不了 golang 的一些特殊类型，比如 channel，map，slice 等，gdb 原生是无法调适 goroutine 协程的， 因为这是用户态的调度单位，gdb 只能理解线程，所以只能通过 python 脚本（src/runtime/runtime-gdb.py）的扩展，把协程结构按照链表输出。而只有 Delve 是专门为 Go 语言设计开发的调试工具。而且 Delve 本身也是采用 Go 语言开发，对 Windows 平台也提供了一样的支持。
+
+```bash
+sudo go install github.com/go-delve/delve/cmd/dlv@latest 
+dlv verison
+
 ```

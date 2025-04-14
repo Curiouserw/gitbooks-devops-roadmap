@@ -1,6 +1,8 @@
-# 大数据的数据迁移
+# 大数据量的数据备份与恢复
 
-# 一、简介
+# 一、案例1：MySQL到TIDB的逻辑备份与恢复
+
+## 1、简介
 
 迁移全量MySQL数据到TIDB。情况如下：
 
@@ -8,12 +10,7 @@
 
 - **目标库**：TIDB集群
 
-
-将源库中的数据导入TiDB
-
-# 二、方案
-
-## 1、Navicat的数据传输工具
+## 2、Navicat数据传输工具
 
 - 直接使用Navicat的数据传输工具，配置数据源连接和目标源连接。
 
@@ -23,15 +20,13 @@
 
 ![](../assets/bigdata-tidb-tools-migration-3.png)
 
-
-
-## 2、TiDB生态圈工具
+## 3、TiDB Dumping
 
 - **TiDB Dumping导出**：导出源MySQL中的数据为SQL文件
 - **修改SQL文件命名**：修改TiDB Dumping导出的SQL文件命名格式
 - **TiDB Lighting导入**：将SQL文件导入到TiDB 
 
-### TiDB Dumpling
+TiDB Dumpling
 
 ```bash
 version=v4.0.5 && \
@@ -53,7 +48,7 @@ nohup dumpling \
   --logfile /data/dumping-export/export-task.log >/data/dumping-export/dumpling-nohupout.log 2>&1 &
 ```
 
-### 批量修改SQL文件
+批量修改SQL文件
 
 ```bash
 # 例如源库DB为Test，想把数据导入到目标库Test-2中
@@ -66,7 +61,7 @@ mv /data/dumping-export/sql/${old_database_name}-schema-create.sql /data/dumping
 echo "" > ${new_database_name}-schema-create.sql
 ```
 
-### TiDB Lighting
+TiDB Lighting
 
 ```bash
 nohup /opt/tidb-toolkit-v4.0.5-linux-amd64/bin/tidb-lightning \
@@ -86,15 +81,74 @@ nohup tidb-lightning \
   -tidb-password ***** > /data/dumping-export/lightning-nohupout.log 2>&1 &
 ```
 
+## 4、结论
 
-
-# 三、结论
-
-大约**`三千万条`**记录的表，**`Navicat数据传输工具同步完耗时约3个小时`**，`而使用TiDB生态圈的工具耗时26分钟`
+大约**`三千万条`**记录的表，**`Navicat数据传输工具同步完耗时约3个小时`**，`而使用TiDB Dumping耗时26分钟`
 
 
 
-# 四、其他
+# 二、MySQL 到 MySQL的逻辑备份与恢复
+
+## 1、简介
+
+迁移全量MySQL数据到另一个空 MySQL，进行逻辑备份与恢复。情况如下：
+
+- **源库**：MySQL5.6，需要同步一整个 DB中的所有表
+
+- **目标库**：MySQL5.6
+
+## 2、方案步骤
+
+- Dumpling对源库进行逻辑备份
+
+  ```bash
+  DB_HOST=数据库地址
+  DB_HOST_PORT=数据库端口
+  DB_USERNAME=数据库用户
+  DB_PASSWORD=数据库用户密码
+  
+  DATE=$(date +"%Y%m%d%M")
+  BACKUPFILE_PATH='~/Desktop'
+  mkdir -p $BACKUPFILE_PATH/$DATE/{sql,logs}
+  nohup dumpling \
+            -h ${DB_HOST} \
+            -P ${DB_HOST_PORT} \
+            -u ${DB_USERNAME} \
+            -p ${DB_PASSWORD} \
+            --filetype sql \
+            --threads 8 \
+            -B $BACKUP_DBS \
+            -o $BACKUPFILE_PATH/$DATE/sql \
+            -F 256MiB \
+            --logfile $BACKUPFILE_PATH/$DATE/logs/export-task.log >$BACKUPFILE_PATH/$DATE/logs/dumpling-nohupout.log 2>&1 &
+  ```
+
+  > 8并发备份64张表，共计26926007条数据，导出速率在5~11MB/s之间，落地文件大小10.06GB，总计耗时20m17.8s
+
+- 整理SQL文件，使用 Navicat仅建库建表操作
+
+  ```bash
+  
+  ```
+
+- MySQL 命令行执行 SQL 文件进行逻辑恢复
+
+  ```bash
+  #!/bin/bash
+  cd sql
+  for file in `ls *.sql`;do 
+      db_tb_name=${file%.*} ; 
+      db=${db_tb_name%%.*} ;  
+      tabletm=${db_tb_name#*.} ;
+      table=${tabletm%%.*}; 
+      echo "当前正在导入：库名：$db 表名：$table 文件名：$file \n"  ;
+      mysql -h 目标数据库 -uroot --database=$db -p'密码' < $file
+  done
+  ```
+
+  > 耗时 30 分钟
+
+# 三、其他
 
 ## 1、查询DB下所有表的行数
 
