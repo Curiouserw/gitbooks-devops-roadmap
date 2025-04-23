@@ -2,7 +2,7 @@
 <!DOCTYPE HTML>
 <html lang="" >
     <head>
-        <title>环境搭建：安装配置 · Devops Roadmap</title>
+        <title>Shell命令自动补全 · Devops Roadmap</title>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
@@ -106,8 +106,10 @@
     <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="python-workerbench-jupyterhub.html" />
+    <link rel="next" href="apple-osascript.html" />
     
+    
+    <link rel="prev" href="shell-script-perf.html" />
     
 
     <style>
@@ -3884,7 +3886,7 @@
             
         </li>
     
-        <li class="chapter " data-level="6.2.4" data-path="shell-tab-completion.html">
+        <li class="chapter active" data-level="6.2.4" data-path="shell-tab-completion.html">
             
                 <a href="shell-tab-completion.html">
             
@@ -7408,7 +7410,7 @@
             <ul class="articles">
                 
     
-        <li class="chapter active" data-level="8.1.1" data-path="python-basic.html">
+        <li class="chapter " data-level="8.1.1" data-path="python-basic.html">
             
                 <a href="python-basic.html">
             
@@ -8276,7 +8278,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href=".." >环境搭建：安装配置</a>
+        <a href=".." >Shell命令自动补全</a>
     </h1>
 </div>
 
@@ -8291,169 +8293,278 @@
     
 					<section class="normal markdown-section">
 						
-						<h1 id="python-&#x73AF;&#x5883;&#x7684;&#x642D;&#x5EFA;">Python &#x73AF;&#x5883;&#x7684;&#x642D;&#x5EFA;</h1>
-<h1 id="&#x4E00;&#x3001;&#x5B89;&#x88C5;">&#x4E00;&#x3001;&#x5B89;&#x88C5;</h1>
-<h2 id="1&#x3001;&#x6E90;&#x7801;&#x7F16;&#x8BD1;&#x5B89;&#x88C5;">1&#x3001;&#x6E90;&#x7801;&#x7F16;&#x8BD1;&#x5B89;&#x88C5;</h2>
-<h3 id="centos">CentOS</h3>
-<pre class="language-"><code class="bash">version=3.7.7
-yum install -y sqlite-devel readline-devel tk-devel
-wget https://www.python.org/ftp/python/$version/Python-$version.tgz
-tar -xzf Python-$version.tgz
-cd Python-$version
-./configure --enable-optimizations
-make
-make install
+						<h1 id="shell&#x547D;&#x4EE4;&#x81EA;&#x52A8;&#x8865;&#x5168;">Shell&#x547D;&#x4EE4;&#x81EA;&#x52A8;&#x8865;&#x5168;</h1>
+<h1 id="&#x4E00;&#x3001;&#x81EA;&#x52A8;&#x8865;&#x5168;&#x7684;&#x7C7B;&#x578B;">&#x4E00;&#x3001;&#x81EA;&#x52A8;&#x8865;&#x5168;&#x7684;&#x7C7B;&#x578B;</h1>
+<ul>
+<li><p><strong>&#x547D;&#x4EE4;&#x8865;&#x5168;&#xFF1A;</strong>&#x8F93;&#x5165;&#x547D;&#x4EE4;&#x7684;&#x524D;&#x51E0;&#x4E2A;&#x5B57;&#x6BCD;&#x540E;&#x6309; <code>Tab</code>&#xFF0C;&#x81EA;&#x52A8;&#x8865;&#x5168;&#x53EF;&#x6267;&#x884C;&#x7A0B;&#x5E8F;&#x540D;&#x3002;</p>
+</li>
+<li><p><strong>&#x8DEF;&#x5F84;&#x8865;&#x5168;&#xFF1A;</strong>&#x8F93;&#x5165;&#x90E8;&#x5206;&#x8DEF;&#x5F84;&#x540E;&#x6309; <code>Tab</code>&#xFF0C;&#x81EA;&#x52A8;&#x8865;&#x5168;&#x6587;&#x4EF6;&#x6216;&#x76EE;&#x5F55;</p>
+</li>
+<li><p><strong>&#x53C2;&#x6570;/&#x9009;&#x9879;&#x8865;&#x5168;&#xFF1A;</strong>&#x90E8;&#x5206;&#x547D;&#x4EE4;&#x652F;&#x6301;&#x8865;&#x5168;&#x9009;&#x9879;&#x6216;&#x53C2;&#x6570;&#xFF08;&#x9700;&#x5B89;&#x88C5;&#x8865;&#x5168;&#x811A;&#x672C;&#xFF09;</p>
+</li>
+<li><p><strong>&#x53D8;&#x91CF;&#x8865;&#x5168;&#xFF1A;</strong>&#x5168;&#x73AF;&#x5883;&#x53D8;&#x91CF;&#x540D;</p>
+</li>
+</ul>
+<h1 id="&#x4E8C;&#x3001;&#x4E0D;&#x540C;shell&#x7684;&#x81EA;&#x52A8;&#x8865;&#x5168;">&#x4E8C;&#x3001;&#x4E0D;&#x540C;Shell&#x7684;&#x81EA;&#x52A8;&#x8865;&#x5168;</h1>
+<ul>
+<li><p><strong>Bash</strong></p>
+<ul>
+<li><p>&#x57FA;&#x7840;&#x8865;&#x5168;&#xFF1A;&#x9ED8;&#x8BA4;&#x652F;&#x6301;&#x547D;&#x4EE4;&#x548C;&#x8DEF;&#x5F84;&#x8865;&#x5168;</p>
+</li>
+<li><p>&#x589E;&#x5F3A;&#x8865;&#x5168;&#xFF1A;&#x9700;&#x5B89;&#x88C5; <code>bash-completion</code> &#x5305;&#xFF0C;&#x652F;&#x6301;&#x590D;&#x6742;&#x547D;&#x4EE4;&#xFF08;&#x5982; <code>git</code>&#x3001;<code>docker</code>&#xFF09;</p>
+<pre class="language-"><code class="bash">sudo apt install bash-completion
 </code></pre>
-<h3 id="ubuntu">Ubuntu</h3>
-<pre class="language-"><code class="bash">version=3.7.7
-apt update
-apt install -y build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev \
-            libsqlite3-dev libreadline-dev libffi-dev wget libbz2-dev
-wget https://www.python.org/ftp/python/$version/Python-$version.tgz
-tar -xzf Python-$version.tgz
-cd Python-$version
-./configure --enable-optimizations
-make
-make install
+</li>
+</ul>
+</li>
+<li><p><strong>Zsh</strong></p>
+<ul>
+<li><p>&#x529F;&#x80FD;&#x66F4;&#x5F3A;&#x5927;&#xFF0C;&#x652F;&#x6301;&#x4E0A;&#x4E0B;&#x6587;&#x611F;&#x77E5;&#x8865;&#x5168;&#xFF08;&#x5982;&#x6839;&#x636E;&#x5386;&#x53F2;&#x547D;&#x4EE4;&#x63A8;&#x65AD;&#x53C2;&#x6570;&#xFF09;</p>
+</li>
+<li><p>&#x63A8;&#x8350;&#x4F7F;&#x7528;&#x6846;&#x67B6;&#xFF08;&#x5982; <strong>Oh My Zsh</strong>&#xFF09;&#x6269;&#x5C55;&#x529F;&#x80FD;&#x3002;
+<strong>&#x914D;&#x7F6E;</strong>&#xFF1A;&#x5728; <code>~/.zshrc</code> &#x4E2D;&#x542F;&#x7528;&#x63D2;&#x4EF6;&#xFF1A;<code>plugins=(git docker npm)</code></p>
+</li>
+</ul>
+</li>
+<li><p><strong>Fish</strong></p>
+<ul>
+<li>&#x5F00;&#x7BB1;&#x5373;&#x7528;&#xFF0C;&#x65E0;&#x9700;&#x914D;&#x7F6E;&#x5373;&#x53EF;&#x667A;&#x80FD;&#x8865;&#x5168;&#xFF0C;&#x652F;&#x6301;&#x5B9E;&#x65F6;&#x63D0;&#x793A;</li>
+</ul>
+</li>
+</ul>
+<h1 id="&#x4E09;&#x3001;bash&#x7684;complete">&#x4E09;&#x3001;Bash&#x7684;complete</h1>
+<ul>
+<li><strong>&#x5173;&#x8054;&#x8865;&#x5168;&#x89C4;&#x5219;</strong>&#xFF1A;&#x4E3A;&#x547D;&#x4EE4;&#x5B9A;&#x4E49;&#x53C2;&#x6570;&#x8865;&#x5168;&#x903B;&#x8F91;&#xFF08;&#x5982;&#x9009;&#x9879;&#x3001;&#x6587;&#x4EF6;&#x8DEF;&#x5F84;&#x3001;&#x56FA;&#x5B9A;&#x5217;&#x8868;&#x7B49;&#xFF09;&#x3002;</li>
+<li><strong>&#x52A8;&#x6001;&#x8865;&#x5168;</strong>&#xFF1A;&#x901A;&#x8FC7;&#x56DE;&#x8C03;&#x51FD;&#x6570;&#x52A8;&#x6001;&#x751F;&#x6210;&#x5019;&#x9009;&#x8865;&#x5168;&#x5217;&#x8868;&#x3002;</li>
+<li><strong>&#x8986;&#x76D6;&#x9ED8;&#x8BA4;&#x89C4;&#x5219;</strong>&#xFF1A;&#x4FEE;&#x6539;&#x6216;&#x6269;&#x5C55;&#x7CFB;&#x7EDF;&#x6216;&#x7B2C;&#x4E09;&#x65B9;&#x547D;&#x4EE4;&#x7684;&#x9ED8;&#x8BA4;&#x8865;&#x5168;&#x884C;&#x4E3A;&#x3002;</li>
+</ul>
+<h2 id="1&#x3001;&#x57FA;&#x672C;&#x8BED;&#x6CD5;">1&#x3001;&#x57FA;&#x672C;&#x8BED;&#x6CD5;</h2>
+<pre class="language-"><code class="bash">complete [&#x9009;&#x9879;] [&#x547D;&#x4EE4;&#x540D;]
 </code></pre>
-<h2 id="2&#x3001;&#x5305;&#x7BA1;&#x7406;&#x5668;&#x5B89;&#x88C5;">2&#x3001;&#x5305;&#x7BA1;&#x7406;&#x5668;&#x5B89;&#x88C5;</h2>
-<h3 id="aptubuntudebian">APT(Ubuntu/Debian)</h3>
-<pre class="language-"><code class="bash">apt install software-properties-common
-add-apt-repository ppa:deadsnakes/ppa
-apt-get update
-apt-get install python3.6
+<p>&#x5E38;&#x7528;&#x9009;&#x9879;&#xFF1A;</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">&#x9009;&#x9879;</th>
+<th style="text-align:left">&#x4F5C;&#x7528;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>-W &quot;&#x8BCD;1 &#x8BCD;2 ...&quot;</code></td>
+<td style="text-align:left">&#x6307;&#x5B9A;&#x9759;&#x6001;&#x5019;&#x9009;&#x8BCD;&#x5217;&#x8868;&#xFF08;&#x7A7A;&#x683C;&#x5206;&#x9694;&#xFF09;</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>-F &#x51FD;&#x6570;&#x540D;</code></td>
+<td style="text-align:left">&#x6307;&#x5B9A;&#x52A8;&#x6001;&#x751F;&#x6210;&#x5019;&#x9009;&#x5217;&#x8868;&#x7684; Bash &#x51FD;&#x6570;</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>-C &#x547D;&#x4EE4;</code></td>
+<td style="text-align:left">&#x8C03;&#x7528;&#x5916;&#x90E8;&#x547D;&#x4EE4;&#x751F;&#x6210;&#x5019;&#x9009;&#x5217;&#x8868;</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>-d</code></td>
+<td style="text-align:left">&#x4EC5;&#x8865;&#x5168;&#x76EE;&#x5F55;&#xFF08;&#x7C7B;&#x4F3C; <code>cd</code> &#x7684;&#x9ED8;&#x8BA4;&#x884C;&#x4E3A;&#xFF09;</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>-f</code></td>
+<td style="text-align:left">&#x4EC5;&#x8865;&#x5168;&#x6587;&#x4EF6;&#x540D;</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>-A alias</code></td>
+<td style="text-align:left">&#x8865;&#x5168;&#x522B;&#x540D;</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>-A export</code></td>
+<td style="text-align:left">&#x8865;&#x5168;&#x73AF;&#x5883;&#x53D8;&#x91CF;&#x540D;</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>-r</code></td>
+<td style="text-align:left">&#x79FB;&#x9664;&#x5DF2;&#x6CE8;&#x518C;&#x7684;&#x8865;&#x5168;&#x89C4;&#x5219;</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="2&#x3001;&#x9759;&#x6001;&#x8865;&#x5168;&#xFF08;&#x56FA;&#x5B9A;&#x5217;&#x8868;&#xFF09;">2&#x3001;&#x9759;&#x6001;&#x8865;&#x5168;&#xFF08;&#x56FA;&#x5B9A;&#x5217;&#x8868;&#xFF09;</h2>
+<p>&#x4E3A;&#x547D;&#x4EE4; <code>mycmd</code> &#x5B9A;&#x4E49;&#x56FA;&#x5B9A;&#x5019;&#x9009;&#x8BCD;&#xFF08;<code>start</code>&#x3001;<code>stop</code>&#x3001;<code>restart</code>&#xFF09;</p>
+<pre class="language-"><code class="bash">complete -W &quot;start stop restart&quot; mycmd
 </code></pre>
-<h1 id="&#x4E8C;&#x3001;python&#x7684;&#x5305;&#x7BA1;&#x7406;&#x5668;pip">&#x4E8C;&#x3001;Python&#x7684;&#x5305;&#x7BA1;&#x7406;&#x5668;pip</h1>
-<h2 id="1&#x3001;-&#x5B89;&#x88C5;">1&#x3001; &#x5B89;&#x88C5;</h2>
-<h3 id="yum">YUM</h3>
-<pre class="language-"><code>yum install -y epel-release ;\
-yum install python-pip
-</code></pre><h3 id="apt">APT</h3>
-<pre class="language-"><code>apt-get install python3-pip
-</code></pre><h2 id="2&#x3001;&#x5347;&#x7EA7;">2&#x3001;&#x5347;&#x7EA7;</h2>
-<pre class="language-"><code class="bash">pip3 install -U pip
-# &#x6216;&#x8005;
-python3 -m pip install -U pip
-python3 -m pip install --upgrade pip
+<ul>
+<li><strong>&#x6548;&#x679C;</strong>&#xFF1A;&#x8F93;&#x5165; <code>mycmd [Tab]</code> &#x65F6;&#xFF0C;&#x81EA;&#x52A8;&#x8865;&#x5168;&#x8FD9;&#x4E09;&#x4E2A;&#x8BCD;&#x3002;</li>
+</ul>
+<h2 id="3&#x3001;&#x52A8;&#x6001;&#x8865;&#x5168;&#xFF08;&#x81EA;&#x5B9A;&#x4E49;&#x51FD;&#x6570;&#xFF09;">3&#x3001;&#x52A8;&#x6001;&#x8865;&#x5168;&#xFF08;&#x81EA;&#x5B9A;&#x4E49;&#x51FD;&#x6570;&#xFF09;</h2>
+<p>&#x4E3A;&#x547D;&#x4EE4; <code>git</code> &#x52A8;&#x6001;&#x8865;&#x5168;&#x5206;&#x652F;&#x540D;&#xFF08;&#x793A;&#x4F8B;&#x7B80;&#x5316;&#x903B;&#x8F91;&#xFF09;</p>
+<pre class="language-"><code class="bash">_git_branch_complete() {
+    local branches=$(git branch --list | cut -c 3-)
+    COMPREPLY=($(compgen -W &quot;$branches&quot; -- &quot;${COMP_WORDS[COMP_CWORD]}&quot;))
+}
+complete -F _git_branch_complete git
 </code></pre>
-<h2 id="3&#x3001;&#x5B89;&#x88C5;&#x4F9D;&#x8D56;">3&#x3001;&#x5B89;&#x88C5;&#x4F9D;&#x8D56;</h2>
-<pre class="language-"><code class="bash">pip3 install django
-# &#x6216;&#x8005;
-python3.6 -m pip install django
+<ul>
+<li><strong>&#x5173;&#x952E;&#x53D8;&#x91CF;</strong>&#xFF1A;<ul>
+<li><code>COMPREPLY</code>&#xFF1A;&#x5B58;&#x50A8;&#x8865;&#x5168;&#x5019;&#x9009;&#x7684;&#x6570;&#x7EC4;&#xFF08;&#x5FC5;&#x987B;&#x8D4B;&#x503C;&#xFF09;&#x3002;</li>
+<li><code>COMP_WORDS</code>&#xFF1A;&#x5F53;&#x524D;&#x547D;&#x4EE4;&#x884C;&#x6240;&#x6709;&#x5355;&#x8BCD;&#x7684;&#x6570;&#x7EC4;&#x3002;</li>
+<li><code>COMP_CWORD</code>&#xFF1A;&#x5F53;&#x524D;&#x5149;&#x6807;&#x6240;&#x5728;&#x5355;&#x8BCD;&#x7684;&#x7D22;&#x5F15;&#x3002;</li>
+</ul>
+</li>
+<li><strong>&#x5DE5;&#x5177;&#x51FD;&#x6570;</strong>&#xFF1A;<code>compgen -W</code> &#x7528;&#x4E8E;&#x8FC7;&#x6EE4;&#x5019;&#x9009;&#x8BCD;&#x3002;</li>
+</ul>
+<h2 id="4&#x3001;&#x8865;&#x5168;&#x6587;&#x4EF6;&#x7C7B;&#x578B;">4&#x3001;&#x8865;&#x5168;&#x6587;&#x4EF6;&#x7C7B;&#x578B;</h2>
+<p>&#x4E3A;&#x547D;&#x4EE4; <code>convert</code> &#x4EC5;&#x8865;&#x5168; <code>.png</code> &#x548C; <code>.jpg</code> &#x6587;&#x4EF6;&#xFF1A;</p>
+<pre class="language-"><code class="bash">complete -f -X &apos;!*.@(png|jpg)&apos; convert
 </code></pre>
-<h2 id="4&#x3001;&#x56FA;&#x5B9A;&#x5B89;&#x88C5;&#x7684;&#x4F9D;&#x8D56;">4&#x3001;&#x56FA;&#x5B9A;&#x5B89;&#x88C5;&#x7684;&#x4F9D;&#x8D56;</h2>
-<pre class="language-"><code class="bash">pip3 freeze &gt; requirements.txt
+<ul>
+<li><code>-X</code>&#xFF1A;&#x6392;&#x9664;&#x6A21;&#x5F0F;&#xFF08;<code>!</code> &#x8868;&#x793A;&#x53D6;&#x53CD;&#xFF09;&#x3002;</li>
+<li><code>@(png|jpg)</code>&#xFF1A;Bash &#x6269;&#x5C55;&#x6A21;&#x5F0F;&#xFF08;&#x9700;&#x542F;&#x7528; <code>extglob</code>&#xFF09;&#x3002;</li>
+</ul>
+<h2 id="5&#x3001;&#x591A;&#x7EA7;&#x8865;&#x5168;">5&#x3001;&#x591A;&#x7EA7;&#x8865;&#x5168;</h2>
+<p>&#x6839;&#x636E;&#x524D;&#x4E00;&#x4E2A;&#x53C2;&#x6570;&#x51B3;&#x5B9A;&#x540E;&#x7EED;&#x8865;&#x5168;&#x5185;&#x5BB9;&#xFF08;&#x4F8B;&#x5982; <code>docker</code> &#x7684;&#x5B50;&#x547D;&#x4EE4;&#xFF09;&#xFF1A;</p>
+<pre class="language-"><code class="bash">_docker_complete() {
+    local prev=${COMP_WORDS[COMP_CWORD-1]}
+    case $prev in
+        run) COMPREPLY=($(compgen -W &quot;--name -it -v&quot; -- &quot;$cur&quot;)) ;;
+        exec) COMPREPLY=($(docker ps --format &quot;{{.Names}}&quot;)) ;;
+        *) COMPREPLY=($(compgen -W &quot;run exec ps stop&quot; -- &quot;$cur&quot;)) ;;
+    esac
+}
+complete -F _docker_complete docker
 </code></pre>
-<h1 id="&#x4E09;&#x3001;python&#x865A;&#x62DF;&#x9694;&#x79BB;&#x73AF;&#x5883;virtualenv">&#x4E09;&#x3001;Python&#x865A;&#x62DF;&#x9694;&#x79BB;&#x73AF;&#x5883;Virtualenv</h1>
-<p>&#x5982;&#x679C;&#x6211;&#x4EEC;&#x8981;&#x540C;&#x65F6;&#x5F00;&#x53D1;&#x591A;&#x4E2A;&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#xFF0C;&#x90A3;&#x8FD9;&#x4E9B;&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#x90FD;&#x4F1A;&#x5171;&#x7528;&#x4E00;&#x4E2A;Python&#xFF0C;&#x5C31;&#x662F;&#x5B89;&#x88C5;&#x5728;&#x7CFB;&#x7EDF;&#x7684;Python 3&#x3002;&#x5982;&#x679C;&#x5E94;&#x7528;A&#x9700;&#x8981;jinja 2.7&#xFF0C;&#x800C;&#x5E94;&#x7528;B&#x9700;&#x8981;jinja 2.6&#x600E;&#x4E48;&#x529E;&#xFF1F;&#x8FD9;&#x79CD;&#x60C5;&#x51B5;&#x4E0B;&#xFF0C;&#x6BCF;&#x4E2A;&#x5E94;&#x7528;&#x53EF;&#x80FD;&#x9700;&#x8981;&#x5404;&#x81EA;&#x62E5;&#x6709;&#x4E00;&#x5957;&#x201C;&#x72EC;&#x7ACB;&#x201D;&#x7684;Python&#x8FD0;&#x884C;&#x73AF;&#x5883;&#x3002;virtualenv&#x5C31;&#x662F;&#x7528;&#x6765;&#x4E3A;&#x4E00;&#x4E2A;&#x5E94;&#x7528;&#x521B;&#x5EFA;&#x4E00;&#x5957;&#x201C;&#x9694;&#x79BB;&#x201D;&#x7684;Python&#x8FD0;&#x884C;&#x73AF;&#x5883;&#x3002;</p>
-<h2 id="1&#x3001;&#x5B89;&#x88C5;">1&#x3001;&#x5B89;&#x88C5;</h2>
-<pre class="language-"><code class="bash">pip3 install virtualenv
+<h2 id="6&#x3001;&#x8865;&#x5168;&#x73AF;&#x5883;&#x53D8;&#x91CF;">6&#x3001;&#x8865;&#x5168;&#x73AF;&#x5883;&#x53D8;&#x91CF;</h2>
+<p>&#x4E3A; <code>echo</code> &#x8865;&#x5168;&#x73AF;&#x5883;&#x53D8;&#x91CF;&#x540D;&#xFF08;&#x9700;&#x5148;&#x5B9A;&#x4E49;&#x53D8;&#x91CF;&#xFF09;&#xFF1A;</p>
+<pre class="language-"><code class="bash">complete -A export echo
 </code></pre>
-<h2 id="2&#x3001;&#x914D;&#x7F6E;&#x4F7F;&#x7528;">2&#x3001;&#x914D;&#x7F6E;&#x4F7F;&#x7528;</h2>
-<pre class="language-"><code class="bash">virtualenv --python=python3.6 .
-# &#x4E0A;&#x8FF0;&#x547D;&#x4EE4;&#x4F1A;&#x5728;&#x5F53;&#x524D;&#x8DEF;&#x5F84;&#x521B;&#x5EFA;lib,include,bin&#x76EE;&#x5F55;
+<h2 id="7&#x3001;&#x4F7F;&#x7528;&#x5916;&#x90E8;&#x547D;&#x4EE4;&#x751F;&#x6210;&#x8865;&#x5168;">7&#x3001;&#x4F7F;&#x7528;&#x5916;&#x90E8;&#x547D;&#x4EE4;&#x751F;&#x6210;&#x8865;&#x5168;</h2>
+<p>&#x901A;&#x8FC7; <code>ls</code> &#x547D;&#x4EE4;&#x8865;&#x5168;&#x6587;&#x4EF6;&#x540D;</p>
+<pre class="language-"><code class="bash">complete -C &apos;ls -1&apos; myls
+</code></pre>
+<hr>
+<h2 id="8&#x3001;&#x8865;&#x5168;&#x811A;&#x672C;&#x7684;&#x5B58;&#x653E;&#x4F4D;&#x7F6E;">8&#x3001;&#x8865;&#x5168;&#x811A;&#x672C;&#x7684;&#x5B58;&#x653E;&#x4F4D;&#x7F6E;</h2>
+<p>Bash &#x81EA;&#x52A8;&#x52A0;&#x8F7D;&#x4EE5;&#x4E0B;&#x76EE;&#x5F55;&#x4E2D;&#x7684;&#x8865;&#x5168;&#x811A;&#x672C;&#xFF1A;</p>
+<pre class="language-"><code class="bash">/etc/bash_completion.d/      # &#x7CFB;&#x7EDF;&#x7EA7;&#x8865;&#x5168;&#xFF08;&#x9700; root &#x6743;&#x9650;&#xFF09;
+~/.bash_completion           # &#x7528;&#x6237;&#x7EA7;&#x81EA;&#x5B9A;&#x4E49;&#x8865;&#x5168;
+</code></pre>
+<ul>
+<li><p><strong>&#x63A8;&#x8350;&#x5DE5;&#x5177;</strong>&#xFF1A;&#x5B89;&#x88C5; <code>bash-completion</code> &#x5305;&#x4EE5;&#x589E;&#x5F3A;&#x7CFB;&#x7EDF;&#x547D;&#x4EE4;&#x7684;&#x8865;&#x5168;&#x652F;&#x6301;&#xFF1A;</p>
+<pre class="language-"><code class="bash"># Debian/Ubuntu
+sudo apt install bash-completion
 
-# --no-site-packages&#xFF0C;&#x53C2;&#x6570;&#x8BBE;&#x7F6E;&#x5DF2;&#x7ECF;&#x5B89;&#x88C5;&#x5230;&#x7CFB;&#x7EDF;Python&#x73AF;&#x5883;&#x4E2D;&#x7684;&#x6240;&#x6709;&#x7B2C;&#x4E09;&#x65B9;&#x5305;&#x90FD;&#x4E0D;&#x4F1A;&#x590D;&#x5236;&#x8FC7;&#x6765;&#xFF0C;&#x53EF;&#x4EE5;&#x5F97;&#x5230;&#x4E00;&#x4E2A;&#x4E0D;&#x5E26;&#x4EFB;&#x4F55;&#x7B2C;&#x4E09;&#x65B9;&#x5305;&#x7684;&#x201C;&#x5E72;&#x51C0;&#x201D;&#x7684;Python&#x8FD0;&#x884C;&#x73AF;&#x5883;&#x3002;
+# RedHat/CentOS
+sudo yum install bash-completion
 </code></pre>
-<h2 id="3&#x3001;&#x6FC0;&#x6D3B;&#x5F53;&#x524D;virtualenv">3&#x3001;&#x6FC0;&#x6D3B;&#x5F53;&#x524D;virtualenv</h2>
-<pre class="language-"><code class="bash">source ./bin/activate  
-# &#x6CE8;&#x610F;&#x7EC8;&#x7AEF;&#x53D1;&#x751F;&#x4E86;&#x53D8;&#x5316;
+</li>
+</ul>
+<h2 id="9&#x3001;&#x8C03;&#x8BD5;&#x4E0E;&#x91CD;&#x8F7D;">9&#x3001;&#x8C03;&#x8BD5;&#x4E0E;&#x91CD;&#x8F7D;</h2>
+<ol>
+<li><p><strong>&#x624B;&#x52A8;&#x91CD;&#x8F7D;&#x8865;&#x5168;&#x811A;&#x672C;</strong></p>
+<pre class="language-"><code class="bash">source ~/.bash_completion  # &#x91CD;&#x65B0;&#x52A0;&#x8F7D;&#x7528;&#x6237;&#x8865;&#x5168;&#x811A;&#x672C;
 </code></pre>
-<h2 id="4&#x3001;&#x5B89;&#x88C5;&#x4F9D;&#x8D56;">4&#x3001;&#x5B89;&#x88C5;&#x4F9D;&#x8D56;</h2>
-<pre class="language-"><code class="bash">(venv) pip install -y requirement.txt
+</li>
+<li><p><strong>&#x67E5;&#x770B;&#x5DF2;&#x6CE8;&#x518C;&#x7684;&#x8865;&#x5168;&#x89C4;&#x5219;</strong></p>
+<pre class="language-"><code class="bash">complete -p                 # &#x5217;&#x51FA;&#x6240;&#x6709;&#x8865;&#x5168;&#x89C4;&#x5219;
+complete -p docker          # &#x67E5;&#x770B;&#x7279;&#x5B9A;&#x547D;&#x4EE4;&#x7684;&#x8865;&#x5168;&#x89C4;&#x5219;
 </code></pre>
-<h2 id="5&#x3001;&#x5173;&#x95ED;virtualenv">5&#x3001;&#x5173;&#x95ED;virtualenv</h2>
-<pre class="language-"><code class="ruby">(venv)deactivate
+</li>
+<li><p><strong>&#x5220;&#x9664;&#x8865;&#x5168;&#x89C4;&#x5219;</strong></p>
+<pre class="language-"><code class="bash">complete -r mycmd           # &#x79FB;&#x9664;&#x5BF9; mycmd &#x7684;&#x8865;&#x5168;
 </code></pre>
-<h2 id="6&#x3001;&#x6253;&#x5305;&#x5F53;&#x524D;&#x865A;&#x62DF;&#x73AF;&#x5883;">6&#x3001;&#x6253;&#x5305;&#x5F53;&#x524D;&#x865A;&#x62DF;&#x73AF;&#x5883;</h2>
-<pre class="language-"><code class="bash">(venv) -relocatable ./
+</li>
+</ol>
+<h1 id="&#x56DB;&#x3001;zsh&#x7684;compdef">&#x56DB;&#x3001;Zsh&#x7684;compdef</h1>
+<p><code>compdef</code> &#x662F; Zsh &#x4E2D;&#x7528;&#x4E8E;&#x5B9A;&#x4E49;<strong>&#x81EA;&#x5B9A;&#x4E49;&#x8865;&#x5168;&#x89C4;&#x5219;</strong>&#x7684;&#x6838;&#x5FC3;&#x547D;&#x4EE4;&#x3002;&#x5B83;&#x5141;&#x8BB8;&#x7528;&#x6237;&#x4E3A;&#x7279;&#x5B9A;&#x547D;&#x4EE4;&#x6216;&#x51FD;&#x6570;&#x6307;&#x5B9A;&#x8865;&#x5168;&#x884C;&#x4E3A;&#xFF08;&#x4F8B;&#x5982;&#x53C2;&#x6570;&#x3001;&#x9009;&#x9879;&#x3001;&#x6587;&#x4EF6;&#x7C7B;&#x578B;&#x7B49;&#xFF09;&#xFF0C;&#x662F; Zsh &#x5F3A;&#x5927;&#x81EA;&#x52A8;&#x8865;&#x5168;&#x529F;&#x80FD;&#x7684;&#x5173;&#x952E;&#x5DE5;&#x5177;&#x4E4B;&#x4E00;&#x3002;</p>
+<h2 id="1&#x3001;&#x57FA;&#x672C;&#x8BED;&#x6CD5;">1&#x3001;&#x57FA;&#x672C;&#x8BED;&#x6CD5;</h2>
+<pre class="language-"><code class="bash">compdef [&#x8865;&#x5168;&#x51FD;&#x6570;&#x540D;] [&#x547D;&#x4EE4;&#x540D;]
 </code></pre>
-<h2 id="7&#x3001;&#x56FA;&#x5B9A;&#x5F53;&#x524D;&#x865A;&#x62DF;&#x73AF;&#x5883;&#x4E2D;&#x5B89;&#x88C5;&#x7684;&#x4F9D;&#x8D56;">7&#x3001;&#x56FA;&#x5B9A;&#x5F53;&#x524D;&#x865A;&#x62DF;&#x73AF;&#x5883;&#x4E2D;&#x5B89;&#x88C5;&#x7684;&#x4F9D;&#x8D56;</h2>
-<pre class="language-"><code class="bash">(venv) pip freeze &gt; requirements.txt
-</code></pre>
-<h1 id="&#x56DB;&#x3001;anaconda&#x3001;miniconda">&#x56DB;&#x3001;AnaConda&#x3001;MiniConda</h1>
-<h2 id="1&#x3001;&#x8BBE;&#x7F6E;-conda-&#x6E90;">1&#x3001;&#x8BBE;&#x7F6E; conda &#x6E90;</h2>
-<p><code>~/.condarc</code></p>
-<pre class="language-"><code class="bash"># &#x914D;&#x7F6E;&#x4E86; Conda &#x5305;&#x641C;&#x7D22;&#x7684;&#x987A;&#x5E8F;&#x3002;Conda &#x5C06;&#x6309;&#x7167;&#x5217;&#x8868;&#x4E2D;&#x7684;&#x987A;&#x5E8F;&#x641C;&#x7D22;&#x5305;&#xFF0C;&#x76F4;&#x5230;&#x627E;&#x5230;&#x7B2C;&#x4E00;&#x4E2A;&#x5339;&#x914D;&#x7684;&#x5305;&#x4E3A;&#x6B62;
-channels:
-  - defaults
+<ul>
+<li><strong>&#x8865;&#x5168;&#x51FD;&#x6570;&#x540D;</strong>&#xFF1A;&#x8D1F;&#x8D23;&#x751F;&#x6210;&#x8865;&#x5168;&#x5019;&#x9009;&#x5217;&#x8868;&#x7684; Zsh &#x51FD;&#x6570;&#x3002;</li>
+<li><strong>&#x547D;&#x4EE4;&#x540D;</strong>&#xFF1A;&#x9700;&#x8981;&#x6DFB;&#x52A0;&#x8865;&#x5168;&#x7684;&#x76EE;&#x6807;&#x547D;&#x4EE4;&#x3002;</li>
+</ul>
+<hr>
+<h2 id="2&#x3001;&#x4E3A;&#x81EA;&#x5B9A;&#x4E49;&#x547D;&#x4EE4;&#x6DFB;&#x52A0;&#x8865;&#x5168;">2&#x3001;&#x4E3A;&#x81EA;&#x5B9A;&#x4E49;&#x547D;&#x4EE4;&#x6DFB;&#x52A0;&#x8865;&#x5168;</h2>
+<p>&#x5047;&#x8BBE;&#x6709;&#x4E00;&#x4E2A;&#x547D;&#x4EE4; <code>mycmd</code>&#xFF0C;&#x5E0C;&#x671B;&#x8F93;&#x5165; <code>mycmd [TAB]</code> &#x65F6;&#x8865;&#x5168;&#x9009;&#x9879; <code>start</code>&#x3001;<code>stop</code>&#x3001;<code>restart</code>&#xFF1A;</p>
+<pre class="language-"><code class="bash"># &#x5B9A;&#x4E49;&#x8865;&#x5168;&#x51FD;&#x6570;
+_mycmd() {
+    local -a subcmds
+    subcmds=(&apos;start:Start service&apos; &apos;stop:Stop service&apos; &apos;restart:Restart service&apos;)
+    _describe &apos;command&apos; subcmds
+}
 
-show_channel_urls: true                                            # &#x662F;&#x5426;&#x5728;&#x5B89;&#x88C5;&#x8FC7;&#x7A0B;&#x4E2D;&#x663E;&#x793A;&#x4ECE;&#x54EA;&#x4E2A;&#x9891;&#x9053;&#x4E0B;&#x8F7D;&#x7684;&#x5305;
-auto_update_conda: false                                        # &#x914D;&#x7F6E;&#x4E86;&#x662F;&#x5426;&#x5728;&#x6BCF;&#x6B21;&#x4F7F;&#x7528; Conda &#x547D;&#x4EE4;&#x65F6;&#x81EA;&#x52A8;&#x66F4;&#x65B0; Conda&#x3002;
-create_default_packages:                                        # &#x914D;&#x7F6E;&#x4E86;&#x521B;&#x5EFA;&#x65B0;&#x73AF;&#x5883;&#x65F6;&#x9ED8;&#x8BA4;&#x5B89;&#x88C5;&#x7684;&#x5305;
-  - numpy
-  - pandas
-anaconda_anon_usage: false                                    # &#x914D;&#x7F6E;&#x662F;&#x5426;&#x5141;&#x8BB8;&#x533F;&#x540D;&#x4F7F;&#x7528;&#x6570;&#x636E;&#x7684;&#x6536;&#x96C6;
-channel_priority: strict                                # &#x914D;&#x7F6E;&#x4E86;Conda&#x662F;&#x5426;&#x4F18;&#x5148;&#x4F7F;&#x7528;&#x6307;&#x5B9A;&#x7684;&#x9891;&#x9053;.&quot;strict&quot;(&#x4E25;&#x683C;)&#x8868;&#x793A;&#x53EA;&#x4F7F;&#x7528;&#x6307;&#x5B9A;&#x9891;&#x9053;,&quot;flexible&quot;(&#x7075;&#x6D3B;)&#x8868;&#x793A;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;&#x5176;&#x4ED6;&#x9891;&#x9053;
-channel_alias:                                                            # &#x8BBE;&#x7F6E;&#x9891;&#x9053;&#x522B;&#x540D;&#xFF0C;&#x4EE5;&#x4FBF;&#x66F4;&#x65B9;&#x4FBF;&#x5730;&#x5F15;&#x7528;&#x9891;&#x9053;
-  my_alias: https://my_channel_url
-
-default_channels:                                                        # &#x8BBE;&#x7F6E;&#x4E86; Conda &#x641C;&#x7D22;&#x5305;&#x65F6;&#x7684;&#x9ED8;&#x8BA4;&#x9891;&#x9053;&#x5217;&#x8868;
-  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main
-  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/r
-  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/msys2
-custom_channels:                                                        # &#x8BBE;&#x7F6E;&#x81EA;&#x5B9A;&#x4E49;&#x9891;&#x9053;
-  conda-forge: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud
-  msys2: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud
-  bioconda: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud
-  menpo: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud
-  pytorch: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud
-  pytorch-lts: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud
-  simpleitk: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud
-  deepmodeling: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/
+# &#x5C06;&#x8865;&#x5168;&#x51FD;&#x6570;&#x5173;&#x8054;&#x5230;&#x547D;&#x4EE4;
+compdef _mycmd mycmd
 </code></pre>
-<p><code>conda clean -i</code> &#x6E05;&#x9664;&#x7D22;&#x5F15;&#x7F13;&#x5B58;</p>
-<p>&#x53C2;&#x8003;&#xFF1A;<a href="https://mirrors.tuna.tsinghua.edu.cn/help/anaconda/" _target="blank">https://mirrors.tuna.tsinghua.edu.cn/help/anaconda/</a></p>
-<h2 id="2&#x3001;&#x5305;&#x7BA1;&#x7406;">2&#x3001;&#x5305;&#x7BA1;&#x7406;</h2>
-<pre class="language-"><code class="bash"># &#x5217;&#x51FA;&#x5F53;&#x524D;&#x6FC0;&#x6D3B;&#x73AF;&#x5883;&#x7684;&#x6240;&#x6709;&#x5305;
-conda list
-# &#x5217;&#x51FA;&#x4E00;&#x4E2A;&#x975E;&#x6FC0;&#x6D3B;&#x73AF;&#x5883;&#x7684;&#x6240;&#x6709;&#x5305;
-conda list -n base
-# &#x4E3A;&#x6307;&#x5B9A;&#x73AF;&#x5883;&#x5B89;&#x88C5;&#x67D0;&#x4E2A;&#x5305;
-conda install -n base package_name
-# &#x4ECE;&#x6307;&#x5B9A; channel &#x4E3A;&#x6307;&#x5B9A;&#x73AF;&#x5883;&#x5B89;&#x88C5;&#x67D0;&#x4E2A;&#x5305;
-conda install -n base -c defaults package_name
+<ul>
+<li><code>_describe</code> &#x662F; Zsh &#x5185;&#x7F6E;&#x7684;&#x8865;&#x5168;&#x5DE5;&#x5177;&#x51FD;&#x6570;&#xFF0C;&#x7528;&#x4E8E;&#x751F;&#x6210;&#x5E26;&#x63CF;&#x8FF0;&#x7684;&#x5019;&#x9009;&#x5217;&#x8868;&#x3002;</li>
+</ul>
+<h2 id="3&#x3001;&#x8865;&#x5168;&#x6587;&#x4EF6;&#x7C7B;&#x578B;">3&#x3001;&#x8865;&#x5168;&#x6587;&#x4EF6;&#x7C7B;&#x578B;</h2>
+<p>&#x4E3A;&#x547D;&#x4EE4; <code>convert</code> &#x8865;&#x5168;&#x6307;&#x5B9A;&#x6269;&#x5C55;&#x540D;&#x7684;&#x6587;&#x4EF6;&#xFF08;&#x5982; <code>.png</code> &#x548C; <code>.jpg</code>&#xFF09;&#xFF1A;</p>
+<pre class="language-"><code class="bash">_convert() {
+    _arguments &apos;1: :-&gt;input&apos; &apos;2: :-&gt;output&apos;
+    case $state in
+        input) _files -g &quot;*.png *.jpg&quot; ;;
+        output) _files ;;
+    esac
+}
+compdef _convert convert
 </code></pre>
-<h2 id="3&#x3001;&#x73AF;&#x5883;&#x7BA1;&#x7406;">3&#x3001;&#x73AF;&#x5883;&#x7BA1;&#x7406;</h2>
-<pre class="language-"><code class="bash"># &#x5217;&#x51FA;&#x5F53;&#x524D;&#x6240;&#x6709;&#x73AF;&#x5883;
-conda info --envs
-conda env list
-
-# &#x521B;&#x5EFA;&#x5305;&#x542B;&#x67D0;&#x4E9B;&#x5305;&#x7684;&#x73AF;&#x5883;
-conda create --name your_env_name numpy scipy
-# &#x521B;&#x5EFA;&#x6307;&#x5B9A;Python&#x7248;&#x672C;&#x4E0B;&#x5305;&#x542B;&#x67D0;&#x4E9B;&#x5305;&#x7684;&#x73AF;&#x5883;
-conda create --name your_env_name python=3.8 numpy scipy
-
-# &#x6FC0;&#x6D3B;&#x67D0;&#x4E2A;&#x73AF;&#x5883;
-activate your_env_name
-# &#x5173;&#x95ED;&#x67D0;&#x4E2A;&#x73AF;&#x5883;
-deactivate your_env_name
-# &#x514B;&#x9686;&#x67D0;&#x4E2A;&#x73AF;&#x5883;
-conda create --name new_env_name --clone old_env_name
-# &#x5220;&#x9664;&#x67D0;&#x4E2A;&#x73AF;&#x5883;
-conda remove --name your_env_name --all
-# &#x5206;&#x4EAB;&#x73AF;&#x5883;
-conda env export &gt; share_env.yml
-# &#x521B;&#x5EFA;&#x8BE5;&#x73AF;&#x5883;
-conda env create -f share_env.yml
+<ul>
+<li><code>_arguments</code> &#x5B9A;&#x4E49;&#x547D;&#x4EE4;&#x53C2;&#x6570;&#x7684;&#x4F4D;&#x7F6E;&#x548C;&#x903B;&#x8F91;&#x3002;</li>
+<li><code>_files</code> &#x7528;&#x4E8E;&#x8865;&#x5168;&#x6587;&#x4EF6;&#x8DEF;&#x5F84;&#xFF0C;<code>-g</code> &#x6307;&#x5B9A;&#x901A;&#x914D;&#x7B26;&#x8FC7;&#x6EE4;&#x3002;</li>
+</ul>
+<hr>
+<h2 id="4&#x3001;&#x8865;&#x5168;&#x51FD;&#x6570;&#x7684;&#x7F16;&#x5199;">4&#x3001;&#x8865;&#x5168;&#x51FD;&#x6570;&#x7684;&#x7F16;&#x5199;</h2>
+<p>&#x8865;&#x5168;&#x51FD;&#x6570;&#x901A;&#x5E38;&#x4EE5; <code>_&#x547D;&#x4EE4;&#x540D;</code> &#x547D;&#x540D;&#xFF08;&#x5982; <code>_docker</code>&#xFF09;&#xFF0C;&#x5E76;&#x9075;&#x5FAA; Zsh &#x8865;&#x5168;&#x7CFB;&#x7EDF;&#x7684;&#x89C4;&#x8303;&#x3002;&#x5E38;&#x7528;&#x5DE5;&#x5177;&#x51FD;&#x6570;&#xFF1A;</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">&#x51FD;&#x6570;/&#x547D;&#x4EE4;</th>
+<th style="text-align:left">&#x4F5C;&#x7528;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>_arguments</code></td>
+<td style="text-align:left">&#x5B9A;&#x4E49;&#x547D;&#x4EE4;&#x53C2;&#x6570;&#x548C;&#x9009;&#x9879;&#x7684;&#x8865;&#x5168;&#x89C4;&#x5219;</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>_values</code></td>
+<td style="text-align:left">&#x8865;&#x5168;&#x952E;&#x503C;&#x5BF9;&#xFF08;&#x5982; <code>--format=json</code>&#xFF09;</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>_files</code></td>
+<td style="text-align:left">&#x8865;&#x5168;&#x6587;&#x4EF6;&#x8DEF;&#x5F84;</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>_describe</code></td>
+<td style="text-align:left">&#x8865;&#x5168;&#x5E26;&#x63CF;&#x8FF0;&#x7684;&#x5019;&#x9009;&#x5217;&#x8868;</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>_message</code></td>
+<td style="text-align:left">&#x663E;&#x793A;&#x81EA;&#x5B9A;&#x4E49;&#x63D0;&#x793A;&#x4FE1;&#x606F;</td>
+</tr>
+</tbody>
+</table>
+<h2 id="5&#x3001;&#x8865;&#x5168;&#x811A;&#x672C;&#x7684;&#x5B58;&#x653E;&#x4F4D;&#x7F6E;">5&#x3001;&#x8865;&#x5168;&#x811A;&#x672C;&#x7684;&#x5B58;&#x653E;&#x4F4D;&#x7F6E;</h2>
+<p>Zsh &#x4F1A;&#x81EA;&#x52A8;&#x52A0;&#x8F7D;&#x4EE5;&#x4E0B;&#x76EE;&#x5F55;&#x4E2D;&#x7684;&#x8865;&#x5168;&#x811A;&#x672C;&#xFF1A;</p>
+<ul>
+<li><code>~/.zsh/completions/</code>&#xFF1A;&#x7528;&#x6237;&#x81EA;&#x5B9A;&#x4E49;&#x8865;&#x5168;</li>
+<li><code>/usr/local/share/zsh/site-functions/</code>&#xFF1A;&#x7CFB;&#x7EDF;&#x7EA7;&#x8865;&#x5168;&#xFF08;&#x5982; Homebrew &#x5B89;&#x88C5;&#x7684;&#x8865;&#x5168;&#xFF09;</li>
+<li><code>$fpath</code>&#xFF1A;Zsh &#x7684;&#x51FD;&#x6570;&#x8DEF;&#x5F84;&#xFF08;&#x901A;&#x8FC7; <code>echo $fpath</code> &#x67E5;&#x770B;&#xFF09;</li>
+</ul>
+<p>&#x5C06;&#x8865;&#x5168;&#x811A;&#x672C;&#x653E;&#x5728;&#x4E0A;&#x8FF0;&#x76EE;&#x5F55;&#x540E;&#xFF0C;&#x91CD;&#x542F; <code>Zsh</code> &#x6216;&#x8FD0;&#x884C; <code>compinit</code> &#x5373;&#x53EF;&#x751F;&#x6548;&#x3002;</p>
+<h2 id="6&#x3001;&#x8C03;&#x8BD5;&#x4E0E;&#x91CD;&#x8F7D;">6&#x3001;&#x8C03;&#x8BD5;&#x4E0E;&#x91CD;&#x8F7D;</h2>
+<ul>
+<li><p><strong>&#x624B;&#x52A8;&#x91CD;&#x8F7D;&#x8865;&#x5168;</strong></p>
+<pre class="language-"><code class="bash">unfunction _mycmd &amp;&amp; autoload -U _mycmd  # &#x91CD;&#x65B0;&#x52A0;&#x8F7D;&#x8865;&#x5168;&#x51FD;&#x6570;
+compdef _mycmd mycmd                     # &#x91CD;&#x65B0;&#x5173;&#x8054;&#x547D;&#x4EE4;
 </code></pre>
-<h2 id="4&#x3001;&#x914D;&#x7F6E;&#x64CD;&#x4F5C;">4&#x3001;&#x914D;&#x7F6E;&#x64CD;&#x4F5C;</h2>
-<pre class="language-"><code class="bash"># &#x6E05;&#x9664;&#x4E00;&#x4E0B;&#x7F13;&#x5B58;
-conda clean -i
-# &#x6E05;&#x9664;&#x6240;&#x6709;&#x7F13;&#x5B58;
-conda clean --all
-# &#x67E5;&#x770B;&#x5168;&#x90E8;&#x914D;&#x7F6E;&#x4FE1;&#x606F;
-conda config --show
-# &#x67E5;&#x770B;&#x6E90;&#x7684;&#x914D;&#x7F6E;&#x4FE1;&#x606F;
-conda config --show-sources
-# &#x67E5;&#x770B;&#x6E90;&#x7684;&#x8BE6;&#x7EC6;&#x4FE1;&#x606F;
-conda info
-
-# &#x5347;&#x7EA7; conda
-conda update -n base conda
+</li>
+<li><p><strong>&#x8C03;&#x8BD5;&#x8865;&#x5168;&#x51FD;&#x6570;</strong></p>
+<pre class="language-"><code class="bash">zstyle &apos;:completion:*&apos; verbose yes      # &#x663E;&#x793A;&#x8BE6;&#x7EC6;&#x8865;&#x5168;&#x4FE1;&#x606F;
+tracecomp mycmd                         # &#x8DDF;&#x8E2A;&#x8865;&#x5168;&#x8FC7;&#x7A0B;
 </code></pre>
+</li>
+</ul>
 <footer class="page-footer"><span class="copyright">Copyright Curiouser all right reserved&#xFF0C;powered by Gitbook</span><span class="footer-modification">&#x8BE5;&#x6587;&#x4EF6;&#x6700;&#x540E;&#x4FEE;&#x6539;&#x65F6;&#x95F4;&#xFF1A;
-2024-01-18 20:40:50
+2025-04-23 17:19:37
 </span></footer>
 <script>console.log("plugin-popup....");document.onclick = function(e){ e.target.tagName === "IMG" && window.open(e.target.src,e.target.src)}</script><style>img{cursor:pointer}</style>
 						
@@ -8482,8 +8593,12 @@ conda update -n base conda
 
 		
 		
+		<a href="shell-script-perf.html" class="navigation navigation-prev " aria-label="Previous page: Shell脚本优化">
+			<i class="fa fa-angle-left"></i>
+		</a>
 		
-		<a href="python-workerbench-jupyterhub.html" class="navigation navigation-next navigation-unique" aria-label="Next page: JupyterHub/RStuido">
+		
+		<a href="apple-osascript.html" class="navigation navigation-next " aria-label="Next page: osascript脚本">
 			<i class="fa fa-angle-right"></i>
 		</a>
 		
@@ -8493,7 +8608,7 @@ conda update -n base conda
 	<script>
 		var gitbook = gitbook || [];
 		gitbook.push(function() {
-			gitbook.page.hasChanged({"page":{"title":"环境搭建：安装配置","level":"8.1.1","depth":2,"next":{"title":"JupyterHub/RStuido","level":"8.1.2","depth":2,"path":"origin/python-workerbench-jupyterhub.md","ref":"origin/python-workerbench-jupyterhub.md","articles":[]},"previous":{"title":"Python学习笔记","level":"8.1","depth":1,"ref":"","articles":[{"title":"环境搭建：安装配置","level":"8.1.1","depth":2,"path":"origin/python-basic.md","ref":"origin/python-basic.md","articles":[]},{"title":"JupyterHub/RStuido","level":"8.1.2","depth":2,"path":"origin/python-workerbench-jupyterhub.md","ref":"origin/python-workerbench-jupyterhub.md","articles":[]},{"title":"Python总结","level":"8.1.3","depth":2,"path":"origin/python-summary.md","ref":"origin/python-summary.md","articles":[]},{"title":"Flask","level":"8.1.4","depth":2,"path":"origin/flask.md","ref":"origin/flask.md","articles":[]}]},"dir":"ltr"},"config":{"plugins":["-search","-lunr","-sharing","-highlight","search-pro","splitter","github","popup","sectionx","expandable-chapters","sharing-plus","code","auto-scroll-table","theme-fexa","tbfed-pagefooter","back-to-top-button","emphasize","edit-link","prism","donate","theme-comscore","github-buttons","github-issue-feedback"],"root":".","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"tbfed-pagefooter":{"copyright":"Copyright Curiouser","modify_label":"该文件最后修改时间：","modify_format":"YYYY-MM-DD HH:mm:ss"},"prism":{"css":["prismjs/themes/prism-tomorrow.css"],"lang":{"flow":"typescript"},"ignore":["mermaid","eval-js"]},"emphasize":{},"github-issue-feedback":{"repo":"RationalMonster/rationalmonster.github.io"},"github":{"url":"https://github.com/RationalMonster"},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"auto-scroll-table":{},"popup":{},"theme-fexa":{"search-placeholder":"搜索文章","logo":"./assets/logo.png"},"code":{"copybuttons":"true","copyButtons":true},"donate":{"wechat":"/assets/wechat-donate.jpg","title":"","button":"赏","wechatText":"微信打赏","alipay":"","alipayText":"支付宝打赏"},"fontsettings":{"theme":"white","family":"sans","size":2},"sectionx":{},"theme-comscore":{},"back-to-top-button":{},"github-buttons":{"buttons":[{"user":"RationalMonster","repo":"gitbooks-devops-roadmap","type":"star","size":"small","count":"true"}]},"sharing":{"weibo":true,"qq":"true","google":true,"all":["facebook","twitter"]},"edit-link":{"base":"https://raw.githubusercontent.com/RationalMonster/gitbooks-devops-roadmap/master/","label":"查看源MD文件"},"theme-default":{"showLevel":true,"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"expandable-chapters":{}},"theme":"default","author":"Curiouser <rationalmonster@163.com>","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Devops Roadmap","gitbook":"*"},"file":{"path":"origin/python-basic.md","mtime":"2024-01-18T12:40:50.503Z","type":"markdown"},"gitbook":{"version":"3.0.0","time":"2025-04-23T09:34:48.838Z"},"basePath":"..","book":{"language":""}});
+			gitbook.page.hasChanged({"page":{"title":"Shell命令自动补全","level":"6.2.4","depth":2,"next":{"title":"osascript脚本","level":"6.3","depth":1,"path":"origin/apple-osascript.md","ref":"origin/apple-osascript.md","articles":[]},"previous":{"title":"Shell脚本优化","level":"6.2.3","depth":2,"path":"origin/shell-script-perf.md","ref":"origin/shell-script-perf.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-lunr","-sharing","-highlight","search-pro","splitter","github","popup","sectionx","expandable-chapters","sharing-plus","code","auto-scroll-table","theme-fexa","tbfed-pagefooter","back-to-top-button","emphasize","edit-link","prism","donate","theme-comscore","github-buttons","github-issue-feedback"],"root":".","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"tbfed-pagefooter":{"copyright":"Copyright Curiouser","modify_label":"该文件最后修改时间：","modify_format":"YYYY-MM-DD HH:mm:ss"},"prism":{"css":["prismjs/themes/prism-tomorrow.css"],"lang":{"flow":"typescript"},"ignore":["mermaid","eval-js"]},"emphasize":{},"github-issue-feedback":{"repo":"RationalMonster/rationalmonster.github.io"},"github":{"url":"https://github.com/RationalMonster"},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"auto-scroll-table":{},"popup":{},"theme-fexa":{"search-placeholder":"搜索文章","logo":"./assets/logo.png"},"code":{"copybuttons":"true","copyButtons":true},"donate":{"wechat":"/assets/wechat-donate.jpg","title":"","button":"赏","wechatText":"微信打赏","alipay":"","alipayText":"支付宝打赏"},"fontsettings":{"theme":"white","family":"sans","size":2},"sectionx":{},"theme-comscore":{},"back-to-top-button":{},"github-buttons":{"buttons":[{"user":"RationalMonster","repo":"gitbooks-devops-roadmap","type":"star","size":"small","count":"true"}]},"sharing":{"weibo":true,"qq":"true","google":true,"all":["facebook","twitter"]},"edit-link":{"base":"https://raw.githubusercontent.com/RationalMonster/gitbooks-devops-roadmap/master/","label":"查看源MD文件"},"theme-default":{"showLevel":true,"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"expandable-chapters":{}},"theme":"default","author":"Curiouser <rationalmonster@163.com>","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Devops Roadmap","gitbook":"*"},"file":{"path":"origin/shell-tab-completion.md","mtime":"2025-04-23T09:19:37.520Z","type":"markdown"},"gitbook":{"version":"3.0.0","time":"2025-04-23T09:34:48.838Z"},"basePath":"..","book":{"language":""}});
 		});
 	</script>
 </div>

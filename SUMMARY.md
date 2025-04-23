@@ -237,12 +237,11 @@
     * [Shell脚本](origin/shell-scripts-summary.md)
     * [常用bash脚本功能](origin/bash-scirpts.md)  
     * [Shell脚本优化](origin/shell-script-perf.md)
+    * [Shell命令自动补全](origin/shell-tab-completion.md)
 * [osascript脚本](origin/apple-osascript.md)
 * Maven
-    * Maven POM项目对象模型
     * [Mave Settings文件详解](origin/maven-Settings配置文件详解.md)
     * [Maven 生命周期阶段](origin/maven-生命周期阶段.md)
-    * Maven 多模块构建
     * [Maven常见操作](origin/maven-operations.md)
 * Git
     * [git原理](origin/git-原理.md)
@@ -330,16 +329,12 @@
   - 硬件
     - [磁盘I/O监控](origin/linux-io-monitor.md)
   - 系统
-    - [系统进程：top](origin/linux-top.md)
-    - [ip/ifconfig](origin/linux-ip-ifconfig.md)
     - [ps](origin/linux-ps.md)
   - 网络
     - [iperf](origin/iperf.md)
     - [tcpdump网络抓包](origin/network-tcpdump.md)
     - [nc](origin/nc.md)
-    - [mtr](origin/network-mtr.md)
     - [hping](origin/linux-hping.md)
-    - [traceroute](origin/network-traceroute.md)
     - [ipvsadm](origin/ipvsadm.md)
 - Iptables
   - [iptables详解](origin/linux-iptables.md)
@@ -527,3 +522,4 @@
   - [Arduino IDE及编程语法](origin/arduino-ide.md)
 - [摄像头：视频-音频-云台](origin/camera.md)
 - [LED](origin/led.md)
+

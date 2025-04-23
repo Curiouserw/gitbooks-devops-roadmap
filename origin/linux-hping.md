@@ -6,8 +6,6 @@
 
 GitHub：https://github.com/antirez/hping
 
-
-
 # 二、安装
 
 ## 包管理器
