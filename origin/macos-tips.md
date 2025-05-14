@@ -76,7 +76,7 @@ sudo route add 172.16.1.2/32 -interface utun2
 
 ## 4、HomeBrew安装使用
 
-### ①简介
+**①简介**
 
 - **brew** 是从下载源码解压然后 `./configure && make install` 
 
@@ -106,13 +106,13 @@ sudo route add 172.16.1.2/32 -interface utun2
   cd "$(brew --repo)/Library/Taps/homebrew/homebrew-core"
   ```
 
-### ②安装
+**②安装**
 
 ```bash
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
 
-### ③使用
+**③使用**
 
 ```bash
 # 安装一个包
@@ -152,7 +152,7 @@ brew pin $FORMULA
 brew unpin $FORMULA
 ```
 
-### ④使用国内的镜像源
+**④使用国内的镜像源**
 
 - 中科大
 
@@ -178,7 +178,7 @@ brew unpin $FORMULA
   source ~/.zshrc
   ```
 
-### ⑤直接从rb文件安装历史版本或官方仓库没有的版本
+**⑤直接从rb文件安装历史版本或官方仓库没有的版本**
 
 大部分情况下 homebrew 的仓库只会存在一份最新的软件版本, 有时可能也会同时存在多个版本, 在有些情况下我们可能需要安装某些软件的历史版本。对于 tap 中无多版本的软件, 我们可以通过在 tap 对应的 git 仓库中查看历史 formula 版本, 通过下载到本地进行安装。先通过 formulae.brew.sh找到RB文件的GitHub仓库。然后找到该RB文件历史版本。下载到本地，手动执行以下命令进行安装
 
@@ -190,7 +190,7 @@ brew install ./*.rb
 
 ## 5、HomeBrew的备份恢复
 
-### ①简介
+**①简介**
 
 homebrew-bundle - https://github.com/Homebrew/homebrew-bundle
 
@@ -199,14 +199,14 @@ homebrew-bundle - https://github.com/Homebrew/homebrew-bundle
 3. homebrew-bundle 类似 node 中的 package.json 或者 Cocoapods 中的 Podfile
 4. 我们将需要的包和 App, 声明在一个 Brewfile 中, 然后执行 brew bundle 即可安装所有包
 
-### ②备份内容
+**②备份内容**
 
 1. brew tap 中的软件库
 2. brew 安装的命令行工具
 3. brew cask 安装的 App
 4. Mac App Store 安装的 App
 
-### ③备份命令 
+**③备份命令**
 
 ```bash
 # 执行 brew bundle dump 
@@ -241,7 +241,7 @@ mas "ting_en", id: 734383760
 mas "Xcode", id: 497799835
 ```
 
-### ④恢复命令
+**④恢复命令**
 
 ```bash
 brew install mas
@@ -255,17 +255,18 @@ brew bundle --file="~/Desktop/Brewfile"
 
 ## 6、使用Brew安装的软件信息
 
-### ①MySQL
+- MySQL
 
-- 配置文件：`/usr/local/etc/my.cnf`
-- 日志和底层DB数据文件: `/usr/local/var/mysql`
-- bin文件路径：`/usr/local/Cellar/mysql@mysql版本/mysql版本`
-- brew 启动命令：`brew services restart mysql@mysql版本 `
+  - 配置文件：`/usr/local/etc/my.cnf`
 
-### ②Nginx
+  - 日志和底层DB数据文件: `/usr/local/var/mysql`
 
-- 主配置文件路径：`/usr/local/etc/nginx/nginx.conf`
-- bin文件路径: `/usr/local/Cellar/nginx/nginx版本号/`
+  - bin文件路径：`/usr/local/Cellar/mysql@mysql版本/mysql版本`
+
+  - brew 启动命令：`brew services restart mysql@mysql版本 `
+- Nginx
+  - 主配置文件路径：`/usr/local/etc/nginx/nginx.conf`
+  - bin文件路径: `/usr/local/Cellar/nginx/nginx版本号/`
 
 ## 7、stat命令格式化输出
 
@@ -302,7 +303,7 @@ RAW文件路径：`~/Library/Containers/com.docker.docker/Data/vms/0/data/Docker
 
 - 删除虚悬volumes释放空间：`docker volume rm $(docker volume ls -qf dangling=true)`
 
-## 9、Mac 上的“磁盘工具”支持的文件系统格式：
+## 9、Mac 上的“磁盘工具”支持的文件系统格式
 
 - *Apple 文件系统 (APFS)：*macOS 10.13 或后续版本使用的文件系统。
 
@@ -345,15 +346,110 @@ mkdir /Volumes/EFI
 sudo mount -t msdos /dev/disk0s1 /Volumes/EFI
 ```
 
-## 11、命令行设置网络代理
+## 11、networksetup网络设置
+
+**列出所有网络硬件接口**
 
 ```bash
+networksetup -listallhardwareports
+# （Hardware Ports）与其对应的设备名称（如 en0, en1），方便后续使用 networksetup 命令时指定正确的接口
+# 字段
+#   Hardware Port	人类可读的接口名称（用于 networksetup 命令的 <networkservice> 部分，例如 "Wi-Fi"）
+#   Device	BSD 设备名称，例如 en0，用于底层命令如 ifconfig 或 airport
+#   Ethernet Address	网卡的物理 MAC 地址
+```
+
+**配置代理**
+
+```bash
+# 设置 HTTP 代理
 sudo networksetup -setwebproxy "Wi-Fi" 127.0.0.1 8001
 sudo networksetup -setwebproxystate "Wi-Fi" on
+# 设置 HTTPS 代理
 sudo networksetup -setsecurewebproxy "Wi-Fi" 127.0.0.1 8001
 sudo networksetup -setsecurewebproxystate "Wi-Fi" on
+# 设置 SOCKS 代理
 sudo networksetup -setsocksfirewallproxy "Wi-Fi" 127.0.0.1 8002
 sudo networksetup -setsocksfirewallproxystate "Wi-Fi" on
+# 设置 PAC 自动代理配置
+sudo networksetup -setautoproxyurl "Wi-Fi" "http://example.com/proxy.pac"
+
+# 禁用代理
+sudo networksetup -setwebproxy "Wi-Fi" "" 0
+sudo networksetup -setsecurewebproxy "Wi-Fi" "" 0
+sudo networksetup -setsocksfirewallproxy "Wi-Fi" "" 0
+sudo networksetup -setautoproxyurl "Wi-Fi" ""
+
+sudo networksetup -setwebproxystate "Wi-Fi" off
+sudo networksetup -setsecurewebproxystate "Wi-Fi" off
+sudo networksetup -setsocksfirewallproxystate "Wi-Fi" off
+sudo networksetup -setautoproxystate "Wi-Fi" off
+```
+
+**设置忽略代理的主机与域名**
+
+```bash
+# 查看当前设置的忽略代理的主机与域名
+networksetup -getproxybypassdomains Wi-Fi
+
+# 忽略代理的主机与域名
+networksetup -setproxybypassdomains Wi-Fi localhost 127.0.0.1 .example.com intranet.company.local
+# networksetup 设置的是“替换”，不是“追加”，执行 -setproxybypassdomains 会清空旧设置，替换为你提供的新列表。
+# 通配符不支持，比如不能使用 *.example.com，应使用 .example.com（前面加点，表示匹配子域名）。
+```
+
+**开关控制**
+
+```
+networksetup -setairportpower "Wi-Fi" on
+networksetup -setairportpower "Wi-Fi" off
+```
+
+**连接控制（输入 SSID 和密码）**
+
+```
+networksetup -setairportnetwork en0 "SSID" "password"
+```
+
+**IP设置**
+
+```bash
+# 设置为静态 IP
+networksetup -setmanual "Wi-Fi" 192.168.1.100 255.255.255.0 192.168.1.1
+
+# 设置为 DHCP
+networksetup -setdhcp "Wi-Fi"
+```
+
+**DNS 设置**
+
+```bash
+# 设置 DNS
+networksetup -setdnsservers "Wi-Fi" 8.8.8.8 1.1.1.1
+# 清空 DNS
+networksetup -setdnsservers "Wi-Fi" empty
+# 查看当前 DNS
+networksetup -getdnsservers "Wi-Fi"
+```
+
+**首选无线网络管理**
+
+```bash
+# 查看优先网络列表
+networksetup -listpreferredwirelessnetworks en0
+# 添加首选网络
+networksetup -addpreferredwirelessnetworkatindex en0 "MyWiFi" 0 WPA2 "password"
+# 删除某个首选网络
+networksetup -removepreferredwirelessnetwork en0 "OldWiFi"
+# 设置搜索域
+networksetup -setsearchdomains "Wi-Fi" example.com
+```
+
+**设置本地主机名**
+
+```bash
+scutil --set HostName my-mac.local
+# 也可用 `scutil`
 ```
 
 ## 12、清除 DNS 缓存
@@ -561,11 +657,11 @@ sudo mdutil -a -i on
 
 ## 15、钥匙串管理
 
-Security是Mac系统中钥匙串和安全模块的命令行管理工具，（图形化工具为Keychain Access.app）。钥匙串（Keychain）实质上就是一个用于存放证书、密钥、密码等安全认证实体的仓库，在计算机中保存为一个.keychain的文件，默认存放在以下目录中（使用这几个目录中的钥匙串时不需要写路径，直接用文件名即可，Security工具会自动搜索）：
+Security是Mac系统中钥匙串和安全模块的命令行管理工具，（图形化工具为Keychain Access.app）。钥匙串（Keychain）实质上就是一个用于存放证书、密钥、密码等安全认证实体的仓库，在计算机中保存为一个.keychain的文件，默认存放在以下目录中（使用这几个目录中的钥匙串时不需要写路径，直接用文件名即可，Security工具会自动搜索）
 
-- ~/Library/Keychains/
-- /Library/Keychains/
-- /Network/Library/Keychains/
+- `~/Library/Keychains/`
+- `/Library/Keychains/`
+- `/Network/Library/Keychains/`
 
 Security命令语法：**security   [-hilqv]   [-p prompt]  [command] [command options] [command args]**
 
@@ -668,6 +764,106 @@ security add-generic-password -a 账号 -s 名称 -w 密码
 
 ```bash
 security find-generic-password -s 名称 -g
+```
+
+
+
+## 16、defaults系统配置
+
+**Finder**
+
+```bash
+# 是否显示隐藏文件（如 .DS_Store）	
+defaults write com.apple.finder AppleShowAllFiles -bool true && killall Finder
+# 窗口底部显示路径栏
+defaults write com.apple.finder ShowPathbar -bool true && killall Finder
+#	窗口底部显示状态栏
+defaults write com.apple.finder ShowStatusBar -bool true && killall Finder
+# 在标题栏显示完整路径	
+defaults write com.apple.finder _FXShowPosixPathInTitle -bool true && killall Finder
+# 默认查看方式：icnv 图标，clmv 列表，Nlsv 列，Flwv Cover Flow	
+defaults write com.apple.finder FXPreferredViewStyle -string "Nlsv" && killall Finder
+# 新窗口默认路径	
+defaults write com.apple.finder NewWindowTargetPath -string "file://${HOME}/Downloads" && killall Finder
+#	新窗口目标：PfDe（默认），PfLo（其他位置）	
+defaults write com.apple.finder NewWindowTarget -string "PfLo" && killall Finder
+# 是否在桌面显示图标（隐藏桌面图标）	
+defaults write com.apple.finder CreateDesktop -bool false && killall Finder
+# 显示所有文件扩展名	
+defaults write NSGlobalDomain AppleShowAllExtensions -bool true && killall Finder
+# 启用 Finder 菜单栏中的“退出 Finder”选项	
+defaults write com.apple.finder QuitMenuItem -bool true && killall Finder
+# 关闭修改文件扩展名时的警告
+defaults write com.apple.finder FXEnableExtensionChangeWarning -bool false && killall Finder
+# 清空废纸篓时不提示	
+defaults write com.apple.finder WarnOnEmptyTrash -bool false && killall Finder
+
+# 禁止创建 .DS_Store 文件（网络/USB）
+defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
+defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
+```
+
+**Dock程序坞**
+
+```bash
+# 设置 Dock 自动隐藏
+defaults write com.apple.dock autohide -bool true && killall Dock
+# 设置自动隐藏 Dock 前的延迟时间（秒）
+defaults write com.apple.dock autohide-delay -float 0
+#Dock 隐藏/显示动画持续时间
+defaults write com.apple.dock autohide-time-modifier -float 0.2
+# 设置 Dock 图标大小（默认 64）
+defaults write com.apple.dock tilesize -int 46 && killall Dock
+# Dock 位置（left/bottom/right）
+defaults write com.apple.dock orientation -string "left"
+# 是否显示最近使用的应用
+defaults write com.apple.dock show-recents -bool false
+# 是否启用图标放大
+defaults write com.apple.dock magnification -bool true
+# 放大图标大小
+defaults write com.apple.dock largesize -int 96
+# 仅显示已打开的应用（隐藏固定图标）
+defaults write com.apple.dock static-only -bool true
+# 最小化窗口动画（genie/scale/suck）
+defaults write com.apple.dock mineffect -string "scale"
+# 最小化窗口时归入图标，而不是右侧
+defaults write com.apple.dock minimize-to-application -bool true
+
+
+# 重置 Dock
+defaults delete com.apple.dock
+killall Dock
+```
+
+**Safari**
+
+```bash
+# 设置 Safari 启动时主页
+defaults write com.apple.Safari HomePage -string "https://www.google.com"
+# 启用“开发”菜单
+defaults write com.apple.Safari IncludeDevelopMenu -bool true
+# 启用隐藏调试菜单
+defaults write com.apple.Safari IncludeInternalDebugMenu -bool true
+# 显示收藏夹栏
+defaults write com.apple.Safari ShowFavoritesBar -bool true
+# 禁用搜索建议
+defaults write com.apple.Safari SuppressSearchSuggestions -bool true
+# 禁用智能搜索字段
+defaults write com.apple.Safari UniversalSearchEnabled -bool false
+# 下载后自动打开“安全”文件
+defaults write com.apple.Safari AutoOpenSafeDownloads -bool false
+# 启用网络诈骗网站警告 
+defaults write com.apple.Safari WarnAboutFraudulentWebsites -bool true
+# 启用 Java（已被弃用） 
+defaults write com.apple.Safari WebKitJavaEnabled -bool false
+# 启用 JavaScript 
+defaults write com.apple.Safari WebKitJavaScriptEnabled -bool true
+# 页面查找只匹配单词开头 
+defaults write com.apple.Safari FindOnPageMatchesWordStartsOnly -bool false
+
+
+# 重置 Safari（慎用，会清除很多配置）
+defaults delete com.apple.Safari
 ```
 
 # 参考

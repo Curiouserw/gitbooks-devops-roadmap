@@ -6,9 +6,9 @@
 
 文档：https://github.com/RMerl/asuswrt-merlin.ng/wiki
 
-```bash
-cru a test '*/1 * * * * date "+%Y-%m-%d %H:%M:%S" >> /tmp/testaaa1'
-```
+2.5Ghz网卡：eth6
+
+5Ghz 网卡：eth7
 
 ```bash
 service restart_dnsmasq

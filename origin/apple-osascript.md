@@ -2,11 +2,13 @@
 
 # 一、简介
 
+`osascript`是macOS上的一个命令行工具，用于执行AppleScript脚本或者JavaScript脚本。它的名称来源于”Open Scripting Architecture”（OSA）
+
 ## 1. **变量**
 
 AppleScript 中的变量定义直接使用 `set` 关键字。
 
-```
+```bash
 set myVar to "Hello, World!"
 set number to 10
 ```
@@ -237,6 +239,12 @@ tell application "Finder"
 end tell
 ```
 
-# 二、osascript
+## 8、调用GUI密码框提权执行脚本
 
-`osascript`是macOS上的一个命令行工具，用于执行AppleScript脚本或者JavaScript脚本。它的名称来源于”Open Scripting Architecture”（OSA）
+```bash
+do shell script "
+  networksetup -setwebproxystate Wi-Fi off ; 
+  networksetup -setsecurewebproxystate Wi-Fi off ; 
+  networksetup -setsocksfirewallproxystate Wi-Fi off ;
+" with administrator privileges
+```

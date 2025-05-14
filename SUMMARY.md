@@ -237,7 +237,7 @@
     * [Shell脚本](origin/shell-scripts-summary.md)
     * [常用bash脚本功能](origin/bash-scirpts.md)  
     * [Shell脚本优化](origin/shell-script-perf.md)
-    * [Shell命令自动补全](origin/shell-tab-completion.md)
+    * [Shell命令自定义自动补全](origin/shell-tab-completion.md)
 * [osascript脚本](origin/apple-osascript.md)
 * Maven
     * [Mave Settings文件详解](origin/maven-Settings配置文件详解.md)
@@ -472,7 +472,6 @@
   - [go的并发](origin/golang-concurrent-programming.md)
   - [Web框架Gin的使用总结](origin/go-gin.md)
   - [net/http的使用总结](origin/go-net-http-summary.md)
-  - 
   - [Golang加解密](origin/golang-encryption.md)
   - [embed: 嵌入静态资源文件](origin/golang-embed.md)
   - [X509/PKI证书](origin/golang-x509-certificate.md)

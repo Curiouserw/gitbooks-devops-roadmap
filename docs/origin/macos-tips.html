@@ -3891,7 +3891,7 @@
                     
                         <b>6.2.4.</b>
                     
-                    Shell命令自动补全
+                    Shell命令自定义自动补全
             
                 </a>
             
@@ -8349,7 +8349,7 @@ ip route delete 172.16.1.2/32
 sudo route add 172.16.1.2/32 -interface utun2
 </code></pre>
 <h2 id="4&#x3001;homebrew&#x5B89;&#x88C5;&#x4F7F;&#x7528;">4&#x3001;HomeBrew&#x5B89;&#x88C5;&#x4F7F;&#x7528;</h2>
-<h3 id="&#x2460;&#x7B80;&#x4ECB;">&#x2460;&#x7B80;&#x4ECB;</h3>
+<p><strong>&#x2460;&#x7B80;&#x4ECB;</strong></p>
 <ul>
 <li><p><strong>brew</strong> &#x662F;&#x4ECE;&#x4E0B;&#x8F7D;&#x6E90;&#x7801;&#x89E3;&#x538B;&#x7136;&#x540E; <code>./configure &amp;&amp; make install</code> </p>
 </li>
@@ -8374,10 +8374,10 @@ sudo route add 172.16.1.2/32 -interface utun2
 </code></pre>
 </li>
 </ul>
-<h3 id="&#x2461;&#x5B89;&#x88C5;">&#x2461;&#x5B89;&#x88C5;</h3>
+<p><strong>&#x2461;&#x5B89;&#x88C5;</strong></p>
 <pre class="language-"><code class="bash">/bin/bash -c &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)&quot;
 </code></pre>
-<h3 id="&#x2462;&#x4F7F;&#x7528;">&#x2462;&#x4F7F;&#x7528;</h3>
+<p><strong>&#x2462;&#x4F7F;&#x7528;</strong></p>
 <pre class="language-"><code class="bash"># &#x5B89;&#x88C5;&#x4E00;&#x4E2A;&#x5305;
 brew install <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>package_name</span><span class="token punctuation">&gt;</span></span>
 # &#x641C;&#x7D22;&#x4E00;&#x4E2A;&#x5305;
@@ -8414,7 +8414,7 @@ brew pin $FORMULA
 # &#x53D6;&#x6D88;&#x9501;&#x5B9A;&#x67D0;&#x4E2A;&#x5305;&#x4E0D;&#x66F4;&#x65B0;
 brew unpin $FORMULA
 </code></pre>
-<h3 id="&#x2463;&#x4F7F;&#x7528;&#x56FD;&#x5185;&#x7684;&#x955C;&#x50CF;&#x6E90;">&#x2463;&#x4F7F;&#x7528;&#x56FD;&#x5185;&#x7684;&#x955C;&#x50CF;&#x6E90;</h3>
+<p><strong>&#x2463;&#x4F7F;&#x7528;&#x56FD;&#x5185;&#x7684;&#x955C;&#x50CF;&#x6E90;</strong></p>
 <ul>
 <li><p>&#x4E2D;&#x79D1;&#x5927;</p>
 <pre class="language-"><code class="bash"># Homebrew &#x6E90;&#x4EE3;&#x7801;&#x4ED3;&#x5E93;
@@ -8439,13 +8439,13 @@ source ~/.zshrc
 </code></pre>
 </li>
 </ul>
-<h3 id="&#x2464;&#x76F4;&#x63A5;&#x4ECE;rb&#x6587;&#x4EF6;&#x5B89;&#x88C5;&#x5386;&#x53F2;&#x7248;&#x672C;&#x6216;&#x5B98;&#x65B9;&#x4ED3;&#x5E93;&#x6CA1;&#x6709;&#x7684;&#x7248;&#x672C;">&#x2464;&#x76F4;&#x63A5;&#x4ECE;rb&#x6587;&#x4EF6;&#x5B89;&#x88C5;&#x5386;&#x53F2;&#x7248;&#x672C;&#x6216;&#x5B98;&#x65B9;&#x4ED3;&#x5E93;&#x6CA1;&#x6709;&#x7684;&#x7248;&#x672C;</h3>
+<p><strong>&#x2464;&#x76F4;&#x63A5;&#x4ECE;rb&#x6587;&#x4EF6;&#x5B89;&#x88C5;&#x5386;&#x53F2;&#x7248;&#x672C;&#x6216;&#x5B98;&#x65B9;&#x4ED3;&#x5E93;&#x6CA1;&#x6709;&#x7684;&#x7248;&#x672C;</strong></p>
 <p>&#x5927;&#x90E8;&#x5206;&#x60C5;&#x51B5;&#x4E0B; homebrew &#x7684;&#x4ED3;&#x5E93;&#x53EA;&#x4F1A;&#x5B58;&#x5728;&#x4E00;&#x4EFD;&#x6700;&#x65B0;&#x7684;&#x8F6F;&#x4EF6;&#x7248;&#x672C;, &#x6709;&#x65F6;&#x53EF;&#x80FD;&#x4E5F;&#x4F1A;&#x540C;&#x65F6;&#x5B58;&#x5728;&#x591A;&#x4E2A;&#x7248;&#x672C;, &#x5728;&#x6709;&#x4E9B;&#x60C5;&#x51B5;&#x4E0B;&#x6211;&#x4EEC;&#x53EF;&#x80FD;&#x9700;&#x8981;&#x5B89;&#x88C5;&#x67D0;&#x4E9B;&#x8F6F;&#x4EF6;&#x7684;&#x5386;&#x53F2;&#x7248;&#x672C;&#x3002;&#x5BF9;&#x4E8E; tap &#x4E2D;&#x65E0;&#x591A;&#x7248;&#x672C;&#x7684;&#x8F6F;&#x4EF6;, &#x6211;&#x4EEC;&#x53EF;&#x4EE5;&#x901A;&#x8FC7;&#x5728; tap &#x5BF9;&#x5E94;&#x7684; git &#x4ED3;&#x5E93;&#x4E2D;&#x67E5;&#x770B;&#x5386;&#x53F2; formula &#x7248;&#x672C;, &#x901A;&#x8FC7;&#x4E0B;&#x8F7D;&#x5230;&#x672C;&#x5730;&#x8FDB;&#x884C;&#x5B89;&#x88C5;&#x3002;&#x5148;&#x901A;&#x8FC7; formulae.brew.sh&#x627E;&#x5230;RB&#x6587;&#x4EF6;&#x7684;GitHub&#x4ED3;&#x5E93;&#x3002;&#x7136;&#x540E;&#x627E;&#x5230;&#x8BE5;RB&#x6587;&#x4EF6;&#x5386;&#x53F2;&#x7248;&#x672C;&#x3002;&#x4E0B;&#x8F7D;&#x5230;&#x672C;&#x5730;&#xFF0C;&#x624B;&#x52A8;&#x6267;&#x884C;&#x4EE5;&#x4E0B;&#x547D;&#x4EE4;&#x8FDB;&#x884C;&#x5B89;&#x88C5;</p>
 <pre class="language-"><code class="bash">brew install ./*.rb
 </code></pre>
 <p>&#x53C2;&#x8003;&#xFF1A;<a href="https://juejin.cn/post/7179202980191666233" _target="blank">https://juejin.cn/post/7179202980191666233</a></p>
 <h2 id="5&#x3001;homebrew&#x7684;&#x5907;&#x4EFD;&#x6062;&#x590D;">5&#x3001;HomeBrew&#x7684;&#x5907;&#x4EFD;&#x6062;&#x590D;</h2>
-<h3 id="&#x2460;&#x7B80;&#x4ECB;">&#x2460;&#x7B80;&#x4ECB;</h3>
+<p><strong>&#x2460;&#x7B80;&#x4ECB;</strong></p>
 <p>homebrew-bundle - <a href="https://github.com/Homebrew/homebrew-bundle" _target="blank">https://github.com/Homebrew/homebrew-bundle</a></p>
 <ol>
 <li>Mac &#x4E0A;&#x975E;&#x5E38;&#x5E38;&#x7528;&#x7684;&#x5305;&#x7BA1;&#x7406;&#x5668; Homebrew, &#x6211;&#x4EEC;&#x7ECF;&#x5E38;&#x7528;&#x5B83;&#x6765;&#x5B89;&#x88C5;&#x5176;&#x4ED6;&#x7684;&#x8F6F;&#x4EF6;&#x5305;</li>
@@ -8453,14 +8453,14 @@ source ~/.zshrc
 <li>homebrew-bundle &#x7C7B;&#x4F3C; node &#x4E2D;&#x7684; package.json &#x6216;&#x8005; Cocoapods &#x4E2D;&#x7684; Podfile</li>
 <li>&#x6211;&#x4EEC;&#x5C06;&#x9700;&#x8981;&#x7684;&#x5305;&#x548C; App, &#x58F0;&#x660E;&#x5728;&#x4E00;&#x4E2A; Brewfile &#x4E2D;, &#x7136;&#x540E;&#x6267;&#x884C; brew bundle &#x5373;&#x53EF;&#x5B89;&#x88C5;&#x6240;&#x6709;&#x5305;</li>
 </ol>
-<h3 id="&#x2461;&#x5907;&#x4EFD;&#x5185;&#x5BB9;">&#x2461;&#x5907;&#x4EFD;&#x5185;&#x5BB9;</h3>
+<p><strong>&#x2461;&#x5907;&#x4EFD;&#x5185;&#x5BB9;</strong></p>
 <ol>
 <li>brew tap &#x4E2D;&#x7684;&#x8F6F;&#x4EF6;&#x5E93;</li>
 <li>brew &#x5B89;&#x88C5;&#x7684;&#x547D;&#x4EE4;&#x884C;&#x5DE5;&#x5177;</li>
 <li>brew cask &#x5B89;&#x88C5;&#x7684; App</li>
 <li>Mac App Store &#x5B89;&#x88C5;&#x7684; App</li>
 </ol>
-<h3 id="&#x2462;&#x5907;&#x4EFD;&#x547D;&#x4EE4;">&#x2462;&#x5907;&#x4EFD;&#x547D;&#x4EE4;</h3>
+<p><strong>&#x2462;&#x5907;&#x4EFD;&#x547D;&#x4EE4;</strong></p>
 <pre class="language-"><code class="bash"># &#x6267;&#x884C; brew bundle dump 
 brew bundle dump --describe --force --file=&quot;~/Desktop/Brewfile&quot;
 
@@ -8489,7 +8489,7 @@ cask &quot;dteoh/sqa/slowquitapps&quot;
 mas &quot;ting_en&quot;, id: 734383760
 mas &quot;Xcode&quot;, id: 497799835
 </code></pre>
-<h3 id="&#x2463;&#x6062;&#x590D;&#x547D;&#x4EE4;">&#x2463;&#x6062;&#x590D;&#x547D;&#x4EE4;</h3>
+<p><strong>&#x2463;&#x6062;&#x590D;&#x547D;&#x4EE4;</strong></p>
 <pre class="language-"><code class="bash">brew install mas
 # &#x6279;&#x91CF;&#x5B89;&#x88C5;&#x8F6F;&#x4EF6; 
 brew bundle --file=&quot;~/Desktop/Brewfile&quot;
@@ -8499,17 +8499,24 @@ brew bundle --file=&quot;~/Desktop/Brewfile&quot;
 <li><a href="https://wsgzao.github.io/post/homebrew-bundle/" _target="blank">https://wsgzao.github.io/post/homebrew-bundle/</a></li>
 </ol>
 <h2 id="6&#x3001;&#x4F7F;&#x7528;brew&#x5B89;&#x88C5;&#x7684;&#x8F6F;&#x4EF6;&#x4FE1;&#x606F;">6&#x3001;&#x4F7F;&#x7528;Brew&#x5B89;&#x88C5;&#x7684;&#x8F6F;&#x4EF6;&#x4FE1;&#x606F;</h2>
-<h3 id="&#x2460;mysql">&#x2460;MySQL</h3>
 <ul>
-<li>&#x914D;&#x7F6E;&#x6587;&#x4EF6;&#xFF1A;<code>/usr/local/etc/my.cnf</code></li>
-<li>&#x65E5;&#x5FD7;&#x548C;&#x5E95;&#x5C42;DB&#x6570;&#x636E;&#x6587;&#x4EF6;: <code>/usr/local/var/mysql</code></li>
-<li>bin&#x6587;&#x4EF6;&#x8DEF;&#x5F84;&#xFF1A;<code>/usr/local/Cellar/mysql@mysql&#x7248;&#x672C;/mysql&#x7248;&#x672C;</code></li>
-<li>brew &#x542F;&#x52A8;&#x547D;&#x4EE4;&#xFF1A;<code>brew services restart mysql@mysql&#x7248;&#x672C;</code></li>
+<li><p>MySQL</p>
+<ul>
+<li><p>&#x914D;&#x7F6E;&#x6587;&#x4EF6;&#xFF1A;<code>/usr/local/etc/my.cnf</code></p>
+</li>
+<li><p>&#x65E5;&#x5FD7;&#x548C;&#x5E95;&#x5C42;DB&#x6570;&#x636E;&#x6587;&#x4EF6;: <code>/usr/local/var/mysql</code></p>
+</li>
+<li><p>bin&#x6587;&#x4EF6;&#x8DEF;&#x5F84;&#xFF1A;<code>/usr/local/Cellar/mysql@mysql&#x7248;&#x672C;/mysql&#x7248;&#x672C;</code></p>
+</li>
+<li><p>brew &#x542F;&#x52A8;&#x547D;&#x4EE4;&#xFF1A;<code>brew services restart mysql@mysql&#x7248;&#x672C;</code></p>
+</li>
 </ul>
-<h3 id="&#x2461;nginx">&#x2461;Nginx</h3>
-<ul>
+</li>
+<li>Nginx<ul>
 <li>&#x4E3B;&#x914D;&#x7F6E;&#x6587;&#x4EF6;&#x8DEF;&#x5F84;&#xFF1A;<code>/usr/local/etc/nginx/nginx.conf</code></li>
 <li>bin&#x6587;&#x4EF6;&#x8DEF;&#x5F84;: <code>/usr/local/Cellar/nginx/nginx&#x7248;&#x672C;&#x53F7;/</code></li>
+</ul>
+</li>
 </ul>
 <h2 id="7&#x3001;stat&#x547D;&#x4EE4;&#x683C;&#x5F0F;&#x5316;&#x8F93;&#x51FA;">7&#x3001;stat&#x547D;&#x4EE4;&#x683C;&#x5F0F;&#x5316;&#x8F93;&#x51FA;</h2>
 <pre class="language-"><code class="bash">$ echo &quot;stat -f &quot;&#x6587;&#x4EF6;: %N%n%n  &#x5927;&#x5C0F;: %Z &#x5B57;&#x8282;  &#x7C7B;&#x578B;: %HT%n  &#x6240;&#x5728;&#x78C1;&#x76D8;&#x5206;&#x533A;: %Sd Block&#x7F16;&#x53F7;: %b  Inode: %i %n  &#x6743;&#x9650;: %Sp(%Mp%Lp) / %Su(%u)-%Sg(%g)%n%n  &#x6700;&#x8FD1;&#x8BBF;&#x95EE;&#x65F6;&#x95F4;  :  %Sa%n  &#x5185;&#x5BB9;&#x4FEE;&#x6539;&#x65F6;&#x95F4;  :  %Sm%n  inode&#x4FEE;&#x6539;&#x65F6;&#x95F4; :  %Sc%n  &#x521B;&#x5EFA;&#x65F6;&#x95F4;      :  %SB&quot; -t &quot;%Y-%m-%d %H:%M:%m&quot;&quot; &gt;&gt; ~/.zshrc
@@ -8539,7 +8546,7 @@ $ stat test.txt
 <ul>
 <li>&#x5220;&#x9664;&#x865A;&#x60AC;volumes&#x91CA;&#x653E;&#x7A7A;&#x95F4;&#xFF1A;<code>docker volume rm $(docker volume ls -qf dangling=true)</code></li>
 </ul>
-<h2 id="9&#x3001;mac-&#x4E0A;&#x7684;&#x78C1;&#x76D8;&#x5DE5;&#x5177;&#x652F;&#x6301;&#x7684;&#x6587;&#x4EF6;&#x7CFB;&#x7EDF;&#x683C;&#x5F0F;&#xFF1A;">9&#x3001;Mac &#x4E0A;&#x7684;&#x201C;&#x78C1;&#x76D8;&#x5DE5;&#x5177;&#x201D;&#x652F;&#x6301;&#x7684;&#x6587;&#x4EF6;&#x7CFB;&#x7EDF;&#x683C;&#x5F0F;&#xFF1A;</h2>
+<h2 id="9&#x3001;mac-&#x4E0A;&#x7684;&#x78C1;&#x76D8;&#x5DE5;&#x5177;&#x652F;&#x6301;&#x7684;&#x6587;&#x4EF6;&#x7CFB;&#x7EDF;&#x683C;&#x5F0F;">9&#x3001;Mac &#x4E0A;&#x7684;&#x201C;&#x78C1;&#x76D8;&#x5DE5;&#x5177;&#x201D;&#x652F;&#x6301;&#x7684;&#x6587;&#x4EF6;&#x7CFB;&#x7EDF;&#x683C;&#x5F0F;</h2>
 <ul>
 <li><p><em>Apple &#x6587;&#x4EF6;&#x7CFB;&#x7EDF; (APFS)&#xFF1A;</em>macOS 10.13 &#x6216;&#x540E;&#x7EED;&#x7248;&#x672C;&#x4F7F;&#x7528;&#x7684;&#x6587;&#x4EF6;&#x7CFB;&#x7EDF;&#x3002;</p>
 <p>Apple &#x6587;&#x4EF6;&#x7CFB;&#x7EDF; (APFS) &#x662F;&#x8FD0;&#x884C; macOS 10.13 &#x6216;&#x540E;&#x7EED;&#x7248;&#x672C;&#x7684; Mac &#x7535;&#x8111;&#x6240;&#x4F7F;&#x7528;&#x7684;&#x9ED8;&#x8BA4;&#x6587;&#x4EF6;&#x7CFB;&#x7EDF;&#xFF0C;&#x5B83;&#x5177;&#x6709;&#x5F3A;&#x52A0;&#x5BC6;&#x3001;&#x7A7A;&#x95F4;&#x5171;&#x4EAB;&#x3001;&#x78C1;&#x76D8;&#x5FEB;&#x7167;&#x3001;&#x5FEB;&#x901F;&#x76EE;&#x5F55;&#x5927;&#x5C0F;&#x7EDF;&#x8BA1;&#x7B49;&#x7279;&#x6027;&#xFF0C;&#x4EE5;&#x53CA;&#x6539;&#x8FDB;&#x7684;&#x6587;&#x4EF6;&#x7CFB;&#x7EDF;&#x57FA;&#x7840;&#x3002;&#x867D;&#x7136; APFS &#x6700;&#x9002;&#x5408;&#x4E8E;&#x65B0;&#x6B3E; Mac &#x7535;&#x8111;&#x4E2D;&#x6240;&#x7528;&#x7684;&#x95EA;&#x5B58;/SSD &#x50A8;&#x5B58;&#xFF0C;&#x5B83;&#x4E5F;&#x53EF;&#x4EE5;&#x4E0E;&#x4F7F;&#x7528;&#x4F20;&#x7EDF;&#x786C;&#x76D8;&#x9A71;&#x52A8;&#x5668; (HDD) &#x548C;&#x5916;&#x7F6E;&#x76F4;&#x8FDE;&#x50A8;&#x5B58;&#x8BBE;&#x5907;&#x7684;&#x4F4E;&#x7248;&#x672C;&#x7CFB;&#x7EDF;&#x914D;&#x5408;&#x4F7F;&#x7528;&#x3002;macOS 10.13 &#x6216;&#x540E;&#x7EED;&#x7248;&#x672C;&#x652F;&#x6301; APFS &#x7528;&#x4E8E;&#x53EF;&#x5F15;&#x5BFC;&#x542F;&#x52A8;&#x7684;&#x5B97;&#x5377;&#x548C;&#x6570;&#x636E;&#x5B97;&#x5377;&#x3002;</p>
@@ -8579,13 +8586,81 @@ $ stat test.txt
 mkdir /Volumes/EFI
 sudo mount -t msdos /dev/disk0s1 /Volumes/EFI
 </code></pre>
-<h2 id="11&#x3001;&#x547D;&#x4EE4;&#x884C;&#x8BBE;&#x7F6E;&#x7F51;&#x7EDC;&#x4EE3;&#x7406;">11&#x3001;&#x547D;&#x4EE4;&#x884C;&#x8BBE;&#x7F6E;&#x7F51;&#x7EDC;&#x4EE3;&#x7406;</h2>
-<pre class="language-"><code class="bash">sudo networksetup -setwebproxy &quot;Wi-Fi&quot; 127.0.0.1 8001
+<h2 id="11&#x3001;networksetup&#x7F51;&#x7EDC;&#x8BBE;&#x7F6E;">11&#x3001;networksetup&#x7F51;&#x7EDC;&#x8BBE;&#x7F6E;</h2>
+<p><strong>&#x5217;&#x51FA;&#x6240;&#x6709;&#x7F51;&#x7EDC;&#x786C;&#x4EF6;&#x63A5;&#x53E3;</strong></p>
+<pre class="language-"><code class="bash">networksetup -listallhardwareports
+# &#xFF08;Hardware Ports&#xFF09;&#x4E0E;&#x5176;&#x5BF9;&#x5E94;&#x7684;&#x8BBE;&#x5907;&#x540D;&#x79F0;&#xFF08;&#x5982; en0, en1&#xFF09;&#xFF0C;&#x65B9;&#x4FBF;&#x540E;&#x7EED;&#x4F7F;&#x7528; networksetup &#x547D;&#x4EE4;&#x65F6;&#x6307;&#x5B9A;&#x6B63;&#x786E;&#x7684;&#x63A5;&#x53E3;
+# &#x5B57;&#x6BB5;
+#   Hardware Port    &#x4EBA;&#x7C7B;&#x53EF;&#x8BFB;&#x7684;&#x63A5;&#x53E3;&#x540D;&#x79F0;&#xFF08;&#x7528;&#x4E8E; networksetup &#x547D;&#x4EE4;&#x7684; <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>networkservice</span><span class="token punctuation">&gt;</span></span> &#x90E8;&#x5206;&#xFF0C;&#x4F8B;&#x5982; &quot;Wi-Fi&quot;&#xFF09;
+#   Device    BSD &#x8BBE;&#x5907;&#x540D;&#x79F0;&#xFF0C;&#x4F8B;&#x5982; en0&#xFF0C;&#x7528;&#x4E8E;&#x5E95;&#x5C42;&#x547D;&#x4EE4;&#x5982; ifconfig &#x6216; airport
+#   Ethernet Address    &#x7F51;&#x5361;&#x7684;&#x7269;&#x7406; MAC &#x5730;&#x5740;
+</code></pre>
+<p><strong>&#x914D;&#x7F6E;&#x4EE3;&#x7406;</strong></p>
+<pre class="language-"><code class="bash"># &#x8BBE;&#x7F6E; HTTP &#x4EE3;&#x7406;
+sudo networksetup -setwebproxy &quot;Wi-Fi&quot; 127.0.0.1 8001
 sudo networksetup -setwebproxystate &quot;Wi-Fi&quot; on
+# &#x8BBE;&#x7F6E; HTTPS &#x4EE3;&#x7406;
 sudo networksetup -setsecurewebproxy &quot;Wi-Fi&quot; 127.0.0.1 8001
 sudo networksetup -setsecurewebproxystate &quot;Wi-Fi&quot; on
+# &#x8BBE;&#x7F6E; SOCKS &#x4EE3;&#x7406;
 sudo networksetup -setsocksfirewallproxy &quot;Wi-Fi&quot; 127.0.0.1 8002
 sudo networksetup -setsocksfirewallproxystate &quot;Wi-Fi&quot; on
+# &#x8BBE;&#x7F6E; PAC &#x81EA;&#x52A8;&#x4EE3;&#x7406;&#x914D;&#x7F6E;
+sudo networksetup -setautoproxyurl &quot;Wi-Fi&quot; &quot;http://example.com/proxy.pac&quot;
+
+# &#x7981;&#x7528;&#x4EE3;&#x7406;
+sudo networksetup -setwebproxy &quot;Wi-Fi&quot; &quot;&quot; 0
+sudo networksetup -setsecurewebproxy &quot;Wi-Fi&quot; &quot;&quot; 0
+sudo networksetup -setsocksfirewallproxy &quot;Wi-Fi&quot; &quot;&quot; 0
+sudo networksetup -setautoproxyurl &quot;Wi-Fi&quot; &quot;&quot;
+
+sudo networksetup -setwebproxystate &quot;Wi-Fi&quot; off
+sudo networksetup -setsecurewebproxystate &quot;Wi-Fi&quot; off
+sudo networksetup -setsocksfirewallproxystate &quot;Wi-Fi&quot; off
+sudo networksetup -setautoproxystate &quot;Wi-Fi&quot; off
+</code></pre>
+<p><strong>&#x8BBE;&#x7F6E;&#x5FFD;&#x7565;&#x4EE3;&#x7406;&#x7684;&#x4E3B;&#x673A;&#x4E0E;&#x57DF;&#x540D;</strong></p>
+<pre class="language-"><code class="bash"># &#x67E5;&#x770B;&#x5F53;&#x524D;&#x8BBE;&#x7F6E;&#x7684;&#x5FFD;&#x7565;&#x4EE3;&#x7406;&#x7684;&#x4E3B;&#x673A;&#x4E0E;&#x57DF;&#x540D;
+networksetup -getproxybypassdomains Wi-Fi
+
+# &#x5FFD;&#x7565;&#x4EE3;&#x7406;&#x7684;&#x4E3B;&#x673A;&#x4E0E;&#x57DF;&#x540D;
+networksetup -setproxybypassdomains Wi-Fi localhost 127.0.0.1 .example.com intranet.company.local
+# networksetup &#x8BBE;&#x7F6E;&#x7684;&#x662F;&#x201C;&#x66FF;&#x6362;&#x201D;&#xFF0C;&#x4E0D;&#x662F;&#x201C;&#x8FFD;&#x52A0;&#x201D;&#xFF0C;&#x6267;&#x884C; -setproxybypassdomains &#x4F1A;&#x6E05;&#x7A7A;&#x65E7;&#x8BBE;&#x7F6E;&#xFF0C;&#x66FF;&#x6362;&#x4E3A;&#x4F60;&#x63D0;&#x4F9B;&#x7684;&#x65B0;&#x5217;&#x8868;&#x3002;
+# &#x901A;&#x914D;&#x7B26;&#x4E0D;&#x652F;&#x6301;&#xFF0C;&#x6BD4;&#x5982;&#x4E0D;&#x80FD;&#x4F7F;&#x7528; *.example.com&#xFF0C;&#x5E94;&#x4F7F;&#x7528; .example.com&#xFF08;&#x524D;&#x9762;&#x52A0;&#x70B9;&#xFF0C;&#x8868;&#x793A;&#x5339;&#x914D;&#x5B50;&#x57DF;&#x540D;&#xFF09;&#x3002;
+</code></pre>
+<p><strong>&#x5F00;&#x5173;&#x63A7;&#x5236;</strong></p>
+<pre class="language-"><code>networksetup -setairportpower &quot;Wi-Fi&quot; on
+networksetup -setairportpower &quot;Wi-Fi&quot; off
+</code></pre><p><strong>&#x8FDE;&#x63A5;&#x63A7;&#x5236;&#xFF08;&#x8F93;&#x5165; SSID &#x548C;&#x5BC6;&#x7801;&#xFF09;</strong></p>
+<pre class="language-"><code>networksetup -setairportnetwork en0 &quot;SSID&quot; &quot;password&quot;
+</code></pre><p><strong>IP&#x8BBE;&#x7F6E;</strong></p>
+<pre class="language-"><code class="bash"># &#x8BBE;&#x7F6E;&#x4E3A;&#x9759;&#x6001; IP
+networksetup -setmanual &quot;Wi-Fi&quot; 192.168.1.100 255.255.255.0 192.168.1.1
+
+# &#x8BBE;&#x7F6E;&#x4E3A; DHCP
+networksetup -setdhcp &quot;Wi-Fi&quot;
+</code></pre>
+<p><strong>DNS &#x8BBE;&#x7F6E;</strong></p>
+<pre class="language-"><code class="bash"># &#x8BBE;&#x7F6E; DNS
+networksetup -setdnsservers &quot;Wi-Fi&quot; 8.8.8.8 1.1.1.1
+# &#x6E05;&#x7A7A; DNS
+networksetup -setdnsservers &quot;Wi-Fi&quot; empty
+# &#x67E5;&#x770B;&#x5F53;&#x524D; DNS
+networksetup -getdnsservers &quot;Wi-Fi&quot;
+</code></pre>
+<p><strong>&#x9996;&#x9009;&#x65E0;&#x7EBF;&#x7F51;&#x7EDC;&#x7BA1;&#x7406;</strong></p>
+<pre class="language-"><code class="bash"># &#x67E5;&#x770B;&#x4F18;&#x5148;&#x7F51;&#x7EDC;&#x5217;&#x8868;
+networksetup -listpreferredwirelessnetworks en0
+# &#x6DFB;&#x52A0;&#x9996;&#x9009;&#x7F51;&#x7EDC;
+networksetup -addpreferredwirelessnetworkatindex en0 &quot;MyWiFi&quot; 0 WPA2 &quot;password&quot;
+# &#x5220;&#x9664;&#x67D0;&#x4E2A;&#x9996;&#x9009;&#x7F51;&#x7EDC;
+networksetup -removepreferredwirelessnetwork en0 &quot;OldWiFi&quot;
+# &#x8BBE;&#x7F6E;&#x641C;&#x7D22;&#x57DF;
+networksetup -setsearchdomains &quot;Wi-Fi&quot; example.com
+</code></pre>
+<p><strong>&#x8BBE;&#x7F6E;&#x672C;&#x5730;&#x4E3B;&#x673A;&#x540D;</strong></p>
+<pre class="language-"><code class="bash">scutil --set HostName my-mac.local
+# &#x4E5F;&#x53EF;&#x7528; `scutil`
 </code></pre>
 <h2 id="12&#x3001;&#x6E05;&#x9664;-dns-&#x7F13;&#x5B58;">12&#x3001;&#x6E05;&#x9664; DNS &#x7F13;&#x5B58;</h2>
 <table>
@@ -8830,11 +8905,11 @@ end
 </li>
 </ul>
 <h2 id="15&#x3001;&#x94A5;&#x5319;&#x4E32;&#x7BA1;&#x7406;">15&#x3001;&#x94A5;&#x5319;&#x4E32;&#x7BA1;&#x7406;</h2>
-<p>Security&#x662F;Mac&#x7CFB;&#x7EDF;&#x4E2D;&#x94A5;&#x5319;&#x4E32;&#x548C;&#x5B89;&#x5168;&#x6A21;&#x5757;&#x7684;&#x547D;&#x4EE4;&#x884C;&#x7BA1;&#x7406;&#x5DE5;&#x5177;&#xFF0C;&#xFF08;&#x56FE;&#x5F62;&#x5316;&#x5DE5;&#x5177;&#x4E3A;Keychain Access.app&#xFF09;&#x3002;&#x94A5;&#x5319;&#x4E32;&#xFF08;Keychain&#xFF09;&#x5B9E;&#x8D28;&#x4E0A;&#x5C31;&#x662F;&#x4E00;&#x4E2A;&#x7528;&#x4E8E;&#x5B58;&#x653E;&#x8BC1;&#x4E66;&#x3001;&#x5BC6;&#x94A5;&#x3001;&#x5BC6;&#x7801;&#x7B49;&#x5B89;&#x5168;&#x8BA4;&#x8BC1;&#x5B9E;&#x4F53;&#x7684;&#x4ED3;&#x5E93;&#xFF0C;&#x5728;&#x8BA1;&#x7B97;&#x673A;&#x4E2D;&#x4FDD;&#x5B58;&#x4E3A;&#x4E00;&#x4E2A;.keychain&#x7684;&#x6587;&#x4EF6;&#xFF0C;&#x9ED8;&#x8BA4;&#x5B58;&#x653E;&#x5728;&#x4EE5;&#x4E0B;&#x76EE;&#x5F55;&#x4E2D;&#xFF08;&#x4F7F;&#x7528;&#x8FD9;&#x51E0;&#x4E2A;&#x76EE;&#x5F55;&#x4E2D;&#x7684;&#x94A5;&#x5319;&#x4E32;&#x65F6;&#x4E0D;&#x9700;&#x8981;&#x5199;&#x8DEF;&#x5F84;&#xFF0C;&#x76F4;&#x63A5;&#x7528;&#x6587;&#x4EF6;&#x540D;&#x5373;&#x53EF;&#xFF0C;Security&#x5DE5;&#x5177;&#x4F1A;&#x81EA;&#x52A8;&#x641C;&#x7D22;&#xFF09;&#xFF1A;</p>
+<p>Security&#x662F;Mac&#x7CFB;&#x7EDF;&#x4E2D;&#x94A5;&#x5319;&#x4E32;&#x548C;&#x5B89;&#x5168;&#x6A21;&#x5757;&#x7684;&#x547D;&#x4EE4;&#x884C;&#x7BA1;&#x7406;&#x5DE5;&#x5177;&#xFF0C;&#xFF08;&#x56FE;&#x5F62;&#x5316;&#x5DE5;&#x5177;&#x4E3A;Keychain Access.app&#xFF09;&#x3002;&#x94A5;&#x5319;&#x4E32;&#xFF08;Keychain&#xFF09;&#x5B9E;&#x8D28;&#x4E0A;&#x5C31;&#x662F;&#x4E00;&#x4E2A;&#x7528;&#x4E8E;&#x5B58;&#x653E;&#x8BC1;&#x4E66;&#x3001;&#x5BC6;&#x94A5;&#x3001;&#x5BC6;&#x7801;&#x7B49;&#x5B89;&#x5168;&#x8BA4;&#x8BC1;&#x5B9E;&#x4F53;&#x7684;&#x4ED3;&#x5E93;&#xFF0C;&#x5728;&#x8BA1;&#x7B97;&#x673A;&#x4E2D;&#x4FDD;&#x5B58;&#x4E3A;&#x4E00;&#x4E2A;.keychain&#x7684;&#x6587;&#x4EF6;&#xFF0C;&#x9ED8;&#x8BA4;&#x5B58;&#x653E;&#x5728;&#x4EE5;&#x4E0B;&#x76EE;&#x5F55;&#x4E2D;&#xFF08;&#x4F7F;&#x7528;&#x8FD9;&#x51E0;&#x4E2A;&#x76EE;&#x5F55;&#x4E2D;&#x7684;&#x94A5;&#x5319;&#x4E32;&#x65F6;&#x4E0D;&#x9700;&#x8981;&#x5199;&#x8DEF;&#x5F84;&#xFF0C;&#x76F4;&#x63A5;&#x7528;&#x6587;&#x4EF6;&#x540D;&#x5373;&#x53EF;&#xFF0C;Security&#x5DE5;&#x5177;&#x4F1A;&#x81EA;&#x52A8;&#x641C;&#x7D22;&#xFF09;</p>
 <ul>
-<li>~/Library/Keychains/</li>
-<li>/Library/Keychains/</li>
-<li>/Network/Library/Keychains/</li>
+<li><code>~/Library/Keychains/</code></li>
+<li><code>/Library/Keychains/</code></li>
+<li><code>/Network/Library/Keychains/</code></li>
 </ul>
 <p>Security&#x547D;&#x4EE4;&#x8BED;&#x6CD5;&#xFF1A;<strong>security   [-hilqv]   [-p prompt]  [command] [command options] [command args]</strong></p>
 <pre class="language-"><code class="bash">-i    &#x4EA4;&#x4E92;&#x6A21;&#x5F0F;
@@ -8926,12 +9001,100 @@ create-filevaultmaster-keychain   &#x521B;&#x5EFA;&#x4E00;&#x4E2A;&#x5E26;&#x5BC
 </code></pre>
 <pre class="language-"><code class="bash">security find-generic-password -s &#x540D;&#x79F0; -g
 </code></pre>
+<h2 id="16&#x3001;defaults&#x7CFB;&#x7EDF;&#x914D;&#x7F6E;">16&#x3001;defaults&#x7CFB;&#x7EDF;&#x914D;&#x7F6E;</h2>
+<p><strong>Finder</strong></p>
+<pre class="language-"><code class="bash"># &#x662F;&#x5426;&#x663E;&#x793A;&#x9690;&#x85CF;&#x6587;&#x4EF6;&#xFF08;&#x5982; .DS_Store&#xFF09;    
+defaults write com.apple.finder AppleShowAllFiles -bool true &amp;&amp; killall Finder
+# &#x7A97;&#x53E3;&#x5E95;&#x90E8;&#x663E;&#x793A;&#x8DEF;&#x5F84;&#x680F;
+defaults write com.apple.finder ShowPathbar -bool true &amp;&amp; killall Finder
+#    &#x7A97;&#x53E3;&#x5E95;&#x90E8;&#x663E;&#x793A;&#x72B6;&#x6001;&#x680F;
+defaults write com.apple.finder ShowStatusBar -bool true &amp;&amp; killall Finder
+# &#x5728;&#x6807;&#x9898;&#x680F;&#x663E;&#x793A;&#x5B8C;&#x6574;&#x8DEF;&#x5F84;    
+defaults write com.apple.finder _FXShowPosixPathInTitle -bool true &amp;&amp; killall Finder
+# &#x9ED8;&#x8BA4;&#x67E5;&#x770B;&#x65B9;&#x5F0F;&#xFF1A;icnv &#x56FE;&#x6807;&#xFF0C;clmv &#x5217;&#x8868;&#xFF0C;Nlsv &#x5217;&#xFF0C;Flwv Cover Flow    
+defaults write com.apple.finder FXPreferredViewStyle -string &quot;Nlsv&quot; &amp;&amp; killall Finder
+# &#x65B0;&#x7A97;&#x53E3;&#x9ED8;&#x8BA4;&#x8DEF;&#x5F84;    
+defaults write com.apple.finder NewWindowTargetPath -string &quot;file://${HOME}/Downloads&quot; &amp;&amp; killall Finder
+#    &#x65B0;&#x7A97;&#x53E3;&#x76EE;&#x6807;&#xFF1A;PfDe&#xFF08;&#x9ED8;&#x8BA4;&#xFF09;&#xFF0C;PfLo&#xFF08;&#x5176;&#x4ED6;&#x4F4D;&#x7F6E;&#xFF09;    
+defaults write com.apple.finder NewWindowTarget -string &quot;PfLo&quot; &amp;&amp; killall Finder
+# &#x662F;&#x5426;&#x5728;&#x684C;&#x9762;&#x663E;&#x793A;&#x56FE;&#x6807;&#xFF08;&#x9690;&#x85CF;&#x684C;&#x9762;&#x56FE;&#x6807;&#xFF09;    
+defaults write com.apple.finder CreateDesktop -bool false &amp;&amp; killall Finder
+# &#x663E;&#x793A;&#x6240;&#x6709;&#x6587;&#x4EF6;&#x6269;&#x5C55;&#x540D;    
+defaults write NSGlobalDomain AppleShowAllExtensions -bool true &amp;&amp; killall Finder
+# &#x542F;&#x7528; Finder &#x83DC;&#x5355;&#x680F;&#x4E2D;&#x7684;&#x201C;&#x9000;&#x51FA; Finder&#x201D;&#x9009;&#x9879;    
+defaults write com.apple.finder QuitMenuItem -bool true &amp;&amp; killall Finder
+# &#x5173;&#x95ED;&#x4FEE;&#x6539;&#x6587;&#x4EF6;&#x6269;&#x5C55;&#x540D;&#x65F6;&#x7684;&#x8B66;&#x544A;
+defaults write com.apple.finder FXEnableExtensionChangeWarning -bool false &amp;&amp; killall Finder
+# &#x6E05;&#x7A7A;&#x5E9F;&#x7EB8;&#x7BD3;&#x65F6;&#x4E0D;&#x63D0;&#x793A;    
+defaults write com.apple.finder WarnOnEmptyTrash -bool false &amp;&amp; killall Finder
+
+# &#x7981;&#x6B62;&#x521B;&#x5EFA; .DS_Store &#x6587;&#x4EF6;&#xFF08;&#x7F51;&#x7EDC;/USB&#xFF09;
+defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
+defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
+</code></pre>
+<p><strong>Dock&#x7A0B;&#x5E8F;&#x575E;</strong></p>
+<pre class="language-"><code class="bash"># &#x8BBE;&#x7F6E; Dock &#x81EA;&#x52A8;&#x9690;&#x85CF;
+defaults write com.apple.dock autohide -bool true &amp;&amp; killall Dock
+# &#x8BBE;&#x7F6E;&#x81EA;&#x52A8;&#x9690;&#x85CF; Dock &#x524D;&#x7684;&#x5EF6;&#x8FDF;&#x65F6;&#x95F4;&#xFF08;&#x79D2;&#xFF09;
+defaults write com.apple.dock autohide-delay -float 0
+#Dock &#x9690;&#x85CF;/&#x663E;&#x793A;&#x52A8;&#x753B;&#x6301;&#x7EED;&#x65F6;&#x95F4;
+defaults write com.apple.dock autohide-time-modifier -float 0.2
+# &#x8BBE;&#x7F6E; Dock &#x56FE;&#x6807;&#x5927;&#x5C0F;&#xFF08;&#x9ED8;&#x8BA4; 64&#xFF09;
+defaults write com.apple.dock tilesize -int 46 &amp;&amp; killall Dock
+# Dock &#x4F4D;&#x7F6E;&#xFF08;left/bottom/right&#xFF09;
+defaults write com.apple.dock orientation -string &quot;left&quot;
+# &#x662F;&#x5426;&#x663E;&#x793A;&#x6700;&#x8FD1;&#x4F7F;&#x7528;&#x7684;&#x5E94;&#x7528;
+defaults write com.apple.dock show-recents -bool false
+# &#x662F;&#x5426;&#x542F;&#x7528;&#x56FE;&#x6807;&#x653E;&#x5927;
+defaults write com.apple.dock magnification -bool true
+# &#x653E;&#x5927;&#x56FE;&#x6807;&#x5927;&#x5C0F;
+defaults write com.apple.dock largesize -int 96
+# &#x4EC5;&#x663E;&#x793A;&#x5DF2;&#x6253;&#x5F00;&#x7684;&#x5E94;&#x7528;&#xFF08;&#x9690;&#x85CF;&#x56FA;&#x5B9A;&#x56FE;&#x6807;&#xFF09;
+defaults write com.apple.dock static-only -bool true
+# &#x6700;&#x5C0F;&#x5316;&#x7A97;&#x53E3;&#x52A8;&#x753B;&#xFF08;genie/scale/suck&#xFF09;
+defaults write com.apple.dock mineffect -string &quot;scale&quot;
+# &#x6700;&#x5C0F;&#x5316;&#x7A97;&#x53E3;&#x65F6;&#x5F52;&#x5165;&#x56FE;&#x6807;&#xFF0C;&#x800C;&#x4E0D;&#x662F;&#x53F3;&#x4FA7;
+defaults write com.apple.dock minimize-to-application -bool true
+
+
+# &#x91CD;&#x7F6E; Dock
+defaults delete com.apple.dock
+killall Dock
+</code></pre>
+<p><strong>Safari</strong></p>
+<pre class="language-"><code class="bash"># &#x8BBE;&#x7F6E; Safari &#x542F;&#x52A8;&#x65F6;&#x4E3B;&#x9875;
+defaults write com.apple.Safari HomePage -string &quot;https://www.google.com&quot;
+# &#x542F;&#x7528;&#x201C;&#x5F00;&#x53D1;&#x201D;&#x83DC;&#x5355;
+defaults write com.apple.Safari IncludeDevelopMenu -bool true
+# &#x542F;&#x7528;&#x9690;&#x85CF;&#x8C03;&#x8BD5;&#x83DC;&#x5355;
+defaults write com.apple.Safari IncludeInternalDebugMenu -bool true
+# &#x663E;&#x793A;&#x6536;&#x85CF;&#x5939;&#x680F;
+defaults write com.apple.Safari ShowFavoritesBar -bool true
+# &#x7981;&#x7528;&#x641C;&#x7D22;&#x5EFA;&#x8BAE;
+defaults write com.apple.Safari SuppressSearchSuggestions -bool true
+# &#x7981;&#x7528;&#x667A;&#x80FD;&#x641C;&#x7D22;&#x5B57;&#x6BB5;
+defaults write com.apple.Safari UniversalSearchEnabled -bool false
+# &#x4E0B;&#x8F7D;&#x540E;&#x81EA;&#x52A8;&#x6253;&#x5F00;&#x201C;&#x5B89;&#x5168;&#x201D;&#x6587;&#x4EF6;
+defaults write com.apple.Safari AutoOpenSafeDownloads -bool false
+# &#x542F;&#x7528;&#x7F51;&#x7EDC;&#x8BC8;&#x9A97;&#x7F51;&#x7AD9;&#x8B66;&#x544A; 
+defaults write com.apple.Safari WarnAboutFraudulentWebsites -bool true
+# &#x542F;&#x7528; Java&#xFF08;&#x5DF2;&#x88AB;&#x5F03;&#x7528;&#xFF09; 
+defaults write com.apple.Safari WebKitJavaEnabled -bool false
+# &#x542F;&#x7528; JavaScript 
+defaults write com.apple.Safari WebKitJavaScriptEnabled -bool true
+# &#x9875;&#x9762;&#x67E5;&#x627E;&#x53EA;&#x5339;&#x914D;&#x5355;&#x8BCD;&#x5F00;&#x5934; 
+defaults write com.apple.Safari FindOnPageMatchesWordStartsOnly -bool false
+
+
+# &#x91CD;&#x7F6E; Safari&#xFF08;&#x614E;&#x7528;&#xFF0C;&#x4F1A;&#x6E05;&#x9664;&#x5F88;&#x591A;&#x914D;&#x7F6E;&#xFF09;
+defaults delete com.apple.Safari
+</code></pre>
 <h1 id="&#x53C2;&#x8003;">&#x53C2;&#x8003;</h1>
 <ul>
 <li><a href="https://git.herrbischoff.com/awesome-macos-command-line/about/" _target="blank">https://git.herrbischoff.com/awesome-macos-command-line/about/</a></li>
 </ul>
 <footer class="page-footer"><span class="copyright">Copyright Curiouser all right reserved&#xFF0C;powered by Gitbook</span><span class="footer-modification">&#x8BE5;&#x6587;&#x4EF6;&#x6700;&#x540E;&#x4FEE;&#x6539;&#x65F6;&#x95F4;&#xFF1A;
-2024-01-18 20:39:50
+2025-05-14 16:28:15
 </span></footer>
 <script>console.log("plugin-popup....");document.onclick = function(e){ e.target.tagName === "IMG" && window.open(e.target.src,e.target.src)}</script><style>img{cursor:pointer}</style>
 						
@@ -8971,7 +9134,7 @@ create-filevaultmaster-keychain   &#x521B;&#x5EFA;&#x4E00;&#x4E2A;&#x5E26;&#x5BC
 	<script>
 		var gitbook = gitbook || [];
 		gitbook.push(function() {
-			gitbook.page.hasChanged({"page":{"title":"MacOS小技巧","level":"6.14.1","depth":2,"next":{"title":"iTerm2终端调优","level":"6.14.2","depth":2,"path":"origin/macos-iterm2.md","ref":"origin/macos-iterm2.md","articles":[]},"previous":{"title":"MacOS","level":"6.14","depth":1,"ref":"","articles":[{"title":"MacOS小技巧","level":"6.14.1","depth":2,"path":"origin/macos-tips.md","ref":"origin/macos-tips.md","articles":[]},{"title":"iTerm2终端调优","level":"6.14.2","depth":2,"path":"origin/macos-iterm2.md","ref":"origin/macos-iterm2.md","articles":[]}]},"dir":"ltr"},"config":{"plugins":["-search","-lunr","-sharing","-highlight","search-pro","splitter","github","popup","sectionx","expandable-chapters","sharing-plus","code","auto-scroll-table","theme-fexa","tbfed-pagefooter","back-to-top-button","emphasize","edit-link","prism","donate","theme-comscore","github-buttons","github-issue-feedback"],"root":".","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"tbfed-pagefooter":{"copyright":"Copyright Curiouser","modify_label":"该文件最后修改时间：","modify_format":"YYYY-MM-DD HH:mm:ss"},"prism":{"css":["prismjs/themes/prism-tomorrow.css"],"lang":{"flow":"typescript"},"ignore":["mermaid","eval-js"]},"emphasize":{},"github-issue-feedback":{"repo":"RationalMonster/rationalmonster.github.io"},"github":{"url":"https://github.com/RationalMonster"},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"auto-scroll-table":{},"popup":{},"theme-fexa":{"search-placeholder":"搜索文章","logo":"./assets/logo.png"},"code":{"copybuttons":"true","copyButtons":true},"donate":{"wechat":"/assets/wechat-donate.jpg","title":"","button":"赏","wechatText":"微信打赏","alipay":"","alipayText":"支付宝打赏"},"fontsettings":{"theme":"white","family":"sans","size":2},"sectionx":{},"theme-comscore":{},"back-to-top-button":{},"github-buttons":{"buttons":[{"user":"RationalMonster","repo":"gitbooks-devops-roadmap","type":"star","size":"small","count":"true"}]},"sharing":{"weibo":true,"qq":"true","google":true,"all":["facebook","twitter"]},"edit-link":{"base":"https://raw.githubusercontent.com/RationalMonster/gitbooks-devops-roadmap/master/","label":"查看源MD文件"},"theme-default":{"showLevel":true,"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"expandable-chapters":{}},"theme":"default","author":"Curiouser <rationalmonster@163.com>","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Devops Roadmap","gitbook":"*"},"file":{"path":"origin/macos-tips.md","mtime":"2024-01-18T12:39:50.323Z","type":"markdown"},"gitbook":{"version":"3.0.0","time":"2025-04-23T09:34:48.838Z"},"basePath":"..","book":{"language":""}});
+			gitbook.page.hasChanged({"page":{"title":"MacOS小技巧","level":"6.14.1","depth":2,"next":{"title":"iTerm2终端调优","level":"6.14.2","depth":2,"path":"origin/macos-iterm2.md","ref":"origin/macos-iterm2.md","articles":[]},"previous":{"title":"MacOS","level":"6.14","depth":1,"ref":"","articles":[{"title":"MacOS小技巧","level":"6.14.1","depth":2,"path":"origin/macos-tips.md","ref":"origin/macos-tips.md","articles":[]},{"title":"iTerm2终端调优","level":"6.14.2","depth":2,"path":"origin/macos-iterm2.md","ref":"origin/macos-iterm2.md","articles":[]}]},"dir":"ltr"},"config":{"plugins":["-search","-lunr","-sharing","-highlight","search-pro","splitter","github","popup","sectionx","expandable-chapters","sharing-plus","code","auto-scroll-table","theme-fexa","tbfed-pagefooter","back-to-top-button","emphasize","edit-link","prism","donate","theme-comscore","github-buttons","github-issue-feedback"],"root":".","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"tbfed-pagefooter":{"copyright":"Copyright Curiouser","modify_label":"该文件最后修改时间：","modify_format":"YYYY-MM-DD HH:mm:ss"},"prism":{"css":["prismjs/themes/prism-tomorrow.css"],"lang":{"flow":"typescript"},"ignore":["mermaid","eval-js"]},"emphasize":{},"github-issue-feedback":{"repo":"RationalMonster/rationalmonster.github.io"},"github":{"url":"https://github.com/RationalMonster"},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"auto-scroll-table":{},"popup":{},"theme-fexa":{"search-placeholder":"搜索文章","logo":"./assets/logo.png"},"code":{"copybuttons":"true","copyButtons":true},"donate":{"wechat":"/assets/wechat-donate.jpg","title":"","button":"赏","wechatText":"微信打赏","alipay":"","alipayText":"支付宝打赏"},"fontsettings":{"theme":"white","family":"sans","size":2},"sectionx":{},"theme-comscore":{},"back-to-top-button":{},"github-buttons":{"buttons":[{"user":"RationalMonster","repo":"gitbooks-devops-roadmap","type":"star","size":"small","count":"true"}]},"sharing":{"weibo":true,"qq":"true","google":true,"all":["facebook","twitter"]},"edit-link":{"base":"https://raw.githubusercontent.com/RationalMonster/gitbooks-devops-roadmap/master/","label":"查看源MD文件"},"theme-default":{"showLevel":true,"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"expandable-chapters":{}},"theme":"default","author":"Curiouser <rationalmonster@163.com>","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Devops Roadmap","gitbook":"*"},"file":{"path":"origin/macos-tips.md","mtime":"2025-05-14T08:28:15.764Z","type":"markdown"},"gitbook":{"version":"3.0.0","time":"2025-05-14T08:28:30.766Z"},"basePath":"..","book":{"language":""}});
 		});
 	</script>
 </div>

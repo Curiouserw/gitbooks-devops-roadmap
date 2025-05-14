@@ -3891,7 +3891,7 @@
                     
                         <b>6.2.4.</b>
                     
-                    Shell命令自动补全
+                    Shell命令自定义自动补全
             
                 </a>
             
@@ -8293,11 +8293,13 @@
 						
 						<h1 id="applescript">AppleScript</h1>
 <h1 id="&#x4E00;&#x3001;&#x7B80;&#x4ECB;">&#x4E00;&#x3001;&#x7B80;&#x4ECB;</h1>
+<p><code>osascript</code>&#x662F;macOS&#x4E0A;&#x7684;&#x4E00;&#x4E2A;&#x547D;&#x4EE4;&#x884C;&#x5DE5;&#x5177;&#xFF0C;&#x7528;&#x4E8E;&#x6267;&#x884C;AppleScript&#x811A;&#x672C;&#x6216;&#x8005;JavaScript&#x811A;&#x672C;&#x3002;&#x5B83;&#x7684;&#x540D;&#x79F0;&#x6765;&#x6E90;&#x4E8E;&#x201D;Open Scripting Architecture&#x201D;&#xFF08;OSA&#xFF09;</p>
 <h2 id="1-&#x53D8;&#x91CF;">1. <strong>&#x53D8;&#x91CF;</strong></h2>
 <p>AppleScript &#x4E2D;&#x7684;&#x53D8;&#x91CF;&#x5B9A;&#x4E49;&#x76F4;&#x63A5;&#x4F7F;&#x7528; <code>set</code> &#x5173;&#x952E;&#x5B57;&#x3002;</p>
-<pre class="language-"><code>set myVar to &quot;Hello, World!&quot;
+<pre class="language-"><code class="bash">set myVar to &quot;Hello, World!&quot;
 set number to 10
-</code></pre><ul>
+</code></pre>
+<ul>
 <li><code>to</code> &#x662F;&#x8D4B;&#x503C;&#x5173;&#x952E;&#x5B57;&#x3002;</li>
 <li>AppleScript &#x652F;&#x6301;&#x57FA;&#x672C;&#x6570;&#x636E;&#x7C7B;&#x578B;&#xFF0C;&#x5982;&#x5B57;&#x7B26;&#x4E32;&#x3001;&#x6570;&#x5B57;&#x3001;&#x5217;&#x8868;&#x3001;&#x8BB0;&#x5F55;&#x7B49;&#x3002;</li>
 </ul>
@@ -8452,10 +8454,15 @@ end tell
     return {firstImagePath, secondImagePath}
 end tell
 </code></pre>
-<h1 id="&#x4E8C;&#x3001;osascript">&#x4E8C;&#x3001;osascript</h1>
-<p><code>osascript</code>&#x662F;macOS&#x4E0A;&#x7684;&#x4E00;&#x4E2A;&#x547D;&#x4EE4;&#x884C;&#x5DE5;&#x5177;&#xFF0C;&#x7528;&#x4E8E;&#x6267;&#x884C;AppleScript&#x811A;&#x672C;&#x6216;&#x8005;JavaScript&#x811A;&#x672C;&#x3002;&#x5B83;&#x7684;&#x540D;&#x79F0;&#x6765;&#x6E90;&#x4E8E;&#x201D;Open Scripting Architecture&#x201D;&#xFF08;OSA&#xFF09; </p>
+<h2 id="8&#x3001;&#x8C03;&#x7528;gui&#x5BC6;&#x7801;&#x6846;&#x63D0;&#x6743;&#x6267;&#x884C;&#x811A;&#x672C;">8&#x3001;&#x8C03;&#x7528;GUI&#x5BC6;&#x7801;&#x6846;&#x63D0;&#x6743;&#x6267;&#x884C;&#x811A;&#x672C;</h2>
+<pre class="language-"><code class="bash">do shell script &quot;
+  networksetup -setwebproxystate Wi-Fi off ; 
+  networksetup -setsecurewebproxystate Wi-Fi off ; 
+  networksetup -setsocksfirewallproxystate Wi-Fi off ;
+&quot; with administrator privileges
+</code></pre>
 <footer class="page-footer"><span class="copyright">Copyright Curiouser all right reserved&#xFF0C;powered by Gitbook</span><span class="footer-modification">&#x8BE5;&#x6587;&#x4EF6;&#x6700;&#x540E;&#x4FEE;&#x6539;&#x65F6;&#x95F4;&#xFF1A;
-2025-02-02 18:57:33
+2025-05-14 16:26:03
 </span></footer>
 <script>console.log("plugin-popup....");document.onclick = function(e){ e.target.tagName === "IMG" && window.open(e.target.src,e.target.src)}</script><style>img{cursor:pointer}</style>
 						
@@ -8484,7 +8491,7 @@ end tell
 
 		
 		
-		<a href="shell-tab-completion.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: Shell命令自动补全">
+		<a href="shell-tab-completion.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: Shell命令自定义自动补全">
 			<i class="fa fa-angle-left"></i>
 		</a>
 		
@@ -8495,7 +8502,7 @@ end tell
 	<script>
 		var gitbook = gitbook || [];
 		gitbook.push(function() {
-			gitbook.page.hasChanged({"page":{"title":"osascript脚本","level":"6.3","depth":1,"next":{"title":"Maven","level":"6.4","depth":1,"ref":"","articles":[{"title":"Mave Settings文件详解","level":"6.4.1","depth":2,"path":"origin/maven-Settings配置文件详解.md","ref":"origin/maven-Settings配置文件详解.md","articles":[]},{"title":"Maven 生命周期阶段","level":"6.4.2","depth":2,"path":"origin/maven-生命周期阶段.md","ref":"origin/maven-生命周期阶段.md","articles":[]},{"title":"Maven常见操作","level":"6.4.3","depth":2,"path":"origin/maven-operations.md","ref":"origin/maven-operations.md","articles":[]}]},"previous":{"title":"Shell命令自动补全","level":"6.2.4","depth":2,"path":"origin/shell-tab-completion.md","ref":"origin/shell-tab-completion.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-lunr","-sharing","-highlight","search-pro","splitter","github","popup","sectionx","expandable-chapters","sharing-plus","code","auto-scroll-table","theme-fexa","tbfed-pagefooter","back-to-top-button","emphasize","edit-link","prism","donate","theme-comscore","github-buttons","github-issue-feedback"],"root":".","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"tbfed-pagefooter":{"copyright":"Copyright Curiouser","modify_label":"该文件最后修改时间：","modify_format":"YYYY-MM-DD HH:mm:ss"},"prism":{"css":["prismjs/themes/prism-tomorrow.css"],"lang":{"flow":"typescript"},"ignore":["mermaid","eval-js"]},"emphasize":{},"github-issue-feedback":{"repo":"RationalMonster/rationalmonster.github.io"},"github":{"url":"https://github.com/RationalMonster"},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"auto-scroll-table":{},"popup":{},"theme-fexa":{"search-placeholder":"搜索文章","logo":"./assets/logo.png"},"code":{"copybuttons":"true","copyButtons":true},"donate":{"wechat":"/assets/wechat-donate.jpg","title":"","button":"赏","wechatText":"微信打赏","alipay":"","alipayText":"支付宝打赏"},"fontsettings":{"theme":"white","family":"sans","size":2},"sectionx":{},"theme-comscore":{},"back-to-top-button":{},"github-buttons":{"buttons":[{"user":"RationalMonster","repo":"gitbooks-devops-roadmap","type":"star","size":"small","count":"true"}]},"sharing":{"weibo":true,"qq":"true","google":true,"all":["facebook","twitter"]},"edit-link":{"base":"https://raw.githubusercontent.com/RationalMonster/gitbooks-devops-roadmap/master/","label":"查看源MD文件"},"theme-default":{"showLevel":true,"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"expandable-chapters":{}},"theme":"default","author":"Curiouser <rationalmonster@163.com>","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Devops Roadmap","gitbook":"*"},"file":{"path":"origin/apple-osascript.md","mtime":"2025-02-02T10:57:33.749Z","type":"markdown"},"gitbook":{"version":"3.0.0","time":"2025-04-23T09:34:48.838Z"},"basePath":"..","book":{"language":""}});
+			gitbook.page.hasChanged({"page":{"title":"osascript脚本","level":"6.3","depth":1,"next":{"title":"Maven","level":"6.4","depth":1,"ref":"","articles":[{"title":"Mave Settings文件详解","level":"6.4.1","depth":2,"path":"origin/maven-Settings配置文件详解.md","ref":"origin/maven-Settings配置文件详解.md","articles":[]},{"title":"Maven 生命周期阶段","level":"6.4.2","depth":2,"path":"origin/maven-生命周期阶段.md","ref":"origin/maven-生命周期阶段.md","articles":[]},{"title":"Maven常见操作","level":"6.4.3","depth":2,"path":"origin/maven-operations.md","ref":"origin/maven-operations.md","articles":[]}]},"previous":{"title":"Shell命令自定义自动补全","level":"6.2.4","depth":2,"path":"origin/shell-tab-completion.md","ref":"origin/shell-tab-completion.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-lunr","-sharing","-highlight","search-pro","splitter","github","popup","sectionx","expandable-chapters","sharing-plus","code","auto-scroll-table","theme-fexa","tbfed-pagefooter","back-to-top-button","emphasize","edit-link","prism","donate","theme-comscore","github-buttons","github-issue-feedback"],"root":".","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"tbfed-pagefooter":{"copyright":"Copyright Curiouser","modify_label":"该文件最后修改时间：","modify_format":"YYYY-MM-DD HH:mm:ss"},"prism":{"css":["prismjs/themes/prism-tomorrow.css"],"lang":{"flow":"typescript"},"ignore":["mermaid","eval-js"]},"emphasize":{},"github-issue-feedback":{"repo":"RationalMonster/rationalmonster.github.io"},"github":{"url":"https://github.com/RationalMonster"},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"auto-scroll-table":{},"popup":{},"theme-fexa":{"search-placeholder":"搜索文章","logo":"./assets/logo.png"},"code":{"copybuttons":"true","copyButtons":true},"donate":{"wechat":"/assets/wechat-donate.jpg","title":"","button":"赏","wechatText":"微信打赏","alipay":"","alipayText":"支付宝打赏"},"fontsettings":{"theme":"white","family":"sans","size":2},"sectionx":{},"theme-comscore":{},"back-to-top-button":{},"github-buttons":{"buttons":[{"user":"RationalMonster","repo":"gitbooks-devops-roadmap","type":"star","size":"small","count":"true"}]},"sharing":{"weibo":true,"qq":"true","google":true,"all":["facebook","twitter"]},"edit-link":{"base":"https://raw.githubusercontent.com/RationalMonster/gitbooks-devops-roadmap/master/","label":"查看源MD文件"},"theme-default":{"showLevel":true,"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"expandable-chapters":{}},"theme":"default","author":"Curiouser <rationalmonster@163.com>","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Devops Roadmap","gitbook":"*"},"file":{"path":"origin/apple-osascript.md","mtime":"2025-05-14T08:26:03.270Z","type":"markdown"},"gitbook":{"version":"3.0.0","time":"2025-05-14T08:28:30.766Z"},"basePath":"..","book":{"language":""}});
 		});
 	</script>
 </div>
