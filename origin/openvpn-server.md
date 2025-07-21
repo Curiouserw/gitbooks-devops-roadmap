@@ -811,7 +811,7 @@ if [ $script_type = 'client-connect' ] ; then
         }'
 fi
 if [ $script_type = 'client-disconnect' ]; then
-	duration_time=`swap_seconds $time_duration`
+  duration_time=`swap_seconds $time_duration`
     curl -s "$Ding_Webhook" \
         -H 'Content-Type: application/json' \
         -d '
@@ -840,12 +840,113 @@ client-to-client
 
 **注意** 在客户端可能会在TUN设备上看到两个地址, 其中一个是客户端面的VIP, 另外一个是网关. 比如下例中
 
-```
+```bash
 utun3: flags=8051<UP,POINTOPOINT,RUNNING,MULTICAST> mtu 1500
 inet 10.8.0.6 --> 10.8.0.5/32 utun3
 ```
 
 `10.8.0.6`是VIP, 而`10.8.0.5`是网关. 在互联时, 需要使用VIP而不是网关地址.
+
+## 7、Tunnelblick的自定义脚本
+
+`Tunnelblick` 支持连接之前执行脚本。支持以下的 hook 自定义脚本（放在 `Resources` 中）：
+
+| 脚本类型          | 执行时机       | 说明                                                         |
+| ----------------- | -------------- | ------------------------------------------------------------ |
+| `pre-connect`     | 🟢 **连接前**   | 在建立 VPN 连接之前执行。<br />如果 `pre-connect.sh` 返回非 `0`，**VPN 连接会被取消！** |
+| `up`              | 接口建立成功后 | 类似 OpenVPN 的 `--up`                                       |
+| `down`            | 断开连接时     | 类似 OpenVPN 的 `--down`                                     |
+| `post-disconnect` | 完全断开后     | 清理、通知用途                                               |
+
+这些脚本都会由 Tunnelblick 用 `root` 权限执行，**不用你额外提权**。
+
+> ~/Library/Application\ Support/Tunnelblick/Configurations/YourVPN.tblk/
+>
+> └── Contents/
+>     └── Resources/
+>         ├── config.ovpn
+>         ├── pre-connect.sh    ← 这里放脚本
+
+示例 `pre-connect.sh`
+
+- shell并发验证服务端域名的映射 IP 地址与本地 hosts 文件中的是否一致。（服务端域名是DDNS，映射 IP 地址进程变更）
+
+```bash
+#!/bin/zsh
+
+# Tunnelblick pre-connect hook
+# 放在 ~/Library/Application\ Support/Tunnelblick/Configurations/YourVPN.tblk/Contents/Resources/pre-connect.sh
+
+#  ------------ 代码调试分割线 ------------
+# exec > ~/Desktop/tunnelblick-preconnect.log 2>&1
+# set -x
+#  ------------ 代码调试分割线 ------------
+
+# 严格模式：遇到错误直接退出
+set -euo pipefail
+  # 所有输出重定向到日志文件
+# 禁止 zsh 后台任务通知 & 关闭作业监视
+setopt NO_NOTIFY
+setopt NO_MONITOR
+
+# 要更新的域名
+domain="vpnserver.test.com"
+# DNS 服务器列表（按优先级）
+dns_servers=( "8.8.8.8" "1.1.1.1")
+# 从 /etc/hosts 中读取上次记录的 IP
+hostsdomainip=$(awk -v d="$domain" '$2 == d {print $1}' /etc/hosts || echo "")
+# 用于在重试过程中存储最新结果
+tmpfile="/tmp/detectdnsip.$$"
+retry_dns() {
+  local dns_server=$1
+  local last_result
+  local result
+  local total_retries=0
+  # 读取上次全局最新结果
+  last_result=$(cat "$tmpfile" 2>/dev/null || echo "")
+  # 对单个 DNS 最多尝试 3 次
+  for (( attempt=1; attempt<=3; attempt++ )); do
+    if (( total_retries >= 5 )); then
+      return 1
+    fi
+    result=$(dig +timeout=1 +retry=1 +short A @"$dns_server" "$domain" 2>/dev/null || true)
+    if [[ -n "$result" ]]; then
+      if [[ "$result" != "$last_result" ]]; then
+        echo "$result" > "$tmpfile"
+      fi
+      return 0
+    else
+      (( total_retries++ ))
+      sleep 1
+    fi
+  done
+  return 1
+}
+
+updatehostsrouterip() {
+  # 并行对每个 DNS 发起重试
+  for dns in "${dns_servers[@]}"; do
+    retry_dns "$dns" &
+  done
+  wait
+
+  # 读取最终解析结果
+  if [[ -s "$tmpfile" ]]; then
+    new_ip=$(< "$tmpfile")
+  else
+    rm -f "$tmpfile"
+    exit 1
+  fi
+  rm -f "$tmpfile"
+  if [[ "$new_ip" != "$hostsdomainip" ]]; then
+    sed -i '' "s|^.*[[:space:]]$domain\$|$new_ip $domain|g" /etc/hosts
+    echo "$domain New IP: $new_ip" > ~/Desktop/DNS_IP_Change.log
+  fi
+}
+updatehostsrouterip
+# 返回 0 表示允许继续建立 VPN
+exit 0
+```
 
 # 八、监控
 

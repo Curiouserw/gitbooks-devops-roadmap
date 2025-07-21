@@ -2,7 +2,7 @@
 
 # 一、简介
 
-NodeExporter的textfile Collector，可以通过定时脚本生成 .prom 文件，让 node_exporter 读取进而扩展 node_exporter的指标。
+NodeExporter的textfile Collector，可以通过定时脚本生成 .prom 文件，让 node_exporter 读取，进而扩展 node_exporter的指标。
 
 ## 注意事项
 

@@ -107,8 +107,6 @@
 
 # 二、方案：读写分离+并发
 
-
-
 ## 1、挂载优化
 
 - 内核升级至高于5.4
@@ -130,7 +128,7 @@
   - **retrans**：NFS客户端重试请求的次数。建议值：2。
   - **noresvport**：在网络重连时使用新的TCP端口，保障在网络发生故障恢复时不会中断连接。建议启用该参数。
 
-  https://help.aliyun.com/zh/nas/user-guide/mount-an-nfs-file-system-on-a-linux-ecs-instance?spm=a2c4g.11186623.0.0.5db964e8Id90bh#section-jyi-hyd-hbr
+  https://help.aliyun.com/zh/nas/user-guide/mount-an-nfs-file-system-on-a-linux-ecs-instance
 
 - 修改内核默认NFS请求数量限制，2 --> 128
 
@@ -151,9 +149,9 @@ mount -t nfs \
    nas.aliyuncs.com:/ /mnt
 ```
 
-- https://help.aliyun.com/zh/nas/user-guide/other-issues?spm=a2c4g.11186623.0.0.7d361f34qw1GxY#section-o97-87k-mdw
+- https://help.aliyun.com/zh/nas/user-guide/other-issues
 
-- https://help.aliyun.com/zh/nas/user-guide/faq-about-the-performance-of-nas-file-systems?spm=a2c4g.11186623.0.0.23aa3898UuKxL8#section-urf-b97-l23
+- https://help.aliyun.com/zh/nas/user-guide/faq-about-the-performance-of-nas-file-systems
 
 
 
@@ -380,3 +378,64 @@ enddate=$(date "+%Y%m%d%H%M%S")
 spenttime=$((endts-startts))
 echo "======耗时$spenttime秒，在$enddate 删除操作完成。========="  >> "$log_file"
 ```
+# 三、测试数据
+
+## 1、测试命令
+
+- **rsync**删除目录：`mkdir -p /tmp/empty_dir && time rsync -a --delete /tmp/empty_dir/ 目录路径`
+- **find**删除目录：`time find 目录路径 -type f -delete`
+- **rm**删除目录：`time rm -rf 目录路径`
+
+## 2、NFS V3挂载
+
+挂载参数：`vers=3,nolock,proto=tcp,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,_netdev,noresvport`
+
+### **千级别小文件**
+
+
+| 目录路径 | 文件个数 | 目录大小 | 删除命令 | real耗时 | user耗时 | sys耗时 |
+| ------- | ------- | ------- | ------- | ------- | ------- | ------- |
+| **`/mnt/json/90-20210209`** | 3116 | 123M | rsync | 11.819s | 0.017s | 0.275s |
+| **`/mnt/json/90-20210210`** | 3116 | 123M | find                                          | 11.403s | 0.013s | 0.269s |
+| **`/mnt/json/90-20210211`** | 3115 | 123M | rm                                                                | 11.427s | 0.009s | 0.270s |
+
+### **万级别小文件**
+
+| 目录路径                | 文件个数 | 目录大小 | 删除命令 | 耗时-real | 耗时-user | 耗时-sys |
+| ----------------------- | -------- | -------- | -------- | --------- | --------- | -------- |
+| `/mnt/json/21-20200106` | 84082    | 649M     | rsync    | 5m21.405s | 0.329s    | 7.399s   |
+| `/mnt/json/21-20200421` | 83648    | 644M     | rm       | 5m29.544s | 0.213s    | 7.214s   |
+
+## 3、NFS V4挂载
+
+挂载参数：`vers=4,minorversion=0,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,_netdev,noresvport`
+
+### **万级别小文件**
+
+| 目录路径                | 文件个数 | 目录大小 | 删除命令 | 耗时-real | 耗时-user | 耗时-sys |
+| ----------------------- | -------- | -------- | -------- | --------- | --------- | -------- |
+| `/mnt/json/70-20210408` | 68104    | 318M     | find     | 4m27.037s | 0.222s    | 6.367s   |
+| `/mnt/json/70-20210407` | 67885    | 317M     | rsync    | 4m20.055s | 0.267s    | 6.522s   |
+|                         |          |          |          |           |           |          |
+| `/mnt/json/70-20200505` | 52789    | 247M     | rsync    | 3m26.868s | 0.227s    | 5.142s   |
+| `/mnt/json/70-20200506` | 52856    | 247M     | rm       | 3m23.209s | 0.121s    | 5.002s   |
+
+### **十万级别小文件**
+
+| 目录路径                | 文件个数 | 目录大小 | 删除命令 | 耗时-real | 耗时-user | 耗时-sys |
+| ----------------------- | -------- | -------- | -------- | --------- | --------- | -------- |
+| `/mnt/json/21-20191225` | 129288   | 1000M    | rsync    | 8m35.886s | 0.544s    | 12.663s  |
+| `/mnt/json/21-20191228` | 103402   | 799M     | rm       | 6m52.498s | 0.276s    | 9.812s   |
+
+
+
+
+
+
+
+|              | 方式                        | real      | user   | sys   |
+| ------------ | --------------------------- | --------- | ------ | ----- |
+| 获取文件信息 | ls -al /mnt/xml             | 1m55.561s | 0.438s | 2.13s |
+|              | ls -al /mnt/xml (带缓存)    | 3.92s     | 0.301s | 0.62s |
+|              | go nfs v4 compound /mnt/xml |           |        |       |
+

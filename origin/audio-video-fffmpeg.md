@@ -218,6 +218,12 @@ ffmpeg -i test.mp4 -c:v libx264 -c:a copy -f hls -threads 8 -hls_time 5 -hls_lis
 ffmpeg -i "concat:0.ts|1.ts|2.ts|3.ts|4.ts|5.ts|6.ts" -acodec copy -vcodec copy -absf aac_adtstoasc out.mp4
 ```
 
+**生成视频缩略图**
+
+```bash
+ffmpeg -i video.mp4 -ss 00:00:01 -vframes 1 thumbnail.jpg
+```
+
 ## 2、音频
 
 ### ①为音频添加封面

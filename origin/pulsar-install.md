@@ -105,29 +105,66 @@ jps -l
 
 ## 8、测试
 
-### ①配置客户端配置
+### 内部接口测试
+
+**命令行方式**
+
+```bash
+# 查看 Broker 节点
+./pulsar-admin brokers list cluster-name
+./pulsar-admin clusters list
+
+# 查看集群健康状态
+./pulsar-admin brokers healthcheck
+
+# 查看主题列表
+./pulsar-admin topics list public/default
+
+# 查看订阅列表  
+./pulsar-admin topics subscriptiong persistent://public/default/topic-testl
+```
+
+**HTTP 方式**
+
+```bash
+# 查看 Broker 节点
+curl http://localhost:8080/admin/v2/persistent/public/default/
+
+# 查看集群健康状态
+curl http://localhost:8080/admin/v2/brokers/health
+
+# 查看主题列表
+curl http://localhost:8080/admin/v2/persistent/public/default/
+
+# 查看订阅列表 
+curl http://localhost:8080/admin/v2/persistent/public/default/topic-test1/subscriptions
+```
+
+### **生产消费测试**
+
+**客户端配置**
 
 ```bash
 sed -i \
   -e 's/webServiceUrl=http:\/\/localhost:8080\//webServiceUrl=http:\/\/192.168.1.121:8080,192.168.1.122:8080,192.168.1.123:8080\//g' \
-  -e 's/brokerServiceUrl=pulsar:\/\/localhost:6650\//brokerServiceUrl=pulsar:\/\/192.168.1.121:6650,192.168.1.122:6650,192.168.1.123:6650\//g' \
+  -e 's/brokerServiceUrl=pulsar:\/\/localhost:6650\//brokerServiceUrl=pulsar:\/\/192.168.1.1:6650,192.168.1.2:6650,192.168.1.3:6650\//g' \
   /opt/pulsar/conf/client.conf
 ```
 
-### ②配置命名空间的权限
+**配置命名空间的权限**
 
 ```bash
 pulsar-admin namespaces set-persistence -a 3 -e 3 -w 3 -r 3 public/default
 pulsar-admin namespaces get-persistence public/default
 ```
 
-### ③创建消费者消费消息
+**创建消费者消费消息**
 
 ```bash
 pulsar-client consume persistent://public/default/test -n 100 -s "consumer-test" -t "Exclusive"
 ```
 
-### ④创建生产者产生消息
+**创建生产者产生消息**
 
 ```bash
 pulsar-client produce persistent://public/default/test -n 1 -m "Hello Pulsar"

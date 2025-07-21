@@ -238,6 +238,7 @@
     * [常用bash脚本功能](origin/bash-scirpts.md)  
     * [Shell脚本优化](origin/shell-script-perf.md)
     * [Shell命令自定义自动补全](origin/shell-tab-completion.md)
+    * [Shell脚本的资源限制](origin/shell-scripts-resource-limit.md)
 * [osascript脚本](origin/apple-osascript.md)
 * Maven
     * [Mave Settings文件详解](origin/maven-Settings配置文件详解.md)
@@ -338,27 +339,6 @@
     - [ipvsadm](origin/ipvsadm.md)
 - Iptables
   - [iptables详解](origin/linux-iptables.md)
-* [MySQL](origin/mysql-basic.md)
-    * [常见操作及SQL](origin/mysql-common-operations.md)
-    * [用户权限管理](origin/mysql-user-privileges.md)
-    * [MySQL SQL Mode : ONLY_FULL_GROUP_BY](origin/mysql-mode-only-full-groupby.md)
-    * [Binglog](origin/mysql-binlog.md)
-    * 备份与恢复
-      * [MySQL的数据备份与恢复](origin/mysql-backup-restore.md)
-      * [MysqlDump常用操作](origin/mysql-dumper.md)
-      * [Xtrabackup备份](origin/xtrabackup-backup.md)
-    * 基础概念
-      * [存储过程语法](origin/mysql-procedure-grammar.md)
-      * [常用存储过程](origin/mysql-procedure.md)
-      * [事物隔离级别](origin/mysql-transaction.md)
-      * [临时表](origin/mysql-temporary.md)
-    * [MySQL常见问题解决](origin/mysql-problem-solution.md)
-* Redis
-    * [基础概念](origin/redis-basic.md)
-    * [常用操作](origin/reids-common-opreations.md)
-    * [安装部署](origin/reids-install-deploy.md)
-    * [redis的持久化策略](origin/redis-persistence.md)
-    * [数据迁移备份恢复](origin/redis-backup-restore.md)
 * 负载均衡与代理
     * [Keepalived](origin/keepalived.md)
     * [LVS](origin/lvs.md)
@@ -407,12 +387,33 @@
 * [使用 Jlink构建最小化依赖的 JRE 环境](origin/jlink-jre.md)
 * [Aria2](origin/aria2.md)
 * [零散知识汇总](origin/others.md)
-* [BarkServer通知](origin/notify-bard.md)
+* [BarkServer通知](origin/bark-notify.md)
 * [开源画图平台:Excalidraw](origin/excalidraw.md)
 * [HTTP认证](origin/http-auth.md)
 
-
 ## Part Ⅵ：数据存储处理
+
+* [MySQL](origin/mysql-basic.md)
+  * [常见操作及SQL](origin/mysql-common-operations.md)
+  * [用户权限管理](origin/mysql-user-privileges.md)
+  * [MySQL SQL Mode : ONLY_FULL_GROUP_BY](origin/mysql-mode-only-full-groupby.md)
+  * [Binglog](origin/mysql-binlog.md)
+  * 备份与恢复
+    * [MySQL的数据备份与恢复](origin/mysql-backup-restore.md)
+    * [MysqlDump常用操作](origin/mysql-dumper.md)
+    * [Xtrabackup备份](origin/xtrabackup-backup.md)
+  * 基础概念
+    * [存储过程语法](origin/mysql-procedure-grammar.md)
+    * [常用存储过程](origin/mysql-procedure.md)
+    * [事物隔离级别](origin/mysql-transaction.md)
+    * [临时表](origin/mysql-temporary.md)
+  * [MySQL常见问题解决](origin/mysql-problem-solution.md)
+* Redis
+  * [基础概念](origin/redis-basic.md)
+  * [常用操作](origin/reids-common-opreations.md)
+  * [安装部署](origin/reids-install-deploy.md)
+  * [redis的持久化策略](origin/redis-persistence.md)
+  * [数据迁移备份恢复](origin/redis-backup-restore.md)
 
 - Cloudera
   - [安装部署](origin/cloudera-install.md)
@@ -438,6 +439,9 @@
   - [TiDB性能调优](origin/tidb-performance.md)
   - [TiDB TiFlash](origin/tidb-tiflash.md)
   - [TiDB资源限制隔离](origin/tidb-resource-limit.md)
+- 中间件
+  - [Proxy-SQL代理](origin/proxysql.md)
+  
 - 开源对象存储
   - [Minio](origin/minio.md)
   - [JuiceFS](origin/juicefs.md)
@@ -476,8 +480,9 @@
   - [embed: 嵌入静态资源文件](origin/golang-embed.md)
   - [X509/PKI证书](origin/golang-x509-certificate.md)
 - [HTML/CSS学习笔记](origin/html-css-learn.md)
+- 前后端通讯
+  - [SSE(Server-Sent Event)](origin/sse.md)
 - JavaScript学习笔记
-  - [SSE（Server-Sent Event）](origin/sse.md)
   - [JS/JQuery/Vue3/TS基础知识学习](origin/js-jquery-vue-learn.md)
   - [Vue3基础知识学习](origin/vue3.md)
   - [Vite打包工具](origin/vue-vite.md)
