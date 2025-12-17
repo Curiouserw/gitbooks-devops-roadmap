@@ -337,8 +337,7 @@
     - [nc](origin/nc.md)
     - [hping](origin/linux-hping.md)
     - [ipvsadm](origin/ipvsadm.md)
-- Iptables
-  - [iptables详解](origin/linux-iptables.md)
+- [iptables详解](origin/linux-iptables.md)
 * 负载均衡与代理
     * [Keepalived](origin/keepalived.md)
     * [LVS](origin/lvs.md)
@@ -461,6 +460,7 @@
 - SQLite
   - [SQLCipher](origin/sqlite-cipher.md)
 - [NAS数据迁移](origin/nfs-migrate.md)
+- [图片压缩](origin/image-compress.md)
 
 
 ## Part Ⅶ：Code
@@ -474,8 +474,7 @@
   - [基础语法](origin/golang-basic.md)
   - [常见工具使用总结](origin/go-utils.md)
   - [go的并发](origin/golang-concurrent-programming.md)
-  - [Web框架Gin的使用总结](origin/go-gin.md)
-  - [net/http的使用总结](origin/go-net-http-summary.md)
+  - [Web框架Gin](origin/go-gin.md)
   - [Golang加解密](origin/golang-encryption.md)
   - [embed: 嵌入静态资源文件](origin/golang-embed.md)
   - [X509/PKI证书](origin/golang-x509-certificate.md)
@@ -511,9 +510,11 @@
 - 攻防
   - [攻防基础](origin/att-ck.md)
 - [开源Waf：Nginx-Modesecurity](origin/nginx-modsecurity.md)
+- [VSCode编辑器Monaco开发](origin/dev-monaco-editor.md)
 
 ## Part IX: 硬件
 
+- [硬件常识](origin/hardware-basic.md)
 - [PC硬件规格标准](origin/hardwares.md)
 - Synology
   - [Synology管理](origin/synology-management.md)
@@ -524,6 +525,7 @@
 - [Arduino](origin/arduino.md)
   - [Arduino Nano](origin/arduino-nano.md)
   - [Arduino IDE及编程语法](origin/arduino-ide.md)
+- [ESP32](origin/esp32.md)
 - [摄像头：视频-音频-云台](origin/camera.md)
 - [LED](origin/led.md)
-
+- [Kindle](origin/kindle.md)

@@ -433,9 +433,23 @@ echo "======耗时$spenttime秒，在$enddate 删除操作完成。========="  >
 
 
 
-|              | 方式                        | real      | user   | sys   |
+|              | 方式                        |           |        |       |
 | ------------ | --------------------------- | --------- | ------ | ----- |
 | 获取文件信息 | ls -al /mnt/xml             | 1m55.561s | 0.438s | 2.13s |
 |              | ls -al /mnt/xml (带缓存)    | 3.92s     | 0.301s | 0.62s |
 |              | go nfs v4 compound /mnt/xml |           |        |       |
+
+
+
+## go nfsv4  client联合操作
+
+- /backup 文件夹下大概有**492786**个文件
+
+|      | go nfsv4  client 联合操作获取文件信息 | find stat |
+| ---- | ------------------------------------- | --------- |
+| real | 9.8                                   | 5m55.295s |
+| user | 4.471                                 | 4.821s    |
+| sys  | 0.39                                  | 5.992s    |
+
+![image-20250722下午44211849](../assets/nfs-go-client-server-monitor-1.png)
 

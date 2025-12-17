@@ -211,6 +211,5 @@ upx --brute 二进制文件
 
 ```bash
 sudo go install github.com/go-delve/delve/cmd/dlv@latest 
-dlv verison
-
+dlv version
 ```

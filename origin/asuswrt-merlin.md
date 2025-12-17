@@ -10,11 +10,86 @@
 
 5Ghz 网卡：eth7
 
+
+
+# 二、系统服务
+
+## 1、dnsmasq
+
+> cat /etc/dnsmasq.conf
+
 ```bash
+```
+
+
+
+> /jffs/configs/dnsmasq.conf.add
+
+```bash
+dhcp-option=tag:sideproxy,option:router,192.168.1.99
+dhcp-host=A6:BE:BF:8C:AC:3D,set:sideproxy
+log-facility=/var/log/dnsmasq.log
+enable-tftp
+log-queries
+log-dhcp
+tftp-root=/tmp/mnt/sd/tftp
+dhcp-boot=pxelinux.0
+```
+
+> /var/lib/misc/dnsmasq.leases
+
+```bash
+# 检测配置文件语法
+dnsmasq -C /jffs/configs/dnsmasq.conf.add --test
+# 重启dnsmasq
+service restart_dnsmasq && tail -f /var/log/dnsmasq.log |grep dhcp
+```
+
+```bash
+echo "address=/test.top/127.0.0.1" >> /jffs/configs/dnsmasq.conf.add
 service restart_dnsmasq
 ```
 
-# 二、系统 API
+## 2、sshd-dropbear
+
+```bash
+-r keyfile      Specify hostkeys (repeatable)
+		defaults:
+		- rsa /etc/dropbear/dropbear_rsa_host_key
+		- ecdsa /etc/dropbear/dropbear_ecdsa_host_key
+		- ed25519 /etc/dropbear/dropbear_ed25519_host_key
+		
+		
+/var/run/dropbear.pid
+
+/usr/sbin/dropbear
+
+nvram get sshd_authkeys
+ 
+/root/.ssh/authorized_keys
+```
+
+## 3、iptables
+
+加载comment模块
+
+```bash
+OS=$(uname -r)
+insmod /lib/modules/${OS}/kernel/net/netfilter/xt_comment.ko
+
+lsmod | grep -i comment
+```
+
+加载TPROXY 模块
+
+```bash
+OS=$(uname -r)
+ls /lib/modules/${OS}/kernel/net/netfilter/*TPROXY*
+modprobe xt_TPROXY
+lsmod | grep -i TPROXY
+```
+
+# 三、系统 API
 
 ## 1、登录接口
 
@@ -112,8 +187,6 @@ curl -lk -X POST "$routerhost/_upload" \
     --form 'test.csv=@"/Users/test/test.csv"'
 ```
 
-# 
-
 # 三、自启脚本与定时任务
 
 ## 1、开机自启脚本
@@ -133,22 +206,22 @@ https://github.com/RMerl/asuswrt-merlin.ng/wiki/User-scripts
 -- /jffs/scripts/
    ｜---- post-mount         # 开机早期，每个分区挂载完成后执行，接受挂载点作为参数 $1
             |————> /koolshare/bin/ks-mount-start.sh start $1
-                |————> for i in $(find /koolshare/init.d/ -name 'M*' | sort -n) ;
+                |————> find /koolshare/init.d/ -name 'M*' | sort -n
    ｜---- service-event      # 插件统一启动（services）脚本
             |————> /koolshare/bin/ks-services-start.sh
-                |————> for i in $(find /koolshare/init.d/ -name 'V*' | sort -n);
+                |————> find /koolshare/init.d/ -name 'V*' | sort -n
    ｜---- wan-start	        # 当 WAN（互联网连接）建立成功后，可设置 DDNS、VPN、自动任务等
             |————> /koolshare/bin/ks-wan-start.sh start
-                |————> for i in $(find /koolshare/init.d/ -name 'S*' | sort -r ) ;
+                |————> find /koolshare/init.d/ -name 'S*' | sort -r 
    ｜---- nat-start          # 可设置 NAT（iptables）、端口转发、访问控制等
             |————> /koolshare/bin/ks-nat-start.sh start_nat
-                |————> for i in $(find /koolshare/init.d/ -name 'N*' | sort -n) ;
+                |————> find /koolshare/init.d/ -name 'N*' | sort -n
    ｜---- services-stop      # 插件统一暂停（services）脚本
             |————> /koolshare/bin/ks-services-stop.sh
-                |————> for i in $(find /koolshare/init.d/ -name 'T*' | sort -rn);
+                |————> find /koolshare/init.d/ -name 'T*' | sort -rn
    ｜---- unmount            # 设备拔除/卸载时触发的脚本
             |————> /koolshare/bin/ks-unmount.sh
-                |————> for i in $(find /koolshare/init.d/ -name 'U*' | sort -n);
+                |————> find /koolshare/init.d/ -name 'U*' | sort -n
 ```
 
 ## 2、Cru定时任务
@@ -195,6 +268,7 @@ nvram get extendno																		# 	固件构建扩展编号
 nvram get firmver																			# 	固件版本号
 nvram get buildno																			# 	构建版本号
 nvram get asus_mfg																		# 	出厂标识（通常为 1）
+nvram get sshd_authkeys
 
 nvram savefile 
 # 所有的 ENV 会保存在/data/nvramdefault.txt
@@ -384,6 +458,7 @@ dbus set softcenter_module_插件名_version="1.0"
 </head>
 
 <body onload="init();">
+  <div id="TopBanner"></div>
 	<div id="Loading" class="popup_bg"></div>
 	<table class="content" align="center" cellpadding="0" cellspacing="0">
 		<tr>

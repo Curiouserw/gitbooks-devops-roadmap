@@ -27,9 +27,11 @@ retry: <milliseconds>   # 可选，指定下次重连时的延迟
 - 空行（双换行）标志一条事件的结束；
 - `id` 字段会被客户端保存为 `lastEventId`，在重连时自动通过 `Last-Event-ID` 请求头告知服务端，便于断点续传
 
-# 二、客户端EventSource
+# 二、客户端
 
-## 1、创建与事件监听
+## 1、js
+
+### 创建与事件监听
 
 在前端，使用原生的 `EventSource` 对象即可建立 SSE 连接：
 
@@ -42,11 +44,23 @@ source.onerror = e => console.error('连接错误', e);
 - 构造函数 `new EventSource(url, { withCredentials: true|false })` 会自动发起持久化 GET 请求，并封装就绪状态 `readyState`（0=CONNECTING, 1=OPEN, 2=CLOSED）及事件回调。
 - 默认情况下 SSE 遵循同源策略，如需跨域，需配合 CORS 设置响应头 `Access-Control-Allow-Origin` 等。
 
-## 2、**自动重连机制**
+### **自动重连机制**
 
 - 当连接意外断开（网络波动、服务端关闭等）时，`EventSource` 会在默认 3 秒后自动尝试重连；
 - 可通过服务端发送 `retry: <ms>` 字段动态调整客户端的重连等待时间；
 - 重连请求会自动携带 `Last-Event-ID` 头，保证服务端从上次断点继续推送未接收的事件。
+
+## 2、curl
+
+```bash
+curl -N http://localhost:8443/sse-endpoint
+
+id: 8
+event: install
+data: {"message":"test","step":1,"total":7}
+
+: ping
+```
 
 # 三、服务端示例代码
 

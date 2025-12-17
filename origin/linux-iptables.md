@@ -760,6 +760,265 @@ ipset (test | -T) 集合名称 ip地址
 
 https://github.com/ppabc/cc_iptables/tree/master
 
+## 5、透明代理TCP流量
+
+要将指定 IP 地址的所有 TCP 流量通过 iptables 重定向到本机的 TZ端口 (8003)
+
+### ①TZ
+
+新增透明代理入站
+
+```json
+{
+  "port": 8003,
+  "listen": "0.0.0.0",
+  "protocol": "dokodemo-door",
+  "settings": {
+    "network": "tcp",
+    "followRedirect": true,
+    "timeout": 30
+  },
+  "sniffing": {
+    "enabled": true,
+    "destOverride": ["http", "tls"]
+  },
+  "tag": "transparent"
+}
+```
+
+> followRedirect: true：关键设置，避免 "malformed HTTP request" 错误
+>
+> sniffing 开启：用于识别 HTTP/TLS 流量，优化路由
+
+修改路由规则
+
+```json
+{
+  "type": "field",
+  "inboundTag": ["transparent", "socksinbound", "httpinbound"],
+  "outboundTag": "goout",
+  "port": "0-65535"
+}
+```
+
+> 添加 transparent 到 inboundTag：确保透明代理流量也走 goout 出站
+
+### ②系统内核优化
+
+```bash
+# 开启IP转发
+echo "net.ipv4.ip_forward = 1" 
+echo "net.core.default_qdisc = fq" 
+echo "net.ipv4.tcp_congestion_control = bbr" 
+```
+
+### ③规则转发
+
+```bash
+# ========== 清除旧的iptables规则 ==========
+iptables -t nat -F TZ_TCP 2>/dev/null
+iptables -t nat -X TZ_TCP 2>/dev/null
+# ========== 设置规则 ==========
+# 创建TCP规则链并设置跳过内网地址和 TZ 服务器地址（避免回环）
+iptables -t nat -N TZ_TCP
+iptables -t nat -A TZ_TCP -d 0.0.0.0/8 -j RETURN
+iptables -t nat -A TZ_TCP -d 10.0.0.0/8 -j RETURN
+iptables -t nat -A TZ_TCP -d 127.0.0.0/8 -j RETURN
+iptables -t nat -A TZ_TCP -d 169.254.0.0/16 -j RETURN
+iptables -t nat -A TZ_TCP -d 172.16.0.0/12 -j RETURN
+iptables -t nat -A TZ_TCP -d 192.168.0.0/16 -j RETURN
+iptables -t nat -A TZ_TCP -d 224.0.0.0/4 -j RETURN
+iptables -t nat -A TZ_TCP -d 240.0.0.0/4 -j RETURN
+# ========== 指定规则 ==========
+# 将指定 IP的TCP流量重定向到 V2Ray 端口
+iptables -t nat -A TZ_TCP -s 192.168.1.99 -p tcp -j REDIRECT --to-ports 8003
+
+# ========== 应用规则 ==========
+# TCP 规则应用
+iptables -t nat -A PREROUTING -s 192.168.1.99 -j TZ_TCP
+iptables -t nat -A OUTPUT -s 192.168.1.99 -j TZ_TCP
+
+```
+
+
+
+```bash
+modprobe xt_TPROXY
+lsmod | grep -i TPROXY
+ip rule add fwmark 1 table 100 
+ip route add local 0.0.0.0/0 dev lo table 100
+
+iptables -t mangle -N V2RAY
+iptables -t mangle -A V2RAY -d 127.0.0.1/32 -j RETURN
+iptables -t mangle -A V2RAY -d 224.0.0.0/4 -j RETURN 
+iptables -t mangle -A V2RAY -d 240.0.0.0/4 -j RETURN
+iptables -t mangle -A V2RAY -d 10.0.0.0/8 -j RETURN
+iptables -t mangle -A V2RAY -d 172.16.0.0/12 -j RETURN
+iptables -t mangle -A V2RAY -d 169.254.0.0/16 -j RETURN
+iptables -t mangle -A V2RAY -d 192.168.0.0/16 -p tcp -j RETURN
+iptables -t mangle -A V2RAY -d 192.168.0.0/16 -p udp ! --dport 53 -j RETURN 
+iptables -t mangle -A V2RAY -j RETURN -m mark --mark 0xff
+iptables -t mangle -A V2RAY -p udp -j TPROXY --on-ip 0.0.0.0 --on-port 8003 --tproxy-mark 1 
+iptables -t mangle -A V2RAY -p tcp -j TPROXY --on-ip 0.0.0.0 --on-port 8003 --tproxy-mark 1
+iptables -t mangle -A PREROUTING -j V2RAY 
+
+iptables -t mangle -N V2RAY_MASK 
+iptables -t mangle -A V2RAY_MASK -d 224.0.0.0/4 -j RETURN 
+iptables -t mangle -A V2RAY_MASK -d 255.255.255.255/32 -j RETURN 
+iptables -t mangle -A V2RAY_MASK -d 192.168.0.0/16 -p tcp -j RETURN
+iptables -t mangle -A V2RAY_MASK -d 192.168.0.0/16 -p udp ! --dport 53 -j RETURN 
+iptables -t mangle -A V2RAY_MASK -j RETURN -m mark --mark 0xff
+iptables -t mangle -A V2RAY_MASK -p udp -j MARK --set-mark 1
+iptables -t mangle -A V2RAY_MASK -p tcp -j MARK --set-mark 1
+iptables -t mangle -A OUTPUT -j V2RAY_MASK
+
+iptables -t mangle -N DIVERT
+iptables -t mangle -A DIVERT -j MARK --set-mark 1
+iptables -t mangle -A DIVERT -j ACCEPT
+iptables -t mangle -I PREROUTING -p tcp -m socket -j DIVERT
+```
+
+### ④规则管理
+
+```bash
+# 查看链的规则
+iptables -t nat -L TZ_TCP -n -v
+iptables -t nat -L -n -v | grep -E '192.168.1.99|8003'
+
+# 删除规则
+iptables -t nat -D PREROUTING -s 192.168.1.99 -j TZ_TCP 2>/dev/null
+iptables -t nat -D OUTPUT -s 192.168.1.99 -j TZ_TCP 2>/dev/null
+iptables -t nat -F TZ_TCP 2>/dev/null
+iptables -t nat -X TZ_TCP 2>/dev/null
+```
+
+### ⑤测试
+
+```bash
+# 以 TCP 53端口的方式查询 DNS
+echo "DNS 测试 (TCP 53): $(dig @8.8.8.8 google.com +tcp +short)"
+# 以 UDP 53端口的方式查询 DNS
+echo "DNS 测试 (UDP 53): $(dig @8.8.8.8 google.com +short)"
+
+curl --http3 -s https://cloudflare-quic.com/ 2>/dev/null && echo "HTTP/3 (QUIC) 测试: QUIC 支持" || echo "HTTP/3 (QUIC) 测试: QUIC 不支持"
+
+
+curl -s https://www.netflix.com/title/80018499 2>/dev/null | grep -q "Not Available" && echo "不可用" || echo "可用"
+echo "   YouTube:"
+timeout 5 curl -s https://www.youtube.com/ > /dev/null && echo "可访问" || echo "不可访问"
+```
+
+
+
+## 6、TProxy方式透明代理UDP流量
+
+### ①TZ
+
+```json
+{
+  "port": 8003,
+  "listen": "0.0.0.0",
+  "protocol": "dokodemo-door",
+  "settings": {
+    "network": "tcp,udp",       // 添加 UDP 支持
+    "followRedirect": true,
+    "timeout": 30
+  },
+  "streamSettings": {
+      "sockopt": {
+        "tproxy": "tproxy"      // 启用 TPROXY 支持 UDP
+      }
+  },
+  "sniffing": {
+    "enabled": true,
+    "destOverride": ["http", "tls", "quic"]
+  },
+  "tag": "transparent"
+}
+```
+
+### ②加载TPROXY 模块
+
+```bash
+OS=$(uname -r)
+ls /lib/modules/${OS}/kernel/net/netfilter/*TPROXY*
+modprobe xt_TPROXY
+lsmod | grep -i TPROXY
+iptables -j TPROXY -h
+```
+
+### ③转发规则
+
+```bash
+# ========== 清除旧的iptables规则 ==========
+iptables -t mangle -F TZ_UDP 2>/dev/null
+iptables -t mangle -X TZ_UDP 2>/dev/null
+# ========== 清除旧的路由规则 ==========
+ip rule del fwmark 1 table 100 2>/dev/null
+ip route del local 0.0.0.0/0 dev lo table 100 2>/dev/null
+
+# ========== 设置规则 ==========
+# 跳过内网和特殊地址
+iptables -t mangle -N TZ_UDP
+iptables -t mangle -A TZ_UDP -d 0.0.0.0/8 -j RETURN
+iptables -t mangle -A TZ_UDP -d 10.0.0.0/8 -j RETURN
+iptables -t mangle -A TZ_UDP -d 127.0.0.0/8 -j RETURN
+iptables -t mangle -A TZ_UDP -d 169.254.0.0/16 -j RETURN
+iptables -t mangle -A TZ_UDP -d 172.16.0.0/12 -j RETURN
+iptables -t mangle -A TZ_UDP -d 192.168.0.0/16 -j RETURN
+iptables -t mangle -A TZ_UDP -d 224.0.0.0/4 -j RETURN
+iptables -t mangle -A TZ_UDP -d 240.0.0.0/4 -j RETURN
+
+# ========== 指定规则 ==========
+# 使用 TPROXY 重定向 UDP 流量
+iptables -t mangle -A TZ_UDP -s 192.168.1.99 -p udp -j TPROXY --tproxy-mark 0x1/0x1 --on-port 8003 
+
+# ========== 应用规则 ==========
+# UDP 规则应用
+iptables -t mangle -A PREROUTING -s 192.168.1.99 -j TZ_UDP
+
+# 添加新的路由规则
+ip rule add fwmark 1 table 100
+ip route add local 0.0.0.0/0 dev lo table 100
+```
+
+### ④规则管理
+
+```bash
+# 查看所有规则
+iptables -t mangle -L -n -v
+# 查看V2RAY链的规则
+iptables -t mangle -L TZ_UDP -n -v
+# 查看特定IP的规则
+iptables -t mangle -L -n -v | grep 192.168.1.99
+# 查看端口8003的规则
+iptables -t mangle -L -n -v | grep 8003
+# 查看有没有iptables规则使用到了TPROXY
+lsmod | grep -i TPROXY 
+# 清除旧的路由规则
+ip rule del fwmark 1 table 100 2>/dev/null
+ip route del local 0.0.0.0/0 dev lo table 100 2>/dev/null
+
+# 删除规则脚本
+iptables -t mangle -D TZ_UDP -s 192.168.1.99 -p udp -j TPROXY --on-port 8003 --tproxy-mark 1
+iptables -t mangle -D PREROUTING -s 192.168.1.99 -j TZ_UDP
+iptables -t nat -F TZ_UDP 2>/dev/null
+iptables -t nat -X TZ_UDP 2>/dev/null
+
+```
+
+- 监控
+
+  ```bash
+  tcpdump -i any port 8003 -n
+  
+  # 查看连接跟踪
+  conntrack -L -p udp
+  ```
+
+  
+
+
 # 参考
 
 1. https://github.com/ppabc/cc_iptables/tree/master
