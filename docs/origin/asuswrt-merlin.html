@@ -5820,39 +5820,18 @@
             
         </li>
     
-        <li class="chapter " data-level="6.24" >
-            
-                <span>
-            
-                    
-                        <b>6.24.</b>
-                    
-                    OpenVPN
-            
-                </span>
-            
-
-            
-            <ul class="articles">
-                
-    
-        <li class="chapter " data-level="6.24.1" data-path="openvpn-server.html">
+        <li class="chapter " data-level="6.24" data-path="openvpn-server.html">
             
                 <a href="openvpn-server.html">
             
                     
-                        <b>6.24.1.</b>
+                        <b>6.24.</b>
                     
                     OpenVPN Server
             
                 </a>
             
 
-            
-        </li>
-    
-
-            </ul>
             
         </li>
     
@@ -6323,6 +6302,21 @@
                         <b>6.43.</b>
                     
                     HTTP认证
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="6.44" data-path="disk-format.html">
+            
+                <a href="disk-format.html">
+            
+                    
+                        <b>6.44.</b>
+                    
+                    格式化硬盘
             
                 </a>
             
@@ -8417,8 +8411,6 @@
 </blockquote>
 <pre class="language-"><code class="bash">```
 
-
-
 &gt; /jffs/configs/dnsmasq.conf.add
 
 ```bash
@@ -8471,6 +8463,68 @@ ls /lib/modules/${OS}/kernel/net/netfilter/*TPROXY*
 modprobe xt_TPROXY
 lsmod | grep -i TPROXY
 </code></pre>
+<h2 id="4&#x3001;&#x81EA;&#x5E26;ddns-&#x548C;-lets-encrypt">4&#x3001;&#x81EA;&#x5E26;DDNS &#x548C; Let&apos;s Encrypt</h2>
+<pre class="language-"><code class="bash">nvram set ddns_enable_x=&quot;$(nvram get ddns_enable_x_bak)&quot;
+nvram set ddns_ipcheck=&quot;$(nvram get ddns_ipcheck_bak)&quot;
+nvram set ddns_server_x=&quot;$(nvram get ddns_server_x_bak)&quot;
+nvram set ddns_hostname_x=&quot;$(nvram get ddns_hostname_x_bak)&quot;
+nvram set le_enable=&quot;$(nvram get le_enable_bak)&quot;
+nvram set asus_ddns_service=&quot;Aliddns&quot;
+ddns_custom_updated 1
+ddns_updated 
+service restart_ddns_le 
+service restart_ddns
+</code></pre>
+<h2 id="5&#x3001;&#x683C;&#x5F0F;&#x5316;u&#x76D8;">5&#x3001;&#x683C;&#x5F0F;&#x5316;U&#x76D8;</h2>
+<h3 id="ext4&#x53C2;&#x6570;&#x4F18;&#x5316;4k&#x5BF9;&#x9F50;">ext4&#x53C2;&#x6570;&#x4F18;&#x5316;+4K&#x5BF9;&#x9F50;</h3>
+<p>&#x6700;&#x597D;&#x5728;linux&#x4E0B;&#x64CD;&#x4F5C;&#x5B8C;&#x6210;&#x540E;&#x518D;&#x63D2;&#x5165;&#x8DEF;&#x7531;&#x5668;</p>
+<pre class="language-"><code class="bash"># &#x5F7B;&#x5E95;&#x64E6;&#x9664;&#x78C1;&#x76D8;&#x5F00;&#x5934;&#xFF08;&#x6E05;&#x9664;MBR&#x548C;GPT&#x7B7E;&#x540D;&#xFF09;
+dd if=/dev/zero of=/dev/sda bs=1M count=10 status=progress conv=fsync
+
+parted /dev/sda --script \
+  mklabel gpt \
+  mkpart primary ext4 1MiB 100%
+
+mkfs.ext4 \
+  -O ^has_journal \
+  -L sd \
+  -E lazy_itable_init=0,lazy_journal_init=0 \
+  -m 0 \
+  /dev/sda1
+</code></pre>
+<p>&#x63D2;&#x56DE;&#x8DEF;&#x7531;&#x5668;&#x540E;&#x9A8C;&#x8BC1;&#x662F;&#x5426;4K&#x5BF9;&#x9F50;</p>
+<pre class="language-"><code class="bash">blockdev --getss /dev/sda   # &#x903B;&#x8F91;&#x6247;&#x533A;&#xFF08;&#x4E00;&#x822C; 512,Start &#xD7; 512 &#x80FD;&#x88AB; 4096 &#x6574;&#x9664; &#x2192; OK&#xFF09;
+blockdev --getpbsz /dev/sda # &#x7269;&#x7406;&#x5757;&#xFF08;&#x901A;&#x5E38; 4096&#xFF09;
+cat /sys/block/sda/sda1/start 
+cat /sys/block/sda/queue/physical_block_size
+cat /sys/block/sda/queue/logical_block_size
+</code></pre>
+<h2 id="6&#x3001;&#x5176;&#x4ED6;">6&#x3001;&#x5176;&#x4ED6;</h2>
+<pre class="language-"><code class="bash">mke2fs -t ext4 -O ^has_journal /dev/sda
+# &#x7981;&#x7528;&#x65E5;&#x5FD7;&#xFF1A;^has_journal
+</code></pre>
+<ul>
+<li><p>amtm&#x547D;&#x4EE4;&#x683C;&#x5F0F;&#x5316;U &#x76D8;</p>
+<p>U &#x76D8;&#x6807;&#x7B7E;&#x8DDF;&#x4E4B;&#x524D;&#x4FDD;&#x6301;&#x4E00;&#x81F4;&#xFF0C;&#x683C;&#x5F0F;ext4</p>
+<pre class="language-"><code class="bash">umount /tmp/mnt/sd &amp;&amp; \
+mke2fs -t ext4 -O ^has_journal /dev/sda &amp;&amp; \
+reboot now
+</code></pre>
+</li>
+<li><p>koolshare&#x7684;USB2JFSS&#x63D2;&#x4EF6;&#x6302;&#x8F7D;JFSS&#x5206;&#x533A;&#x5230;U&#x76D8;</p>
+</li>
+<li><p>amtm&#x547D;&#x4EE4;&#x5B89;&#x88C5;entware&#x5230;U&#x76D8;</p>
+</li>
+<li><p>opkg install&#x5E38;&#x7528;&#x8F6F;&#x4EF6;</p>
+<pre class="language-"><code class="bash">opkg install jq vim procps-ng-sysctl procps-ng-top procps-ng-watch procs bash nginx-ssl
+</code></pre>
+</li>
+<li><p>&#x63D2;&#x4EF6;&#x6839;&#x76EE;&#x5F55;</p>
+</li>
+<li>&#x63D2;&#x4EF6;&#x6839;&#x76EE;&#x5F55;&#x4E0B;&#x7684;&#x670D;&#x52A1;&#x72B6;&#x6001;&#x7BA1;&#x7406;&#x811A;&#x672C;&#xFF1A;<code>stats.js/config.js</code>  --------&#x8F6F;&#x94FE;---------&gt; <code>/jffs/.koolshare/scripts/</code></li>
+<li>&#x63D2;&#x4EF6;&#x6839;&#x76EE;&#x5F55;&#x4E0B;&#x7684;icon&#x6587;&#x4EF6;&#xFF1A;<code>icon-&#x63D2;&#x4EF6;&#x540D;.png</code>  --------&#x8F6F;&#x94FE;---------&gt; <code>/jffs/.koolshare/res</code></li>
+<li>&#x63D2;&#x4EF6;&#x6839;&#x76EE;&#x5F55;&#x4E0B;&#x7684;&#x670D;&#x52A1;&#x81EA;&#x542F;&#x52A8;&#x811A;&#x672C; &#xFF1A;<code>S99&#x63D2;&#x4EF6;.sh</code> --------&#x8F6F;&#x94FE;---------&gt; <code>/jffs/.koolshare/init.d/</code></li>
+</ul>
 <h1 id="&#x4E09;&#x3001;&#x7CFB;&#x7EDF;-api">&#x4E09;&#x3001;&#x7CFB;&#x7EDF; API</h1>
 <h2 id="1&#x3001;&#x767B;&#x5F55;&#x63A5;&#x53E3;">1&#x3001;&#x767B;&#x5F55;&#x63A5;&#x53E3;</h2>
 <ul>
@@ -8627,7 +8681,7 @@ nvram get wan0_proto                                                            
 nvram get wan_pppoe_username / wan_pppoe_passwd                #     &#x67E5;&#x770B;PPPoE&#x7528;&#x6237;&#x540D;/&#x5BC6;&#x7801;
 nvram get wl0_ssid / wl1_ssid                                                    #     &#x67E5;&#x770B;&#x65E0;&#x7EBF; SSID&#xFF08;wl0_ssid: 2.4G / wl1_ssid: 5G&#xFF09;
 nvram get jffs2_scripts                                                                #     &#x67E5;&#x770B;&#x662F;&#x5426;&#x542F;&#x7528; jffs &#x7528;&#x6237;&#x811A;&#x672C;&#xFF08;1 &#x4E3A;&#x542F;&#x7528;&#xFF09;
-nvram get usb_enable                                                                    #     &#x67E5;&#x770B;&#x662F;&#x5426;&#x542F;&#x7528; USB &#x529F;&#x80FD;
+nvram get usb_enable                                                                    #     &#x67E5;&#x770B;&#x662F;&#x5426;&#x542F;&#x7528; USB &#x529F;&#x80FD;&#xFF08;1 &#x4E3A;&#x542F;&#x7528;&#xFF09;
 nvram get ntp_server0/ntp_server1                                            #   &#x67E5;&#x770B;NTP&#x65F6;&#x95F4;&#x670D;&#x52A1;&#x5668;&#x5730;&#x5740;
 nvram get router_name                                                                    #     &#x67E5;&#x770B;&#x4E3B;&#x673A;&#x540D;&#x79F0;
 nvram get odmpid                                                                            #     &#x67E5;&#x770B;&#x5F53;&#x524D;&#x8BBE;&#x5907;&#x7684;&#x5177;&#x4F53;&#x578B;&#x53F7;
@@ -9050,7 +9104,7 @@ fi
 <li><a href="https://github.com/decoderman/amtm/tree/master" _target="blank">https://github.com/decoderman/amtm/tree/master</a></li>
 </ul>
 <footer class="page-footer"><span class="copyright">Copyright Curiouser all right reserved&#xFF0C;powered by Gitbook</span><span class="footer-modification">&#x8BE5;&#x6587;&#x4EF6;&#x6700;&#x540E;&#x4FEE;&#x6539;&#x65F6;&#x95F4;&#xFF1A;
-2025-12-17 16:52:58
+2026-01-06 16:51:31
 </span></footer>
 <script>console.log("plugin-popup....");document.onclick = function(e){ e.target.tagName === "IMG" && window.open(e.target.src,e.target.src)}</script><style>img{cursor:pointer}</style>
 						
@@ -9094,7 +9148,7 @@ fi
 	<script>
 		var gitbook = gitbook || [];
 		gitbook.push(function() {
-			gitbook.page.hasChanged({"page":{"title":"华硕梅林Asuswrt-Merlin","level":"11.4","depth":1,"next":{"title":"Raspberry Pi树莓派","level":"11.5","depth":1,"path":"origin/raspberry-pi.md","ref":"origin/raspberry-pi.md","articles":[]},"previous":{"title":"群晖Synology的iSCSI","level":"11.3.3","depth":2,"path":"origin/iSCSI-简介配置使用.md","ref":"origin/iSCSI-简介配置使用.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-lunr","-sharing","-highlight","search-pro","splitter","github","popup","sectionx","expandable-chapters","sharing-plus","code","auto-scroll-table","theme-fexa","tbfed-pagefooter","back-to-top-button","emphasize","edit-link","prism","donate","theme-comscore","github-buttons","github-issue-feedback"],"root":".","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"tbfed-pagefooter":{"copyright":"Copyright Curiouser","modify_label":"该文件最后修改时间：","modify_format":"YYYY-MM-DD HH:mm:ss"},"prism":{"css":["prismjs/themes/prism-tomorrow.css"],"lang":{"flow":"typescript"},"ignore":["mermaid","eval-js"]},"emphasize":{},"github-issue-feedback":{"repo":"RationalMonster/rationalmonster.github.io"},"github":{"url":"https://github.com/RationalMonster"},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"auto-scroll-table":{},"popup":{},"theme-fexa":{"search-placeholder":"搜索文章","logo":"./assets/logo.png"},"code":{"copybuttons":"true","copyButtons":true},"donate":{"wechat":"/assets/wechat-donate.jpg","title":"","button":"赏","wechatText":"微信打赏","alipay":"","alipayText":"支付宝打赏"},"fontsettings":{"theme":"white","family":"sans","size":2},"sectionx":{},"theme-comscore":{},"back-to-top-button":{},"github-buttons":{"buttons":[{"user":"RationalMonster","repo":"gitbooks-devops-roadmap","type":"star","size":"small","count":"true"}]},"sharing":{"weibo":true,"qq":"true","google":true,"all":["facebook","twitter"]},"edit-link":{"base":"https://raw.githubusercontent.com/RationalMonster/gitbooks-devops-roadmap/master/","label":"查看源MD文件"},"theme-default":{"showLevel":true,"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"expandable-chapters":{}},"theme":"default","author":"Curiouser <rationalmonster@163.com>","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Devops Roadmap","gitbook":"*"},"file":{"path":"origin/asuswrt-merlin.md","mtime":"2025-12-17T08:52:58.809Z","type":"markdown"},"gitbook":{"version":"3.0.0","time":"2025-12-17T08:55:39.437Z"},"basePath":"..","book":{"language":""}});
+			gitbook.page.hasChanged({"page":{"title":"华硕梅林Asuswrt-Merlin","level":"11.4","depth":1,"next":{"title":"Raspberry Pi树莓派","level":"11.5","depth":1,"path":"origin/raspberry-pi.md","ref":"origin/raspberry-pi.md","articles":[]},"previous":{"title":"群晖Synology的iSCSI","level":"11.3.3","depth":2,"path":"origin/iSCSI-简介配置使用.md","ref":"origin/iSCSI-简介配置使用.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-lunr","-sharing","-highlight","search-pro","splitter","github","popup","sectionx","expandable-chapters","sharing-plus","code","auto-scroll-table","theme-fexa","tbfed-pagefooter","back-to-top-button","emphasize","edit-link","prism","donate","theme-comscore","github-buttons","github-issue-feedback"],"root":".","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"tbfed-pagefooter":{"copyright":"Copyright Curiouser","modify_label":"该文件最后修改时间：","modify_format":"YYYY-MM-DD HH:mm:ss"},"prism":{"css":["prismjs/themes/prism-tomorrow.css"],"lang":{"flow":"typescript"},"ignore":["mermaid","eval-js"]},"emphasize":{},"github-issue-feedback":{"repo":"RationalMonster/rationalmonster.github.io"},"github":{"url":"https://github.com/RationalMonster"},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"auto-scroll-table":{},"popup":{},"theme-fexa":{"search-placeholder":"搜索文章","logo":"./assets/logo.png"},"code":{"copybuttons":"true","copyButtons":true},"donate":{"wechat":"/assets/wechat-donate.jpg","title":"","button":"赏","wechatText":"微信打赏","alipay":"","alipayText":"支付宝打赏"},"fontsettings":{"theme":"white","family":"sans","size":2},"sectionx":{},"theme-comscore":{},"back-to-top-button":{},"github-buttons":{"buttons":[{"user":"RationalMonster","repo":"gitbooks-devops-roadmap","type":"star","size":"small","count":"true"}]},"sharing":{"weibo":true,"qq":"true","google":true,"all":["facebook","twitter"]},"edit-link":{"base":"https://raw.githubusercontent.com/RationalMonster/gitbooks-devops-roadmap/master/","label":"查看源MD文件"},"theme-default":{"showLevel":true,"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"expandable-chapters":{}},"theme":"default","author":"Curiouser <rationalmonster@163.com>","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Devops Roadmap","gitbook":"*"},"file":{"path":"origin/asuswrt-merlin.md","mtime":"2026-01-06T08:51:31.846Z","type":"markdown"},"gitbook":{"version":"3.0.0","time":"2026-01-06T08:56:02.431Z"},"basePath":"..","book":{"language":""}});
 		});
 	</script>
 </div>

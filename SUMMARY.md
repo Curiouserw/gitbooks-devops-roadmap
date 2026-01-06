@@ -356,9 +356,7 @@
     * [Nginx的WAF：Modsecurity](origin/nginx-docker.md)
 * [GitBook](origin/gitbook-简介安装配置.md)
 * [Telegram机器人](origin/telegram-Bot机器.md)
-* OpenVPN
-
-    * [OpenVPN Server](origin/openvpn-server.md)
+* [OpenVPN Server](origin/openvpn-server.md)
 * iDRAC
     * [iDRAC](origin/idrac.md)
 * [vSphere ESXI](origin/vsphere-esxi.md)
@@ -389,6 +387,7 @@
 * [BarkServer通知](origin/bark-notify.md)
 * [开源画图平台:Excalidraw](origin/excalidraw.md)
 * [HTTP认证](origin/http-auth.md)
+* [格式化硬盘](origin/disk-format.md)
 
 ## Part Ⅵ：数据存储处理
 

@@ -10,8 +10,6 @@
 
 5Ghz 网卡：eth7
 
-
-
 # 二、系统服务
 
 ## 1、dnsmasq
@@ -20,8 +18,6 @@
 
 ```bash
 ```
-
-
 
 > /jffs/configs/dnsmasq.conf.add
 
@@ -88,6 +84,87 @@ ls /lib/modules/${OS}/kernel/net/netfilter/*TPROXY*
 modprobe xt_TPROXY
 lsmod | grep -i TPROXY
 ```
+
+## 4、自带DDNS 和 Let's Encrypt
+
+```bash
+nvram set ddns_enable_x="$(nvram get ddns_enable_x_bak)"
+nvram set ddns_ipcheck="$(nvram get ddns_ipcheck_bak)"
+nvram set ddns_server_x="$(nvram get ddns_server_x_bak)"
+nvram set ddns_hostname_x="$(nvram get ddns_hostname_x_bak)"
+nvram set le_enable="$(nvram get le_enable_bak)"
+nvram set asus_ddns_service="Aliddns"
+ddns_custom_updated 1
+ddns_updated 
+service restart_ddns_le 
+service restart_ddns
+```
+
+
+
+## 5、格式化U盘
+
+### ext4参数优化+4K对齐
+
+最好在linux下操作完成后再插入路由器
+
+```bash
+# 彻底擦除磁盘开头（清除MBR和GPT签名）
+dd if=/dev/zero of=/dev/sda bs=1M count=10 status=progress conv=fsync
+
+parted /dev/sda --script \
+  mklabel gpt \
+  mkpart primary ext4 1MiB 100%
+
+mkfs.ext4 \
+  -O ^has_journal \
+  -L sd \
+  -E lazy_itable_init=0,lazy_journal_init=0 \
+  -m 0 \
+  /dev/sda1
+```
+
+插回路由器后验证是否4K对齐
+
+```bash
+blockdev --getss /dev/sda   # 逻辑扇区（一般 512,Start × 512 能被 4096 整除 → OK）
+blockdev --getpbsz /dev/sda # 物理块（通常 4096）
+cat /sys/block/sda/sda1/start 
+cat /sys/block/sda/queue/physical_block_size
+cat /sys/block/sda/queue/logical_block_size
+```
+
+## 6、其他
+
+```bash
+mke2fs -t ext4 -O ^has_journal /dev/sda
+# 禁用日志：^has_journal
+```
+
+- amtm命令格式化U 盘
+
+  U 盘标签跟之前保持一致，格式ext4
+
+  ```bash
+  umount /tmp/mnt/sd && \
+  mke2fs -t ext4 -O ^has_journal /dev/sda && \
+  reboot now
+  ```
+
+- koolshare的USB2JFSS插件挂载JFSS分区到U盘
+
+- amtm命令安装entware到U盘
+
+- opkg install常用软件
+
+  ```bash
+  opkg install jq vim procps-ng-sysctl procps-ng-top procps-ng-watch procs bash nginx-ssl
+  ```
+
+- 插件根目录
+- 插件根目录下的服务状态管理脚本：`stats.js/config.js`  --------软链---------> `/jffs/.koolshare/scripts/`
+- 插件根目录下的icon文件：`icon-插件名.png`  --------软链---------> `/jffs/.koolshare/res`
+- 插件根目录下的服务自启动脚本 ：`S99插件.sh` --------软链---------> `/jffs/.koolshare/init.d/`
 
 # 三、系统 API
 
@@ -260,7 +337,7 @@ nvram get wan0_proto																	# 	查看WAN 连接类型（如：dhcp, ppp
 nvram get wan_pppoe_username / wan_pppoe_passwd				# 	查看PPPoE用户名/密码
 nvram get wl0_ssid / wl1_ssid													# 	查看无线 SSID（wl0_ssid: 2.4G / wl1_ssid: 5G）
 nvram get jffs2_scripts																# 	查看是否启用 jffs 用户脚本（1 为启用）
-nvram get usb_enable																	# 	查看是否启用 USB 功能
+nvram get usb_enable																	# 	查看是否启用 USB 功能（1 为启用）
 nvram get ntp_server0/ntp_server1											#   查看NTP时间服务器地址
 nvram get router_name																	# 	查看主机名称
 nvram get odmpid																			# 	查看当前设备的具体型号

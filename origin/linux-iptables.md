@@ -818,8 +818,7 @@ echo "net.ipv4.tcp_congestion_control = bbr"
 # ========== 清除旧的iptables规则 ==========
 iptables -t nat -F TZ_TCP 2>/dev/null
 iptables -t nat -X TZ_TCP 2>/dev/null
-# ========== 设置规则 ==========
-# 创建TCP规则链并设置跳过内网地址和 TZ 服务器地址（避免回环）
+# ========== 创建TCP规则链并设置跳过内网地址和 TZ 服务器地址（避免回环）==========
 iptables -t nat -N TZ_TCP
 iptables -t nat -A TZ_TCP -d 0.0.0.0/8 -j RETURN
 iptables -t nat -A TZ_TCP -d 10.0.0.0/8 -j RETURN
@@ -829,53 +828,12 @@ iptables -t nat -A TZ_TCP -d 172.16.0.0/12 -j RETURN
 iptables -t nat -A TZ_TCP -d 192.168.0.0/16 -j RETURN
 iptables -t nat -A TZ_TCP -d 224.0.0.0/4 -j RETURN
 iptables -t nat -A TZ_TCP -d 240.0.0.0/4 -j RETURN
-# ========== 指定规则 ==========
-# 将指定 IP的TCP流量重定向到 V2Ray 端口
-iptables -t nat -A TZ_TCP -s 192.168.1.99 -p tcp -j REDIRECT --to-ports 8003
+# ========== 指定将指定 IP的TCP流量重定向到TZ端口 ==========
+iptables -t nat -A TZ_TCP -s 192.168.1.0/24 -p tcp -j REDIRECT --to-ports 8003
 
 # ========== 应用规则 ==========
-# TCP 规则应用
-iptables -t nat -A PREROUTING -s 192.168.1.99 -j TZ_TCP
-iptables -t nat -A OUTPUT -s 192.168.1.99 -j TZ_TCP
-
-```
-
-
-
-```bash
-modprobe xt_TPROXY
-lsmod | grep -i TPROXY
-ip rule add fwmark 1 table 100 
-ip route add local 0.0.0.0/0 dev lo table 100
-
-iptables -t mangle -N V2RAY
-iptables -t mangle -A V2RAY -d 127.0.0.1/32 -j RETURN
-iptables -t mangle -A V2RAY -d 224.0.0.0/4 -j RETURN 
-iptables -t mangle -A V2RAY -d 240.0.0.0/4 -j RETURN
-iptables -t mangle -A V2RAY -d 10.0.0.0/8 -j RETURN
-iptables -t mangle -A V2RAY -d 172.16.0.0/12 -j RETURN
-iptables -t mangle -A V2RAY -d 169.254.0.0/16 -j RETURN
-iptables -t mangle -A V2RAY -d 192.168.0.0/16 -p tcp -j RETURN
-iptables -t mangle -A V2RAY -d 192.168.0.0/16 -p udp ! --dport 53 -j RETURN 
-iptables -t mangle -A V2RAY -j RETURN -m mark --mark 0xff
-iptables -t mangle -A V2RAY -p udp -j TPROXY --on-ip 0.0.0.0 --on-port 8003 --tproxy-mark 1 
-iptables -t mangle -A V2RAY -p tcp -j TPROXY --on-ip 0.0.0.0 --on-port 8003 --tproxy-mark 1
-iptables -t mangle -A PREROUTING -j V2RAY 
-
-iptables -t mangle -N V2RAY_MASK 
-iptables -t mangle -A V2RAY_MASK -d 224.0.0.0/4 -j RETURN 
-iptables -t mangle -A V2RAY_MASK -d 255.255.255.255/32 -j RETURN 
-iptables -t mangle -A V2RAY_MASK -d 192.168.0.0/16 -p tcp -j RETURN
-iptables -t mangle -A V2RAY_MASK -d 192.168.0.0/16 -p udp ! --dport 53 -j RETURN 
-iptables -t mangle -A V2RAY_MASK -j RETURN -m mark --mark 0xff
-iptables -t mangle -A V2RAY_MASK -p udp -j MARK --set-mark 1
-iptables -t mangle -A V2RAY_MASK -p tcp -j MARK --set-mark 1
-iptables -t mangle -A OUTPUT -j V2RAY_MASK
-
-iptables -t mangle -N DIVERT
-iptables -t mangle -A DIVERT -j MARK --set-mark 1
-iptables -t mangle -A DIVERT -j ACCEPT
-iptables -t mangle -I PREROUTING -p tcp -m socket -j DIVERT
+iptables -t nat -A PREROUTING -s 192.168.1.0/24 -j TZ_TCP
+iptables -t nat -A OUTPUT -s 192.168.1.0/24 -j TZ_TCP
 ```
 
 ### ④规则管理
@@ -901,7 +859,6 @@ echo "DNS 测试 (TCP 53): $(dig @8.8.8.8 google.com +tcp +short)"
 echo "DNS 测试 (UDP 53): $(dig @8.8.8.8 google.com +short)"
 
 curl --http3 -s https://cloudflare-quic.com/ 2>/dev/null && echo "HTTP/3 (QUIC) 测试: QUIC 支持" || echo "HTTP/3 (QUIC) 测试: QUIC 不支持"
-
 
 curl -s https://www.netflix.com/title/80018499 2>/dev/null | grep -q "Not Available" && echo "不可用" || echo "可用"
 echo "   YouTube:"
@@ -950,15 +907,14 @@ iptables -j TPROXY -h
 ### ③转发规则
 
 ```bash
-# ========== 清除旧的iptables规则 ==========
+modprobe xt_TPROXY
+# ========== 清除旧的iptables和路由规则 ==========
 iptables -t mangle -F TZ_UDP 2>/dev/null
 iptables -t mangle -X TZ_UDP 2>/dev/null
-# ========== 清除旧的路由规则 ==========
 ip rule del fwmark 1 table 100 2>/dev/null
 ip route del local 0.0.0.0/0 dev lo table 100 2>/dev/null
 
-# ========== 设置规则 ==========
-# 跳过内网和特殊地址
+# ========== 设置规则: 跳过内网和特殊地址==========
 iptables -t mangle -N TZ_UDP
 iptables -t mangle -A TZ_UDP -d 0.0.0.0/8 -j RETURN
 iptables -t mangle -A TZ_UDP -d 10.0.0.0/8 -j RETURN
@@ -969,12 +925,10 @@ iptables -t mangle -A TZ_UDP -d 192.168.0.0/16 -j RETURN
 iptables -t mangle -A TZ_UDP -d 224.0.0.0/4 -j RETURN
 iptables -t mangle -A TZ_UDP -d 240.0.0.0/4 -j RETURN
 
-# ========== 指定规则 ==========
-# 使用 TPROXY 重定向 UDP 流量
+# ========== 指定TPROXY重定向UDP流量 ==========
 iptables -t mangle -A TZ_UDP -s 192.168.1.99 -p udp -j TPROXY --tproxy-mark 0x1/0x1 --on-port 8003 
 
 # ========== 应用规则 ==========
-# UDP 规则应用
 iptables -t mangle -A PREROUTING -s 192.168.1.99 -j TZ_UDP
 
 # 添加新的路由规则
@@ -1015,9 +969,6 @@ iptables -t nat -X TZ_UDP 2>/dev/null
   # 查看连接跟踪
   conntrack -L -p udp
   ```
-
-  
-
 
 # 参考
 

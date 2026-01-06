@@ -5818,39 +5818,18 @@
             
         </li>
     
-        <li class="chapter " data-level="6.24" >
-            
-                <span>
-            
-                    
-                        <b>6.24.</b>
-                    
-                    OpenVPN
-            
-                </span>
-            
-
-            
-            <ul class="articles">
-                
-    
-        <li class="chapter " data-level="6.24.1" data-path="openvpn-server.html">
+        <li class="chapter " data-level="6.24" data-path="openvpn-server.html">
             
                 <a href="openvpn-server.html">
             
                     
-                        <b>6.24.1.</b>
+                        <b>6.24.</b>
                     
                     OpenVPN Server
             
                 </a>
             
 
-            
-        </li>
-    
-
-            </ul>
             
         </li>
     
@@ -6321,6 +6300,21 @@
                         <b>6.43.</b>
                     
                     HTTP认证
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="6.44" data-path="disk-format.html">
+            
+                <a href="disk-format.html">
+            
+                    
+                        <b>6.44.</b>
+                    
+                    格式化硬盘
             
                 </a>
             
@@ -9021,8 +9015,7 @@ echo &quot;net.ipv4.tcp_congestion_control = bbr&quot;
 <pre class="language-"><code class="bash"># ========== &#x6E05;&#x9664;&#x65E7;&#x7684;iptables&#x89C4;&#x5219; ==========
 iptables -t nat -F TZ_TCP 2&gt;/dev/null
 iptables -t nat -X TZ_TCP 2&gt;/dev/null
-# ========== &#x8BBE;&#x7F6E;&#x89C4;&#x5219; ==========
-# &#x521B;&#x5EFA;TCP&#x89C4;&#x5219;&#x94FE;&#x5E76;&#x8BBE;&#x7F6E;&#x8DF3;&#x8FC7;&#x5185;&#x7F51;&#x5730;&#x5740;&#x548C; TZ &#x670D;&#x52A1;&#x5668;&#x5730;&#x5740;&#xFF08;&#x907F;&#x514D;&#x56DE;&#x73AF;&#xFF09;
+# ========== &#x521B;&#x5EFA;TCP&#x89C4;&#x5219;&#x94FE;&#x5E76;&#x8BBE;&#x7F6E;&#x8DF3;&#x8FC7;&#x5185;&#x7F51;&#x5730;&#x5740;&#x548C; TZ &#x670D;&#x52A1;&#x5668;&#x5730;&#x5740;&#xFF08;&#x907F;&#x514D;&#x56DE;&#x73AF;&#xFF09;==========
 iptables -t nat -N TZ_TCP
 iptables -t nat -A TZ_TCP -d 0.0.0.0/8 -j RETURN
 iptables -t nat -A TZ_TCP -d 10.0.0.0/8 -j RETURN
@@ -9032,48 +9025,12 @@ iptables -t nat -A TZ_TCP -d 172.16.0.0/12 -j RETURN
 iptables -t nat -A TZ_TCP -d 192.168.0.0/16 -j RETURN
 iptables -t nat -A TZ_TCP -d 224.0.0.0/4 -j RETURN
 iptables -t nat -A TZ_TCP -d 240.0.0.0/4 -j RETURN
-# ========== &#x6307;&#x5B9A;&#x89C4;&#x5219; ==========
-# &#x5C06;&#x6307;&#x5B9A; IP&#x7684;TCP&#x6D41;&#x91CF;&#x91CD;&#x5B9A;&#x5411;&#x5230; V2Ray &#x7AEF;&#x53E3;
-iptables -t nat -A TZ_TCP -s 192.168.1.99 -p tcp -j REDIRECT --to-ports 8003
+# ========== &#x6307;&#x5B9A;&#x5C06;&#x6307;&#x5B9A; IP&#x7684;TCP&#x6D41;&#x91CF;&#x91CD;&#x5B9A;&#x5411;&#x5230;TZ&#x7AEF;&#x53E3; ==========
+iptables -t nat -A TZ_TCP -s 192.168.1.0/24 -p tcp -j REDIRECT --to-ports 8003
 
 # ========== &#x5E94;&#x7528;&#x89C4;&#x5219; ==========
-# TCP &#x89C4;&#x5219;&#x5E94;&#x7528;
-iptables -t nat -A PREROUTING -s 192.168.1.99 -j TZ_TCP
-iptables -t nat -A OUTPUT -s 192.168.1.99 -j TZ_TCP
-</code></pre>
-<pre class="language-"><code class="bash">modprobe xt_TPROXY
-lsmod | grep -i TPROXY
-ip rule add fwmark 1 table 100 
-ip route add local 0.0.0.0/0 dev lo table 100
-
-iptables -t mangle -N V2RAY
-iptables -t mangle -A V2RAY -d 127.0.0.1/32 -j RETURN
-iptables -t mangle -A V2RAY -d 224.0.0.0/4 -j RETURN 
-iptables -t mangle -A V2RAY -d 240.0.0.0/4 -j RETURN
-iptables -t mangle -A V2RAY -d 10.0.0.0/8 -j RETURN
-iptables -t mangle -A V2RAY -d 172.16.0.0/12 -j RETURN
-iptables -t mangle -A V2RAY -d 169.254.0.0/16 -j RETURN
-iptables -t mangle -A V2RAY -d 192.168.0.0/16 -p tcp -j RETURN
-iptables -t mangle -A V2RAY -d 192.168.0.0/16 -p udp ! --dport 53 -j RETURN 
-iptables -t mangle -A V2RAY -j RETURN -m mark --mark 0xff
-iptables -t mangle -A V2RAY -p udp -j TPROXY --on-ip 0.0.0.0 --on-port 8003 --tproxy-mark 1 
-iptables -t mangle -A V2RAY -p tcp -j TPROXY --on-ip 0.0.0.0 --on-port 8003 --tproxy-mark 1
-iptables -t mangle -A PREROUTING -j V2RAY 
-
-iptables -t mangle -N V2RAY_MASK 
-iptables -t mangle -A V2RAY_MASK -d 224.0.0.0/4 -j RETURN 
-iptables -t mangle -A V2RAY_MASK -d 255.255.255.255/32 -j RETURN 
-iptables -t mangle -A V2RAY_MASK -d 192.168.0.0/16 -p tcp -j RETURN
-iptables -t mangle -A V2RAY_MASK -d 192.168.0.0/16 -p udp ! --dport 53 -j RETURN 
-iptables -t mangle -A V2RAY_MASK -j RETURN -m mark --mark 0xff
-iptables -t mangle -A V2RAY_MASK -p udp -j MARK --set-mark 1
-iptables -t mangle -A V2RAY_MASK -p tcp -j MARK --set-mark 1
-iptables -t mangle -A OUTPUT -j V2RAY_MASK
-
-iptables -t mangle -N DIVERT
-iptables -t mangle -A DIVERT -j MARK --set-mark 1
-iptables -t mangle -A DIVERT -j ACCEPT
-iptables -t mangle -I PREROUTING -p tcp -m socket -j DIVERT
+iptables -t nat -A PREROUTING -s 192.168.1.0/24 -j TZ_TCP
+iptables -t nat -A OUTPUT -s 192.168.1.0/24 -j TZ_TCP
 </code></pre>
 <h3 id="&#x2463;&#x89C4;&#x5219;&#x7BA1;&#x7406;">&#x2463;&#x89C4;&#x5219;&#x7BA1;&#x7406;</h3>
 <pre class="language-"><code class="bash"># &#x67E5;&#x770B;&#x94FE;&#x7684;&#x89C4;&#x5219;
@@ -9093,7 +9050,6 @@ echo &quot;DNS &#x6D4B;&#x8BD5; (TCP 53): $(dig @8.8.8.8 google.com +tcp +short)
 echo &quot;DNS &#x6D4B;&#x8BD5; (UDP 53): $(dig @8.8.8.8 google.com +short)&quot;
 
 curl --http3 -s https://cloudflare-quic.com/ 2&gt;/dev/null &amp;&amp; echo &quot;HTTP/3 (QUIC) &#x6D4B;&#x8BD5;: QUIC &#x652F;&#x6301;&quot; || echo &quot;HTTP/3 (QUIC) &#x6D4B;&#x8BD5;: QUIC &#x4E0D;&#x652F;&#x6301;&quot;
-
 
 curl -s https://www.netflix.com/title/80018499 2&gt;/dev/null | grep -q &quot;Not Available&quot; &amp;&amp; echo &quot;&#x4E0D;&#x53EF;&#x7528;&quot; || echo &quot;&#x53EF;&#x7528;&quot;
 echo &quot;   YouTube:&quot;
@@ -9130,15 +9086,14 @@ lsmod | grep -i TPROXY
 iptables -j TPROXY -h
 </code></pre>
 <h3 id="&#x2462;&#x8F6C;&#x53D1;&#x89C4;&#x5219;">&#x2462;&#x8F6C;&#x53D1;&#x89C4;&#x5219;</h3>
-<pre class="language-"><code class="bash"># ========== &#x6E05;&#x9664;&#x65E7;&#x7684;iptables&#x89C4;&#x5219; ==========
+<pre class="language-"><code class="bash">modprobe xt_TPROXY
+# ========== &#x6E05;&#x9664;&#x65E7;&#x7684;iptables&#x548C;&#x8DEF;&#x7531;&#x89C4;&#x5219; ==========
 iptables -t mangle -F TZ_UDP 2&gt;/dev/null
 iptables -t mangle -X TZ_UDP 2&gt;/dev/null
-# ========== &#x6E05;&#x9664;&#x65E7;&#x7684;&#x8DEF;&#x7531;&#x89C4;&#x5219; ==========
 ip rule del fwmark 1 table 100 2&gt;/dev/null
 ip route del local 0.0.0.0/0 dev lo table 100 2&gt;/dev/null
 
-# ========== &#x8BBE;&#x7F6E;&#x89C4;&#x5219; ==========
-# &#x8DF3;&#x8FC7;&#x5185;&#x7F51;&#x548C;&#x7279;&#x6B8A;&#x5730;&#x5740;
+# ========== &#x8BBE;&#x7F6E;&#x89C4;&#x5219;: &#x8DF3;&#x8FC7;&#x5185;&#x7F51;&#x548C;&#x7279;&#x6B8A;&#x5730;&#x5740;==========
 iptables -t mangle -N TZ_UDP
 iptables -t mangle -A TZ_UDP -d 0.0.0.0/8 -j RETURN
 iptables -t mangle -A TZ_UDP -d 10.0.0.0/8 -j RETURN
@@ -9149,12 +9104,10 @@ iptables -t mangle -A TZ_UDP -d 192.168.0.0/16 -j RETURN
 iptables -t mangle -A TZ_UDP -d 224.0.0.0/4 -j RETURN
 iptables -t mangle -A TZ_UDP -d 240.0.0.0/4 -j RETURN
 
-# ========== &#x6307;&#x5B9A;&#x89C4;&#x5219; ==========
-# &#x4F7F;&#x7528; TPROXY &#x91CD;&#x5B9A;&#x5411; UDP &#x6D41;&#x91CF;
+# ========== &#x6307;&#x5B9A;TPROXY&#x91CD;&#x5B9A;&#x5411;UDP&#x6D41;&#x91CF; ==========
 iptables -t mangle -A TZ_UDP -s 192.168.1.99 -p udp -j TPROXY --tproxy-mark 0x1/0x1 --on-port 8003 
 
 # ========== &#x5E94;&#x7528;&#x89C4;&#x5219; ==========
-# UDP &#x89C4;&#x5219;&#x5E94;&#x7528;
 iptables -t mangle -A PREROUTING -s 192.168.1.99 -j TZ_UDP
 
 # &#x6DFB;&#x52A0;&#x65B0;&#x7684;&#x8DEF;&#x7531;&#x89C4;&#x5219;
@@ -9203,7 +9156,7 @@ conntrack -L -p udp
 <li><a href="https://blog.51cto.com/woyaoxuelinux/1906316" _target="blank">https://blog.51cto.com/woyaoxuelinux/1906316</a> </li>
 </ol>
 <footer class="page-footer"><span class="copyright">Copyright Curiouser all right reserved&#xFF0C;powered by Gitbook</span><span class="footer-modification">&#x8BE5;&#x6587;&#x4EF6;&#x6700;&#x540E;&#x4FEE;&#x6539;&#x65F6;&#x95F4;&#xFF1A;
-2025-12-17 16:45:11
+2026-01-06 16:54:37
 </span></footer>
 <script>console.log("plugin-popup....");document.onclick = function(e){ e.target.tagName === "IMG" && window.open(e.target.src,e.target.src)}</script><style>img{cursor:pointer}</style>
 						
@@ -9243,7 +9196,7 @@ conntrack -L -p udp
 	<script>
 		var gitbook = gitbook || [];
 		gitbook.push(function() {
-			gitbook.page.hasChanged({"page":{"title":"iptables详解","level":"6.17","depth":1,"next":{"title":"负载均衡与代理","level":"6.18","depth":1,"ref":"","articles":[{"title":"Keepalived","level":"6.18.1","depth":2,"path":"origin/keepalived.md","ref":"origin/keepalived.md","articles":[]},{"title":"LVS","level":"6.18.2","depth":2,"path":"origin/lvs.md","ref":"origin/lvs.md","articles":[]}]},"previous":{"title":"ipvsadm","level":"6.16.3.5","depth":3,"path":"origin/ipvsadm.md","ref":"origin/ipvsadm.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-lunr","-sharing","-highlight","search-pro","splitter","github","popup","sectionx","expandable-chapters","sharing-plus","code","auto-scroll-table","theme-fexa","tbfed-pagefooter","back-to-top-button","emphasize","edit-link","prism","donate","theme-comscore","github-buttons","github-issue-feedback"],"root":".","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"tbfed-pagefooter":{"copyright":"Copyright Curiouser","modify_label":"该文件最后修改时间：","modify_format":"YYYY-MM-DD HH:mm:ss"},"prism":{"css":["prismjs/themes/prism-tomorrow.css"],"lang":{"flow":"typescript"},"ignore":["mermaid","eval-js"]},"emphasize":{},"github-issue-feedback":{"repo":"RationalMonster/rationalmonster.github.io"},"github":{"url":"https://github.com/RationalMonster"},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"auto-scroll-table":{},"popup":{},"theme-fexa":{"search-placeholder":"搜索文章","logo":"./assets/logo.png"},"code":{"copybuttons":"true","copyButtons":true},"donate":{"wechat":"/assets/wechat-donate.jpg","title":"","button":"赏","wechatText":"微信打赏","alipay":"","alipayText":"支付宝打赏"},"fontsettings":{"theme":"white","family":"sans","size":2},"sectionx":{},"theme-comscore":{},"back-to-top-button":{},"github-buttons":{"buttons":[{"user":"RationalMonster","repo":"gitbooks-devops-roadmap","type":"star","size":"small","count":"true"}]},"sharing":{"weibo":true,"qq":"true","google":true,"all":["facebook","twitter"]},"edit-link":{"base":"https://raw.githubusercontent.com/RationalMonster/gitbooks-devops-roadmap/master/","label":"查看源MD文件"},"theme-default":{"showLevel":true,"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"expandable-chapters":{}},"theme":"default","author":"Curiouser <rationalmonster@163.com>","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Devops Roadmap","gitbook":"*"},"file":{"path":"origin/linux-iptables.md","mtime":"2025-12-17T08:45:11.939Z","type":"markdown"},"gitbook":{"version":"3.0.0","time":"2025-12-17T08:55:39.437Z"},"basePath":"..","book":{"language":""}});
+			gitbook.page.hasChanged({"page":{"title":"iptables详解","level":"6.17","depth":1,"next":{"title":"负载均衡与代理","level":"6.18","depth":1,"ref":"","articles":[{"title":"Keepalived","level":"6.18.1","depth":2,"path":"origin/keepalived.md","ref":"origin/keepalived.md","articles":[]},{"title":"LVS","level":"6.18.2","depth":2,"path":"origin/lvs.md","ref":"origin/lvs.md","articles":[]}]},"previous":{"title":"ipvsadm","level":"6.16.3.5","depth":3,"path":"origin/ipvsadm.md","ref":"origin/ipvsadm.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-lunr","-sharing","-highlight","search-pro","splitter","github","popup","sectionx","expandable-chapters","sharing-plus","code","auto-scroll-table","theme-fexa","tbfed-pagefooter","back-to-top-button","emphasize","edit-link","prism","donate","theme-comscore","github-buttons","github-issue-feedback"],"root":".","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"tbfed-pagefooter":{"copyright":"Copyright Curiouser","modify_label":"该文件最后修改时间：","modify_format":"YYYY-MM-DD HH:mm:ss"},"prism":{"css":["prismjs/themes/prism-tomorrow.css"],"lang":{"flow":"typescript"},"ignore":["mermaid","eval-js"]},"emphasize":{},"github-issue-feedback":{"repo":"RationalMonster/rationalmonster.github.io"},"github":{"url":"https://github.com/RationalMonster"},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"auto-scroll-table":{},"popup":{},"theme-fexa":{"search-placeholder":"搜索文章","logo":"./assets/logo.png"},"code":{"copybuttons":"true","copyButtons":true},"donate":{"wechat":"/assets/wechat-donate.jpg","title":"","button":"赏","wechatText":"微信打赏","alipay":"","alipayText":"支付宝打赏"},"fontsettings":{"theme":"white","family":"sans","size":2},"sectionx":{},"theme-comscore":{},"back-to-top-button":{},"github-buttons":{"buttons":[{"user":"RationalMonster","repo":"gitbooks-devops-roadmap","type":"star","size":"small","count":"true"}]},"sharing":{"weibo":true,"qq":"true","google":true,"all":["facebook","twitter"]},"edit-link":{"base":"https://raw.githubusercontent.com/RationalMonster/gitbooks-devops-roadmap/master/","label":"查看源MD文件"},"theme-default":{"showLevel":true,"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"expandable-chapters":{}},"theme":"default","author":"Curiouser <rationalmonster@163.com>","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Devops Roadmap","gitbook":"*"},"file":{"path":"origin/linux-iptables.md","mtime":"2026-01-06T08:54:37.556Z","type":"markdown"},"gitbook":{"version":"3.0.0","time":"2026-01-06T08:56:02.431Z"},"basePath":"..","book":{"language":""}});
 		});
 	</script>
 </div>
