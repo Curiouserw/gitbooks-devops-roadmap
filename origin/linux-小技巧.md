@@ -2584,3 +2584,38 @@ apt-cache search mysql | grep 5.6
 apt install mysql-server-5.6 mysql-client-5.6
 ```
 
+# 83、虚拟内存
+
+```bash
+# 创建swapfile内存文件
+fallocate -l 4G /swapfile  
+dd if=/dev/zero of=/swapfile bs=1M count=4096
+
+# 挂载虚拟内存文件
+chmod 600 /swapfile
+mkswap /swapfile    # 初始化为 swap
+swapon /swapfile    # 启用 swap
+
+# 设置内核使用虚拟内存的倾向系数（swappiness = 内核在“回收内存”时，选择“回收匿名页” vs “回收页缓存”的倾向系数）
+#   0   极力避免 swap 容易 OOM
+#   10  极不积极使用 swap ⭐ 常用
+#   30  温和使用 swap 
+#   60  默认值  桌面/服务器
+#   100 强烈使用 swap	嵌入式不推荐
+echo 10 > /proc/sys/vm/swappiness
+
+# 自动挂载
+echo '/swapfile none swap sw 0 0' >> /etc/fstab
+mount -a
+
+# 查看虚拟内存
+free -h                           # 快速查看物理内存与 swap 使用（人类可读）。
+swapon --show                     # 列出所有启用的 swap 设备/文件。
+cat /proc/swaps                   # 列出所有启用的 swap 设备/文件。
+cat /proc/meminfo | grep -i swap 	# 详细 swap 信息。
+
+# 卸载虚拟内存文件
+# 卸载前先 sync; echo 3 > /proc/sys/vm/drop_caches
+swapoff /swapfile
+swapoff -a
+```

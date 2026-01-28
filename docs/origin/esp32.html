@@ -6316,7 +6316,22 @@
                     
                         <b>6.44.</b>
                     
-                    格式化硬盘
+                    硬盘格式化
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="6.45" data-path="mqtt.html">
+            
+                <a href="mqtt.html">
+            
+                    
+                        <b>6.45.</b>
+                    
+                    MQTT
             
                 </a>
             
@@ -8345,6 +8360,36 @@
             
         </li>
     
+        <li class="chapter " data-level="11.11" data-path="homeassistant.html">
+            
+                <a href="homeassistant.html">
+            
+                    
+                        <b>11.11.</b>
+                    
+                    HomeAssistant
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="11.12" data-path="voiceassis.html">
+            
+                <a href="voiceassis.html">
+            
+                    
+                        <b>11.12.</b>
+                    
+                    硬件项目：语音助手
+            
+                </a>
+            
+
+            
+        </li>
+    
 
     
 
@@ -8413,7 +8458,6 @@
 <th>Wi-Fi</th>
 <th>&#x84DD;&#x7259;</th>
 <th>&#x7279;&#x70B9;</th>
-<th>&#x5E38;&#x89C1;&#x7528;&#x9014;</th>
 </tr>
 </thead>
 <tbody>
@@ -8423,57 +8467,140 @@
 <td>2.4G</td>
 <td>BT Classic + BLE</td>
 <td>&#x7ECF;&#x5178;&#x6B3E;&#xFF0C;&#x8D44;&#x6E90;&#x591A;</td>
-<td>&#x8001;&#x9879;&#x76EE;</td>
 </tr>
 <tr>
 <td><strong>ESP32-S2</strong></td>
-<td>&#x5355;&#x6838;</td>
-<td>2.4G</td>
+<td>&#x5355;&#x6838; Xtensa 240MHz</td>
+<td>W2.4G</td>
 <td>&#x274C;</td>
 <td>USB OTG</td>
-<td>USB &#x8BBE;&#x5907;</td>
 </tr>
 <tr>
 <td><strong>ESP32-S3</strong></td>
-<td>&#x53CC;&#x6838;</td>
+<td>&#x53CC;&#x6838; Xtensa 240MHz</td>
 <td>2.4G</td>
 <td>BLE</td>
 <td>AI/USB</td>
-<td>&#x65B0;&#x4E3B;&#x6D41;</td>
 </tr>
 <tr>
 <td><strong>ESP32-C3</strong></td>
-<td>&#x5355;&#x6838; RISC-V</td>
+<td>&#x5355;&#x6838; RISC-V 160MHz</td>
 <td>2.4G</td>
 <td>BLE</td>
-<td>&#x4F4E;&#x529F;&#x8017;&#x3001;&#x4FBF;&#x5B9C;</td>
-<td>IoT</td>
+<td>&#x4F4E;&#x529F;&#x8017;&#x3001;&#x4FBF;&#x5B9C; IoT</td>
 </tr>
 <tr>
 <td><strong>ESP32-C6</strong></td>
-<td>&#x5355;&#x6838; RISC-V</td>
+<td>&#x5355;&#x6838; RISC-V 160MHz</td>
 <td>2.4G + 802.15.4</td>
 <td>BLE</td>
 <td>Thread / Matter</td>
-<td>HA</td>
 </tr>
 <tr>
 <td><strong>ESP32-H2</strong></td>
 <td>&#x5355;&#x6838;</td>
 <td>&#x274C;</td>
 <td>BLE + 802.15.4</td>
-<td>&#x65E0; Wi-Fi</td>
-<td>Zigbee</td>
+<td>&#x65E0; Wi-Fi&#x3001;Zigbee</td>
 </tr>
 </tbody>
 </table>
-<h1 id="&#x4E8C;&#x3001;">&#x4E8C;&#x3001;</h1>
-<h1 id="&#x4E09;&#x3001;ide">&#x4E09;&#x3001;IDE</h1>
-<h2 id="1&#x3001;vscode">1&#x3001;VSCode</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>&#x8BBE;&#x5907;&#x540D;</th>
+<th>VID</th>
+<th>&#x4F5C;&#x7528;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TTL</td>
+<td><code>/dev/cu.usbserial-*</code></td>
+<td>1A86</td>
+<td>CH340&#xFF0C;&#x70E7;&#x5F55;+UART</td>
+</tr>
+<tr>
+<td>OTG</td>
+<td><code>/dev/cu.usbmodem-*</code></td>
+<td>303A</td>
+<td>ESP32-S3 &#x539F;&#x751F; USB&#xFF08;CDC/JTAG&#xFF09;</td>
+</tr>
+</tbody>
+</table>
+<h1 id="&#x4E8C;&#x3001;&#x786C;&#x4EF6;&#x8FDE;&#x63A5;">&#x4E8C;&#x3001;&#x786C;&#x4EF6;&#x8FDE;&#x63A5;</h1>
+<h2 id="1&#x3001;&#x67E5;&#x770B;&#x4E32;&#x53E3;&#x4FE1;&#x606F;">1&#x3001;&#x67E5;&#x770B;&#x4E32;&#x53E3;&#x4FE1;&#x606F;</h2>
+<pre class="language-"><code class="bash">pio device list 
+
+# /dev/cu.usbserial-14120
+#   Hardware ID: USB VID:PID=1A86:7523 LOCATION=20-1.2
+#   Description: USB Serial
+
+#   VID=1A86&#x4EE3;&#x8868;CH340&#xFF08;TTL &#x53E3;&#xFF09;
+</code></pre>
+<h2 id="2&#x3001;&#x67E5;&#x770B;&#x786C;&#x4EF6;&#x4FE1;&#x606F;">2&#x3001;&#x67E5;&#x770B;&#x786C;&#x4EF6;&#x4FE1;&#x606F;</h2>
+<pre class="language-"><code class="bash"># esptool &#x662F;platformio&#x5DE5;&#x5177;&#x4E2D;&#x7684;&#x547D;&#x4EE4;
+esptool --port /dev/cu.usbserial-14120 chip-id
+
+# Connected to ESP32-S3 on /dev/cu.usbserial-14120:
+# Chip type:          ESP32-S3 (QFN56) (revision v0.2)
+# Features:           Wi-Fi, BT 5 (LE), Dual Core + LP Core, 240MHz, Embedded PSRAM 8MB (AP_3v3)
+# Crystal frequency:  40MHz
+# MAC:                3c:0f:02:d2:1a:f4
+#  Stub flasher running.
+# Warning: ESP32-S3 has no chip ID. Reading MAC address instead.
+# MAC:                3c:0f:02:d2:1a:f4
+# Hard resetting via RTS pin..
+</code></pre>
+<h2 id="3&#x3001;&#x67E5;&#x770B;&#x7AEF;&#x53E3;&#x662F;&#x5426;&#x5728;&#x5360;&#x7528;">3&#x3001;&#x67E5;&#x770B;&#x7AEF;&#x53E3;&#x662F;&#x5426;&#x5728;&#x5360;&#x7528;</h2>
+<pre class="language-"><code class="bash">lsof /dev/cu.usbserial-14120
+</code></pre>
+<h2 id="4&#x3001;&#x67E5;&#x770B;platformio&#x652F;&#x6301;&#x7684;board">4&#x3001;&#x67E5;&#x770B;platformio&#x652F;&#x6301;&#x7684;board</h2>
+<pre class="language-"><code class="bash">pio boards ESP32-S3
+
+# &#x67E5;&#x770B;&#x5DF2;&#x5B89;&#x88C5;&#x7684; SDK&#xFF1A;pio boards  --installed
+</code></pre>
+<h1 id="&#x4E09;&#x3001;&#x5F00;&#x53D1;">&#x4E09;&#x3001;&#x5F00;&#x53D1;</h1>
+<h2 id="1&#x3001;&#x5F00;&#x53D1;&#x73AF;&#x5883;platformio">1&#x3001;&#x5F00;&#x53D1;&#x73AF;&#x5883;platformio</h2>
 <ul>
 <li>vscode&#x5B89;&#x88C5;&#x63D2;&#x4EF6;platformio</li>
 <li>brew&#x5B89;&#x88C5;platformio</li>
 </ul>
+<h2 id="2&#x3001;&#x914D;&#x7F6E;&#x6587;&#x4EF6;">2&#x3001;&#x914D;&#x7F6E;&#x6587;&#x4EF6;</h2>
+<blockquote>
+<p>platformin.ini</p>
+</blockquote>
+<pre class="language-"><code class="ini">; &#x6784;&#x5EFA;&#x73AF;&#x5883;,&#x683C;&#x5F0F;&#xFF1A;[env:&#x73AF;&#x5883;&#x540D;]&#x3002;&#x4E00;&#x4E2A;&#x5DE5;&#x7A0B;&#x53EF;&#x4EE5;&#x6709;&#x591A;&#x4E2A;env&#x3002;&#x4F7F;&#x7528;pio&#x6307;&#x5B9A;&#x73AF;&#x5883;&#x540D;pio run -e &#x73AF;&#x5883;&#x540D;
+[env:esp32dev]
+; &#x82AF;&#x7247;&#x5E73;&#x53F0;(&#x4E5F;&#x53EF;&#x4EE5;&#x8868;&#x793A;&#x4E3A;&#xFF1A;&#x5DE5;&#x5177;&#x94FE;&#x3001;&#x70E7;&#x5F55;&#x5DE5;&#x5177;&#x3001;SDK&#x3002;&#x4F46;&#x4E0D;&#x662F;&#x6307;&#x82AF;&#x7247;&#x578B;&#x53F7;)&#x3002;&#x5E38;&#x89C1;&#x5E73;&#x53F0;
+;     espressif32: ESP32/S2/S3/C3/C6/P4
+;     ststm32: STM32
+;     raspberrypi: RP2040
+platform = espressif32
+; &#x677F;&#x7EA7;&#x5B9A;&#x4E49;,&#x5B83;&#x51B3;&#x5B9A;Flash&#x5927;&#x5C0F;&#x3001;&#x5206;&#x533A;&#x8868;&#x3001;Boot&#x6A21;&#x5F0F;&#x3001;USB/UART&#x3001;PSRAM&#x662F;&#x5426;&#x5B58;&#x5728;&#x3002;
+; &#x53EF;&#x4EE5;&#x4F7F;&#x7528;pio boards ESP32-S3 &#x547D;&#x4EE4;&#x67E5;&#x770B;&#x652F;&#x6301;&#x7684;board
+; &#x5E38;&#x7528;&#xFF1A;esp32dev&#xFF0C;esp32-s3-devkitc-1
+board = esp32dev
+; &#x8F6F;&#x4EF6;&#x6846;&#x67B6;&#xFF0C;arduino&#x3001;espidf&#x3001;(arduino, espidf)
+framework = arduino
+
+monitor_speed = 115200
+upload_speed = 115200
+
+build_src_filter = +<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>info.cpp</span><span class="token punctuation">&gt;</span></span> 
+
+upload_port = /dev/cu.usbserial-0001
+monitor_port = /dev/cu.SLAB_USBtoUART
+monitor_filters =
+  esp32_exception_decoder
+  time
+
+lib_deps =
+  knolleary/PubSubClient
+  milesburton/DallasTemperature
+</code></pre>
+<h2 id="4&#x3001;&#x70E7;&#x5F55;">4&#x3001;&#x70E7;&#x5F55;</h2>
 <p>&#x7F16;&#x8BD1;</p>
 <pre class="language-"><code class="bash">pio run
 </code></pre>
@@ -8482,9 +8609,93 @@
 </code></pre>
 <p>&#x76D1;&#x89C6;&#x4E32;&#x53E3;</p>
 <pre class="language-"><code class="bash">pio device monitor
+
+screen /dev/ttyUSB0 115200
+</code></pre>
+<h2 id="5&#x3001;&#x76D1;&#x63A7;">5&#x3001;&#x76D1;&#x63A7;</h2>
+<h1 id="&#x56DB;&#x3001;esphome">&#x56DB;&#x3001;ESPHOME</h1>
+<h2 id="0&#x3001;&#x7B80;&#x4ECB;">0&#x3001;&#x7B80;&#x4ECB;</h2>
+<p><a href="https://esphome.io/" _target="blank">https://esphome.io/</a></p>
+<h2 id="1&#x3001;&#x5B89;&#x88C5;esphome">1&#x3001;&#x5B89;&#x88C5;esphome</h2>
+<pre class="language-"><code class="bash">python3 -m venv venv
+source venv/bin/activate
+pip3 install esphome
+</code></pre>
+<h2 id="2&#x3001;&#x67E5;&#x770B;&#x786C;&#x4EF6;&#x4FE1;&#x606F;">2&#x3001;&#x67E5;&#x770B;&#x786C;&#x4EF6;&#x4FE1;&#x606F;</h2>
+<p>&#x8BE6;&#x53C2;&#x7AE0;&#x8282;&#x4E09;&#x7B2C;&#x4E8C;&#x8282;&#x7684;&#x201C;&#x786C;&#x4EF6;&#x8FDE;&#x63A5;&#x201D;</p>
+<h2 id="3&#x3001;&#x914D;&#x7F6E;">3&#x3001;&#x914D;&#x7F6E;</h2>
+<p>&#x914D;&#x7F6E;&#x6587;&#x4EF6;&#x6587;&#x6863;&#xFF1A;<a href="https://esphome.io/guides/" _target="blank">https://esphome.io/guides/</a></p>
+<h3 id="&#x2460;dashboard-&#x914D;&#x7F6E;&#x8BBE;&#x5907;">&#x2460;Dashboard &#x914D;&#x7F6E;&#x8BBE;&#x5907;</h3>
+<p>UI &#x754C;&#x9762;&#x914D;&#x7F6E;&#x8FDE;&#x63A5;: <code>esphome dashboard .</code></p>
+<p>&#x8BBF;&#x95EE;&#xFF1A;<a href="http://0.0.0.0:6052" _target="blank">http://0.0.0.0:6052</a></p>
+<h3 id="&#x2461;&#x624B;&#x52A8;&#x914D;&#x7F6E;">&#x2461;&#x624B;&#x52A8;&#x914D;&#x7F6E;</h3>
+<blockquote>
+<p>esp32s3.yaml</p>
+</blockquote>
+<pre class="language-"><code class="ini">esphome:
+  name: esp32s3
+  friendly_name: &quot;&#x6D4B;&#x8BD5;&#x8BBE;&#x5907;&quot;
+# ESP32&#x5E73;&#x53F0;&#x914D;&#x7F6E;&#x6587;&#x6863;&#xFF1A;https://esphome.io/components/esp32/
+esp32:
+  board: esp32-s3-devkitc1-n16r8
+  variant: esp32s3
+  framework:
+    type: esp-idf #&#x53EF;&#x9009;&#x9879;esp-idf/arduino&#x3002;arduino&#x5BF9;ESP32,ESP32-C3,ESP32-S2,ESP32-S3&#x7B49;&#x786C;&#x4EF6;,esp-idf 
+# &#x542F;&#x7528;&#x8BE6;&#x7EC6;&#x65E5;&#x5FD7;&#xFF0C;&#x4F1A;&#x663E;&#x793A;&#x786C;&#x4EF6;&#x548C;&#x8FDE;&#x63A5;&#x4FE1;&#x606F;.&#x914D;&#x7F6E;&#x6587;&#x6863;&#xFF1A;https://esphome.io/components/logger/
+logger:
+  level: INFO
+  hardware_uart: UART0  # &#x2B50; &#x65E5;&#x5FD7;&#x5F3A;&#x5236;&#x8D70; TTL&#xFF08;CH340&#xFF09;&#x4E32;&#x53E3;
+
+# WIFI&#x914D;&#x7F6E;&#x6587;&#x6863;&#xFF1A;https://esphome.io/components/wifi/
+wifi:
+  networks:
+    - ssid: !secret wifi_ssid
+      password: !secret wifi_password  
+      bssid: !secret wifi_bssid
+  # &#x53EF;&#x9009;&#xFF0C;&#x9759;&#x6001;IP&#x914D;&#x7F6E;
+  # manual_ip:
+  #   static_ip: 192.168.1.50
+  #   gateway: 192.168.1.1
+  #   subnet: 255.255.255.0
+  #   dns1: 8.8.8.8
+api:
+  port: 6053
+  batch_delay: 50ms  # Reduce latency for real-time applications
+  listen_backlog: 2  # Allow 2 pending connections in queue
+  max_connections: 6  # Allow up to 6 simultaneous connections
+  max_send_queue: 10  # Maximum queued messages per connection before disconnect
+  encryption:
+    key: &quot;YOUR_ENCRYPTION_KEY_HERE&quot;
+  reboot_timeout: 30min
+web_server:
+  port: 80
+  auth:
+    username: !secret web_username
+    password: !secret web_password
+</code></pre>
+<blockquote>
+<p>secrets.yaml</p>
+</blockquote>
+<pre class="language-"><code class="yaml">wifi_ssid: &quot;WIFI&quot;
+wifi_password: &quot;WIFI&#x5BC6;&#x7801;&quot;
+# &#x53EF;&#x9009;: &#x5728;mesh&#x7F51;&#x7EDC;&#x4E2D;&#x6307;&#x5B9A;&#x8FDE;&#x63A5;&#x7279;&#x5B9A;&#x7684;AP MAC1&#x5730;&#x5740;
+wifi_bssid: &quot;11:22:33:44:55:66&quot;
+# Web&#x754C;&#x9762;&#x8BA4;&#x8BC1;
+web_username: &quot;admin&quot;
+web_password: &quot;admin123&quot;
+</code></pre>
+<h2 id="4&#x3001;&#x8FD0;&#x884C;">4&#x3001;&#x8FD0;&#x884C;</h2>
+<pre class="language-"><code class="bash"># &#x7F16;&#x8BD1;
+esphome compile esp32s3-minimal.yaml
+# &#x4E0A;&#x4F20;&#x70E7;&#x5F55;
+esphome upload esp32s3-minimal.yaml
+# &#x67E5;&#x770B;&#x65E5;&#x5FD7;
+esphome logs esp32s3-minimal.yaml
+# &#x4E00;&#x952E;&#x7F16;&#x8BD1;&#x3001;&#x70E7;&#x5F55;&#x3001;&#x65E5;&#x5FD7;
+esphome run esp32s3-minimal.yaml
 </code></pre>
 <footer class="page-footer"><span class="copyright">Copyright Curiouser all right reserved&#xFF0C;powered by Gitbook</span><span class="footer-modification">&#x8BE5;&#x6587;&#x4EF6;&#x6700;&#x540E;&#x4FEE;&#x6539;&#x65F6;&#x95F4;&#xFF1A;
-2025-12-17 16:53:22
+2026-01-28 13:37:17
 </span></footer>
 <script>console.log("plugin-popup....");document.onclick = function(e){ e.target.tagName === "IMG" && window.open(e.target.src,e.target.src)}</script><style>img{cursor:pointer}</style>
 						
@@ -8528,7 +8739,7 @@
 	<script>
 		var gitbook = gitbook || [];
 		gitbook.push(function() {
-			gitbook.page.hasChanged({"page":{"title":"ESP32","level":"11.7","depth":1,"next":{"title":"摄像头：视频-音频-云台","level":"11.8","depth":1,"path":"origin/camera.md","ref":"origin/camera.md","articles":[]},"previous":{"title":"Arduino IDE及编程语法","level":"11.6.2","depth":2,"path":"origin/arduino-ide.md","ref":"origin/arduino-ide.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-lunr","-sharing","-highlight","search-pro","splitter","github","popup","sectionx","expandable-chapters","sharing-plus","code","auto-scroll-table","theme-fexa","tbfed-pagefooter","back-to-top-button","emphasize","edit-link","prism","donate","theme-comscore","github-buttons","github-issue-feedback"],"root":".","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"tbfed-pagefooter":{"copyright":"Copyright Curiouser","modify_label":"该文件最后修改时间：","modify_format":"YYYY-MM-DD HH:mm:ss"},"prism":{"css":["prismjs/themes/prism-tomorrow.css"],"lang":{"flow":"typescript"},"ignore":["mermaid","eval-js"]},"emphasize":{},"github-issue-feedback":{"repo":"RationalMonster/rationalmonster.github.io"},"github":{"url":"https://github.com/RationalMonster"},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"auto-scroll-table":{},"popup":{},"theme-fexa":{"search-placeholder":"搜索文章","logo":"./assets/logo.png"},"code":{"copybuttons":"true","copyButtons":true},"donate":{"wechat":"/assets/wechat-donate.jpg","title":"","button":"赏","wechatText":"微信打赏","alipay":"","alipayText":"支付宝打赏"},"fontsettings":{"theme":"white","family":"sans","size":2},"sectionx":{},"theme-comscore":{},"back-to-top-button":{},"github-buttons":{"buttons":[{"user":"RationalMonster","repo":"gitbooks-devops-roadmap","type":"star","size":"small","count":"true"}]},"sharing":{"weibo":true,"qq":"true","google":true,"all":["facebook","twitter"]},"edit-link":{"base":"https://raw.githubusercontent.com/RationalMonster/gitbooks-devops-roadmap/master/","label":"查看源MD文件"},"theme-default":{"showLevel":true,"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"expandable-chapters":{}},"theme":"default","author":"Curiouser <rationalmonster@163.com>","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Devops Roadmap","gitbook":"*"},"file":{"path":"origin/esp32.md","mtime":"2025-12-17T08:53:22.080Z","type":"markdown"},"gitbook":{"version":"3.0.0","time":"2026-01-06T08:56:02.431Z"},"basePath":"..","book":{"language":""}});
+			gitbook.page.hasChanged({"page":{"title":"ESP32","level":"11.7","depth":1,"next":{"title":"摄像头：视频-音频-云台","level":"11.8","depth":1,"path":"origin/camera.md","ref":"origin/camera.md","articles":[]},"previous":{"title":"Arduino IDE及编程语法","level":"11.6.2","depth":2,"path":"origin/arduino-ide.md","ref":"origin/arduino-ide.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-lunr","-sharing","-highlight","search-pro","splitter","github","popup","sectionx","expandable-chapters","sharing-plus","code","auto-scroll-table","theme-fexa","tbfed-pagefooter","back-to-top-button","emphasize","edit-link","prism","donate","theme-comscore","github-buttons","github-issue-feedback"],"root":".","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"tbfed-pagefooter":{"copyright":"Copyright Curiouser","modify_label":"该文件最后修改时间：","modify_format":"YYYY-MM-DD HH:mm:ss"},"prism":{"css":["prismjs/themes/prism-tomorrow.css"],"lang":{"flow":"typescript"},"ignore":["mermaid","eval-js"]},"emphasize":{},"github-issue-feedback":{"repo":"RationalMonster/rationalmonster.github.io"},"github":{"url":"https://github.com/RationalMonster"},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"auto-scroll-table":{},"popup":{},"theme-fexa":{"search-placeholder":"搜索文章","logo":"./assets/logo.png"},"code":{"copybuttons":"true","copyButtons":true},"donate":{"wechat":"/assets/wechat-donate.jpg","title":"","button":"赏","wechatText":"微信打赏","alipay":"","alipayText":"支付宝打赏"},"fontsettings":{"theme":"white","family":"sans","size":2},"sectionx":{},"theme-comscore":{},"back-to-top-button":{},"github-buttons":{"buttons":[{"user":"RationalMonster","repo":"gitbooks-devops-roadmap","type":"star","size":"small","count":"true"}]},"sharing":{"weibo":true,"qq":"true","google":true,"all":["facebook","twitter"]},"edit-link":{"base":"https://raw.githubusercontent.com/RationalMonster/gitbooks-devops-roadmap/master/","label":"查看源MD文件"},"theme-default":{"showLevel":true,"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"expandable-chapters":{}},"theme":"default","author":"Curiouser <rationalmonster@163.com>","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Devops Roadmap","gitbook":"*"},"file":{"path":"origin/esp32.md","mtime":"2026-01-28T05:37:17.953Z","type":"markdown"},"gitbook":{"version":"3.0.0","time":"2026-01-28T05:42:06.057Z"},"basePath":"..","book":{"language":""}});
 		});
 	</script>
 </div>

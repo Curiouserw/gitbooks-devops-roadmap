@@ -48,10 +48,37 @@
   # lazy_journal_init=0 虽然没日志，但防止残留相关延迟行为
   # -m 0                不保留 5% root 空间（路由器不需要）
   ```
+  
+  ```bash
+  # 禁用索引（减少写入）
+  tune2fs -O ^dir_index /dev/sda1
+  ```
+
+# NTFS
 
 ```bash
-# 禁用索引（减少写入）
-tune2fs -O ^dir_index /dev/sda1
+# mkntfs命令是ntfs-3g项目的用户态工具
+/usr/sbin/mkntfs -f -L sd /dev/sda1
+
+# -L <label>	卷标，等同 Windows 卷标
+# -v  显示版本  
+# -q  安静模式  脚本中常用
+# -f  快速格式  强烈建议
+# --debug  调试输出  一般不用
+```
+
+# FAT32/FAT16
+
+```bash
+mkdosfs -F 32 -s 64 -n sd /dev/sda1
+
+# -f <n>  FAT 表数量（默认 2）
+# -r <n>  根目录项数（FAT12/16）
+# -s <n>  每簇扇区数（USB盘可调）
+# -S <n>  扇区大小（⚠️ 一般不动）
+# -R <n>  保留扇区数（少用）
+# -n <label>  卷标
+# -i <id>  Volume ID（十六进制）
 ```
 
 # 分区

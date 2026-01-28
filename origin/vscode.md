@@ -6,7 +6,7 @@
 
 ```json
 {
-	"terminal.integrated.profiles.windows": {
+    "terminal.integrated.profiles.windows": {
         "Cygwin-zsh": {
             "path": [
                 "C:\\Softwares\\cygwin\\bin\\zsh.exe"
@@ -23,7 +23,7 @@
 
 ```json
 {
-	"terminal.integrated.copyOnSelection": true,
+    "terminal.integrated.copyOnSelection": true,
     "terminal.integrated.rightClickBehavior": "paste",
 }
 ```
@@ -32,7 +32,7 @@
 
 ```json
 {
-	"remote.SSH.configFile": "C:\\Softwares\\cygwin\\home\\Maker\\.ssh\\config",
+    "remote.SSH.configFile": "C:\\Softwares\\cygwin\\home\\Maker\\.ssh\\config",
 }
 ```
 

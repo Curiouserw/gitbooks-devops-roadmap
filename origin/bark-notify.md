@@ -30,7 +30,7 @@ scp dist/bark-server_linux_armv8 目标路径
 
 ```bash
 export BARK_DEVICE_TOKEN=******
-BARK_KEY=1234 ./bark-server_linux_armv8
+BARK_KEY=1234 ./barkserver
 ```
 
 ## 3、配置nginx代理转发

@@ -6314,7 +6314,22 @@
                     
                         <b>6.44.</b>
                     
-                    格式化硬盘
+                    硬盘格式化
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="6.45" data-path="mqtt.html">
+            
+                <a href="mqtt.html">
+            
+                    
+                        <b>6.45.</b>
+                    
+                    MQTT
             
                 </a>
             
@@ -8336,6 +8351,36 @@
                         <b>11.10.</b>
                     
                     Kindle
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="11.11" data-path="homeassistant.html">
+            
+                <a href="homeassistant.html">
+            
+                    
+                        <b>11.11.</b>
+                    
+                    HomeAssistant
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="11.12" data-path="voiceassis.html">
+            
+                <a href="voiceassis.html">
+            
+                    
+                        <b>11.12.</b>
+                    
+                    硬件项目：语音助手
             
                 </a>
             
@@ -10457,8 +10502,41 @@ apt-get -o Acquire::AllowInsecureRepositories=true -o Acquire::AllowDowngradeToI
 apt-cache search mysql | grep 5.6
 apt install mysql-server-5.6 mysql-client-5.6
 </code></pre>
+<h1 id="83&#x3001;&#x865A;&#x62DF;&#x5185;&#x5B58;">83&#x3001;&#x865A;&#x62DF;&#x5185;&#x5B58;</h1>
+<pre class="language-"><code class="bash"># &#x521B;&#x5EFA;swapfile&#x5185;&#x5B58;&#x6587;&#x4EF6;
+fallocate -l 4G /swapfile  
+dd if=/dev/zero of=/swapfile bs=1M count=4096
+
+# &#x6302;&#x8F7D;&#x865A;&#x62DF;&#x5185;&#x5B58;&#x6587;&#x4EF6;
+chmod 600 /swapfile
+mkswap /swapfile    # &#x521D;&#x59CB;&#x5316;&#x4E3A; swap
+swapon /swapfile    # &#x542F;&#x7528; swap
+
+# &#x8BBE;&#x7F6E;&#x5185;&#x6838;&#x4F7F;&#x7528;&#x865A;&#x62DF;&#x5185;&#x5B58;&#x7684;&#x503E;&#x5411;&#x7CFB;&#x6570;&#xFF08;swappiness = &#x5185;&#x6838;&#x5728;&#x201C;&#x56DE;&#x6536;&#x5185;&#x5B58;&#x201D;&#x65F6;&#xFF0C;&#x9009;&#x62E9;&#x201C;&#x56DE;&#x6536;&#x533F;&#x540D;&#x9875;&#x201D; vs &#x201C;&#x56DE;&#x6536;&#x9875;&#x7F13;&#x5B58;&#x201D;&#x7684;&#x503E;&#x5411;&#x7CFB;&#x6570;&#xFF09;
+#   0   &#x6781;&#x529B;&#x907F;&#x514D; swap &#x5BB9;&#x6613; OOM
+#   10  &#x6781;&#x4E0D;&#x79EF;&#x6781;&#x4F7F;&#x7528; swap &#x2B50; &#x5E38;&#x7528;
+#   30  &#x6E29;&#x548C;&#x4F7F;&#x7528; swap 
+#   60  &#x9ED8;&#x8BA4;&#x503C;  &#x684C;&#x9762;/&#x670D;&#x52A1;&#x5668;
+#   100 &#x5F3A;&#x70C8;&#x4F7F;&#x7528; swap    &#x5D4C;&#x5165;&#x5F0F;&#x4E0D;&#x63A8;&#x8350;
+echo 10 &gt; /proc/sys/vm/swappiness
+
+# &#x81EA;&#x52A8;&#x6302;&#x8F7D;
+echo &apos;/swapfile none swap sw 0 0&apos; &gt;&gt; /etc/fstab
+mount -a
+
+# &#x67E5;&#x770B;&#x865A;&#x62DF;&#x5185;&#x5B58;
+free -h                           # &#x5FEB;&#x901F;&#x67E5;&#x770B;&#x7269;&#x7406;&#x5185;&#x5B58;&#x4E0E; swap &#x4F7F;&#x7528;&#xFF08;&#x4EBA;&#x7C7B;&#x53EF;&#x8BFB;&#xFF09;&#x3002;
+swapon --show                     # &#x5217;&#x51FA;&#x6240;&#x6709;&#x542F;&#x7528;&#x7684; swap &#x8BBE;&#x5907;/&#x6587;&#x4EF6;&#x3002;
+cat /proc/swaps                   # &#x5217;&#x51FA;&#x6240;&#x6709;&#x542F;&#x7528;&#x7684; swap &#x8BBE;&#x5907;/&#x6587;&#x4EF6;&#x3002;
+cat /proc/meminfo | grep -i swap     # &#x8BE6;&#x7EC6; swap &#x4FE1;&#x606F;&#x3002;
+
+# &#x5378;&#x8F7D;&#x865A;&#x62DF;&#x5185;&#x5B58;&#x6587;&#x4EF6;
+# &#x5378;&#x8F7D;&#x524D;&#x5148; sync; echo 3 &gt; /proc/sys/vm/drop_caches
+swapoff /swapfile
+swapoff -a
+</code></pre>
 <footer class="page-footer"><span class="copyright">Copyright Curiouser all right reserved&#xFF0C;powered by Gitbook</span><span class="footer-modification">&#x8BE5;&#x6587;&#x4EF6;&#x6700;&#x540E;&#x4FEE;&#x6539;&#x65F6;&#x95F4;&#xFF1A;
-2025-03-25 13:44:19
+2026-01-28 13:39:46
 </span></footer>
 <script>console.log("plugin-popup....");document.onclick = function(e){ e.target.tagName === "IMG" && window.open(e.target.src,e.target.src)}</script><style>img{cursor:pointer}</style>
 						
@@ -10498,7 +10576,7 @@ apt install mysql-server-5.6 mysql-client-5.6
 	<script>
 		var gitbook = gitbook || [];
 		gitbook.push(function() {
-			gitbook.page.hasChanged({"page":{"title":"Linux小技巧","level":"6.15.1","depth":2,"next":{"title":"比较两个文件的不同","level":"6.15.2","depth":2,"path":"origin/linux-diff.md","ref":"origin/linux-diff.md","articles":[]},"previous":{"title":"Linux","level":"6.15","depth":1,"ref":"","articles":[{"title":"Linux小技巧","level":"6.15.1","depth":2,"path":"origin/linux-小技巧.md","ref":"origin/linux-小技巧.md","articles":[]},{"title":"比较两个文件的不同","level":"6.15.2","depth":2,"path":"origin/linux-diff.md","ref":"origin/linux-diff.md","articles":[]},{"title":"NFS与FTP","level":"6.15.3","depth":2,"path":"origin/linux-baseserver.md","ref":"origin/linux-baseserver.md","articles":[]},{"title":"后台启动进程","level":"6.15.4","depth":2,"path":"origin/linux-daemon.md","ref":"origin/linux-daemon.md","articles":[]},{"title":"文本处理","level":"6.15.5","depth":2,"path":"origin/linux-文本处理.md","ref":"origin/linux-文本处理.md","articles":[]},{"title":"SSH私钥代理ssh-agent","level":"6.15.6","depth":2,"path":"origin/ssh-agent.md","ref":"origin/ssh-agent.md","articles":[]},{"title":"htpasswd","level":"6.15.7","depth":2,"path":"origin/linux-htpasswd.md","ref":"origin/linux-htpasswd.md","articles":[]},{"title":"YAML文本处理工具shyaml","level":"6.15.8","depth":2,"path":"origin/linux-shyaml.md","ref":"origin/linux-shyaml.md","articles":[]},{"title":"JSON文本处理工具jq","level":"6.15.9","depth":2,"path":"origin/linux-jq.md","ref":"origin/linux-jq.md","articles":[]},{"title":"yaml文本处理工具yq","level":"6.15.10","depth":2,"path":"origin/yaml-yq.md","ref":"origin/yaml-yq.md","articles":[]},{"title":"XML文本处理工具xmllint","level":"6.15.11","depth":2,"path":"origin/linux-xmllint.md","ref":"origin/linux-xmllint.md","articles":[]},{"title":"Curl命令详解","level":"6.15.12","depth":2,"path":"origin/linux-curl.md","ref":"origin/linux-curl.md","articles":[]},{"title":"rsync命令详解","level":"6.15.13","depth":2,"path":"origin/linux-rsync.md","ref":"origin/linux-rsync.md","articles":[]},{"title":"LVM原理及使用","level":"6.15.14","depth":2,"path":"origin/linux-lvm.md","ref":"origin/linux-lvm.md","articles":[]},{"title":"Linux交换分区","level":"6.15.15","depth":2,"path":"origin/linux-交换分区.md","ref":"origin/linux-交换分区.md","articles":[]},{"title":"硬盘工具命令：dd","level":"6.15.16","depth":2,"path":"origin/linux-硬盘读写性能测试.md","ref":"origin/linux-硬盘读写性能测试.md","articles":[]},{"title":"Vim小技巧","level":"6.15.17","depth":2,"path":"origin/vim-小技巧.md","ref":"origin/vim-小技巧.md","articles":[]},{"title":"Yum-RPM包管理","level":"6.15.18","depth":2,"path":"origin/linux-yum.md","ref":"origin/linux-yum.md","articles":[]},{"title":"ZSH","level":"6.15.19","depth":2,"path":"origin/linux-zsh.md","ref":"origin/linux-zsh.md","articles":[]},{"title":"Systemd-进程管理","level":"6.15.20","depth":2,"path":"origin/linux-进程管理工具SystemD.md","ref":"origin/linux-进程管理工具SystemD.md","articles":[]},{"title":"僵尸进程与孤儿进程","level":"6.15.21","depth":2,"path":"origin/linux-zombie-orphaned-process.md","ref":"origin/linux-zombie-orphaned-process.md","articles":[]},{"title":"proc文件详解","level":"6.15.22","depth":2,"path":"origin/linux-proc.md","ref":"origin/linux-proc.md","articles":[]},{"title":"7Zip解压缩","level":"6.15.23","depth":2,"path":"origin/7zip.md","ref":"origin/7zip.md","articles":[]}]},"dir":"ltr"},"config":{"plugins":["-search","-lunr","-sharing","-highlight","search-pro","splitter","github","popup","sectionx","expandable-chapters","sharing-plus","code","auto-scroll-table","theme-fexa","tbfed-pagefooter","back-to-top-button","emphasize","edit-link","prism","donate","theme-comscore","github-buttons","github-issue-feedback"],"root":".","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"tbfed-pagefooter":{"copyright":"Copyright Curiouser","modify_label":"该文件最后修改时间：","modify_format":"YYYY-MM-DD HH:mm:ss"},"prism":{"css":["prismjs/themes/prism-tomorrow.css"],"lang":{"flow":"typescript"},"ignore":["mermaid","eval-js"]},"emphasize":{},"github-issue-feedback":{"repo":"RationalMonster/rationalmonster.github.io"},"github":{"url":"https://github.com/RationalMonster"},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"auto-scroll-table":{},"popup":{},"theme-fexa":{"search-placeholder":"搜索文章","logo":"./assets/logo.png"},"code":{"copybuttons":"true","copyButtons":true},"donate":{"wechat":"/assets/wechat-donate.jpg","title":"","button":"赏","wechatText":"微信打赏","alipay":"","alipayText":"支付宝打赏"},"fontsettings":{"theme":"white","family":"sans","size":2},"sectionx":{},"theme-comscore":{},"back-to-top-button":{},"github-buttons":{"buttons":[{"user":"RationalMonster","repo":"gitbooks-devops-roadmap","type":"star","size":"small","count":"true"}]},"sharing":{"weibo":true,"qq":"true","google":true,"all":["facebook","twitter"]},"edit-link":{"base":"https://raw.githubusercontent.com/RationalMonster/gitbooks-devops-roadmap/master/","label":"查看源MD文件"},"theme-default":{"showLevel":true,"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"expandable-chapters":{}},"theme":"default","author":"Curiouser <rationalmonster@163.com>","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Devops Roadmap","gitbook":"*"},"file":{"path":"origin/linux-小技巧.md","mtime":"2025-03-25T05:44:19.351Z","type":"markdown"},"gitbook":{"version":"3.0.0","time":"2026-01-06T08:56:02.431Z"},"basePath":"..","book":{"language":""}});
+			gitbook.page.hasChanged({"page":{"title":"Linux小技巧","level":"6.15.1","depth":2,"next":{"title":"比较两个文件的不同","level":"6.15.2","depth":2,"path":"origin/linux-diff.md","ref":"origin/linux-diff.md","articles":[]},"previous":{"title":"Linux","level":"6.15","depth":1,"ref":"","articles":[{"title":"Linux小技巧","level":"6.15.1","depth":2,"path":"origin/linux-小技巧.md","ref":"origin/linux-小技巧.md","articles":[]},{"title":"比较两个文件的不同","level":"6.15.2","depth":2,"path":"origin/linux-diff.md","ref":"origin/linux-diff.md","articles":[]},{"title":"NFS与FTP","level":"6.15.3","depth":2,"path":"origin/linux-baseserver.md","ref":"origin/linux-baseserver.md","articles":[]},{"title":"后台启动进程","level":"6.15.4","depth":2,"path":"origin/linux-daemon.md","ref":"origin/linux-daemon.md","articles":[]},{"title":"文本处理","level":"6.15.5","depth":2,"path":"origin/linux-文本处理.md","ref":"origin/linux-文本处理.md","articles":[]},{"title":"SSH私钥代理ssh-agent","level":"6.15.6","depth":2,"path":"origin/ssh-agent.md","ref":"origin/ssh-agent.md","articles":[]},{"title":"htpasswd","level":"6.15.7","depth":2,"path":"origin/linux-htpasswd.md","ref":"origin/linux-htpasswd.md","articles":[]},{"title":"YAML文本处理工具shyaml","level":"6.15.8","depth":2,"path":"origin/linux-shyaml.md","ref":"origin/linux-shyaml.md","articles":[]},{"title":"JSON文本处理工具jq","level":"6.15.9","depth":2,"path":"origin/linux-jq.md","ref":"origin/linux-jq.md","articles":[]},{"title":"yaml文本处理工具yq","level":"6.15.10","depth":2,"path":"origin/yaml-yq.md","ref":"origin/yaml-yq.md","articles":[]},{"title":"XML文本处理工具xmllint","level":"6.15.11","depth":2,"path":"origin/linux-xmllint.md","ref":"origin/linux-xmllint.md","articles":[]},{"title":"Curl命令详解","level":"6.15.12","depth":2,"path":"origin/linux-curl.md","ref":"origin/linux-curl.md","articles":[]},{"title":"rsync命令详解","level":"6.15.13","depth":2,"path":"origin/linux-rsync.md","ref":"origin/linux-rsync.md","articles":[]},{"title":"LVM原理及使用","level":"6.15.14","depth":2,"path":"origin/linux-lvm.md","ref":"origin/linux-lvm.md","articles":[]},{"title":"Linux交换分区","level":"6.15.15","depth":2,"path":"origin/linux-交换分区.md","ref":"origin/linux-交换分区.md","articles":[]},{"title":"硬盘工具命令：dd","level":"6.15.16","depth":2,"path":"origin/linux-硬盘读写性能测试.md","ref":"origin/linux-硬盘读写性能测试.md","articles":[]},{"title":"Vim小技巧","level":"6.15.17","depth":2,"path":"origin/vim-小技巧.md","ref":"origin/vim-小技巧.md","articles":[]},{"title":"Yum-RPM包管理","level":"6.15.18","depth":2,"path":"origin/linux-yum.md","ref":"origin/linux-yum.md","articles":[]},{"title":"ZSH","level":"6.15.19","depth":2,"path":"origin/linux-zsh.md","ref":"origin/linux-zsh.md","articles":[]},{"title":"Systemd-进程管理","level":"6.15.20","depth":2,"path":"origin/linux-进程管理工具SystemD.md","ref":"origin/linux-进程管理工具SystemD.md","articles":[]},{"title":"僵尸进程与孤儿进程","level":"6.15.21","depth":2,"path":"origin/linux-zombie-orphaned-process.md","ref":"origin/linux-zombie-orphaned-process.md","articles":[]},{"title":"proc文件详解","level":"6.15.22","depth":2,"path":"origin/linux-proc.md","ref":"origin/linux-proc.md","articles":[]},{"title":"7Zip解压缩","level":"6.15.23","depth":2,"path":"origin/7zip.md","ref":"origin/7zip.md","articles":[]}]},"dir":"ltr"},"config":{"plugins":["-search","-lunr","-sharing","-highlight","search-pro","splitter","github","popup","sectionx","expandable-chapters","sharing-plus","code","auto-scroll-table","theme-fexa","tbfed-pagefooter","back-to-top-button","emphasize","edit-link","prism","donate","theme-comscore","github-buttons","github-issue-feedback"],"root":".","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"tbfed-pagefooter":{"copyright":"Copyright Curiouser","modify_label":"该文件最后修改时间：","modify_format":"YYYY-MM-DD HH:mm:ss"},"prism":{"css":["prismjs/themes/prism-tomorrow.css"],"lang":{"flow":"typescript"},"ignore":["mermaid","eval-js"]},"emphasize":{},"github-issue-feedback":{"repo":"RationalMonster/rationalmonster.github.io"},"github":{"url":"https://github.com/RationalMonster"},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"auto-scroll-table":{},"popup":{},"theme-fexa":{"search-placeholder":"搜索文章","logo":"./assets/logo.png"},"code":{"copybuttons":"true","copyButtons":true},"donate":{"wechat":"/assets/wechat-donate.jpg","title":"","button":"赏","wechatText":"微信打赏","alipay":"","alipayText":"支付宝打赏"},"fontsettings":{"theme":"white","family":"sans","size":2},"sectionx":{},"theme-comscore":{},"back-to-top-button":{},"github-buttons":{"buttons":[{"user":"RationalMonster","repo":"gitbooks-devops-roadmap","type":"star","size":"small","count":"true"}]},"sharing":{"weibo":true,"qq":"true","google":true,"all":["facebook","twitter"]},"edit-link":{"base":"https://raw.githubusercontent.com/RationalMonster/gitbooks-devops-roadmap/master/","label":"查看源MD文件"},"theme-default":{"showLevel":true,"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"expandable-chapters":{}},"theme":"default","author":"Curiouser <rationalmonster@163.com>","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Devops Roadmap","gitbook":"*"},"file":{"path":"origin/linux-小技巧.md","mtime":"2026-01-28T05:39:46.098Z","type":"markdown"},"gitbook":{"version":"3.0.0","time":"2026-01-28T05:42:06.057Z"},"basePath":"..","book":{"language":""}});
 		});
 	</script>
 </div>

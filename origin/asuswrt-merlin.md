@@ -14,10 +14,9 @@
 
 ## 1、dnsmasq
 
-> cat /etc/dnsmasq.conf
+主配置文件：`/etc/dnsmasq.conf`
 
-```bash
-```
+自定义配置文件
 
 > /jffs/configs/dnsmasq.conf.add
 
@@ -46,22 +45,22 @@ echo "address=/test.top/127.0.0.1" >> /jffs/configs/dnsmasq.conf.add
 service restart_dnsmasq
 ```
 
-## 2、sshd-dropbear
+## 2、sshd dropbear
 
 ```bash
--r keyfile      Specify hostkeys (repeatable)
-		defaults:
+# dropbear命令参数
+dropbear -r keyfile      Specify hostkeys (repeatable)
+	defaults:
 		- rsa /etc/dropbear/dropbear_rsa_host_key
 		- ecdsa /etc/dropbear/dropbear_ecdsa_host_key
 		- ed25519 /etc/dropbear/dropbear_ed25519_host_key
 		
-		
 /var/run/dropbear.pid
-
+# dropbear服务的bin文件
 /usr/sbin/dropbear
-
+# nvram保存的sshd authorized_keys配置
 nvram get sshd_authkeys
- 
+# dropbear落地的authorized_keys文件
 /root/.ssh/authorized_keys
 ```
 
@@ -100,11 +99,9 @@ service restart_ddns_le
 service restart_ddns
 ```
 
-
-
 ## 5、格式化U盘
 
-### ext4参数优化+4K对齐
+**ext4参数优化+4K对齐**
 
 最好在linux下操作完成后再插入路由器
 
@@ -319,7 +316,7 @@ cru a 任务名 '0 22 * * 5 sh /tmp/mnt/sd/backup.sh'
 修改后需 `nvram commit` 才会写入 Flash，否则重启后丢失。
 
 ```bash
-nvram show                     # 显示所有变量（注意输出很多）
+nvram show                    # 显示所有变量（注意输出很多）
 nvram get <key>               # 获取某个变量值
 nvram set <key>=<value>       # 设置变量
 nvram unset <key>             # 删除变量
@@ -352,6 +349,14 @@ nvram savefile
 ```
 
 > 注意：可以先`nvram savefile` 将配置保存到文件，然后grep搜索相关配置。例如：`grep "ppoe" /data/nvramdefault.txt`查找PPOE相关配置
+
+需要特别备份的Key
+
+- 指定设备IP地址的DHCP设置：**`dhcp_staticlist=<MAC地址>IP 地址>><MAC地址>ip地址>>`**
+- 自定义主机名绑定MAC地址记录：**`custom_clientlist=设备1名>MAC地址>0>0>>>>><设备2名>MAC地址>0>0>>>>>`**
+- 网络唤醒工具的主机记录：**`wollist=<主机名>主机MAC地址`**
+- VPN服务的用户名密码：**`vpn_serverx_clientlist=<用户名>密码<用户名>密码`**
+- SSHD服务dropbear的authorized_keys配置：**`sshd_authkeys=ssh-rsa ***** ***>ssh-ed2559 ***** ***`**
 
 # 五 、DBUS键值数据库
 

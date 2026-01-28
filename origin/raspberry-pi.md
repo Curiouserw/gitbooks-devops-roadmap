@@ -44,27 +44,142 @@ SPI是串行外设接口，用于控制具有主从关系的组件，采用从�
 
 部分电子元件电路图：https://www.dazhuanlan.com/2019/12/26/5e043f4a96380/
 
-# 二、基础配置
+# 二、Raspberry Pi Imager v2刻录OS
 
-## 1、安装系统
+树莓派官方刻录软件 Raspberry Pi Imager v2既可以从网络边下载 OS 文件边刻录，又可以自定义从本地或指定链接加载 OS 文件进行直接刻录。
 
-树莓派官方出了一个快速在树莓派上安装OS的软件**NOOBS（ New Out Of Box Software）**，只需要将该软件刻录到SD卡上并在树莓派上启动，可在线或离线安装以下OS到您的树莓派上。
+推荐从指定链接(HTTP协议链接)加载OS镜像文件，主要是使用他的UI定制化安装参数(如设置WIFI连接和用户密码)。从本地加载 OS 文件是无法使用参数设置的。
 
-- **官方OS**：[Raspbian](http://raspbian.org/)
+<img src="../assets/raspberry-pi-Imager-v2-1.png" style="zoom:50%;" />
 
-- **第三方OS**
+官方 imager的json文件链接：https://downloads.raspberrypi.com/os_list_imagingutility_v4.json
 
-  ![](../assets/raspberry-pi-0.png)
+JSON文件结构：
 
-**NOOBS下载地址**：https://www.raspberrypi.org/downloads/noobs/
+```json
+{
+  "imager": {
+    "latest_version": "2.0.3",
+    "url": "https://www.raspberrypi.com/software/",
+    "devices": [
+      {
+        "name": "Raspberry Pi 5",
+        "tags": [
+          "pi5-64bit",
+          "pi5-32bit"
+        ],
+        "icon": "https://downloads.raspberrypi.com/imager/icons/RPi_5.png",
+        "description": "Raspberry Pi 5, 500 / 500+, and Compute Module 5",
+        "matching_type": "exclusive",
+        "capabilities": []
+      },
+      {
+        "name": "Raspberry Pi 4",
+        "tags": [
+          "pi4-64bit",
+          "pi4-32bit"
+        ],
+        "default": false,
+        "icon": "https://downloads.raspberrypi.com/imager/icons/RPi_4.png",
+        "description": "Raspberry Pi 4 Model B, 400, and Compute Module 4 / 4S",
+        "matching_type": "inclusive",
+        "capabilities": []
+      },
+      {
+        "name": "No filtering",
+        "tags": [],
+        "default": false,
+        "description": "Show every possible image",
+        "matching_type": "inclusive",
+        "capabilities": []
+      }
+    ]
+  },
+  "os_list": [
+    {
+      "name": "Custom Raspberry Pi OS (64-bit)",
+      "description": "A port of Debian Trixie with the Raspberry Pi Desktop (Recommended)",
+      "icon": "https://downloads.raspberrypi.com/raspios_armhf/Raspberry_Pi_OS_(32-bit).png",
+      "url": "http://192.168.1.1:8078/os/raspios_full_arm64/images/raspios_full_arm64-2025-12-04/2025-12-04-raspios-trixie-arm64-full.img.xz",
+      "extract_size": 6450839552,
+      "extract_sha256": "19b108fe07cff2b5cd7df0f76b6d7325e43fb2a1d5418d10f6bd56642e0e8579",
+      "image_download_size": 1327702860,
+      "release_date": "2025-12-04",
+      "init_format": "cloudinit-rpi",
+      "devices": [
+        "pi5-64bit",
+        "pi4-64bit",
+        "pi3-64bit"
+      ]
+    }
+  ]
+}
+```
 
-**NOOBS刻录操作文档**：https://www.raspberrypi.org/documentation/installation/noobs.md
+# 三、基础配置
 
-**NOOBS分为两个版本**：全功能版和轻量版Lite。全功能班可在线可离线安装OS。Lite只能在线安装OS
+## 1、设置USB SSD磁盘启动
 
-## 2、连接操作
+参考：https://www.raspberrypi.com/documentation/computers/raspberry-pi.html#raspberry-pi-boot-eeprom
 
-- **直接通过HDMI外界显示进行操作**
+- **硬件准备**
+  
+  - 电源能达到 5V/3A（确保 SSD 能正常供电）  
+  
+- **更新Bootloader**
+
+  - 先使用**Raspberry Pi Imager v2**刻录软件在一个临时sd卡上安装Raspberry Pi OS系统（安装最新版）来更新Bootloader
+  - EEPROM的需要`Sep 3 2020` 之后的版本才能支持USB直接启动
+
+  ```bash
+  # 更新系统及软件
+  apt update
+  apt full-upgrade -y
+  
+  # 当前固件版本：
+  rpi-eeprom-update -d
+  # 如果你看到 2023 年 12 月 6 日或更晚的日期，则是必须要更新
+  
+  # 使用raspi-config这个 TUI 更新bootloader
+  raspi-config
+  # 在 Advanced Options (高级选项)>下 Bootloader Version（引导加载程序版本），选择 Latest（最新）。然后 Finish键退出raspi-config。
+  reboot # 重启
+  
+  # 重启之后再次查看
+  rpi-eeprom-update -a
+  ```
+
+- **使用raspi-config设置启动顺序**
+
+  ```bash
+  raspi-config
+  # Advanced Options（高级选项） → Boot Order（启动顺序）
+  # 选择 USB Boot (Retry SD)
+  
+  # USB Boot            : 只尝试 USB 启动
+  # SD Boot             : 只从 SD 启动
+  # USB Boot (Retry SD) : USB 优先，失败时回退到 SD
+  # SD Boot (Retry USB) : SD 优先，失败时尝试 USB
+  
+  保存并退出，选择Finish → Yes重启
+  ```
+  
+- 验证 USB 启动配置
+
+  ```bash
+  vcgencmd bootloader_config
+  
+  # 输出类似：BOOT_ORDER=0xf41
+  
+  # 0xf41表示 USB → SD → 网络，最稳方案。
+  # f: USB
+  # 4: SD 卡
+  # 1: 网络（PXE）
+  ```
+
+- 之后使用**Raspberry Pi Imager v2**刻录软件刻录OS系统到SSD硬盘上，启动即可
+
+## 2、远程连接操作
 
 - **通过SSH连接进行CLI操作**
 
@@ -253,7 +368,7 @@ ifconfig wlan0 down
 ifconfig wlan0 up
 ```
 
-# 三、安装特殊软件
+# 四、安装特殊软件
 
 ## 1、安装 Docker
 
@@ -297,7 +412,7 @@ cmake .. -DRSTUDIO_TARGET=Server -DCMAKE_BUILD_TYPE=Release
 make install
 ```
 
-# 四、硬件集成
+# 五、硬件集成
 
 ## 1、温度传感器DS18B20
 

@@ -387,7 +387,8 @@
 * [BarkServer通知](origin/bark-notify.md)
 * [开源画图平台:Excalidraw](origin/excalidraw.md)
 * [HTTP认证](origin/http-auth.md)
-* [格式化硬盘](origin/disk-format.md)
+* [硬盘格式化](origin/disk-format.md)
+* [MQTT](origin/mqtt.md)
 
 ## Part Ⅵ：数据存储处理
 
@@ -528,3 +529,5 @@
 - [摄像头：视频-音频-云台](origin/camera.md)
 - [LED](origin/led.md)
 - [Kindle](origin/kindle.md)
+- [HomeAssistant](origin/homeassistant.md)
+- [硬件项目：语音助手](origin/voiceassis.md)

@@ -2,7 +2,7 @@
 <!DOCTYPE HTML>
 <html lang="" >
     <head>
-        <title>格式化硬盘 · Devops Roadmap</title>
+        <title>硬盘格式化 · Devops Roadmap</title>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
@@ -106,7 +106,7 @@
     <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="mysql-basic.html" />
+    <link rel="next" href="mqtt.html" />
     
     
     <link rel="prev" href="http-auth.html" />
@@ -6316,7 +6316,22 @@
                     
                         <b>6.44.</b>
                     
-                    格式化硬盘
+                    硬盘格式化
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="6.45" data-path="mqtt.html">
+            
+                <a href="mqtt.html">
+            
+                    
+                        <b>6.45.</b>
+                    
+                    MQTT
             
                 </a>
             
@@ -8345,6 +8360,36 @@
             
         </li>
     
+        <li class="chapter " data-level="11.11" data-path="homeassistant.html">
+            
+                <a href="homeassistant.html">
+            
+                    
+                        <b>11.11.</b>
+                    
+                    HomeAssistant
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="11.12" data-path="voiceassis.html">
+            
+                <a href="voiceassis.html">
+            
+                    
+                        <b>11.12.</b>
+                    
+                    硬件项目：语音助手
+            
+                </a>
+            
+
+            
+        </li>
+    
 
     
 
@@ -8383,7 +8428,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href=".." >格式化硬盘</a>
+        <a href=".." >硬盘格式化</a>
     </h1>
 </div>
 
@@ -8440,10 +8485,31 @@ sudo diskutil eraseDisk free none /dev/disk4
 # lazy_journal_init=0 &#x867D;&#x7136;&#x6CA1;&#x65E5;&#x5FD7;&#xFF0C;&#x4F46;&#x9632;&#x6B62;&#x6B8B;&#x7559;&#x76F8;&#x5173;&#x5EF6;&#x8FDF;&#x884C;&#x4E3A;
 # -m 0                &#x4E0D;&#x4FDD;&#x7559; 5% root &#x7A7A;&#x95F4;&#xFF08;&#x8DEF;&#x7531;&#x5668;&#x4E0D;&#x9700;&#x8981;&#xFF09;
 </code></pre>
-</li>
-</ul>
 <pre class="language-"><code class="bash"># &#x7981;&#x7528;&#x7D22;&#x5F15;&#xFF08;&#x51CF;&#x5C11;&#x5199;&#x5165;&#xFF09;
 tune2fs -O ^dir_index /dev/sda1
+</code></pre>
+</li>
+</ul>
+<h1 id="ntfs">NTFS</h1>
+<pre class="language-"><code class="bash"># mkntfs&#x547D;&#x4EE4;&#x662F;ntfs-3g&#x9879;&#x76EE;&#x7684;&#x7528;&#x6237;&#x6001;&#x5DE5;&#x5177;
+/usr/sbin/mkntfs -f -L sd /dev/sda1
+
+# -L <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>label</span><span class="token punctuation">&gt;</span></span>    &#x5377;&#x6807;&#xFF0C;&#x7B49;&#x540C; Windows &#x5377;&#x6807;
+# -v  &#x663E;&#x793A;&#x7248;&#x672C;  
+# -q  &#x5B89;&#x9759;&#x6A21;&#x5F0F;  &#x811A;&#x672C;&#x4E2D;&#x5E38;&#x7528;
+# -f  &#x5FEB;&#x901F;&#x683C;&#x5F0F;  &#x5F3A;&#x70C8;&#x5EFA;&#x8BAE;
+# --debug  &#x8C03;&#x8BD5;&#x8F93;&#x51FA;  &#x4E00;&#x822C;&#x4E0D;&#x7528;
+</code></pre>
+<h1 id="fat32fat16">FAT32/FAT16</h1>
+<pre class="language-"><code class="bash">mkdosfs -F 32 -s 64 -n sd /dev/sda1
+
+# -f <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>n</span><span class="token punctuation">&gt;</span></span>  FAT &#x8868;&#x6570;&#x91CF;&#xFF08;&#x9ED8;&#x8BA4; 2&#xFF09;
+# -r <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>n</span><span class="token punctuation">&gt;</span></span>  &#x6839;&#x76EE;&#x5F55;&#x9879;&#x6570;&#xFF08;FAT12/16&#xFF09;
+# -s <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>n</span><span class="token punctuation">&gt;</span></span>  &#x6BCF;&#x7C07;&#x6247;&#x533A;&#x6570;&#xFF08;USB&#x76D8;&#x53EF;&#x8C03;&#xFF09;
+# -S <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>n</span><span class="token punctuation">&gt;</span></span>  &#x6247;&#x533A;&#x5927;&#x5C0F;&#xFF08;&#x26A0;&#xFE0F; &#x4E00;&#x822C;&#x4E0D;&#x52A8;&#xFF09;
+# -R <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>n</span><span class="token punctuation">&gt;</span></span>  &#x4FDD;&#x7559;&#x6247;&#x533A;&#x6570;&#xFF08;&#x5C11;&#x7528;&#xFF09;
+# -n <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>label</span><span class="token punctuation">&gt;</span></span>  &#x5377;&#x6807;
+# -i <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>id</span><span class="token punctuation">&gt;</span></span>  Volume ID&#xFF08;&#x5341;&#x516D;&#x8FDB;&#x5236;&#xFF09;
 </code></pre>
 <h1 id="&#x5206;&#x533A;">&#x5206;&#x533A;</h1>
 <ul>
@@ -8528,7 +8594,7 @@ blockdev --rereadpt /dev/sda
 echo 1 &gt; /sys/block/sda/device/rescan
 </code></pre>
 <footer class="page-footer"><span class="copyright">Copyright Curiouser all right reserved&#xFF0C;powered by Gitbook</span><span class="footer-modification">&#x8BE5;&#x6587;&#x4EF6;&#x6700;&#x540E;&#x4FEE;&#x6539;&#x65F6;&#x95F4;&#xFF1A;
-2026-01-06 16:52:55
+2026-01-28 13:36:34
 </span></footer>
 <script>console.log("plugin-popup....");document.onclick = function(e){ e.target.tagName === "IMG" && window.open(e.target.src,e.target.src)}</script><style>img{cursor:pointer}</style>
 						
@@ -8562,7 +8628,7 @@ echo 1 &gt; /sys/block/sda/device/rescan
 		</a>
 		
 		
-		<a href="mysql-basic.html" class="navigation navigation-next " aria-label="Next page: MySQL">
+		<a href="mqtt.html" class="navigation navigation-next " aria-label="Next page: MQTT">
 			<i class="fa fa-angle-right"></i>
 		</a>
 		
@@ -8572,7 +8638,7 @@ echo 1 &gt; /sys/block/sda/device/rescan
 	<script>
 		var gitbook = gitbook || [];
 		gitbook.push(function() {
-			gitbook.page.hasChanged({"page":{"title":"格式化硬盘","level":"6.44","depth":1,"next":{"title":"MySQL","level":"7.1","depth":1,"path":"origin/mysql-basic.md","ref":"origin/mysql-basic.md","articles":[{"title":"常见操作及SQL","level":"7.1.1","depth":2,"path":"origin/mysql-common-operations.md","ref":"origin/mysql-common-operations.md","articles":[]},{"title":"用户权限管理","level":"7.1.2","depth":2,"path":"origin/mysql-user-privileges.md","ref":"origin/mysql-user-privileges.md","articles":[]},{"title":"MySQL SQL Mode : ONLY_FULL_GROUP_BY","level":"7.1.3","depth":2,"path":"origin/mysql-mode-only-full-groupby.md","ref":"origin/mysql-mode-only-full-groupby.md","articles":[]},{"title":"Binglog","level":"7.1.4","depth":2,"path":"origin/mysql-binlog.md","ref":"origin/mysql-binlog.md","articles":[]},{"title":"备份与恢复","level":"7.1.5","depth":2,"ref":"","articles":[{"title":"MySQL的数据备份与恢复","level":"7.1.5.1","depth":3,"path":"origin/mysql-backup-restore.md","ref":"origin/mysql-backup-restore.md","articles":[]},{"title":"MysqlDump常用操作","level":"7.1.5.2","depth":3,"path":"origin/mysql-dumper.md","ref":"origin/mysql-dumper.md","articles":[]},{"title":"Xtrabackup备份","level":"7.1.5.3","depth":3,"path":"origin/xtrabackup-backup.md","ref":"origin/xtrabackup-backup.md","articles":[]}]},{"title":"基础概念","level":"7.1.6","depth":2,"ref":"","articles":[{"title":"存储过程语法","level":"7.1.6.1","depth":3,"path":"origin/mysql-procedure-grammar.md","ref":"origin/mysql-procedure-grammar.md","articles":[]},{"title":"常用存储过程","level":"7.1.6.2","depth":3,"path":"origin/mysql-procedure.md","ref":"origin/mysql-procedure.md","articles":[]},{"title":"事物隔离级别","level":"7.1.6.3","depth":3,"path":"origin/mysql-transaction.md","ref":"origin/mysql-transaction.md","articles":[]},{"title":"临时表","level":"7.1.6.4","depth":3,"path":"origin/mysql-temporary.md","ref":"origin/mysql-temporary.md","articles":[]}]},{"title":"MySQL常见问题解决","level":"7.1.7","depth":2,"path":"origin/mysql-problem-solution.md","ref":"origin/mysql-problem-solution.md","articles":[]}]},"previous":{"title":"HTTP认证","level":"6.43","depth":1,"path":"origin/http-auth.md","ref":"origin/http-auth.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-lunr","-sharing","-highlight","search-pro","splitter","github","popup","sectionx","expandable-chapters","sharing-plus","code","auto-scroll-table","theme-fexa","tbfed-pagefooter","back-to-top-button","emphasize","edit-link","prism","donate","theme-comscore","github-buttons","github-issue-feedback"],"root":".","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"tbfed-pagefooter":{"copyright":"Copyright Curiouser","modify_label":"该文件最后修改时间：","modify_format":"YYYY-MM-DD HH:mm:ss"},"prism":{"css":["prismjs/themes/prism-tomorrow.css"],"lang":{"flow":"typescript"},"ignore":["mermaid","eval-js"]},"emphasize":{},"github-issue-feedback":{"repo":"RationalMonster/rationalmonster.github.io"},"github":{"url":"https://github.com/RationalMonster"},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"auto-scroll-table":{},"popup":{},"theme-fexa":{"search-placeholder":"搜索文章","logo":"./assets/logo.png"},"code":{"copybuttons":"true","copyButtons":true},"donate":{"wechat":"/assets/wechat-donate.jpg","title":"","button":"赏","wechatText":"微信打赏","alipay":"","alipayText":"支付宝打赏"},"fontsettings":{"theme":"white","family":"sans","size":2},"sectionx":{},"theme-comscore":{},"back-to-top-button":{},"github-buttons":{"buttons":[{"user":"RationalMonster","repo":"gitbooks-devops-roadmap","type":"star","size":"small","count":"true"}]},"sharing":{"weibo":true,"qq":"true","google":true,"all":["facebook","twitter"]},"edit-link":{"base":"https://raw.githubusercontent.com/RationalMonster/gitbooks-devops-roadmap/master/","label":"查看源MD文件"},"theme-default":{"showLevel":true,"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"expandable-chapters":{}},"theme":"default","author":"Curiouser <rationalmonster@163.com>","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Devops Roadmap","gitbook":"*"},"file":{"path":"origin/disk-format.md","mtime":"2026-01-06T08:52:55.929Z","type":"markdown"},"gitbook":{"version":"3.0.0","time":"2026-01-06T08:56:02.431Z"},"basePath":"..","book":{"language":""}});
+			gitbook.page.hasChanged({"page":{"title":"硬盘格式化","level":"6.44","depth":1,"next":{"title":"MQTT","level":"6.45","depth":1,"path":"origin/mqtt.md","ref":"origin/mqtt.md","articles":[]},"previous":{"title":"HTTP认证","level":"6.43","depth":1,"path":"origin/http-auth.md","ref":"origin/http-auth.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-lunr","-sharing","-highlight","search-pro","splitter","github","popup","sectionx","expandable-chapters","sharing-plus","code","auto-scroll-table","theme-fexa","tbfed-pagefooter","back-to-top-button","emphasize","edit-link","prism","donate","theme-comscore","github-buttons","github-issue-feedback"],"root":".","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"tbfed-pagefooter":{"copyright":"Copyright Curiouser","modify_label":"该文件最后修改时间：","modify_format":"YYYY-MM-DD HH:mm:ss"},"prism":{"css":["prismjs/themes/prism-tomorrow.css"],"lang":{"flow":"typescript"},"ignore":["mermaid","eval-js"]},"emphasize":{},"github-issue-feedback":{"repo":"RationalMonster/rationalmonster.github.io"},"github":{"url":"https://github.com/RationalMonster"},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"auto-scroll-table":{},"popup":{},"theme-fexa":{"search-placeholder":"搜索文章","logo":"./assets/logo.png"},"code":{"copybuttons":"true","copyButtons":true},"donate":{"wechat":"/assets/wechat-donate.jpg","title":"","button":"赏","wechatText":"微信打赏","alipay":"","alipayText":"支付宝打赏"},"fontsettings":{"theme":"white","family":"sans","size":2},"sectionx":{},"theme-comscore":{},"back-to-top-button":{},"github-buttons":{"buttons":[{"user":"RationalMonster","repo":"gitbooks-devops-roadmap","type":"star","size":"small","count":"true"}]},"sharing":{"weibo":true,"qq":"true","google":true,"all":["facebook","twitter"]},"edit-link":{"base":"https://raw.githubusercontent.com/RationalMonster/gitbooks-devops-roadmap/master/","label":"查看源MD文件"},"theme-default":{"showLevel":true,"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"expandable-chapters":{}},"theme":"default","author":"Curiouser <rationalmonster@163.com>","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Devops Roadmap","gitbook":"*"},"file":{"path":"origin/disk-format.md","mtime":"2026-01-28T05:36:34.262Z","type":"markdown"},"gitbook":{"version":"3.0.0","time":"2026-01-28T05:42:06.057Z"},"basePath":"..","book":{"language":""}});
 		});
 	</script>
 </div>
